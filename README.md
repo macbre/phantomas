@@ -31,7 +31,7 @@ Inject in your PhantomJS script at the very first line:
     var nodify = 'phantomjs-nodify/nodify.js';
     phantom.injectJs(nodify);
 
-You **must** provide the path of `nodify.js` in the global `nodify` variable.
+You **must** provide the path to `nodify.js` in the global `nodify` variable.
 
 Then, wrap your script in `nodify.run()`:
 
