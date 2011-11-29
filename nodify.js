@@ -1,0 +1,187 @@
+if (typeof nodify !== 'string') {
+  console.error("Global variable `nodify` not set or not a string!");
+  phantom.exit(1);
+}
+
+var global = window, process;
+
+(function() {
+  // common stuff
+  
+  var fs = require('fs');
+  
+  var dirname = function(path) {
+    return path.replace(/\/[^\/]*\/?$/, '');
+  };
+  
+  var joinPath = function() {
+    var args = Array.prototype.slice.call(arguments);
+    return args.join(fs.separator);
+  };
+  
+  var rootPath = phantom.libraryPath;
+  var nodifyPath = joinPath(rootPath, dirname(nodify));
+  var sourceIds = {};
+  nodify = {};
+
+  // patches
+  
+  // process
+  var addProcess = function() {
+    process = {};
+    process.nextTick = function(fn) { fn() };
+    process.on = function() {};
+    process.exit = function(status) { phantom.exit(status); };
+    process.stdout = {
+      write: function(string) { fs.write("/dev/stdout", string, "w"); }
+    };
+  };
+  
+  // TODO: remove when PhantomJS has full module support
+  var patchRequire = function() {
+    phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
+    var phantomRequire = nodify.__orig__require = require;
+    var requireDir = rootPath;
+    var requireCache = {};
+    
+    require = function(path) {
+      var i, fileGuesses, file, code, fn;
+      var oldRequireDir = requireDir;
+      var module = { exports: {} };
+
+      if (path === 'fs' || path === 'webpage' || path === 'webserver') {
+        return phantomRequire(path);
+      } else {
+        if (path[0] === '.') {
+          path = joinPath(requireDir, path);
+        } else if (path[0] !== '/') {
+          path = joinPath(nodifyPath, 'modules', path);
+        }
+        path = fs.absolute(path);
+        
+        if (path in requireCache) {
+          return requireCache[path].exports;
+        }
+        
+        fileGuesses = [
+          path,
+          path + '.js',
+          path + '.coffee',
+          joinPath(path, 'index.js'),
+          joinPath(path, 'index.coffee')
+        ];
+        
+        file = null;
+        for (i = 0; i < fileGuesses.length && !file; ++i) {
+          if (fs.isFile(fileGuesses[i])) {
+            file = fileGuesses[i];
+          }
+        };
+        if (!file) {
+          throw new Error("Can't find module " + path);
+        }
+        requireDir = dirname(file);
+        
+        code = fs.read(file);
+        if (file.match(/\.coffee$/)) {
+          try {
+            code = CoffeeScript.compile(code);
+          } catch(e) {
+            e.fileName = file;
+            throw e;
+          }
+        }
+        // a trick to associate Error's sourceId with file
+        code += ";throw new Error('__sourceId__');";
+        try {
+          fn = new Function('module', 'exports', code);
+          fn(module, module.exports);
+        } catch(e) {
+          //console.log(e.sourceId + ':' + file);
+          if (!sourceIds.hasOwnProperty(e.sourceId)) {
+            sourceIds[e.sourceId] = file;
+          }
+          if (e.message !== '__sourceId__') {
+            throw e;
+          }
+        }
+        
+        requireDir = oldRequireDir;
+        requireCache[path] = module;
+        
+        return module.exports;
+      }
+    };
+  };
+  
+  // better console
+  var patchConsole = function() {
+    ['log', 'error', 'debug', 'warn', 'info'].forEach(function(fn) {
+      var fn_ = '__orig__' + fn;
+      console[fn_] = console[fn];
+      console[fn] = function() {
+        console[fn_](util.format.apply(this, arguments));
+      };
+    });
+  };
+  
+  // dummy stack trace
+  // TODO: remove when PhantomJS gets JS engine upgrade
+  var addErrorStack = function() {
+    if (!Error.captureStackTrace) {
+      Error.captureStackTrace = function(error, constructorOpt) {
+        error.stack = error.toString() + '\nat ' + constructorOpt;
+      };
+    }
+  };
+
+  // Function.bind
+  // TODO: remove when PhantomJS gets JS engine upgrade
+  var addFunctionBind = function() {
+    if (!Function.prototype.bind) {
+      Function.prototype.bind = function (oThis) {
+        if (typeof this !== "function") {
+          // closest thing possible to the ECMAScript 5 internal IsCallable function
+          throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable"); 
+        } 
+        
+        var aArgs = Array.prototype.slice.call(arguments, 1), 
+          fToBind = this, 
+          fNOP = function () {},
+          fBound = function () {
+            return fToBind.apply(this instanceof fNOP 
+                                   ? this 
+                                   : oThis || window, 
+                                 aArgs.concat(Array.prototype.slice.call(arguments)));
+          };
+        
+        fNOP.prototype = this.prototype;
+        fBound.prototype = new fNOP();
+        
+        return fBound;
+      };
+    }
+  };
+
+  // nodify
+  
+  patchRequire();
+  // we can now require not built-in modules
+  var util = require('util');
+  
+  addProcess();
+  patchConsole();
+  addErrorStack();
+  addFunctionBind();
+  
+  nodify.run = function(fn) {
+    try {
+      fn();
+    } catch(e) {
+      console.error((e.fileName || sourceIds[e.sourceId]) + ':' + (e.line - 1) + ' ' + e);
+      phantom.exit(1);
+    }
+  };
+  
+}());
+
