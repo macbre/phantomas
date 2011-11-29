@@ -1,7 +1,8 @@
 phantomjs-nodify
 ================
 
-Set of scripts that make PhantomJS's environment more similar to Node.js.
+Set of scripts that make [PhantomJS](http://www.phantomjs.org/) environment
+more similar to [Node.js](http://nodejs.org/).
 I implemented what I needed for my scripts. Feel free to add more.
 
 Partially implemented features:
@@ -16,7 +17,10 @@ Partially implemented features:
 * Some Node.js modules (see `modules` dir).
 * Other minor tweaks.
 
-Some code taken from Node.js, CoffeeScript and [mocha](http://visionmedia.github.com/mocha/).
+Some code taken from
+[Node.js](http://nodejs.org/),
+[CoffeeScript](http://jashkenas.github.com/coffee-script/)
+and [mocha](http://visionmedia.github.com/mocha/).
 
 
 How to use
