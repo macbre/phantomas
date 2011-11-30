@@ -24,6 +24,10 @@ var global = window, process;
   var sourceIds = {};
   nodify = {};
 
+  var getErrorMessage = function(e) {
+    return (e.fileName || sourceIds[e.sourceId]) + ':' + (e.line - 1) + ' ' + e;
+  };
+
   // patches
   
   // process
@@ -128,11 +132,19 @@ var global = window, process;
   // dummy stack trace
   // TODO: remove when PhantomJS gets JS engine upgrade
   var addErrorStack = function() {
-    if (!Error.captureStackTrace) {
-      Error.captureStackTrace = function(error, constructorOpt) {
-        error.stack = error.toString() + '\nat ' + constructorOpt;
-      };
-    }
+    Object.defineProperty(Error.prototype, 'stack', {
+      set: function(string) { this._stack = string; },
+      get: function() {
+        if (this._stack) {
+          return this._stack;
+        } else if (this.sourceId) {
+          return this.toString() + '\nat ' + getErrorMessage(this);
+        }
+        return this.toString() + '\nat unknown';
+      },
+      configurable: true,
+      enumerable: true
+    });
   };
 
   // Function.bind
@@ -178,7 +190,7 @@ var global = window, process;
     try {
       fn();
     } catch(e) {
-      console.error((e.fileName || sourceIds[e.sourceId]) + ':' + (e.line - 1) + ' ' + e);
+      console.error(getErrorMessage(e));
       phantom.exit(1);
     }
   };
