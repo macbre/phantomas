@@ -174,6 +174,13 @@ var global = window, process;
       };
     }
   };
+  
+  // dummy Buffer
+  var addBuffer = function() {
+    global.Buffer = {
+      isBuffer: function() { return false; }
+    };
+  };
 
   // nodify
   
@@ -185,6 +192,7 @@ var global = window, process;
   patchConsole();
   addErrorStack();
   addFunctionBind();
+  addBuffer();
   
   nodify.run = function(fn) {
     try {
