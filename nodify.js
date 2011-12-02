@@ -14,6 +14,10 @@ var global = window, process;
     return path.replace(/\/[^\/]*\/?$/, '');
   };
   
+  var basename = function(path) {
+    return path.replace(/.*\//, '');
+  };
+  
   var joinPath = function() {
     var args = Array.prototype.slice.call(arguments);
     return args.join(fs.separator);
@@ -72,7 +76,9 @@ var global = window, process;
           path + '.js',
           path + '.coffee',
           joinPath(path, 'index.js'),
-          joinPath(path, 'index.coffee')
+          joinPath(path, 'index.coffee'),
+          joinPath(path, 'lib', basename(path) + '.js'),
+          joinPath(path, 'lib', basename(path) + '.coffee')
         ];
         
         file = null;
@@ -137,7 +143,7 @@ var global = window, process;
       get: function() {
         if (this._stack) {
           return this._stack;
-        } else if (this.sourceId) {
+        } else if (this.fileName || this.sourceId) {
           return this.toString() + '\nat ' + getErrorMessage(this);
         }
         return this.toString() + '\nat unknown';
