@@ -39,6 +39,7 @@ var global = window, process;
     process = {};
     process.nextTick = function(fn) { fn() };
     process.on = function() {};
+    process.removeListener = function() {};
     process.exit = function(status) { phantom.exit(status); };
     process.stdout = {
       write: function(string) { fs.write("/dev/stdout", string, "w"); }
