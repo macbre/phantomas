@@ -29,7 +29,7 @@ var global = window, process;
   nodify = {};
 
   var getErrorMessage = function(e) {
-    return (e.fileName || sourceIds[e.sourceId]) + ':' + (e.line - 1) + ' ' + e;
+    return (e.fileName || sourceIds[e.sourceId]) + ':' + e.line + ' ' + e;
   };
 
   // patches
