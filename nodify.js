@@ -48,6 +48,7 @@ var global = window, process;
     process.stderr = {
       write: function(string) { fs.write("/dev/stderr", string, "w"); }
     };
+    process.argv = ['nodify', phantom.scriptName].concat(phantom.args);
   };
   
   // TODO: remove when PhantomJS has full module support
