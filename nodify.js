@@ -37,12 +37,16 @@ var global = window, process;
   // process
   var addProcess = function() {
     process = {};
+    process.env = {};
     process.nextTick = function(fn) { fn() };
     process.on = function() {};
     process.removeListener = function() {};
     process.exit = function(status) { phantom.exit(status); };
     process.stdout = {
       write: function(string) { fs.write("/dev/stdout", string, "w"); }
+    };
+    process.stderr = {
+      write: function(string) { fs.write("/dev/stderr", string, "w"); }
     };
   };
   
@@ -54,7 +58,7 @@ var global = window, process;
     var requireCache = {};
     
     require = function(path) {
-      var i, fileGuesses, file, code, fn;
+      var i, dir, paths = [], fileGuesses = [path], file, code, fn;
       var oldRequireDir = requireDir;
       var module = { exports: {} };
 
@@ -62,25 +66,27 @@ var global = window, process;
         return phantomRequire(path);
       } else {
         if (path[0] === '.') {
-          path = joinPath(requireDir, path);
+          paths.push(fs.absolute(joinPath(requireDir, path)));
         } else if (path[0] !== '/') {
-          path = joinPath(nodifyPath, 'modules', path);
+          dir = requireDir;
+          while (dir !== '') {
+            paths.push(fs.absolute(joinPath(dir, 'node_modules', path)));
+            dir = dirname(dir);
+          }
+          paths.push(fs.absolute(joinPath(nodifyPath, 'modules', path)));
         }
-        path = fs.absolute(path);
         
-        if (path in requireCache) {
-          return requireCache[path].exports;
-        }
-        
-        fileGuesses = [
-          path,
-          path + '.js',
-          path + '.coffee',
-          joinPath(path, 'index.js'),
-          joinPath(path, 'index.coffee'),
-          joinPath(path, 'lib', basename(path) + '.js'),
-          joinPath(path, 'lib', basename(path) + '.coffee')
-        ];
+        for (i = 0; i < paths.length; ++i) {
+          fileGuesses.push.apply(fileGuesses, [
+            paths[i],
+            paths[i] + '.js',
+            paths[i] + '.coffee',
+            joinPath(paths[i], 'index.js'),
+            joinPath(paths[i], 'index.coffee'),
+            joinPath(paths[i], 'lib', basename(paths[i]) + '.js'),
+            joinPath(paths[i], 'lib', basename(paths[i]) + '.coffee')
+          ]);
+        };
         
         file = null;
         for (i = 0; i < fileGuesses.length && !file; ++i) {
@@ -91,6 +97,11 @@ var global = window, process;
         if (!file) {
           throw new Error("Can't find module " + path);
         }
+        
+        if (file in requireCache) {
+          return requireCache[file].exports;
+        }
+
         requireDir = dirname(file);
         
         code = fs.read(file);
@@ -118,7 +129,7 @@ var global = window, process;
         }
         
         requireDir = oldRequireDir;
-        requireCache[path] = module;
+        requireCache[file] = module;
         
         return module.exports;
       }
