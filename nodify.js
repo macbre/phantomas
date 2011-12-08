@@ -58,7 +58,7 @@ var global = window, process;
     var requireCache = {};
     
     require = function(path) {
-      var i, dir, paths = [], fileGuesses = [path], file, code, fn;
+      var i, dir, paths = [], fileGuesses = [], file, code, fn;
       var oldRequireDir = requireDir;
       var module = { exports: {} };
 
@@ -67,13 +67,15 @@ var global = window, process;
       } else {
         if (path[0] === '.') {
           paths.push(fs.absolute(joinPath(requireDir, path)));
-        } else if (path[0] !== '/') {
-          dir = requireDir;
+        } else if (path[0] === '/') {
+          paths.push(path);
+        } else {
+          dir = fs.absolute(requireDir);
           while (dir !== '') {
-            paths.push(fs.absolute(joinPath(dir, 'node_modules', path)));
+            paths.push(joinPath(dir, 'node_modules', path));
             dir = dirname(dir);
           }
-          paths.push(fs.absolute(joinPath(nodifyPath, 'modules', path)));
+          paths.push(joinPath(nodifyPath, 'modules', path));
         }
         
         for (i = 0; i < paths.length; ++i) {
