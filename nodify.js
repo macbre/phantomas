@@ -34,23 +34,6 @@ var global = window, process;
 
   // patches
   
-  // process
-  var addProcess = function() {
-    process = {};
-    process.env = {};
-    process.nextTick = function(fn) { fn() };
-    process.on = function() {};
-    process.removeListener = function() {};
-    process.exit = function(status) { phantom.exit(status); };
-    process.stdout = {
-      write: function(string) { fs.write("/dev/stdout", string, "w"); }
-    };
-    process.stderr = {
-      write: function(string) { fs.write("/dev/stderr", string, "w"); }
-    };
-    process.argv = ['nodify', phantom.scriptName].concat(phantom.args);
-  };
-  
   // TODO: remove when PhantomJS has full module support
   var patchRequire = function() {
     phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
@@ -111,7 +94,7 @@ var global = window, process;
         if (file.match(/\.coffee$/)) {
           try {
             code = CoffeeScript.compile(code);
-          } catch(e) {
+          } catch (e) {
             e.fileName = file;
             throw e;
           }
@@ -121,7 +104,7 @@ var global = window, process;
         try {
           fn = new Function('module', 'exports', code);
           fn(module, module.exports);
-        } catch(e) {
+        } catch (e) {
           //console.log(e.sourceId + ':' + file);
           if (!sourceIds.hasOwnProperty(e.sourceId)) {
             sourceIds[e.sourceId] = file;
@@ -139,8 +122,39 @@ var global = window, process;
     };
   };
   
+  // process
+  var addProcess = function() {
+    var EventEmitter = require('events').EventEmitter;
+    process = new EventEmitter;
+    process.env = {};
+    process.nextTick = function(fn) { fn() };
+    process.exit = function(status) {
+      process.emit('exit');
+      phantom.exit(status);
+    };
+    process.stdout = {
+      write: function(string) { fs.write("/dev/stdout", string, "w"); }
+    };
+    process.stderr = {
+      write: function(string) { fs.write("/dev/stderr", string, "w"); }
+    };
+    process.argv = ['nodify', phantom.scriptName].concat(phantom.args);
+    
+    var phantomSetTimeout = nodify.__orig__setTimeout = setTimeout;
+    setTimeout = function(fn, delay) {
+      return phantomSetTimeout(function() {
+        try {
+          fn();
+        } catch (e) {
+          process.emit('uncaughtException', e);
+        }
+      }, delay);
+    };
+  };
+  
   // better console
   var patchConsole = function() {
+    var util = require('util');
     ['log', 'error', 'debug', 'warn', 'info'].forEach(function(fn) {
       var fn_ = '__orig__' + fn;
       console[fn_] = console[fn];
@@ -206,9 +220,6 @@ var global = window, process;
   // nodify
   
   patchRequire();
-  // we can now require not built-in modules
-  var util = require('util');
-  
   addProcess();
   patchConsole();
   addErrorStack();
