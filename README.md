@@ -33,16 +33,16 @@ Clone:
 
 Inject in your PhantomJS script at the very first line:
 
-    ```js
+```js
     var nodify = 'phantomjs-nodify/nodify.js';
     phantom.injectJs(nodify);
-    ```
+```
 
 You **must** provide the path to `nodify.js` in the global `nodify` variable.
 
 Then, wrap your script in `nodify.run()`:
 
-    ```js
+```js
     var nodify = 'phantomjs-nodify/nodify.js';
     phantom.injectJs(nodify);
 
@@ -51,5 +51,5 @@ Then, wrap your script in `nodify.run()`:
       var myModule = require('./mymodule');
       // your script here
     });
-    ```
+```
 
