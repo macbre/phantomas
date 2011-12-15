@@ -10,15 +10,15 @@ var global = window, process;
   
   var fs = require('fs');
   
-  var dirname = function(path) {
+  function dirname(path) {
     return path.replace(/\/[^\/]*\/?$/, '');
   };
   
-  var basename = function(path) {
+  function basename(path) {
     return path.replace(/.*\//, '');
   };
   
-  var joinPath = function() {
+  function joinPath() {
     var args = Array.prototype.slice.call(arguments);
     return args.join(fs.separator);
   };
@@ -28,14 +28,14 @@ var global = window, process;
   var sourceIds = {};
   nodify = {};
 
-  var getErrorMessage = function(e) {
+  function getErrorMessage(e) {
     return (e.fileName || sourceIds[e.sourceId]) + ':' + e.line + ' ' + e;
   };
 
   // patches
   
   // TODO: remove when PhantomJS has full module support
-  var patchRequire = function() {
+  function patchRequire() {
     phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
     var phantomRequire = nodify.__orig__require = require;
     var requireDir = rootPath;
@@ -123,7 +123,7 @@ var global = window, process;
   };
   
   // process
-  var addProcess = function() {
+  function addProcess() {
     var EventEmitter = require('events').EventEmitter;
     process = new EventEmitter;
     process.env = {};
@@ -152,8 +152,22 @@ var global = window, process;
     };
   };
   
+  // make errors in event listeners propagate to uncaughtException
+  function patchEvents() {
+    var EventEmitter = require('events').EventEmitter;
+    
+    var eventEmitterEmit = EventEmitter.prototype.emit;
+    EventEmitter.prototype.emit = function() {
+      try {
+        return eventEmitterEmit.apply(this, arguments);
+      } catch (e) {
+        process.emit('uncaughtException', e);
+      }
+    }
+  }; 
+  
   // better console
-  var patchConsole = function() {
+  function patchConsole() {
     var util = require('util');
     ['log', 'error', 'debug', 'warn', 'info'].forEach(function(fn) {
       var fn_ = '__orig__' + fn;
@@ -166,7 +180,7 @@ var global = window, process;
   
   // dummy stack trace
   // TODO: remove when PhantomJS gets JS engine upgrade
-  var addErrorStack = function() {
+  function addErrorStack() {
     Object.defineProperty(Error.prototype, 'stack', {
       set: function(string) { this._stack = string; },
       get: function() {
@@ -184,7 +198,7 @@ var global = window, process;
 
   // Function.bind
   // TODO: remove when PhantomJS gets JS engine upgrade
-  var addFunctionBind = function() {
+  function addFunctionBind() {
     if (!Function.prototype.bind) {
       Function.prototype.bind = function (oThis) {
         if (typeof this !== "function") {
@@ -211,7 +225,7 @@ var global = window, process;
   };
   
   // dummy Buffer
-  var addBuffer = function() {
+  function addBuffer() {
     global.Buffer = {
       isBuffer: function() { return false; }
     };
@@ -221,6 +235,7 @@ var global = window, process;
   
   patchRequire();
   addProcess();
+  patchEvents();
   patchConsole();
   addErrorStack();
   addFunctionBind();
