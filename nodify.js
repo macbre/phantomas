@@ -28,8 +28,10 @@ var global = window, process;
   var sourceIds = {};
   nodify = {};
 
-  function getErrorMessage(e) {
-    return (e.fileName || sourceIds[e.sourceId]) + ':' + e.line + ' ' + e;
+  function getErrorMessage(e, withMessage) {
+    withMessage = typeof withMessage === 'undefined' ? true : withMessage;
+    return (e.fileName || sourceIds[e.sourceId]) + ':' + e.line +
+      (withMessage ? ' ' + e : '');
   };
 
   // patches
@@ -187,7 +189,7 @@ var global = window, process;
         if (this._stack) {
           return this._stack;
         } else if (this.fileName || this.sourceId) {
-          return this.toString() + '\nat ' + getErrorMessage(this);
+          return this.toString() + '\nat ' + getErrorMessage(this, false);
         }
         return this.toString() + '\nat unknown';
       },
