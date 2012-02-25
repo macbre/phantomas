@@ -23,7 +23,7 @@ var global = window, process;
     return args.join(fs.separator);
   };
   
-  var rootPath = phantom.libraryPath;
+  var rootPath = fs.absolute(phantom.libraryPath);
   var nodifyPath = joinPath(rootPath, dirname(nodify));
   var sourceIds = {};
   nodify = {};
@@ -54,9 +54,9 @@ var global = window, process;
         if (path[0] === '.') {
           paths.push(fs.absolute(joinPath(requireDir, path)));
         } else if (path[0] === '/') {
-          paths.push(path);
+          paths.push(fs.absolute(path));
         } else {
-          dir = fs.absolute(requireDir);
+          dir = requireDir;
           while (dir !== '') {
             paths.push(joinPath(dir, 'node_modules', path));
             dir = dirname(dir);
