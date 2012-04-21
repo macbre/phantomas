@@ -1,0 +1,9 @@
+[submodule "support/node_modules/mocha"]
+	path = support/node_modules/mocha
+	url = https://github.com/visionmedia/mocha.git
+[submodule "support/node_modules/diff"]
+	path = support/node_modules/diff
+	url = https://github.com/kpdecker/jsdiff.git
+[submodule "support/node_modules/chai"]
+	path = support/node_modules/chai
+	url = git@github.com:jgonera/chai.git
