@@ -23,6 +23,11 @@ describe("require()", function() {
     require('./coffee_dummy').should.equal('require/coffee_dummy');
   });
 
+  it("caches modules", function() {
+    require('./empty').hello = 'hola';
+    require('./empty').hello.should.equal('hola');
+  });
+
   describe("when the path is relative", function() {
     it("loads modules from the same directory", function() {
       require('./dummy').should.equal('require/dummy');
@@ -62,8 +67,14 @@ describe("require()", function() {
       require('./dir/subdir/loader').dummyFile2.should.equal('spec/node_modules/dummy_file2');
     });
 
-    it("loads index.js if module is a directory", function() {
-      require('dummy_module').should.equal('require/node_modules/dummy_module');
+    describe("when module is a directory", function() {
+      it("first tries to load the path from package.json", function() {
+        require('dummy_module').should.equal('require/node_modules/dummy_module');
+      });
+
+      it("loads index.js if package.json not found", function() {
+        require('dummy_module2').should.equal('require/node_modules/dummy_module2');
+      });
     });
   });
 });

@@ -24,7 +24,7 @@ var global = window, process;
   };
   
   var rootPath = fs.absolute(phantom.libraryPath);
-  var nodifyPath = joinPath(rootPath, dirname(nodify));
+  var nodifyPath = fs.absolute(joinPath(rootPath, dirname(nodify)));
   var sourceIds = {};
   nodify = {};
 
@@ -42,57 +42,70 @@ var global = window, process;
     var phantomRequire = nodify.__orig__require = require;
     var requireCache = {};
     
-    require = getRequire(rootPath);
+    require = getRequire(joinPath(rootPath, phantom.scriptName));
+
+    function getPaths(requireDir, path) {
+      var paths = [], fileGuesses = [], dir;
+
+      if (path[0] === '.') {
+        paths.push(fs.absolute(joinPath(requireDir, path)));
+      } else if (path[0] === '/') {
+        paths.push(fs.absolute(path));
+      } else {
+        dir = requireDir;
+        while (dir !== '') {
+          paths.push(joinPath(dir, 'node_modules', path));
+          dir = dirname(dir);
+        }
+        paths.push(joinPath(nodifyPath, 'modules', path));
+      }
+      
+      for (var i = 0; i < paths.length; ++i) {
+        fileGuesses.push.apply(fileGuesses, [
+          paths[i],
+          paths[i] + '.js',
+          paths[i] + '.coffee',
+          joinPath(paths[i], 'index.js'),
+          joinPath(paths[i], 'index.coffee')
+        ]);
+      }
+
+      return fileGuesses;
+    }
     
-    function getRequire(requireDir) {
+    function getRequire(parentFile) {
+      var requireDir = dirname(parentFile);
+
       return function(path) {
-        var i, dir, paths = [], fileGuesses = [], file, code, fn;
+        var fileGuesses, file, packageFile, package, code, fn;
         var module = { exports: {} };
 
-        if (path === 'fs' || path === 'webpage' || path === 'webserver' || path === 'system') {
+        if (['fs', 'webpage', 'webserver', 'system'].indexOf(path) !== -1) {
           return phantomRequire(path);
         } else {
-          if (path[0] === '.') {
-            paths.push(fs.absolute(joinPath(requireDir, path)));
-          } else if (path[0] === '/') {
-            paths.push(fs.absolute(path));
-          } else {
-            dir = requireDir;
-            while (dir !== '') {
-              paths.push(joinPath(dir, 'node_modules', path));
-              dir = dirname(dir);
+          fileGuesses = getPaths(requireDir, path);
+          
+          while (file = fileGuesses.shift()) {
+            if (fs.isFile(file)) {
+              break;
+            } else if (fs.isDirectory(file)) {
+              packageFile = joinPath(file, 'package.json');
+              if (fs.isFile(packageFile)) {
+                package = JSON.parse(fs.read(packageFile));
+                fileGuesses.unshift(joinPath(file, package.main + '.coffee'));
+                fileGuesses.unshift(joinPath(file, package.main + '.js'));
+                fileGuesses.unshift(joinPath(file, package.main));
+              }
             }
-            paths.push(joinPath(nodifyPath, 'modules', path));
           }
-          
-          for (i = 0; i < paths.length; ++i) {
-            // TODO: this should be replaced with fetching main from package.json
-            fileGuesses.push.apply(fileGuesses, [
-              paths[i],
-              paths[i] + '.js',
-              paths[i] + '.coffee',
-              joinPath(paths[i], 'index.js'),
-              joinPath(paths[i], 'index.coffee'),
-              joinPath(paths[i], 'lib', basename(paths[i]) + '.js'),
-              joinPath(paths[i], 'lib', basename(paths[i]) + '.coffee'),
-              joinPath(paths[i], basename(paths[i]) + '.js'),
-              joinPath(paths[i], basename(paths[i]) + '.coffee')
-            ]);
-          };
-          
-          file = null;
-          for (i = 0; i < fileGuesses.length && !file; ++i) {
-            if (fs.isFile(fileGuesses[i])) {
-              file = fileGuesses[i];
-            }
-          };
           if (!file) {
-            throw new Error("Can't find module " + path);
+            var e = new Error("Cannot find module '" + path + "'");
+            e.fileName = parentFile;
+            e.line = '';
+            throw e;
           }
-          
-          if (file in requireCache) {
-            return requireCache[file].exports;
-          }
+
+          if (file in requireCache) return requireCache[file].exports;
 
           code = fs.read(file);
           if (file.match(/\.coffee$/)) {
@@ -107,12 +120,11 @@ var global = window, process;
           code += ";throw new Error('__sourceId__');";
           try {
             fn = new Function('require', 'exports', 'module', code);
-            fn(getRequire(dirname(file)), module.exports, module);
+            fn(getRequire(file), module.exports, module);
           } catch (e) {
-            //console.log(e.sourceId + ':' + file);
-            if (!sourceIds.hasOwnProperty(e.sourceId)) {
-              sourceIds[e.sourceId] = file;
-            }
+            // assign source id
+            sourceIds[e.sourceId] = file;
+            // if it's not the error we added, propagate it
             if (e.message !== '__sourceId__') {
               throw e;
             }

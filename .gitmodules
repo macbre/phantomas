@@ -7,3 +7,6 @@
 [submodule "support/node_modules/chai"]
 	path = support/node_modules/chai
 	url = git@github.com:jgonera/chai.git
+[submodule "support/node_modules/debug"]
+	path = support/node_modules/debug
+	url = https://github.com/visionmedia/debug.git
