@@ -41,101 +41,137 @@ var global = window, process;
     phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
     var phantomRequire = nodify.__orig__require = require;
     var requireCache = {};
-    
-    require = getRequire(joinPath(rootPath, phantom.scriptName));
+    var exts = ['.js', '.coffee'];
 
-    function getPaths(requireDir, path) {
-      var paths = [], fileGuesses = [], dir;
+    function tryFile(path) {
+      if (fs.isFile(path)) return path;
+      return null;
+    }
 
-      if (path[0] === '.') {
-        paths.push(fs.absolute(joinPath(requireDir, path)));
-      } else if (path[0] === '/') {
-        paths.push(fs.absolute(path));
+    function tryExtensions(path) {
+      var filename;
+      for (var i=0; i<exts.length; ++i) {
+        filename = tryFile(path + exts[i]);
+        if (filename) return filename;
+      }
+      return null;
+    }
+
+    function tryPackage(path) {
+      var filename, package, packageFile = joinPath(path, 'package.json');
+      if (fs.isFile(packageFile)) {
+        package = JSON.parse(fs.read(packageFile));
+        if (!package || !package.main) return null;
+        
+        filename = fs.absolute(joinPath(path, package.main));
+
+        return tryFile(filename) || tryExtensions(filename) ||
+          tryExtensions(joinPath(filename, 'index'));
+      }
+      return null;
+    }
+
+    function Module(filename) {
+      this.id = this.filename = filename;
+      this.dirname = dirname(filename);
+      this.exports = {};
+    }
+
+    Module.prototype._getPaths = function(request) {
+      var paths = [], dir;
+
+      if (request[0] === '.') {
+        paths.push(fs.absolute(joinPath(this.dirname, request)));
+      } else if (request[0] === '/') {
+        paths.push(fs.absolute(request));
       } else {
-        dir = requireDir;
+        dir = this.dirname;
         while (dir !== '') {
-          paths.push(joinPath(dir, 'node_modules', path));
+          paths.push(joinPath(dir, 'node_modules', request));
           dir = dirname(dir);
         }
-        paths.push(joinPath(nodifyPath, 'modules', path));
+        paths.push(joinPath(nodifyPath, 'modules', request));
       }
+
+      return paths;
+    };
+
+    Module.prototype._getFile = function(request) {
+      var path, filename = null, paths = this._getPaths(request);
+
+      for (var i=0; i<paths.length && !filename; ++i) {
+        path = paths[i];
+        filename = tryFile(path) || tryExtensions(path) || tryPackage(path) ||
+          tryExtensions(joinPath(path, 'index'));
+      }
+
+      return filename;
+    };
+
+    Module.prototype._getRequire = function() {
+      var self = this;
       
-      for (var i = 0; i < paths.length; ++i) {
-        fileGuesses.push.apply(fileGuesses, [
-          paths[i],
-          paths[i] + '.js',
-          paths[i] + '.coffee',
-          joinPath(paths[i], 'index.js'),
-          joinPath(paths[i], 'index.coffee')
-        ]);
+      function require(request) {
+        return self.require(request);
+      }
+      require.cache = requireCache;
+
+      return require;
+    };
+
+    Module.prototype.load = function() {
+      var code = fs.read(this.filename);
+      if (this.filename.match(/\.coffee$/)) {
+        try {
+          code = CoffeeScript.compile(code);
+        } catch (e) {
+          e.fileName = this.filename;
+          throw e;
+        }
+      }
+      // a trick to associate Error's sourceId with file
+      code += ";throw new Error('__sourceId__');";
+      try {
+        var fn = new Function('require', 'exports', 'module', code);
+        fn(this._getRequire(), this.exports, this);
+      } catch (e) {
+        // assign source id (check if already assigned to avoid reassigning
+        // on exceptions propagated from other files)
+        if (!sourceIds.hasOwnProperty(e.sourceId)) {
+          sourceIds[e.sourceId] = this.filename;
+        }
+        // if it's not the error we added, propagate it
+        if (e.message !== '__sourceId__') {
+          throw e;
+        }
+      }
+    };
+
+    Module.prototype.require = function(request) {
+      if (['fs', 'webpage', 'webserver', 'system'].indexOf(request) !== -1) {
+        return phantomRequire(request);
       }
 
-      return fileGuesses;
-    }
-    
-    function getRequire(parentFile) {
-      var requireDir = dirname(parentFile);
+      var filename = this._getFile(request);
+      if (!filename) {
+        var e = new Error("Cannot find module '" + path + "'");
+        e.fileName = this.filename;
+        e.line = '';
+        throw e;
+      }
 
-      return function(path) {
-        var fileGuesses, file, packageFile, package, code, fn;
-        var module = { exports: {} };
+      if (requireCache.hasOwnProperty(filename)) {
+        return requireCache[filename].exports;
+      }
 
-        if (['fs', 'webpage', 'webserver', 'system'].indexOf(path) !== -1) {
-          return phantomRequire(path);
-        } else {
-          fileGuesses = getPaths(requireDir, path);
-          
-          while (file = fileGuesses.shift()) {
-            if (fs.isFile(file)) {
-              break;
-            } else if (fs.isDirectory(file)) {
-              packageFile = joinPath(file, 'package.json');
-              if (fs.isFile(packageFile)) {
-                package = JSON.parse(fs.read(packageFile));
-                fileGuesses.unshift(joinPath(file, package.main + '.coffee'));
-                fileGuesses.unshift(joinPath(file, package.main + '.js'));
-                fileGuesses.unshift(joinPath(file, package.main));
-              }
-            }
-          }
-          if (!file) {
-            var e = new Error("Cannot find module '" + path + "'");
-            e.fileName = parentFile;
-            e.line = '';
-            throw e;
-          }
+      var module = new Module(filename);
+      module.load();
+      requireCache[filename] = module;
 
-          if (file in requireCache) return requireCache[file].exports;
+      return module.exports;
+    };
 
-          code = fs.read(file);
-          if (file.match(/\.coffee$/)) {
-            try {
-              code = CoffeeScript.compile(code);
-            } catch (e) {
-              e.fileName = file;
-              throw e;
-            }
-          }
-          // a trick to associate Error's sourceId with file
-          code += ";throw new Error('__sourceId__');";
-          try {
-            fn = new Function('require', 'exports', 'module', code);
-            fn(getRequire(file), module.exports, module);
-          } catch (e) {
-            // assign source id
-            sourceIds[e.sourceId] = file;
-            // if it's not the error we added, propagate it
-            if (e.message !== '__sourceId__') {
-              throw e;
-            }
-          }
-          
-          requireCache[file] = module;
-          
-          return module.exports;
-        }
-      };
-    }
+    require = new Module(joinPath(rootPath, phantom.scriptName))._getRequire();
   };
   
   // process

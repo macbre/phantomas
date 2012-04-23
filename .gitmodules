@@ -4,9 +4,9 @@
 [submodule "support/node_modules/diff"]
 	path = support/node_modules/diff
 	url = https://github.com/kpdecker/jsdiff.git
-[submodule "support/node_modules/chai"]
-	path = support/node_modules/chai
-	url = git@github.com:jgonera/chai.git
 [submodule "support/node_modules/debug"]
 	path = support/node_modules/debug
 	url = https://github.com/visionmedia/debug.git
+[submodule "support/node_modules/chai"]
+	path = support/node_modules/chai
+	url = https://github.com/logicalparadox/chai.git
