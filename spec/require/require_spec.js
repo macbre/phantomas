@@ -24,7 +24,7 @@ describe("require()", function() {
   });
 
   it("loads JSON modules", function() {
-    require('dummy_json').message.should.equal('hello');
+    require('./json_dummy').message.should.equal('hello');
   });
 
   it("caches modules", function() {
