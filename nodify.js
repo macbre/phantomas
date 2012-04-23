@@ -48,6 +48,33 @@ var global = window;
     var requireCache = {};
     var phantomModules = ['fs', 'webpage', 'webserver', 'system'];
 
+    var loadByExt = {
+      '.js': function(module, filename) {
+        var code = fs.read(filename);
+        module._compile(code);
+      },
+
+      '.coffee': function(module, filename) {
+        var code = fs.read(filename);
+        if (typeof CoffeeScript === 'undefined') {
+          phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
+        }
+        try {
+          code = CoffeeScript.compile(code);
+        } catch (e) {
+          e.fileName = filename;
+          throw e;
+        }
+        module._compile(code);
+      },
+
+      '.json': function(module, filename) {
+        module.exports = JSON.parse(fs.read(filename));
+      }
+    };
+
+    var exts = Object.keys(loadByExt);
+
     function tryFile(path) {
       if (fs.isFile(path)) return path;
       return null;
@@ -75,33 +102,6 @@ var global = window;
       }
       return null;
     }
-
-    var loadByExt = {
-      '.js': function(module, filename) {
-        var code = fs.read(filename);
-        module._compile(code);
-      },
-
-      '.coffee': function(module, filename) {
-        var code = fs.read(filename);
-        if (typeof CoffeeScript === 'undefined') {
-          phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
-        }
-        try {
-          code = CoffeeScript.compile(code);
-        } catch (e) {
-          e.fileName = filename;
-          throw e;
-        }
-        module._compile(code);
-      },
-
-      '.json': function(module, filename) {
-        module.exports = JSON.parse(fs.read(filename));
-      }
-    };
-
-    var exts = Object.keys(loadByExt);
 
     function Module(filename) {
       this.id = this.filename = filename;
