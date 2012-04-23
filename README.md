@@ -20,7 +20,7 @@ Implemented features:
 
 Some code taken from [Node.js](http://nodejs.org/)
 and [CoffeeScript](http://jashkenas.github.com/coffee-script/).
-Uses [mocha](http://visionmedia.github.com/mocha/)
+Uses [Mocha](http://visionmedia.github.com/mocha/)
 and [Chai](http://chaijs.com/) for testing.
 
 
@@ -33,30 +33,30 @@ Clone:
 
 Inject in your PhantomJS script at the very first line:
 
-    ```js
-    var nodify = 'phantomjs-nodify/nodify.js';
-    phantom.injectJs(nodify);
-    ```
+```js
+var nodify = 'phantomjs-nodify/nodify.js';
+phantom.injectJs(nodify);
+```
 
 You **must** provide the path to `nodify.js` in the global `nodify` variable.
 
 Then, wrap your script in `nodify.run()`:
 
-    ```js
-    var nodify = 'phantomjs-nodify/nodify.js';
-    phantom.injectJs(nodify);
+```js
+var nodify = 'phantomjs-nodify/nodify.js';
+phantom.injectJs(nodify);
 
-    nodify.run(function() {
-      // module taken from Node.js and included in phantomjs-nodify
-      var assert = require('assert');
-      // module in the same directory
-      var myModule = require('./mymodule');
-      // module in a `node_modules` directory
-      var nodeModule = require('nodemodule');
+nodify.run(function() {
+  // module taken from Node.js and included in phantomjs-nodify
+  var assert = require('assert');
+  // module in the same directory
+  var myModule = require('./mymodule');
+  // module in a `node_modules` directory
+  var nodeModule = require('nodemodule');
 
-      // your script here
-    });
-    ```
+  // your script here
+});
+```
 
 Running tests
 -------------
@@ -67,5 +67,4 @@ You can run the tests after fetching the necessary submodules:
     git submodule init
     git submodule update
     make test
-
 
