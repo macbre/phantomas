@@ -25,6 +25,11 @@ var global = window;
   
   var rootPath = fs.absolute(phantom.libraryPath);
   var nodifyPath = fs.absolute(joinPath(rootPath, dirname(nodify)));
+  if (phantom.version.major >= 1 && phantom.version.minor >= 5) {
+    var mainScript = joinPath(rootPath, basename(require('system').args[0]));
+  } else {
+    var mainScript = joinPath(rootPath, phantom.scriptName);
+  }
   var sourceIds = {};
   nodify = {};
 
@@ -195,7 +200,7 @@ var global = window;
       return module.exports;
     };
 
-    require = new Module(joinPath(rootPath, phantom.scriptName))._getRequire();
+    require = new Module(mainScript)._getRequire();
   };
   
   // process
@@ -214,7 +219,12 @@ var global = window;
     process.stderr = {
       write: function(string) { fs.write("/dev/stderr", string, "w"); }
     };
-    process.argv = ['nodify', phantom.scriptName].concat(phantom.args);
+    if (phantom.version.major >= 1 && phantom.version.minor >= 5) {
+      process.argv = ['nodify'].concat(require('system').args);
+    } else {
+      process.argv = ['nodify', ''].concat(phantom.args);
+    }
+    process.argv[1] = mainScript;
     process.cwd = function() {
       return rootPath;
     };
