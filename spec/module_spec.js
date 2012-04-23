@@ -11,10 +11,8 @@ describe("Module", function() {
     module.dirname.should.match(/\/.*spec/);
   });
 
-  it("has cache object attached to its require() containing cached modules", function() {
-    var dummy = require('dummy_exposed');
-    should.exist(require.cache);
-    require.cache[module.filename].should.equal(module);
-    require.cache[dummy.filename].should.equal(dummy);
+  it("its require() can be used externally", function() {
+    var exposed = require('dummy_exposed');
+    exposed.require('./dummy_file').should.equal('spec/node_modules/dummy_file');
   });
 });

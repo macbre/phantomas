@@ -23,9 +23,26 @@ describe("require()", function() {
     require('./coffee_dummy').should.equal('require/coffee_dummy');
   });
 
+  it("loads JSON modules", function() {
+    require('dummy_json').message.should.equal('hello');
+  });
+
   it("caches modules", function() {
     require('./empty').hello = 'hola';
     require('./empty').hello.should.equal('hola');
+  });
+
+  it("has cache object attached containing cached modules", function() {
+    var exposed = require('dummy_exposed');
+    should.exist(require.cache);
+    require.cache[module.filename].should.equal(module);
+    require.cache[exposed.filename].should.equal(exposed);
+  });
+
+  it("throws an error with appropriate message when module not found", function() {
+    (function() {
+      require('dummy_missing');
+    }).should.Throw("Cannot find module 'dummy_missing'");
   });
 
   describe("when the path is relative", function() {

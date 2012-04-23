@@ -3,7 +3,7 @@ if (typeof nodify !== 'string') {
   phantom.exit(1);
 }
 
-var global = window, process;
+var global = window;
 
 (function() {
   // common stuff
@@ -38,10 +38,10 @@ var global = window, process;
   
   // TODO: remove when PhantomJS has full module support
   function patchRequire() {
-    phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
+    global.CoffeeScript = undefined;
     var phantomRequire = nodify.__orig__require = require;
     var requireCache = {};
-    var exts = ['.js', '.coffee'];
+    var phantomModules = ['fs', 'webpage', 'webserver', 'system'];
 
     function tryFile(path) {
       if (fs.isFile(path)) return path;
@@ -71,6 +71,33 @@ var global = window, process;
       return null;
     }
 
+    var loadByExt = {
+      '.js': function(module, filename) {
+        var code = fs.read(filename);
+        module._compile(code);
+      },
+
+      '.coffee': function(module, filename) {
+        var code = fs.read(filename);
+        if (typeof CoffeeScript === 'undefined') {
+          phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
+        }
+        try {
+          code = CoffeeScript.compile(code);
+        } catch (e) {
+          e.fileName = filename;
+          throw e;
+        }
+        module._compile(code);
+      },
+
+      '.json': function(module, filename) {
+        module.exports = JSON.parse(fs.read(filename));
+      }
+    };
+
+    var exts = Object.keys(loadByExt);
+
     function Module(filename) {
       this.id = this.filename = filename;
       this.dirname = dirname(filename);
@@ -96,7 +123,7 @@ var global = window, process;
       return paths;
     };
 
-    Module.prototype._getFile = function(request) {
+    Module.prototype._getFilename = function(request) {
       var path, filename = null, paths = this._getPaths(request);
 
       for (var i=0; i<paths.length && !filename; ++i) {
@@ -119,16 +146,13 @@ var global = window, process;
       return require;
     };
 
-    Module.prototype.load = function() {
-      var code = fs.read(this.filename);
-      if (this.filename.match(/\.coffee$/)) {
-        try {
-          code = CoffeeScript.compile(code);
-        } catch (e) {
-          e.fileName = this.filename;
-          throw e;
-        }
-      }
+    Module.prototype._load = function() {
+      var ext = this.filename.match(/\.[^.]+$/);
+      if (!ext) ext = '.js';
+      loadByExt[ext](this, this.filename);
+    };
+
+    Module.prototype._compile = function(code) {
       // a trick to associate Error's sourceId with file
       code += ";throw new Error('__sourceId__');";
       try {
@@ -148,13 +172,13 @@ var global = window, process;
     };
 
     Module.prototype.require = function(request) {
-      if (['fs', 'webpage', 'webserver', 'system'].indexOf(request) !== -1) {
+      if (phantomModules.indexOf(request) !== -1) {
         return phantomRequire(request);
       }
 
-      var filename = this._getFile(request);
+      var filename = this._getFilename(request);
       if (!filename) {
-        var e = new Error("Cannot find module '" + path + "'");
+        var e = new Error("Cannot find module '" + request + "'");
         e.fileName = this.filename;
         e.line = '';
         throw e;
@@ -165,7 +189,7 @@ var global = window, process;
       }
 
       var module = new Module(filename);
-      module.load();
+      module._load();
       requireCache[filename] = module;
 
       return module.exports;
@@ -177,7 +201,7 @@ var global = window, process;
   // process
   function addProcess() {
     var EventEmitter = require('events').EventEmitter;
-    process = new EventEmitter;
+    var process = global.process = new EventEmitter;
     process.env = {};
     process.nextTick = function(fn) { fn() };
     process.exit = function(status) {
@@ -301,7 +325,7 @@ var global = window, process;
       fn();
     } catch(e) {
       console.error(getErrorMessage(e));
-      phantom.exit(1);
+      process.exit(1);
     }
   };
   
