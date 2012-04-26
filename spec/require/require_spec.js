@@ -27,9 +27,20 @@ describe("require()", function() {
     require('./json_dummy').message.should.equal('hello');
   });
 
+  it("loads modules with specified extension", function() {
+    require('./dummy.js').should.equal('require/dummy');
+  });
+
   it("caches modules", function() {
     require('./empty').hello = 'hola';
     require('./empty').hello.should.equal('hola');
+  });
+
+  it("supports cycles (circular dependencies)", function() {
+    var a = require('./a');
+    var b = require('./b');
+    a.b.should.equal(b);
+    b.a.should.equal(a);
   });
 
   it("has cache object attached containing cached modules", function() {

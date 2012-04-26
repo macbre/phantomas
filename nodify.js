@@ -194,8 +194,8 @@ var global = window;
       }
 
       var module = new Module(filename);
-      module._load();
       requireCache[filename] = module;
+      module._load();
 
       return module.exports;
     };

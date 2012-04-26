@@ -9,9 +9,9 @@ Implemented features:
 
 * Module support mostly compatible with CommonJS and Node.js, i.e. `require()`
   works not only for PhantomJS built-in modules. Most of the functionality from
-  [File Modules](http://nodejs.org/api/modules.html#modules_file_modules) up to
-  [The `module` Object](http://nodejs.org/api/modules.html#modules_the_module_object)
-  from Node.js should work (cycles are not supported).
+  [Node.js Modules](http://nodejs.org/api/modules.html) (up to
+  [The `module` Object](http://nodejs.org/api/modules.html#modules_the_module_object))
+  should work.
 * Exceptions thrown from required files are properly reported (with file name
   and line number). Line number for `.coffee` files may not be accurate.
   _Unfortunately this is [broken in PhantomJS 1.5](http://code.google.com/p/phantomjs/issues/detail?id=510)_
