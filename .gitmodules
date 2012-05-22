@@ -9,4 +9,4 @@
 	url = https://github.com/visionmedia/debug.git
 [submodule "support/node_modules/chai"]
 	path = support/node_modules/chai
-	url = https://github.com/logicalparadox/chai.git
+	url = https://github.com/chaijs/chai.git
