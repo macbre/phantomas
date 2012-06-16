@@ -23,8 +23,8 @@ Implemented features:
 
 Some code taken from [Node.js](http://nodejs.org/).
 Uses [CoffeeScript](http://jashkenas.github.com/coffee-script/)
-and [Mocha](http://visionmedia.github.com/mocha/)
-+ [Chai](http://chaijs.com/) for testing.
+and [Mocha](http://visionmedia.github.com/mocha/) + [Chai](http://chaijs.com/)
+for testing.
 
 
 How to use
