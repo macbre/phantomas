@@ -23,6 +23,10 @@ describe("require()", function() {
     require('./coffee_dummy').should.equal('require/coffee_dummy');
   });
 
+  it("doesn't expose CoffeeScript", function() {
+    should.not.exist(window.CoffeeScript);
+  });
+
   it("loads JSON modules", function() {
     require('./json_dummy').message.should.equal('hello');
   });
@@ -54,6 +58,22 @@ describe("require()", function() {
     (function() {
       require('dummy_missing');
     }).should.Throw("Cannot find module 'dummy_missing'");
+  });
+
+  describe("stub()", function() {
+    it("stubs modules in given context", function() {
+      require('./stubber').stubbed.should.equal('stubbed module');
+    });
+
+    it("stubs modules in child context", function() {
+      require('./stubber').child.stubbed.should.equal('stubbed module');
+    });
+
+    it("doesn't stub in parent context", function() {
+      (function() {
+        require('stubbed');
+      }).should.Throw("Cannot find module 'stubbed'");
+    });
   });
 
   describe("when the path is relative", function() {

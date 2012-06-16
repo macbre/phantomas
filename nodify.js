@@ -43,12 +43,11 @@ var global = window;
   
   // TODO: remove when PhantomJS has full module support
   function patchRequire() {
-    global.CoffeeScript = undefined;
     var phantomRequire = nodify.__orig__require = require;
-    var requireCache = {};
+    var cache = {};
     var phantomModules = ['fs', 'webpage', 'webserver', 'system'];
 
-    var loadByExt = {
+    var extensions = {
       '.js': function(module, filename) {
         var code = fs.read(filename);
         module._compile(code);
@@ -56,9 +55,7 @@ var global = window;
 
       '.coffee': function(module, filename) {
         var code = fs.read(filename);
-        if (typeof CoffeeScript === 'undefined') {
-          phantom.injectJs(joinPath(nodifyPath, 'coffee-script.js'));
-        }
+        var CoffeeScript = require('_coffee-script');
         try {
           code = CoffeeScript.compile(code);
         } catch (e) {
@@ -73,8 +70,6 @@ var global = window;
       }
     };
 
-    var exts = Object.keys(loadByExt);
-
     function tryFile(path) {
       if (fs.isFile(path)) return path;
       return null;
@@ -82,6 +77,7 @@ var global = window;
 
     function tryExtensions(path) {
       var filename;
+      var exts = Object.keys(extensions);
       for (var i=0; i<exts.length; ++i) {
         filename = tryFile(path + exts[i]);
         if (filename) return filename;
@@ -103,10 +99,14 @@ var global = window;
       return null;
     }
 
-    function Module(filename) {
+    function Module(filename, stubs) {
       this.id = this.filename = filename;
       this.dirname = dirname(filename);
       this.exports = {};
+      this.stubs = {};
+      for (var name in stubs) {
+        this.stubs[name] = stubs[name];
+      }
     }
 
     Module.prototype._getPaths = function(request) {
@@ -146,7 +146,10 @@ var global = window;
       function require(request) {
         return self.require(request);
       }
-      require.cache = requireCache;
+      require.cache = cache;
+      require.stub = function(request, exports) {
+        self.stubs[request] = { exports: exports };
+      };
 
       return require;
     };
@@ -154,7 +157,7 @@ var global = window;
     Module.prototype._load = function() {
       var ext = this.filename.match(/\.[^.]+$/);
       if (!ext) ext = '.js';
-      loadByExt[ext](this, this.filename);
+      extensions[ext](this, this.filename);
     };
 
     Module.prototype._compile = function(code) {
@@ -181,6 +184,10 @@ var global = window;
         return phantomRequire(request);
       }
 
+      if (this.stubs.hasOwnProperty(request)) {
+        return this.stubs[request].exports;
+      }
+
       var filename = this._getFilename(request);
       if (!filename) {
         var e = new Error("Cannot find module '" + request + "'");
@@ -189,18 +196,18 @@ var global = window;
         throw e;
       }
 
-      if (requireCache.hasOwnProperty(filename)) {
-        return requireCache[filename].exports;
+      if (cache.hasOwnProperty(filename)) {
+        return cache[filename].exports;
       }
 
-      var module = new Module(filename);
-      requireCache[filename] = module;
+      var module = new Module(filename, this.stubs);
+      cache[filename] = module;
       module._load();
 
       return module.exports;
     };
 
-    require = new Module(mainScript)._getRequire();
+    global.require = new Module(mainScript)._getRequire();
   };
   
   // process

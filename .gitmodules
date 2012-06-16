@@ -10,3 +10,6 @@
 [submodule "support/node_modules/chai"]
 	path = support/node_modules/chai
 	url = https://github.com/chaijs/chai.git
+[submodule "modules/coffee-script"]
+	path = modules/coffee-script
+	url = https://github.com/jashkenas/coffee-script.git
