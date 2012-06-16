@@ -21,10 +21,10 @@ Implemented features:
 * Some Node.js modules (see `modules` dir).
 * Other minor tweaks.
 
-Some code taken from [Node.js](http://nodejs.org/)
-and [CoffeeScript](http://jashkenas.github.com/coffee-script/).
-Uses [Mocha](http://visionmedia.github.com/mocha/)
-and [Chai](http://chaijs.com/) for testing.
+Some code taken from [Node.js](http://nodejs.org/).
+Uses [CoffeeScript](http://jashkenas.github.com/coffee-script/)
+and [Mocha](http://visionmedia.github.com/mocha/)
++ [Chai](http://chaijs.com/) for testing.
 
 
 How to use
@@ -33,6 +33,10 @@ How to use
 Clone:
 
     git clone git://github.com/jgonera/phantomjs-nodify.git
+
+If you want to use CoffeeScript, clone with submodules:
+
+    git clone git://github.com/jgonera/phantomjs-nodify.git --recursive
 
 Inject in your PhantomJS script at the very first line:
 
