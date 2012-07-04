@@ -65,6 +65,31 @@ nodify.run(function() {
 });
 ```
 
+
+### Stubbing `require()`
+
+Since commit 102b7fd1c17a8a12ce686f0c0fdc4d728087176a you can stub required
+modules in the given module context. For example, let's say you have a module
+file `a.js` in the same directory as your main script. You require this module
+in the main script (`require('./a')`). Then, `a.js` contains:
+
+```js
+require.stub('zlib', {
+  createGzip: function() { ... }
+});
+
+var something = require('some_node.js_module_that_requires_zlib');
+```
+
+Now `require('zlib')` will return the object with the `createGzip` function in
+`a.js` and in every module required by it, but not in parent modules (in this
+case `require('zlib')` will throw a "Cannot find module" exception in the main
+script).
+
+This is especially useful when trying to require libraries written for Node.js
+which require modules not included in phantomjs-nodify.
+
+
 Running tests
 -------------
 
