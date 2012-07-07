@@ -3,9 +3,10 @@
  */
 
 exports.module = function(phantomas) {
-	console.log(phantomas);
+	// register metric
+	phantomas.setMetric('HTTPRequests');
 
-	phantomas.on('loadFinished', function() {
-		console.log(arguments);
+	phantomas.on('onResourceRequested', function(res) {
+		phantomas.incrMetric('HTTPRequests');
 	});
 };
