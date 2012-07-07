@@ -4,6 +4,7 @@
  * Usage:
  *  node phantomas.js
  *    --url=<page to check>
+ *    --debug
  *    --verbose
  *
  * @version 0.1
@@ -15,8 +16,15 @@ phantom.injectJs(nodify);
 
 nodify.run(function() {
 	// parse script arguments
-	var args = require('./lib/args').parse(phantom.args);
+	var params = require('./lib/args').parse(phantom.args),
+		phantomas = require('./core/phantomas.js').phantomas;
 
-	console.log(args);
-	phantom.exit();
+	// run phantomas
+	var instance = new phantomas(params);
+
+	// add modules
+	instance.addModule('requestsMonitor');
+
+	// and finally - run it!
+	instance.run();
 });
