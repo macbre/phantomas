@@ -26,11 +26,13 @@ var formatter = function(results, format) {
 			res += '* ' + key + ': ' + obj[key]+ '\n';
 		};
 
+		res += '\n';
+
 		results.notices.forEach(function(msg) {
 			res += '> ' + msg + "\n";
 		});
 
-		return res;
+		return res.trim();
 	};
 
 	// public interface

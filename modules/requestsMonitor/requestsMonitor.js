@@ -5,15 +5,15 @@ exports.version = '1.0';
 
 exports.module = function(phantomas) {
 	// imports
-	var http = require('http'),
-		url = require('url'),
-		HTTP_STATUS_CODES = http.STATUS_CODES,
-		parseUrl = url.parse;
+	var HTTP_STATUS_CODES = require('http').STATUS_CODES,
+		parseUrl = require('url').parse;
 
 	var requests = [];
 
 	// register metric
 	phantomas.setMetric('HTTPRequests');
+	phantomas.setMetric('HTTPRedirects');
+	phantomas.setMetric('HTTPNotFound');
 
 	phantomas.on('onResourceRequested', function(res) {
 		// store current request data
@@ -51,6 +51,19 @@ exports.module = function(phantomas) {
 				entry.status = res.status || 200 /* for base64 data */;
 				entry.statusText = HTTP_STATUS_CODES[entry.status];
 
+				switch(entry.status) {
+					case 301:
+					case 302:
+						phantomas.incrMetric('HTTPRedirects');
+						phantomas.addNotice(entry.url + ' is a redirect (HTTP 301/302)');
+						break;
+
+					case 404:
+						phantomas.incrMetric('HTTPNotFound');
+						phantomas.addNotice(entry.url + ' was not found (HTTP 404)');
+						break;
+				}
+
 				// parse URL
 				var parsed = parseUrl(entry.url) || {};
 				entry.domain = parsed.hostname;
@@ -60,7 +73,10 @@ exports.module = function(phantomas) {
 				entry.type = 'other';
 
 				// analyze HTTP headers
+				entry.headers = {};
 				res.headers.forEach(function(header) {
+					entry.headers[header.name] = header.value;
+
 					switch (header.name) {
 						// TODO: why it's not gzipped?
 						// because: http://code.google.com/p/phantomjs/issues/detail?id=156

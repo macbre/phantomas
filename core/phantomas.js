@@ -45,16 +45,27 @@ phantomas.prototype = {
 	getPublicWrapper: function() {
 		var self = this;
 
+		// modules API
 		return {
 			url: this.params.url,
 			params: this.params,
+
+			// events
 			on: function() {self.on.apply(self, arguments)},
 			emit: function() {self.emit.apply(self, arguments)},
+
+			// metrics
 			setMetric: function() {self.setMetric.apply(self, arguments)},
+			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments)},
 			incrMetric: function() {self.incrMetric.apply(self, arguments)},
+
+			// debug
 			addNotice: function(msg) {self.addNotice(msg)},
 			log: function(msg) {self.log(msg)},
-			evaluate: function(fn) {return self.page.evaluate(fn)}
+
+			// phantomJS
+			evaluate: function(fn) {return self.page.evaluate(fn)},
+			injectJs: function(src) {return self.page.injectJs(src)}
 		};
 	},
 
@@ -76,6 +87,8 @@ phantomas.prototype = {
 		if (!url) {
 			throw '--url argument must be provided!';
 		}
+
+		this.start = Date.now();
 
 		this.log('Opening <' + url + '>...');
 		this.log('Using ' + this.page.settings.userAgent);
@@ -122,7 +135,8 @@ phantomas.prototype = {
 				break;
 		}
 
-		this.log('phantomas work is done here');
+		var time = Date.now() - this.start;
+		this.log('phantomas work done in ' + time + ' ms');
 
 		// format results
 		var results = {
@@ -143,6 +157,10 @@ phantomas.prototype = {
 	// metrics reporting
 	setMetric: function(name, value) {
 		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
+	},
+
+	setMetricEvaluate: function(name, fn) {
+		this.setMetric(name, this.page.evaluate(fn));
 	},
 
 	// increements given metric by given number (default is one)
