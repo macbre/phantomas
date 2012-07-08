@@ -7,11 +7,14 @@ var VERSION = '0.1';
 var phantomas = function(params) {
 	this.params = params;
 	this.verboseMode = params.verbose === true;
-	this.version = VERSION;
+	this.resultsFormat = params.format || 'plain';
 
 	this.emitter = new (require('events').EventEmitter)();
 	this.metrics = {};
+	this.notices = [];
 	this.page = require('webpage').create();
+
+	this.version = VERSION;
 
 	this.log('phantomas v' + this.version);
 };
@@ -39,7 +42,7 @@ phantomas.prototype = {
 	},
 
 	// returns "wrapped" version of phantomas object with public methods / fields only
-	getPublic: function() {
+	getPublicWrapper: function() {
 		var self = this;
 
 		return {
@@ -49,6 +52,7 @@ phantomas.prototype = {
 			emit: function() {self.emit.apply(self, arguments)},
 			setMetric: function() {self.setMetric.apply(self, arguments)},
 			incrMetric: function() {self.incrMetric.apply(self, arguments)},
+			addNotice: function(msg) {self.addNotice(msg)},
 			log: function(msg) {self.log(msg)},
 			evaluate: function(fn) {return self.page.evaluate(fn)}
 		};
@@ -56,12 +60,12 @@ phantomas.prototype = {
 
 	// initialize given phantomas module
 	addModule: function(name) {
-		var module = require('./../modules/' + name).module;
+		var pkg = require('./../modules/' + name + '/' + name);
 
 		// init a module
-		module(this.getPublic());
+		pkg.module(this.getPublicWrapper());
 
-		this.log('Module ' + name + ' initialized');
+		this.log('Module ' + name + (pkg.version ? ' v' + pkg.version : '') + ' initialized');
 	},
  
 	// runs phantomas
@@ -107,16 +111,32 @@ phantomas.prototype = {
 
 	onLoadFinished: function(status) {
 		this.log('Page loading finished ("' + status + '")');
-		this.emit('loadFinished');
+
+		switch(status) {
+			case 'success':
+				this.emit('loadFinished', status);
+				break;
+		
+			default:
+				this.emit('loadFailed', status);
+				break;
+		}
 
 		this.log('phantomas work is done here');
 
 		// format results
 		var results = {
-			metrics: this.metrics
+			metrics: this.metrics,
+			notices: this.notices
 		};
 
-		console.log(JSON.stringify(results));
+		this.log('Formatting results (' + this.resultsFormat + ')');
+
+		// render results
+		var formatter = require('./formatter').formatter,
+			renderer = new formatter(results, this.resultsFormat);
+
+		console.log(renderer.render());
 		phantom.exit();
 	},
 
@@ -130,10 +150,17 @@ phantomas.prototype = {
 		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
 	},
 
+	// adds a notice that will be emitted after results
+	addNotice: function(msg) {
+		this.notices.push(msg);
+	},
+
 	// add log message
 	// will be printed out only when --verbose
 	log: function(msg) {
 		if (this.verboseMode) {
+			msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg;
+
 			console.log('> ' + msg);
 		}
 	}
