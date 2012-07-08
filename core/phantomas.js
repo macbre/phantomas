@@ -95,10 +95,15 @@ phantomas.prototype = {
 		this.log('Viewport ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
 
 		// bind basic events
+		this.page.onInitialized = this.proxy(this.onInitialized);
 		this.page.onLoadStarted = this.proxy(this.onLoadStarted);
 		this.page.onLoadFinished = this.proxy(this.onLoadFinished);
 		this.page.onResourceRequested = this.proxy(this.onResourceRequested);
 		this.page.onResourceReceived = this.proxy(this.onResourceReceived);
+
+		// debug
+		this.page.onAlert = this.proxy(this.onAler);
+		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 
 		// open the page
 		this.page.open(url, this.onPageOpened);
@@ -107,6 +112,11 @@ phantomas.prototype = {
 	},
 
 	// core events
+	onInitialized: function() {
+		this.log('Page object initialized');
+		this.emit('init');
+	},
+
 	onLoadStarted: function() {
 		this.log('Page loading started');
 		this.emit('loadStarted');
@@ -151,7 +161,20 @@ phantomas.prototype = {
 			renderer = new formatter(results, this.resultsFormat);
 
 		console.log(renderer.render());
+
+		this.page.release();
 		phantom.exit();
+	},
+
+	// debug
+	onAlert: function(msg) {
+		this.log('Alert: ' + msg);
+		this.emit('alert', msg);
+	},
+
+	onConsoleMessage: function(msg) {
+		this.log('console.log: ' + msg);
+		this.emit('consoleLog', msg);
 	},
 
 	// metrics reporting

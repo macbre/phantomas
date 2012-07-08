@@ -12,6 +12,9 @@
 (function(){
   var JR = { Version: '1.3.1' };
 
+  // export
+  window.JR = JR;
+
   // IE does not seem to properly define the indexOf for arrays.
   if ("undefined" === typeof(Array.prototype.indexOf)) {
     Array.prototype.indexOf = function (object, index) {
@@ -644,7 +647,7 @@
 
   JR.globals = function(){
     function ignore(name){
-      var allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference'],
+      var allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', 'JR', '__DOMMonsterJdropCallBack'],
       i = allowed.length;
       while(i--){
         if(allowed[i] === name)
@@ -689,6 +692,8 @@
       JR.tip('Found '+found.length+' JavaScript globals.','Cutting back on globals can increase JavaScript performance.' + (JR._console ? ' See JavaScript console for details.' : ''));
       if(JR._console) console.log('Found more than 5 globals on your page.', found);
     }
+
+    return found;
   };
 
   JR.performanceTips = function(){
