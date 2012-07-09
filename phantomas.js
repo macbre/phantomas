@@ -26,6 +26,7 @@ nodify.run(function() {
 	instance.addModule('requestsMonitor');
 	instance.addModule('domComplexity');
 	instance.addModule('domains');
+	instance.addModule('windowPerformance');
 
 	// and finally - run it!
 	instance.run();

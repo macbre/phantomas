@@ -5,10 +5,19 @@
 var VERSION = '0.1';
 
 var phantomas = function(params) {
+	// parse script CLI parameters
 	this.params = params;
-	this.verboseMode = params.verbose === true;
+
+	// --url=http://example.com
+	this.url = this.params.url;
+
+	// --format=[csv|json]
 	this.resultsFormat = params.format || 'plain';
 
+	// --verbose
+	this.verboseMode = params.verbose === true;
+
+	// setup the stuff
 	this.emitter = new (require('events').EventEmitter)();
 	this.metrics = {};
 	this.notices = [];
@@ -31,7 +40,7 @@ phantomas.prototype = {
 	},
 
 	// emit given event
-	emit: function(/* args */) {
+	emit: function(/* eventName, arg1, arg2, ... */) {
 		this.log('Event ' + arguments[0] + ' emitted');
 		this.emitter.emit.apply(this.emitter, arguments);
 	},
@@ -81,16 +90,15 @@ phantomas.prototype = {
  
 	// runs phantomas
 	run: function() {
-		var url = this.params.url;
 
 		// check required params
-		if (!url) {
+		if (!this.url) {
 			throw '--url argument must be provided!';
 		}
 
 		this.start = Date.now();
 
-		this.log('Opening <' + url + '>...');
+		this.log('Opening <' + this.url + '>...');
 		this.log('Using ' + this.page.settings.userAgent);
 		this.log('Viewport ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
 
@@ -105,10 +113,39 @@ phantomas.prototype = {
 		this.page.onAlert = this.proxy(this.onAler);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 
+		// last time changes?
+		this.emit('pageBeforeOpen', this.page);
+
 		// open the page
-		this.page.open(url, this.onPageOpened);
+		this.page.open(this.url, this.onPageOpened);
 
 		this.emit('pageOpen');
+	},
+
+	// called when all HTTP requests are completed
+	report: function() {
+		this.emit('report');
+
+		var time = Date.now() - this.start;
+		this.log('phantomas work done in ' + time + ' ms');
+
+		// format results
+		var results = {
+			url: this.url,
+			metrics: this.metrics,
+			notices: this.notices
+		};
+
+		this.log('Formatting results (' + this.resultsFormat + ')');
+
+		// render results
+		var formatter = require('./formatter').formatter,
+			renderer = new formatter(results, this.resultsFormat);
+
+		console.log(renderer.render());
+
+		this.page.release();
+		phantom.exit();
 	},
 
 	// core events
@@ -133,6 +170,13 @@ phantomas.prototype = {
 	},
 
 	onLoadFinished: function(status) {
+		// trigger this only once
+		if (this.onLoadFinishedEmitted) {
+			return;
+		}
+		this.onLoadFinishedEmitted = true;
+
+		// we're done
 		this.log('Page loading finished ("' + status + '")');
 
 		switch(status) {
@@ -145,25 +189,8 @@ phantomas.prototype = {
 				break;
 		}
 
-		var time = Date.now() - this.start;
-		this.log('phantomas work done in ' + time + ' ms');
-
-		// format results
-		var results = {
-			metrics: this.metrics,
-			notices: this.notices
-		};
-
-		this.log('Formatting results (' + this.resultsFormat + ')');
-
-		// render results
-		var formatter = require('./formatter').formatter,
-			renderer = new formatter(results, this.resultsFormat);
-
-		console.log(renderer.render());
-
-		this.page.release();
-		phantom.exit();
+		// TODO: wait for last HTTP request
+		setTimeout(this.proxy(this.report), 500);
 	},
 
 	// debug

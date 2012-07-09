@@ -22,12 +22,17 @@ var formatter = function(results, format) {
 		    obj = results.metrics,
 		    key;
 
+		// header
+		res += 'phantomas metrics for <' + results.url + '>:\n\n';
+
+		// metrics
 		for (key in obj) {
 			res += '* ' + key + ': ' + obj[key]+ '\n';
 		};
 
 		res += '\n';
 
+		// notices
 		results.notices.forEach(function(msg) {
 			res += '> ' + msg + "\n";
 		});

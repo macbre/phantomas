@@ -55,7 +55,7 @@ exports.module = function(phantomas) {
 					case 301:
 					case 302:
 						phantomas.incrMetric('HTTPRedirects');
-						phantomas.addNotice(entry.url + ' is a redirect (HTTP 301/302)');
+						phantomas.addNotice(entry.url + ' is a redirect (HTTP ' + entry.status + ')');
 						break;
 
 					case 404:
@@ -65,9 +65,16 @@ exports.module = function(phantomas) {
 				}
 
 				// parse URL
-				var parsed = parseUrl(entry.url) || {};
-				entry.domain = parsed.hostname;
-				entry.protocol = parsed.protocol.replace(':', '');
+				if (entry.url.indexOf('data:') !== 0) {
+					var parsed = parseUrl(entry.url) || {};
+					entry.domain = parsed.hostname;
+					entry.protocol = parsed.protocol.replace(':', '');
+				}
+				else {
+					// base64 encoded data
+					entry.domain = false;
+					entry.protocol = false;
+				}
 
 				// asset type
 				entry.type = 'other';

@@ -11,6 +11,10 @@ exports.module = function(phantomas) {
 	phantomas.on('recv', function(entry,res) {
 		var domain = entry.domain;
 
+		if (!domain) {
+			return;
+		}
+
 		// init domain entry
 		if (!domains[domain]) {
 			domainsCount++;
