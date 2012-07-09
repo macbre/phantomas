@@ -9,7 +9,9 @@ PhantomJS-based web performance metrics collector
 
 ## Dependencies
 
-* [phantomjs-nodify](https://github.com/jgonera/phantomjs-nodify) (included in this GIT repository)
+Included in GIT repository:
+
+* [phantomjs-nodify](https://github.com/jgonera/phantomjs-nodify)
 * [DOM monster](https://github.com/madrobby/dom-monster)
 
 ## Usage
