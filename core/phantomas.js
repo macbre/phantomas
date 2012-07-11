@@ -78,6 +78,16 @@ phantomas.prototype = {
 		};
 	},
 
+	// initialize given core phantomas module
+	addCoreModule: function(name) {
+		var pkg = require('./modules/' + name + '/' + name);
+
+		// init a module
+		pkg.module(this.getPublicWrapper());
+
+		this.log('Core module ' + name + (pkg.version ? ' v' + pkg.version : '') + ' initialized');
+	},
+
 	// initialize given phantomas module
 	addModule: function(name) {
 		var pkg = require('./../modules/' + name + '/' + name);

@@ -22,7 +22,7 @@ exports.module = function(phantomas) {
 			return JR.globals();
 		});
 
-		phantomas.setMetric('JSGlobals', globalVariables.length);
+		phantomas.setMetric('globalVariables', globalVariables.length);
 		phantomas.addNotice('JavaScript globals: ' + globalVariables.join(', '));
 
 		// HTML size

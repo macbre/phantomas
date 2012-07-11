@@ -11,18 +11,21 @@ exports.module = function(phantomas) {
 	var requests = [];
 
 	// register metric
-	phantomas.setMetric('HTTPRequests');
-	phantomas.setMetric('HTTPRedirects');
-	phantomas.setMetric('HTTPNotFound');
+	phantomas.setMetric('requests');
+	phantomas.setMetric('redirects');
+	phantomas.setMetric('notFound');
+	phantomas.setMetric('timeToFirstByte');
+	phantomas.setMetric('timeToLastByte');
 
 	phantomas.on('onResourceRequested', function(res) {
 		// store current request data
 		requests[res.id] = {
+			id: res.id,
 			url: res.url,
 			sendTime: res.time
 		};
 
-		phantomas.incrMetric('HTTPRequests');
+		phantomas.incrMetric('requests');
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
@@ -54,12 +57,12 @@ exports.module = function(phantomas) {
 				switch(entry.status) {
 					case 301:
 					case 302:
-						phantomas.incrMetric('HTTPRedirects');
+						phantomas.incrMetric('redirects');
 						phantomas.addNotice(entry.url + ' is a redirect (HTTP ' + entry.status + ')');
 						break;
 
 					case 404:
-						phantomas.incrMetric('HTTPNotFound');
+						phantomas.incrMetric('notFound');
 						phantomas.addNotice(entry.url + ' was not found (HTTP 404)');
 						break;
 				}
@@ -87,6 +90,7 @@ exports.module = function(phantomas) {
 					switch (header.name) {
 						// TODO: why it's not gzipped?
 						// because: http://code.google.com/p/phantomjs/issues/detail?id=156
+						// should equal bodySize
 						case 'Content-Length':
 							entry.contentLength = parseInt(header.value, 10);
 							break;
@@ -99,27 +103,32 @@ exports.module = function(phantomas) {
 							switch(value) {
 								case 'text/html':
 									entry.type = 'html';
+									entry.isHTML = true;
 									break;
 
 								case 'text/css':
 									entry.type = 'css';
+									entry.isCSS = true;
 									break;
 
 								case 'application/x-javascript':
 								case 'text/javascript':
 									entry.type = 'js';
+									entry.isJS = true;
 									break;
 
 								case 'image/png':
 								case 'image/jpeg':
 								case 'image/gif':
 									entry.type = 'image';
+									entry.isImage = true;
 									break;
 							}
 
 							// detect base64 encoded images
 							if (entry.url.indexOf('data:') === 0) {
 								entry.type = 'base64';
+								entry.isBase64 = true;
 							}
 							break;
 
@@ -136,6 +145,15 @@ exports.module = function(phantomas) {
 				phantomas.emit('recv', entry, res);
 				phantomas.log(entry);
 				break;
+		}
+	});
+
+	// TTFB / TTLB metrics
+	phantomas.on('recv', function(entry, res) {
+		// check the first request
+		if (entry.id === 1) {
+			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte);
+			phantomas.setMetric('timeToLastByte', entry.timeToLastByte);
 		}
 	});
 };

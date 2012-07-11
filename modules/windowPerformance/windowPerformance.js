@@ -25,11 +25,11 @@ exports.module = function(phantomas) {
 
 	// called just before report is generated
 	phantomas.on('report', function() {
-		phantomas.setMetric('onDOMReady', phantomas.evaluate(function() {
+		phantomas.setMetric('onDOMReadyTime', phantomas.evaluate(function() {
 			return window.timingDOMContentLoaded - window.timingLoadStarted;
  		}));
 
-		phantomas.setMetric('windowOnLoad', phantomas.evaluate(function() {
+		phantomas.setMetric('windowOnLoadTime', phantomas.evaluate(function() {
 			return window.timingOnLoad - window.timingLoadStarted;
  		}));
 	});

@@ -11,6 +11,7 @@ exports.module = function(phantomas) {
 	phantomas.on('recv', function(entry,res) {
 		var domain = entry.domain;
 
+		// base64?
 		if (!domain) {
 			return;
 		}
@@ -30,7 +31,7 @@ exports.module = function(phantomas) {
 	// add metrics
 	phantomas.on('loadFinished', function() {
 		//console.log(domains);
-		phantomas.setMetric('HTTPDomains', domainsCount);
+		phantomas.setMetric('domains', domainsCount);
 
 		phantomas.addNotice('Requests per domain:');
 		for(var domain in domains) {
