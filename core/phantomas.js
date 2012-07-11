@@ -23,6 +23,9 @@ var phantomas = function(params) {
 	this.notices = [];
 	this.page = require('webpage').create();
 
+	// current HTTP requests counter
+	this.currentRequests = 0;
+
 	this.version = VERSION;
 
 	this.log('phantomas v' + this.version);
@@ -130,6 +133,27 @@ phantomas.prototype = {
 		this.page.open(this.url, this.onPageOpened);
 
 		this.emit('pageOpen');
+
+		// observe HTTP requests
+		// finish when the last request is completed
+		
+		// update HTTP requests counter	
+		this.on('onResourceRequested', this.proxy(function() {
+			this.currentRequests++;
+		}));
+	
+		this.on('recv', this.proxy(function() {
+			this.currentRequests--;
+
+			if (this.currentRequests === 0) {
+				this.log('HTTP requests completed!');
+
+				if (this.onLoadFinishedEmitted) {
+					clearTimeout(this.lastRequestTimeout);
+					this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
+				}
+			}
+		}));
 	},
 
 	// called when all HTTP requests are completed
@@ -171,12 +195,12 @@ phantomas.prototype = {
 
 	onResourceRequested: function(res) {
 		this.emit('onResourceRequested', res);
-		this.log(JSON.stringify(res));
+		//this.log(JSON.stringify(res));
 	},
 
 	onResourceReceived: function(res) {
 		this.emit('onResourceReceived', res);
-		this.log(JSON.stringify(res));
+		//this.log(JSON.stringify(res));
 	},
 
 	onLoadFinished: function(status) {
@@ -198,9 +222,6 @@ phantomas.prototype = {
 				this.emit('loadFailed', status);
 				break;
 		}
-
-		// TODO: wait for last HTTP request
-		setTimeout(this.proxy(this.report), 500);
 	},
 
 	// debug

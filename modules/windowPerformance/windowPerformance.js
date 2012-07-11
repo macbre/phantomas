@@ -25,12 +25,12 @@ exports.module = function(phantomas) {
 
 	// called just before report is generated
 	phantomas.on('report', function() {
-		phantomas.setMetric('onDOMReadyTime', phantomas.evaluate(function() {
+		phantomas.setMetricEvaluate('onDOMReadyTime', function() {
 			return window.timingDOMContentLoaded - window.timingLoadStarted;
- 		}));
+ 		});
 
-		phantomas.setMetric('windowOnLoadTime', phantomas.evaluate(function() {
+		phantomas.setMetricEvaluate('windowOnLoadTime', function() {
 			return window.timingOnLoad - window.timingLoadStarted;
- 		}));
+ 		});
 	});
 };

@@ -12,20 +12,28 @@ exports.module = function(phantomas) {
 
 	// register metric
 	phantomas.setMetric('requests');
+	phantomas.setMetric('gzipRequests');
 	phantomas.setMetric('redirects');
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
 	phantomas.setMetric('timeToLastByte');
+	phantomas.setMetric('bodySize'); // headers + content
+	phantomas.setMetric('contentLength'); // content only
+
+	// when the monitoring started?
+	var start;
+	phantomas.on('pageOpen', function(res) {
+		start = Date.now();
+	});
 
 	phantomas.on('onResourceRequested', function(res) {
 		// store current request data
 		requests[res.id] = {
 			id: res.id,
 			url: res.url,
-			sendTime: res.time
+			sendTime: res.time,
+			bodySize: 0
 		};
-
-		phantomas.incrMetric('requests');
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
@@ -40,7 +48,7 @@ exports.module = function(phantomas) {
 
 				// FIXME: buggy
 				// @see http://code.google.com/p/phantomjs/issues/detail?id=169
-				entry.bodySize = res.bodySize || 0;
+				entry.bodySize += res.bodySize || 0;
 				break;
 
 			// the end of response
@@ -141,6 +149,18 @@ exports.module = function(phantomas) {
 					}
 				});
 
+				// requests stats
+				if (!entry.isBase64) {
+					phantomas.incrMetric('requests');
+
+					phantomas.incrMetric('bodySize', entry.bodySize); // content only
+					phantomas.incrMetric('contentLength', entry.contentLength || entry.bodySize); // content only
+				}
+
+				if (entry.gzip) {
+					phantomas.incrMetric('gzipRequests');
+				}
+
 				// emit an event for other modules
 				phantomas.emit('recv', entry, res);
 				phantomas.log(entry);
@@ -155,5 +175,8 @@ exports.module = function(phantomas) {
 			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte);
 			phantomas.setMetric('timeToLastByte', entry.timeToLastByte);
 		}
+
+		// completion of the last HTTP request
+		phantomas.setMetric('httpRequestsDone', entry.recvEndTime - start);
 	});
 };
