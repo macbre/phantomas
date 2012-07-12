@@ -11,19 +11,19 @@ exports.version = '0.1';
 exports.module = function(phantomas) {
 
 	// inject DOM Monster
-	phantomas.on('loadFinished', function() {
+	phantomas.on('report', function() {
 		var injectRes = phantomas.injectJs('./modules/domComplexity/dommonster.js');
 		phantomas.log(injectRes ? 'DOM monster injected' : 'Unable to inject DOM monster!');
 	});
 
-	phantomas.on('loadFinished', function() {
+	phantomas.on('report', function() {
 		// JS global variables
 		var globalVariables = phantomas.evaluate(function() {
 			return JR.globals();
 		});
 
 		phantomas.setMetric('globalVariables', globalVariables.length);
-		phantomas.addNotice('JavaScript globals: ' + globalVariables.join(', '));
+		phantomas.addNotice('JavaScript globals (' + (globalVariables.length) + '): ' + globalVariables.join(', '));
 
 		// HTML size
 		phantomas.setMetricEvaluate('bodyHTMLSize', function() {

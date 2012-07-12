@@ -22,11 +22,9 @@ nodify.run(function() {
 	// run phantomas
 	var instance = new phantomas(params);
 
-	// add core modules
-	instance.addCoreModule('requestsMonitor');
-
 	// add 3rd party modules
 	instance.addModule('domComplexity');
+	instance.addModule('domQueries');
 	instance.addModule('domains');
 	instance.addModule('windowPerformance');
 

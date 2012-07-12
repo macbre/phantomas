@@ -29,6 +29,9 @@ var phantomas = function(params) {
 	this.version = VERSION;
 
 	this.log('phantomas v' + this.version);
+
+	// load core modules
+	this.addCoreModule('requestsMonitor');
 };
 
 exports.phantomas = phantomas;
