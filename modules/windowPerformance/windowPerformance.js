@@ -9,15 +9,15 @@ exports.module = function(phantomas) {
 	// @see https://groups.google.com/d/topic/phantomjs/WnXZLIb_jVc/discussion
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
-			window.timingLoadStarted = Date.now();
+			window.phantomas.timingLoadStarted = Date.now();
 
 			document.addEventListener("DOMContentLoaded", function() {
-				window.timingDOMContentLoaded = Date.now();
+				window.phantomas.timingDOMContentLoaded = Date.now();
 				console.log('onDOMready');
 			}, false);
 
 			window.addEventListener("load", function(){
-				window.timingOnLoad = Date.now();
+				window.phantomas.timingOnLoad = Date.now();
 				console.log('window.onload');
 			}, false);
 		});
@@ -26,11 +26,11 @@ exports.module = function(phantomas) {
 	// called just before report is generated
 	phantomas.on('report', function() {
 		phantomas.setMetricEvaluate('onDOMReadyTime', function() {
-			return window.timingDOMContentLoaded - window.timingLoadStarted;
+			return window.phantomas.timingDOMContentLoaded - window.phantomas.timingLoadStarted;
  		});
 
 		phantomas.setMetricEvaluate('windowOnLoadTime', function() {
-			return window.timingOnLoad - window.timingLoadStarted;
+			return window.phantomas.timingOnLoad - window.phantomas.timingLoadStarted;
  		});
 	});
 };

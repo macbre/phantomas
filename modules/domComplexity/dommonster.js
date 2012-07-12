@@ -647,7 +647,7 @@
 
   JR.globals = function(){
     function ignore(name){
-      var allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', 'JR', '__DOMMonsterJdropCallBack'],
+      var allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', 'JR', '__DOMMonsterJdropCallBack', 'phantomas'],
       i = allowed.length;
       while(i--){
         if(allowed[i] === name)

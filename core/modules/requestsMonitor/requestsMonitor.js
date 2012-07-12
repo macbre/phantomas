@@ -163,7 +163,7 @@ exports.module = function(phantomas) {
 
 				// emit an event for other modules
 				phantomas.emit('recv', entry, res);
-				phantomas.log(entry);
+				//phantomas.log(entry);
 				break;
 		}
 	});

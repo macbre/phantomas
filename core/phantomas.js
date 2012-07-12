@@ -145,15 +145,18 @@ phantomas.prototype = {
 		this.on('recv', this.proxy(function() {
 			this.currentRequests--;
 
-			if (this.currentRequests === 0) {
-				this.log('HTTP requests completed!');
-
+			if (this.currentRequests < 1) {
 				if (this.onLoadFinishedEmitted) {
+					this.log('HTTP requests completed!');
+
 					clearTimeout(this.lastRequestTimeout);
-					this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
+					this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
 				}
 			}
 		}));
+
+		// fallback - always timeout after 7 seconds
+		setTimeout(this.proxy(this.report), 7000);
 	},
 
 	// called when all HTTP requests are completed
@@ -184,6 +187,11 @@ phantomas.prototype = {
 
 	// core events
 	onInitialized: function() {
+		// create shared scope for internal variables
+		this.page.evaluate(function() {
+			window.phantomas = window.phantomas || {};
+		});
+
 		this.log('Page object initialized');
 		this.emit('init');
 	},
