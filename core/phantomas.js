@@ -262,7 +262,7 @@ phantomas.prototype = {
 
 	// adds a notice that will be emitted after results
 	addNotice: function(msg) {
-		this.notices.push(msg);
+		this.notices.push(msg || '');
 	},
 
 	// add log message

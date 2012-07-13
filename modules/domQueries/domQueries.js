@@ -2,7 +2,7 @@
  * Analyzes DOM queries done via native DOM methods & jQuery
  *
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
 
@@ -13,9 +13,16 @@ exports.module = function(phantomas) {
 				var originalGetElementById = document.getElementById,
 					originalGetElementsByClassName = document.getElementsByClassName;
 
+				// metrics storage
 				window.phantomas.domQueries = 0;
-				window.phantomas.jQuerySelectors = 0;
 
+				window.phantomas.jQueryOnDOMReadyFunctions = 0;
+				window.phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
+	
+				window.phantomas.jQuerySelectors = 0;
+				window.phantomas.jQuerySelectorsBacktrace = [];
+
+				// hook into DOM methods
 				document.getElementById = function(id) {
 					// log calls
 					console.log('document.getElementById("' + id + '")');
@@ -34,12 +41,38 @@ exports.module = function(phantomas) {
 	
 					val.fn.init = function() {
 						// log calls
-						var selector = arguments[0];
-						console.log('$(' + (typeof selector === 'string' ? '"' + selector + '"' : typeof selector) + ')');
+						var selector = arguments[0],
+							caller = {};
 
-						// count selectors and $ wrappers around body and window only
-						if (typeof selector !== 'function') {
-							window.phantomas.jQuerySelectors++;
+						// get backtrace to get a caller
+						// TODO: move to window.phantomas.getCaller()
+						try {
+							throw new Error('backtrace');
+						} catch(e) {
+							caller = (e.stackArray && e.stackArray[2]) || {};
+						}
+
+						// count selectors
+						switch (typeof selector) {
+							case 'string':
+								//console.log('$("' + selector + '")');
+
+								window.phantomas.jQuerySelectors++;
+								window.phantomas.jQuerySelectorsBacktrace.push({
+									selector: selector,
+									url: caller.sourceURL,
+									line: caller.line
+								});
+								break;
+
+							case 'function':
+								//console.log('$( onDOMReadyFunction() {} )');
+								window.phantomas.jQueryOnDOMReadyFunctions++;
+								window.phantomas.jQueryOnDOMReadyFunctionsBacktrace.push({
+									url: caller.sourceURL,
+									line: caller.line
+								});
+								break;
 						}
 
 						return originalJQueryFnInit.apply(val.fn, arguments);
@@ -49,9 +82,16 @@ exports.module = function(phantomas) {
 					val.fn.init.prototype = val.fn;
 
 					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
+
+					// remove the mock when page is loaded
+					$(window).bind('load', function() {
+						val.fn.init = originalJQueryFnInit;
+					});
 				});
 
-				window.__defineGetter__('jQuery', function() { return originalJQuery; });
+				window.__defineGetter__('jQuery', function() {
+					return originalJQuery;
+				});
 			})();
 		});
 	});
@@ -64,5 +104,32 @@ exports.module = function(phantomas) {
 		phantomas.setMetricEvaluate('jQuerySelectors', function() {
 			return window.phantomas.jQuerySelectors;
 		});
+
+		phantomas.setMetricEvaluate('jQueryOnDOMReadyFunctions', function() {
+			return window.phantomas.jQueryOnDOMReadyFunctions;
+		});
+
+		// list all selectors
+		var selectorsBacktrace = phantomas.evaluate(function() {
+			return window.phantomas.jQuerySelectorsBacktrace;
+		});
+
+		phantomas.addNotice('jQuery selectors:');
+		selectorsBacktrace.forEach(function(item) {
+			phantomas.addNotice('* $("' + item.selector + '") called from ' + item.url + ' @ ' + item.line);
+		});
+		phantomas.addNotice();
+
+		// list all onDOMReady functions
+		var onDOMReadyBacktrace = phantomas.evaluate(function() {
+			return window.phantomas.jQueryOnDOMReadyFunctionsBacktrace;
+		});
+
+		phantomas.addNotice('jQuery onDOMReady functions:');
+		onDOMReadyBacktrace.forEach(function(item) {
+			phantomas.addNotice('* bound from ' + item.url + ' @ ' + item.line);
+		});
+		phantomas.addNotice();
+
 	});
 };
