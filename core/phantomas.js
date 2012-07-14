@@ -14,6 +14,9 @@ var phantomas = function(params) {
 	// --format=[csv|json]
 	this.resultsFormat = params.format || 'plain';
 
+	// --viewport=1280x1024
+	this.viewport = params.viewport || '1280x1024';
+
 	// --verbose
 	this.verboseMode = params.verbose === true;
 
@@ -114,6 +117,17 @@ phantomas.prototype = {
 
 		this.start = Date.now();
 
+		// setup viewport
+		var parsedViewport = this.viewport.split('x');
+
+		if (parsedViewport.length === 2) {
+			this.page.viewportSize = {
+				height: parseInt(parsedViewport[0], 10) || 1280,
+				width: parseInt(parsedViewport[1], 10) || 1024
+			};
+		}
+
+		// print out debug messages
 		this.log('Opening <' + this.url + '>...');
 		this.log('Using ' + this.page.settings.userAgent);
 		this.log('Viewport ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
