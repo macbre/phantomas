@@ -83,9 +83,11 @@ exports.module = function(phantomas) {
 
 					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
 
-					// remove the mock when page is loaded
+					// remove mocks when page is loaded
 					$(window).bind('load', function() {
 						val.fn.init = originalJQueryFnInit;
+						document.getElementById = originalGetElementById;
+						document.getElementsByClassName = originalGetElementsByClassName;
 					});
 				});
 

@@ -12,7 +12,7 @@ exports.module = function(phantomas) {
 
 	// inject DOM Monster
 	phantomas.on('report', function() {
-		var injectRes = phantomas.injectJs('./modules/domComplexity/dommonster.js');
+		var injectRes = phantomas.injectJs('./lib/dommonster.js');
 		phantomas.log(injectRes ? 'DOM monster injected' : 'Unable to inject DOM monster!');
 	});
 
