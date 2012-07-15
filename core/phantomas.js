@@ -204,10 +204,8 @@ phantomas.prototype = {
 
 	// core events
 	onInitialized: function() {
-		// create shared scope for internal variables
-		this.page.evaluate(function() {
-			window.phantomas = window.phantomas || {};
-		});
+		// add helper tools into window.phantomas "namespace"
+		this.page.injectJs('./core/helper.js');
 
 		this.log('Page object initialized');
 		this.emit('init');
