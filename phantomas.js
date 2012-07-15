@@ -24,7 +24,7 @@ nodify.run(function() {
 
 	// add 3rd party modules
 	instance.addModule('domComplexity');
-	instance.addModule('domQueries');
+	//instance.addModule('domQueries'); // FIXME; causes random issues
 	instance.addModule('domains');
 	instance.addModule('waterfall');
 	instance.addModule('windowPerformance');
