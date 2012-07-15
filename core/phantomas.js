@@ -155,7 +155,7 @@ phantomas.prototype = {
 		// finish when the last request is completed
 		
 		// update HTTP requests counter	
-		this.on('onResourceRequested', this.proxy(function() {
+		this.on('send', this.proxy(function() {
 			this.currentRequests++;
 		}));
 	

@@ -20,10 +20,11 @@ exports.module = function(phantomas) {
 		// JS global variables
 		var globalVariables = phantomas.evaluate(function() {
 			return JR.globals();
-		});
+		}) || [];
 
 		phantomas.setMetric('globalVariables', globalVariables.length);
 		phantomas.addNotice('JavaScript globals (' + (globalVariables.length) + '): ' + globalVariables.join(', '));
+		phantomas.addNotice();
 
 		// HTML size
 		phantomas.setMetricEvaluate('bodyHTMLSize', function() {

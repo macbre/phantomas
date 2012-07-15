@@ -26,6 +26,7 @@ nodify.run(function() {
 	instance.addModule('domComplexity');
 	instance.addModule('domQueries');
 	instance.addModule('domains');
+	instance.addModule('waterfall');
 	instance.addModule('windowPerformance');
 
 	// and finally - run it!

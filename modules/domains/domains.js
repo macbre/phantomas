@@ -39,5 +39,6 @@ exports.module = function(phantomas) {
 
 			phantomas.addNotice(' ' + domain + ': ' + entry.requests + ' request(s)');
 		}
+		phantomas.addNotice();
 	});
 };

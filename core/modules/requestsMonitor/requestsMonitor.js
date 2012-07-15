@@ -28,12 +28,34 @@ exports.module = function(phantomas) {
 
 	phantomas.on('onResourceRequested', function(res) {
 		// store current request data
-		requests[res.id] = {
+		var entry = requests[res.id] = {
 			id: res.id,
 			url: res.url,
 			sendTime: res.time,
 			bodySize: 0
 		};
+
+		// parse URL
+		var parsed = parseUrl(entry.url) || {};
+		if (entry.url.indexOf('data:') !== 0) {
+			var parsed = parseUrl(entry.url) || {};
+			entry.domain = parsed.hostname;
+			entry.protocol = parsed.protocol.replace(':', '');
+
+			if (entry.protocol === 'https') {
+				entry.isSSL = true;
+			}
+		}
+		else {
+			// base64 encoded data
+			entry.domain = false;
+			entry.protocol = false;
+			entry.isBase64 = true;
+		}
+
+		if (!entry.isBase64) {
+			phantomas.emit('send', entry, res);
+		}
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
@@ -80,11 +102,16 @@ exports.module = function(phantomas) {
 					var parsed = parseUrl(entry.url) || {};
 					entry.domain = parsed.hostname;
 					entry.protocol = parsed.protocol.replace(':', '');
+
+					if (entry.protocol === 'https') {
+						entry.isSSL = true;
+					}
 				}
 				else {
 					// base64 encoded data
 					entry.domain = false;
 					entry.protocol = false;
+					entry.isBase64 = true;
 				}
 
 				// asset type
@@ -133,13 +160,6 @@ exports.module = function(phantomas) {
 									break;
 							}
 
-							// detect base64 encoded images
-							if (entry.url.indexOf('data:') === 0) {
-								entry.type = 'base64';
-								entry.isBase64 = true;
-							}
-							break;
-
 						// detect content encoding
 						case 'Content-Encoding':
 							if (header.value === 'gzip') {
@@ -162,7 +182,9 @@ exports.module = function(phantomas) {
 				}
 
 				// emit an event for other modules
-				phantomas.emit('recv', entry, res);
+				if (!entry.isBase64) {
+					phantomas.emit('recv', entry, res);
+				}
 				//phantomas.log(entry);
 				break;
 		}

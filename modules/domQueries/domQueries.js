@@ -111,6 +111,8 @@ exports.module = function(phantomas) {
 			return window.phantomas.jQueryOnDOMReadyFunctions;
 		});
 
+		return;
+
 		// list all selectors
 		var selectorsBacktrace = phantomas.evaluate(function() {
 			return window.phantomas.jQuerySelectorsBacktrace;
