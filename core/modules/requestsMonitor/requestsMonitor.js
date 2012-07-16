@@ -182,9 +182,7 @@ exports.module = function(phantomas) {
 				}
 
 				// emit an event for other modules
-				if (!entry.isBase64) {
-					phantomas.emit('recv', entry, res);
-				}
+				phantomas.emit(entry.isBase64 ? 'base64recv' : 'recv' , entry, res);
 				//phantomas.log(entry);
 				break;
 		}

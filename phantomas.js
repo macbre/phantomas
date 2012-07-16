@@ -23,6 +23,7 @@ nodify.run(function() {
 	var instance = new phantomas(params);
 
 	// add 3rd party modules
+	instance.addModule('assetsTypes');
 	instance.addModule('domComplexity');
 	//instance.addModule('domQueries'); // FIXME: jQuery mockup generates random issues
 	instance.addModule('domains');
