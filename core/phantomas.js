@@ -3,7 +3,7 @@
  */
 
 var VERSION = '0.1';
-var TIMEOUT = 7000;
+var TIMEOUT = 10000; // ms
 
 var phantomas = function(params) {
 	// parse script CLI parameters
@@ -162,6 +162,7 @@ phantomas.prototype = {
 			this.currentRequests--;
 			//this.log('recv ' + this.currentRequests + ' ' + entry.url);
 
+			// TODO: remove c&p
 			if (this.currentRequests < 1) {
 				this.log('HTTP requests completed!');
 
@@ -255,8 +256,11 @@ phantomas.prototype = {
 				break;
 		}
 
-		clearTimeout(this.lastRequestTimeout);
-		this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
+		// TODO: remove c&p
+		if (this.currentRequests < 1) {
+			clearTimeout(this.lastRequestTimeout);
+			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
+		}
 	},
 
 	// debug
