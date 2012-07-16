@@ -3,6 +3,7 @@
  */
 
 var VERSION = '0.1';
+var TIMEOUT = 7000;
 
 var phantomas = function(params) {
 	// parse script CLI parameters
@@ -59,6 +60,10 @@ phantomas.prototype = {
 		this.emitter.on(ev, fn);
 	},
 
+	once: function(ev, fn) {
+		this.emitter.once(ev, fn);
+	},
+
 	// returns "wrapped" version of phantomas object with public methods / fields only
 	getPublicWrapper: function() {
 		var self = this;
@@ -70,6 +75,7 @@ phantomas.prototype = {
 
 			// events
 			on: function() {self.on.apply(self, arguments)},
+			once: function() {self.once.apply(self, arguments)},
 			emit: function() {self.emit.apply(self, arguments)},
 
 			// metrics
@@ -143,6 +149,27 @@ phantomas.prototype = {
 		this.page.onAlert = this.proxy(this.onAler);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 
+		// observe HTTP requests
+		// finish when the last request is completed
+		
+		// update HTTP requests counter	
+		this.on('send', this.proxy(function(entry) {
+			this.currentRequests++;
+			//this.log('send ' + this.currentRequests + ' ' + entry.url);
+		}));
+	
+		this.on('recv', this.proxy(function(entry) {
+			this.currentRequests--;
+			//this.log('recv ' + this.currentRequests + ' ' + entry.url);
+
+			if (this.currentRequests < 1) {
+				this.log('HTTP requests completed!');
+
+				clearTimeout(this.lastRequestTimeout);
+				this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
+			}
+		}));
+
 		// last time changes?
 		this.emit('pageBeforeOpen', this.page);
 
@@ -151,29 +178,11 @@ phantomas.prototype = {
 
 		this.emit('pageOpen');
 
-		// observe HTTP requests
-		// finish when the last request is completed
-		
-		// update HTTP requests counter	
-		this.on('send', this.proxy(function() {
-			this.currentRequests++;
-		}));
-	
-		this.on('recv', this.proxy(function() {
-			this.currentRequests--;
-
-			if (this.currentRequests < 1) {
-				if (this.onLoadFinishedEmitted) {
-					this.log('HTTP requests completed!');
-
-					clearTimeout(this.lastRequestTimeout);
-					this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
-				}
-			}
-		}));
-
 		// fallback - always timeout after 7 seconds
-		setTimeout(this.proxy(this.report), 7000);
+		setTimeout(this.proxy(function() {
+			this.log('Timeout of ' + TIMEOUT + ' ms was reached!');
+			this.report();
+		}), TIMEOUT);
 	},
 
 	// called when all HTTP requests are completed
@@ -245,6 +254,9 @@ phantomas.prototype = {
 				this.emit('loadFailed', status);
 				break;
 		}
+
+		clearTimeout(this.lastRequestTimeout);
+		this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
 	},
 
 	// debug
