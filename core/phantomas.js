@@ -105,12 +105,19 @@ phantomas.prototype = {
 
 	// initialize given phantomas module
 	addModule: function(name) {
-		var pkg = require('./../modules/' + name + '/' + name);
+		try {
+			var pkg = require('./../modules/' + name + '/' + name);
+		}
+		catch (e) {
+			this.log('Unable to load module "' + name + '"!');
+			return false;
+		}
 
 		// init a module
 		pkg.module(this.getPublicWrapper());
 
 		this.log('Module ' + name + (pkg.version ? ' v' + pkg.version : '') + ' initialized');
+		return true;
 	},
  
 	// runs phantomas
