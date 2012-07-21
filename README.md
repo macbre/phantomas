@@ -17,7 +17,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ## Usage
 
 ``` bash
-phantomjs phantomas.js --url=http://phantomjs.org --verbose
+phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 ```
 
 ### Parameters
@@ -35,7 +35,111 @@ phantomjs phantomas.js --url=http://phantomjs.org --verbose
 
 ## Metrics
 
-TODO
+Units:
+
+* ms for time
+* bytes for size
+
+``` 
+phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
+
+phantomas metrics for <https://github.com/macbre/phantomas>:
+
+* requests: 25
+* gzipRequests: 10
+* redirects: 1
+* notFound: 0
+* timeToFirstByte: 473
+* timeToLastByte: 480
+* bodySize: 505545
+* contentLength: 505545
+* htmlCount: 2
+* htmlSize: 37869
+* cssCount: 2
+* cssSize: 179261
+* jsCount: 3
+* jsSize: 131764
+* imageCount: 13
+* imageSize: 45177
+* base64Count: 0
+* base64Size: 0
+* otherCount: 5
+* otherSize: 111474
+* cacheHits: 0
+* cacheMisses: 0
+* headersCount: 316
+* headersSentCount: 76
+* headersRecvCount: 240
+* headersSize: 12215
+* headersSentSize: 4521
+* headersRecvSize: 7694
+* httpRequestsDone: 1776
+* domains: 5
+* globalVariables: 15
+* bodyHTMLSize: 36636
+* commentsSize: 901
+* hiddenContentSize: 15102
+* whiteSpacesSize: 2298
+* onDOMReadyTime: 136
+* windowOnLoadTime: 1185
+```
+
+### Requests monitor
+
+* requests: total number of HTTP requests made
+* gzipRequests: number of gzipped HTTP responses
+* redirects: number of HTTP redirects (either 301 or 302)
+* notFound: number of HTTP 404 responses
+* timeToFirstByte: time it took to receive the first byte of the first response
+* timeToLastByte: time it took to receive the last byte of the first response
+* bodySize: size of the content of all responses
+* contentLength: size of the content of all responses (based on ``Content-Length`` header)
+* httpRequestsDone: time it took to receive the last byte of the last HTTP response
+
+### Assets types
+
+* htmlCount: number of html responses
+* htmlSize: size of html responses
+* cssCount: number of css responses
+* cssSize: size of css responses
+* jsCount: number of js responses
+* jsSize: size of js responses
+* imageCount: number of image responses
+* imageSize: size of image responses
+* base64Count: number of base64 encoded "responses" (no HTTP request was made)
+* base64Size: size of base64 encoded "responses"
+* otherCount: number of other responses
+* otherSize: size of other responses
+
+### Cache Hits
+
+_Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid servers._
+
+* cacheHits: number of cache hits
+* cacheMisses: number of cache misses
+
+### Headers
+
+* headersCount: number of requests and responses headers
+* headersSentCount: number of headers sent in requests
+* headersRecvCount: number of headers received in responses
+* headersSize: size of all headers
+* headersSentSize: size of sent headers
+* headersRecvSize: size of received headers
+
+### Domains
+
+* domains: number of domains used to fetch the page
+
+### DOM complexity
+
+* globalVariables: number of JS globals variables
+* bodyHTMLSize: the size of body tag content
+* commentsSize: the size of HTML comments on the page
+* hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
+* whiteSpacesSize: the size of text nodes with whitespaces only
+* onDOMReadyTime: time it took to fire onDOMready event
+* windowOnLoadTime: time it took to fire window.load event
 
 ## For developers
 
