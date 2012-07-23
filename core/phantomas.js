@@ -174,7 +174,7 @@ phantomas.prototype = {
 				this.log('HTTP requests completed!');
 
 				clearTimeout(this.lastRequestTimeout);
-				this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
+				this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
 			}
 		}));
 
@@ -266,7 +266,7 @@ phantomas.prototype = {
 		// TODO: remove c&p
 		if (this.currentRequests < 1) {
 			clearTimeout(this.lastRequestTimeout);
-			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 500);
+			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
 		}
 	},
 
