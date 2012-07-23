@@ -80,6 +80,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * commentsSize: 901
 * hiddenContentSize: 15102
 * whiteSpacesSize: 2298
+* localStorageEntries: 0
 * onDOMReadyTime: 136
 * windowOnLoadTime: 1185
 ```
@@ -140,6 +141,10 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * whiteSpacesSize: the size of text nodes with whitespaces only
 * onDOMReadyTime: time it took to fire onDOMready event
 * windowOnLoadTime: time it took to fire window.load event
+
+### localStorage
+
+* localStorageEntries - number of entries in local storage
 
 ## For developers
 
