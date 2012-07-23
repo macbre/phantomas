@@ -85,6 +85,10 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * commentsSize: 901
 * hiddenContentSize: 15102
 * whiteSpacesSize: 2298
+* smallestResponse: 35
+* biggestResponse: 200973
+* fastestResponse: 5
+* slowestResponse: 870
 * localStorageEntries: 0
 * onDOMReadyTime: 136
 * windowOnLoadTime: 1185
@@ -155,9 +159,37 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * onDOMReadyTime: time it took to fire onDOMready event
 * windowOnLoadTime: time it took to fire window.load event
 
+### Requests statistics
+
+* smallestResponse: the size of the smallest response
+* biggestResponse: the size of the biggest response
+* fastestResponse: the time to the last byte of the fastest response
+* slowestResponse: the time to the last byte of the slowest response
+
 ### localStorage
 
 * localStorageEntries: number of entries in local storage
+
+## Notices
+
+phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices with more in-depth data:
+
+``` bash
+> Requests per domain:
+>  github.com: 2 request(s)
+>  a248.e.akamai.net: 18 request(s)
+>  ssl.google-analytics.com: 2 request(s)
+>  secure.gravatar.com: 1 request(s)
+>  secure.gaug.es: 1 request(s)
+>
+> JavaScript globals (15): html5, Modernizr, $, jQuery, jQuery17206841744652483612, $stats, moment, GitHub, DateInput, clippyCopiedCallback, debug, _gaq, _gauges, _gat, gaGlobal
+>
+> The smallest response (0.03 kB): https://ssl.google-analytics.com/__utm.gif?utmwv=5.3.3&utms=1&utmn=248876753&utmhn=github.com&utmcs=UTF-8&utmsr=1024x768&utmvp=1024x1280&utmsc=32-bit&utmul=pl-pl&utmje=0&utmfl=-&utmdt=macbre%2Fphantomas%20%C2%B7%20GitHub&utmhid=1544768543&utmr=-&utmp=%2Fmacbre%2Fphantomas&utmac=UA-3769691-2&utmcc=__utma%3D1.1733239656.1343076130.1343076130.1343076130.1%3B%2B__utmz%3D1.1343076130.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&utmu=qB~
+> The biggest response (196.26 kB): https://a248.e.akamai.net/assets.github.com/assets/github-24e061385eeaff0ed974ca8bcf1dfc4fd96ab293.js
+>
+> The fastest response (5 ms): https://a248.e.akamai.net/assets.github.com/images/gravatars/gravatar-140.png
+> The slowest response (870 ms): https://github.com/macbre/phantomas
+```
 
 ## For developers
 
