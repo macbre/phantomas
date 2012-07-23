@@ -89,6 +89,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * biggestResponse: 200973
 * fastestResponse: 5
 * slowestResponse: 870
+* medianResponse: 143.5
 * localStorageEntries: 0
 * onDOMReadyTime: 136
 * windowOnLoadTime: 1185
@@ -165,6 +166,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * biggestResponse: the size of the biggest response
 * fastestResponse: the time to the last byte of the fastest response
 * slowestResponse: the time to the last byte of the slowest response
+* medianResponse: median value of time to the last byte for all responses
 
 ### localStorage
 
