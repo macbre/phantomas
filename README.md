@@ -75,6 +75,11 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersRecvSize: 7694
 * httpRequestsDone: 1776
 * domains: 5
+* cookiesSent: 0
+* cookiesRecv: 536
+* domainsWithCookies: 1
+* documentCookiesLength: 388
+* documentCookiesCount: 12
 * globalVariables: 15
 * bodyHTMLSize: 36636
 * commentsSize: 901
@@ -132,6 +137,14 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 * domains: number of domains used to fetch the page
 
+### Cookies
+
+* cookiesSent: length of cookies sent in HTTP requests
+* cookiesRecv: length of cookies received in HTTP responses
+* domainsWithCookies: number of domains with cookies set
+* documentCookiesLength: length of `document.cookie`
+* documentCookiesCount: number of cookies in `document.cookie`
+
 ### DOM complexity
 
 * globalVariables: number of JS globals variables
@@ -144,7 +157,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 ### localStorage
 
-* localStorageEntries - number of entries in local storage
+* localStorageEntries: number of entries in local storage
 
 ## For developers
 
