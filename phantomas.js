@@ -30,6 +30,7 @@ nodify.run(function() {
 	//instance.addModule('domQueries'); // FIXME: jQuery mockup generates random issues
 	instance.addModule('domains');
 	instance.addModule('headers');
+	instance.addModule('requestsStats');
 	instance.addModule('localStorage');
 	instance.addModule('waterfall');
 	instance.addModule('windowPerformance');
