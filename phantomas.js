@@ -25,6 +25,7 @@ nodify.run(function() {
 	// add 3rd party modules
 	instance.addModule('assetsTypes');
 	instance.addModule('cacheHits');
+	instance.addModule('cookies');
 	instance.addModule('domComplexity');
 	//instance.addModule('domQueries'); // FIXME: jQuery mockup generates random issues
 	instance.addModule('domains');
