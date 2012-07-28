@@ -1,7 +1,7 @@
 /**
  * Simple HTTP requests monitor and analyzer
  */
-exports.version = '1.0';
+exports.version = '1.1';
 
 exports.module = function(phantomas) {
 	// imports
@@ -17,8 +17,30 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
 	phantomas.setMetric('timeToLastByte');
-	phantomas.setMetric('bodySize'); // headers + content
+	phantomas.setMetric('bodySize'); // content only
 	phantomas.setMetric('contentLength'); // content only
+
+	// parse given URL to get protocol and domain
+	function parseEntryUrl(entry) {
+		var parsed;
+
+		if (entry.url.indexOf('data:') !== 0) {
+			parsed = parseUrl(entry.url) || {};
+
+			entry.domain = parsed.hostname;
+			entry.protocol = parsed.protocol.replace(':', '');
+
+			if (entry.protocol === 'https') {
+				entry.isSSL = true;
+			}
+		}
+		else {
+			// base64 encoded data
+			entry.domain = false;
+			entry.protocol = false;
+			entry.isBase64 = true;
+		}
+	}
 
 	// when the monitoring started?
 	var start;
@@ -35,23 +57,7 @@ exports.module = function(phantomas) {
 			bodySize: 0
 		};
 
-		// parse URL
-		var parsed = parseUrl(entry.url) || {};
-		if (entry.url.indexOf('data:') !== 0) {
-			var parsed = parseUrl(entry.url) || {};
-			entry.domain = parsed.hostname;
-			entry.protocol = parsed.protocol.replace(':', '');
-
-			if (entry.protocol === 'https') {
-				entry.isSSL = true;
-			}
-		}
-		else {
-			// base64 encoded data
-			entry.domain = false;
-			entry.protocol = false;
-			entry.isBase64 = true;
-		}
+		parseEntryUrl(entry);
 
 		if (!entry.isBase64) {
 			phantomas.emit('send', entry, res);
@@ -97,22 +103,7 @@ exports.module = function(phantomas) {
 						break;
 				}
 
-				// parse URL
-				if (entry.url.indexOf('data:') !== 0) {
-					var parsed = parseUrl(entry.url) || {};
-					entry.domain = parsed.hostname;
-					entry.protocol = parsed.protocol.replace(':', '');
-
-					if (entry.protocol === 'https') {
-						entry.isSSL = true;
-					}
-				}
-				else {
-					// base64 encoded data
-					entry.domain = false;
-					entry.protocol = false;
-					entry.isBase64 = true;
-				}
+				parseEntryUrl(entry);
 
 				// asset type
 				entry.type = 'other';
