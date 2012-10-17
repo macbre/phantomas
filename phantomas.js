@@ -11,7 +11,8 @@
  */
 
 // parse script arguments
-var params = require('./lib/args').parse(phantom.args),
+var args = require("system").args,
+	params = require('./lib/args').parse(args),
 	phantomas = require('./core/phantomas').phantomas;
 
 // run phantomas
