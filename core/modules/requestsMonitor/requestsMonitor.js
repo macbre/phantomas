@@ -5,8 +5,8 @@ exports.version = '1.1';
 
 exports.module = function(phantomas) {
 	// imports
-	var HTTP_STATUS_CODES = require('http').STATUS_CODES,
-		parseUrl = require('url').parse;
+	var HTTP_STATUS_CODES = phantomas.require('http').STATUS_CODES,
+		parseUrl = phantomas.require('url').parse;
 
 	var requests = [];
 
@@ -25,10 +25,12 @@ exports.module = function(phantomas) {
 		var parsed;
 
 		if (entry.url.indexOf('data:') !== 0) {
+			// @see http://nodejs.org/api/url.html#url_url
 			parsed = parseUrl(entry.url) || {};
 
-			entry.domain = parsed.hostname;
 			entry.protocol = parsed.protocol.replace(':', '');
+			entry.domain = parsed.hostname;
+			entry.query = parsed.query;
 
 			if (entry.protocol === 'https') {
 				entry.isSSL = true;

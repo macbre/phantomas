@@ -2,7 +2,7 @@
  * phantomas main file
  */
 
-var VERSION = '0.1';
+var VERSION = '0.2';
 var TIMEOUT = 10000; // ms
 
 var phantomas = function(params) {
@@ -22,7 +22,7 @@ var phantomas = function(params) {
 	this.verboseMode = params.verbose === true;
 
 	// setup the stuff
-	this.emitter = new (require('events').EventEmitter)();
+	this.emitter = new (this.require('events').EventEmitter)();
 	this.metrics = {};
 	this.notices = [];
 	this.page = require('webpage').create();
@@ -89,7 +89,8 @@ phantomas.prototype = {
 
 			// phantomJS
 			evaluate: function(fn) {return self.page.evaluate(fn)},
-			injectJs: function(src) {return self.page.injectJs(src)}
+			injectJs: function(src) {return self.page.injectJs(src)},
+			require: function(module) {return self.require(module)}
 		};
 	},
 
@@ -308,5 +309,10 @@ phantomas.prototype = {
 
 			console.log('> ' + msg);
 		}
+	},
+
+	// require CommonJS module from lib/modules
+	require: function(module) {
+		return require('../lib/modules/' + module);
 	}
 };
