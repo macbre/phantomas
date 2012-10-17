@@ -5,13 +5,13 @@ PhantomJS-based modular web performance metrics collector
 
 ## Requirements
 
-* [PhantomJS](http://phantomjs.org/)
+* [PhantomJS 1.7+](http://phantomjs.org/)
 
 ## Dependencies
 
 phantomas uses the following 3rd party libraries (located in `/lib` directory):
 
-* [phantomjs-nodify](https://github.com/jgonera/phantomjs-nodify)
+* CommonJS modules from [phantomjs-nodify](https://github.com/jgonera/phantomjs-nodify) and nodejs source
 * [DOM monster](https://github.com/madrobby/dom-monster)
 
 ## Usage
