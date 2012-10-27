@@ -24,7 +24,7 @@ exports.module = function(phantomas) {
 
 	// plot waterfall
 	phantomas.on('report', function() {
-		phantomas.addNotice('Waterfall:');
+		phantomas.addNotice('No of requests waterfall:');
 
 		var delta = 100,
 			lastValue = 0,

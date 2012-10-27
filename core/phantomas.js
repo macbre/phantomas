@@ -23,24 +23,23 @@ var phantomas = function(params) {
 
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
-	this.metrics = {};
-	this.notices = [];
 	this.page = require('webpage').create();
 
 	// current HTTP requests counter
 	this.currentRequests = 0;
 
-	this.version = VERSION;
-
-	this.log('phantomas v' + this.version);
+	this.log('phantomas v' + VERSION);
 
 	// load core modules
 	this.addCoreModule('requestsMonitor');
 };
 
-exports.phantomas = phantomas;
+phantomas.version = VERSION;
 
 phantomas.prototype = {
+	metrics: {},
+	notices: [],
+
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
 		scope = scope || this;
@@ -119,6 +118,24 @@ phantomas.prototype = {
 
 		this.log('Module ' + name + (pkg.version ? ' v' + pkg.version : '') + ' initialized');
 		return true;
+	},
+
+	// returns list of 3rd party modules located in modules directory
+	listModules: function() {
+		this.log('Getting the list of all modules...');
+
+		var fs = require('fs'),
+			modulesDir = fs.workingDirectory + '/modules',
+			ls = fs.list(modulesDir) || [],
+			modules = [];
+
+		ls.forEach(function(entry) {
+			if (fs.isFile(modulesDir + '/' + entry + '/' + entry + '.js')) {
+				modules.push(entry);
+			}
+		});
+
+		return modules;
 	},
  
 	// runs phantomas
@@ -316,3 +333,6 @@ phantomas.prototype = {
 		return require('../lib/modules/' + module);
 	}
 };
+
+exports.phantomas = phantomas;
+

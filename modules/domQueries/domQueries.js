@@ -6,6 +6,8 @@ exports.version = '0.2';
 
 exports.module = function(phantomas) {
 
+	return;
+
 	// fake native DOM functions
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {

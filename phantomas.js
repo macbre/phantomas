@@ -2,34 +2,34 @@
  * PhantomJS-based web performance metrics collector
  *
  * Usage:
- *  node phantomas.js
+ *  phantomjs phantomas.js
  *    --url=<page to check>
- *    --debug
  *    --verbose
  *
  * @version 0.2
  */
 
 // parse script arguments
-var args = require("system").args,
+var args = require('system').args,
 	params = require('./lib/args').parse(args),
-	phantomas = require('./core/phantomas').phantomas;
+	phantomas = require('./core/phantomas').phantomas,
+	instance;
 
 // run phantomas
-var instance = new phantomas(params);
+instance = new phantomas(params);
 
 // add 3rd party modules
-instance.addModule('assetsTypes');
-instance.addModule('cacheHits');
-instance.addModule('cookies');
-instance.addModule('domComplexity');
-//instance.addModule('domQueries'); // FIXME: jQuery mockup generates random issues
-instance.addModule('domains');
-instance.addModule('headers');
-instance.addModule('requestsStats');
-instance.addModule('localStorage');
-instance.addModule('waterfall');
-instance.addModule('windowPerformance');
+instance.listModules().forEach(function(moduleName) {
+	instance.addModule(moduleName);
+});
 
 // and finally - run it!
-instance.run();
+try {
+	instance.run();
+} 
+catch(ex) {
+	console.log('phantomas v' + phantomas.version + ' failed with an error:');
+	console.log(ex);
+
+	phantom.exit(1);
+}
