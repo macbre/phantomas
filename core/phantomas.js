@@ -180,20 +180,12 @@ phantomas.prototype = {
 		// update HTTP requests counter	
 		this.on('send', this.proxy(function(entry) {
 			this.currentRequests++;
-			//this.log('send ' + this.currentRequests + ' ' + entry.url);
 		}));
 	
 		this.on('recv', this.proxy(function(entry) {
 			this.currentRequests--;
-			//this.log('recv ' + this.currentRequests + ' ' + entry.url);
 
-			// TODO: remove c&p
-			if (this.currentRequests < 1) {
-				this.log('HTTP requests completed!');
-
-				clearTimeout(this.lastRequestTimeout);
-				this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
-			}
+			this.enqueueReport();
 		}));
 
 		// last time changes?
@@ -209,6 +201,19 @@ phantomas.prototype = {
 			this.log('Timeout of ' + TIMEOUT + ' ms was reached!');
 			this.report();
 		}), TIMEOUT);
+	},
+
+	/**
+	 * Wait a second before finishing the monitoring (i.e. report generation)
+	 *
+	 * This one is called when response is received. Previously scheduled reporting is removed and the new is created.
+	 */
+	enqueueReport: function() {
+		clearTimeout(this.lastRequestTimeout);
+
+		if (this.currentRequests < 1) {
+			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
+		}
 	},
 
 	// called when all HTTP requests are completed
@@ -281,11 +286,7 @@ phantomas.prototype = {
 				break;
 		}
 
-		// TODO: remove c&p
-		if (this.currentRequests < 1) {
-			clearTimeout(this.lastRequestTimeout);
-			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
-		}
+		this.enqueueReport();
 	},
 
 	// debug

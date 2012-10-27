@@ -16,7 +16,7 @@ exports.module = function(phantomas) {
 				console.log('onDOMready');
 			}, false);
 
-			window.addEventListener("load", function(){
+			window.addEventListener("load", function() {
 				window.phantomas.timingOnLoad = Date.now();
 				console.log('window.onload');
 			}, false);
