@@ -38,11 +38,24 @@
 		}
 	};
 
+	function getCaller() {
+		var caller = {};
+
+		try {
+			throw new Error('backtrace');
+		} catch(e) {
+			caller = (e.stackArray && e.stackArray[3]) || {};
+		}
+
+		return caller;
+	}
+
 	// create a scope
 	var phantomas = (window.phantomas = window.phantomas || {});
 
 	// exports
 	phantomas.nodeRunner = nodeRunner;
+	phantomas.getCaller = getCaller;
 
 	console.log('phantomas scope injected');
 

@@ -6,14 +6,12 @@ exports.version = '0.2';
 
 exports.module = function(phantomas) {
 
-	return;
-
 	// fake native DOM functions
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function() {
-				var originalGetElementById = document.getElementById,
-					originalGetElementsByClassName = document.getElementsByClassName;
+				var originalGetElementById = window.document.getElementById,
+					originalGetElementsByClassName = window.document.getElementsByClassName;
 
 				// metrics storage
 				window.phantomas.domQueries = 0;
@@ -44,15 +42,7 @@ exports.module = function(phantomas) {
 					val.fn.init = function() {
 						// log calls
 						var selector = arguments[0],
-							caller = {};
-
-						// get backtrace to get a caller
-						// TODO: move to window.phantomas.getCaller()
-						try {
-							throw new Error('backtrace');
-						} catch(e) {
-							caller = (e.stackArray && e.stackArray[2]) || {};
-						}
+							caller = window.phantomas.getCaller();
 
 						// count selectors
 						switch (typeof selector) {
@@ -86,7 +76,7 @@ exports.module = function(phantomas) {
 					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
 
 					// remove mocks when page is loaded
-					$(window).bind('load', function() {
+					jQuery(window).bind('load', function() {
 						val.fn.init = originalJQueryFnInit;
 						document.getElementById = originalGetElementById;
 						document.getElementsByClassName = originalGetElementsByClassName;
@@ -113,8 +103,6 @@ exports.module = function(phantomas) {
 			return window.phantomas.jQueryOnDOMReadyFunctions;
 		});
 
-		return;
-
 		// list all selectors
 		var selectorsBacktrace = phantomas.evaluate(function() {
 			return window.phantomas.jQuerySelectorsBacktrace;
@@ -131,7 +119,7 @@ exports.module = function(phantomas) {
 			return window.phantomas.jQueryOnDOMReadyFunctionsBacktrace;
 		});
 
-		phantomas.addNotice('jQuery onDOMReady functions:');
+		phantomas.addNotice('jQuery onDOMReady functions (' + onDOMReadyBacktrace.length + '):');
 		onDOMReadyBacktrace.forEach(function(item) {
 			phantomas.addNotice('* bound from ' + item.url + ' @ ' + item.line);
 		});

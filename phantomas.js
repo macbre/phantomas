@@ -4,9 +4,10 @@
  * Usage:
  *  phantomjs phantomas.js
  *    --url=<page to check>
+ *    --runs=<number of repetitive runs on given URL>
  *    --verbose
  *
- * @version 0.2
+ * @version 0.3
  */
 
 // parse script arguments

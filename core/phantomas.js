@@ -2,7 +2,7 @@
  * phantomas main file
  */
 
-var VERSION = '0.2';
+var VERSION = '0.3';
 var TIMEOUT = 10000; // ms
 
 var phantomas = function(params) {
@@ -139,7 +139,7 @@ phantomas.prototype = {
 	},
  
 	// runs phantomas
-	run: function() {
+	run: function(callback) {
 
 		// check required params
 		if (!this.url) {
@@ -171,7 +171,7 @@ phantomas.prototype = {
 		this.page.onResourceReceived = this.proxy(this.onResourceReceived);
 
 		// debug
-		this.page.onAlert = this.proxy(this.onAler);
+		this.page.onAlert = this.proxy(this.onAlert);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 
 		// observe HTTP requests
@@ -196,7 +196,7 @@ phantomas.prototype = {
 
 		this.emit('pageOpen');
 
-		// fallback - always timeout after 7 seconds
+		// fallback - always timeout after TIMEOUT seconds
 		setTimeout(this.proxy(function() {
 			this.log('Timeout of ' + TIMEOUT + ' ms was reached!');
 			this.report();
@@ -238,6 +238,10 @@ phantomas.prototype = {
 
 		console.log(renderer.render());
 
+		this.tearDown();
+	},
+
+	tearDown: function() {
 		this.page.release();
 		phantom.exit();
 	},

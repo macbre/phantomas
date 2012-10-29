@@ -21,11 +21,11 @@ exports.module = function(phantomas) {
 			domainsCount++;
 
 			domains[domain] = {
-				requests: 0
+				requests: []
 			};
 		}
 
-		domains[domain].requests++;
+		domains[domain].requests.push(res.url);
 	});
 
 	// add metrics
@@ -35,9 +35,14 @@ exports.module = function(phantomas) {
 
 		phantomas.addNotice('Requests per domain:');
 		for(var domain in domains) {
-			var entry = domains[domain];  
+			var entry = domains[domain],
+				requests = entry.requests;
 
-			phantomas.addNotice(' ' + domain + ': ' + entry.requests + ' request(s)');
+			// report URLs from each domain
+			phantomas.addNotice(' ' + domain + ': ' + requests.length + ' request(s)');
+			requests.forEach(function(url) {
+				//phantomas.addNotice('   * ' + url);
+			});
 		}
 		phantomas.addNotice();
 	});
