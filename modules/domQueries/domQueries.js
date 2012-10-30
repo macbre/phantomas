@@ -11,10 +11,14 @@ exports.module = function(phantomas) {
 		phantomas.evaluate(function() {
 			(function() {
 				var originalGetElementById = window.document.getElementById,
-					originalGetElementsByClassName = window.document.getElementsByClassName;
+					originalGetElementsByClassName = window.document.getElementsByClassName,
+					originalAppendChild = Node.prototype.appendChild,
+					originalInsertBefore = Node.prototype.insertBefore;
 
 				// metrics storage
 				window.phantomas.domQueries = 0;
+				window.phantomas.domInserts = 0;
+				window.phantomas.domInsertsBacktrace = [];
 
 				window.phantomas.jQueryOnDOMReadyFunctions = 0;
 				window.phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
@@ -29,6 +33,31 @@ exports.module = function(phantomas) {
 					window.phantomas.domQueries++;
 
 					return originalGetElementById.call(document, id);
+				};
+
+				// count DOM inserts
+				Node.prototype.appendChild = function(child) {
+					var caller = window.phantomas.getCaller();
+
+					window.phantomas.domInserts++;
+					window.phantomas.domInsertsBacktrace.push({
+						url: caller.sourceURL,
+						line: caller.line
+					});
+
+					return originalAppendChild.call(this, child);
+				};
+
+				Node.prototype.insertBefore = function(child) {
+					var caller = window.phantomas.getCaller();
+
+					window.phantomas.domInserts++;
+					window.phantomas.domInsertsBacktrace.push({
+						url: caller.sourceURL,
+						line: caller.line
+					});
+
+					return originalInsertBefore.call(this, child);
 				};
 
 				// hook into $.fn.init to catch DOM queries
@@ -74,13 +103,6 @@ exports.module = function(phantomas) {
 					val.fn.init.prototype = val.fn;
 
 					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
-
-					// remove mocks when page is loaded
-					jQuery(window).bind('load', function() {
-						val.fn.init = originalJQueryFnInit;
-						document.getElementById = originalGetElementById;
-						document.getElementsByClassName = originalGetElementsByClassName;
-					});
 				});
 
 				window.__defineGetter__('jQuery', function() {
@@ -93,6 +115,10 @@ exports.module = function(phantomas) {
 	phantomas.on('loadFinished', function() {
 		phantomas.setMetricEvaluate('DOMqueries', function() {
 			return window.phantomas.domQueries;
+		});
+		
+		phantomas.setMetricEvaluate('DOMinserts', function() {
+			return window.phantomas.domInserts;
 		});
 
 		phantomas.setMetricEvaluate('jQuerySelectors', function() {
@@ -124,6 +150,18 @@ exports.module = function(phantomas) {
 			phantomas.addNotice('* bound from ' + item.url + ' @ ' + item.line);
 		});
 		phantomas.addNotice();
+
+		// list all DOM inserts
+		var domInsertsBacktrace = phantomas.evaluate(function() {
+			return window.phantomas.domInsertsBacktrace;
+		});
+
+		phantomas.addNotice('DOM inserts (' + domInsertsBacktrace.length + '):');
+		domInsertsBacktrace.forEach(function(item) {
+			phantomas.addNotice('* from ' + item.url + ' @ ' + item.line);
+		});
+		phantomas.addNotice();
+
 
 	});
 };
