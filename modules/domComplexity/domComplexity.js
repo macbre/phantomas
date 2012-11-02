@@ -79,5 +79,10 @@ exports.module = function(phantomas) {
 		phantomas.setMetricEvaluate('whiteSpacesSize', function() {
 			return window.phantomas.DOMmetrics.whitespaces;
 		});
+
+		// count <iframe> tags
+		phantomas.setMetricEvaluate('iframesCount', function() {
+			return document.querySelectorAll('iframe').length;
+		});
 	});
 };
