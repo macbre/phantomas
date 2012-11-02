@@ -60,6 +60,10 @@ exports.module = function(phantomas) {
 					return originalInsertBefore.call(this, child);
 				};
 
+				// the following approach is unstable
+				// @see https://github.com/osteele/jquery-profile
+				return;
+
 				// hook into $.fn.init to catch DOM queries
 				var originalJQuery,
 					originalJQueryFnInit;
@@ -100,7 +104,7 @@ exports.module = function(phantomas) {
 					};
 
 					// Give the init function the jQuery prototype for later instantiation (taken from jQuery source)
-					val.fn.init.prototype = val.fn;
+					//val.fn.init.prototype = val.fn;
 
 					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
 				});
