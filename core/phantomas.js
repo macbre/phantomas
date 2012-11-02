@@ -101,7 +101,8 @@ phantomas.prototype = {
 			// phantomJS
 			evaluate: function(fn) {return self.page.evaluate(fn)},
 			injectJs: function(src) {return self.page.injectJs(src)},
-			require: function(module) {return self.require(module)}
+			require: function(module) {return self.require(module)},
+			getPageContent: function() {return self.page.content}
 		};
 	},
 
