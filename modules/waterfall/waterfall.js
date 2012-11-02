@@ -3,6 +3,8 @@
  */
 exports.version = '0.5';
 
+exports.skip = true;
+
 exports.module = function(phantomas) {
 	var requestsTimeline = {},
 		currentRequests = 0,
