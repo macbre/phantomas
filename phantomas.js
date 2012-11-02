@@ -4,8 +4,9 @@
  * Usage:
  *  phantomjs phantomas.js
  *    --url=<page to check>
- *    --runs=<number of repetitive runs on given URL>
- *    --verbose
+ *    [--runs=<number of repetitive runs on given URL>]
+ *    [--verbose]
+ *    [--silent]
  *
  * @version 0.3
  */
@@ -26,8 +27,10 @@ instance.listModules().forEach(function(moduleName) {
 
 // and finally - run it!
 try {
-	instance.run();
-} 
+	instance.run(function() {
+		phantom.exit(0);
+	});
+}
 catch(ex) {
 	console.log('phantomas v' + phantomas.version + ' failed with an error:');
 	console.log(ex);

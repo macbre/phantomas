@@ -20,6 +20,9 @@ var phantomas = function(params) {
 
 	// --verbose
 	this.verboseMode = params.verbose === true;
+	
+	// --silent
+	this.silentMode = params.silent === true;
 
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
@@ -85,6 +88,7 @@ phantomas.prototype = {
 			// debug
 			addNotice: function(msg) {self.addNotice(msg)},
 			log: function(msg) {self.log(msg)},
+			echo: function(msg) {self.echo(msg)},
 
 			// phantomJS
 			evaluate: function(fn) {return self.page.evaluate(fn)},
@@ -145,6 +149,9 @@ phantomas.prototype = {
 		if (!this.url) {
 			throw '--url argument must be provided!';
 		}
+
+		// to be called by tearDown
+		this.onDoneCallback = callback;
 
 		this.start = Date.now();
 
@@ -230,20 +237,29 @@ phantomas.prototype = {
 			notices: this.notices
 		};
 
+		this.emit('results', results);
+
 		this.log('Formatting results (' + this.resultsFormat + ')');
 
 		// render results
 		var formatter = require('./formatter').formatter,
 			renderer = new formatter(results, this.resultsFormat);
 
-		console.log(renderer.render());
+		this.echo(renderer.render());
 
 		this.tearDown();
 	},
 
 	tearDown: function() {
 		this.page.release();
-		phantom.exit();
+
+		// call function provided to run() method
+		if (typeof this.onDoneCallback === 'function') {
+			this.onDoneCallback();
+		}
+		else {
+			phantom.exit(0);
+		}
 	},
 
 	// core events
@@ -329,7 +345,14 @@ phantomas.prototype = {
 		if (this.verboseMode) {
 			msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg;
 
-			console.log('> ' + msg);
+			this.echo('> ' + msg);
+		}
+	},
+
+	// console.log wrapper obeying --silent mode
+	echo: function(msg) {
+		if (!this.silentMode) {
+			console.log(msg);
 		}
 	},
 
