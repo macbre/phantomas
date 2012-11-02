@@ -20,12 +20,6 @@ var args = require('system').args,
 // run phantomas
 instance = new phantomas(params);
 
-// add 3rd party modules
-instance.listModules().forEach(function(moduleName) {
-	instance.addModule(moduleName);
-});
-
-// and finally - run it!
 try {
 	instance.run(function() {
 		phantom.exit(0);

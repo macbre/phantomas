@@ -35,6 +35,14 @@ var phantomas = function(params) {
 
 	// load core modules
 	this.addCoreModule('requestsMonitor');
+
+	// load 3rd party modules
+	var modules = this.listModules(),
+		self = this;
+
+	modules.forEach(function(moduleName) {
+		self.addModule(moduleName);
+	});
 };
 
 phantomas.version = VERSION;
