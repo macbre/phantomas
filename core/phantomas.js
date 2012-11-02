@@ -173,7 +173,7 @@ phantomas.prototype = {
 		// print out debug messages
 		this.log('Opening <' + this.url + '>...');
 		this.log('Using ' + this.page.settings.userAgent);
-		this.log('Viewport ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
+		this.log('Viewport set to ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
 
 		// bind basic events
 		this.page.onInitialized = this.proxy(this.onInitialized);
@@ -244,7 +244,15 @@ phantomas.prototype = {
 
 		this.emit('results', results);
 
-		this.log('Formatting results (' + this.resultsFormat + ')');
+		// count all metrics
+		var metricsCount = 0,
+		    i;
+
+		for (i in this.metrics) {
+			metricsCount++;
+		}
+
+		this.log('Formatting results (' + this.resultsFormat + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
 		var formatter = require('./formatter').formatter,
