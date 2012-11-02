@@ -26,6 +26,7 @@ phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 * `--format=[json|csv|plain]` output format (plain is the default one)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
+* `--silent` don't write anything to the console
 
 ## Features
 
