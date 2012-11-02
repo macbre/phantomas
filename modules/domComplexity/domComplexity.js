@@ -17,9 +17,11 @@ exports.module = function(phantomas) {
 					whitespacesRegExp = /^\s+$/;
 
 				var metrics = {
+					nodes: 0,
 					comments: 0,
 					hiddenContent: 0,
-					whitespaces: 0
+					whitespaces: 0,
+					maxDepth: 0
 				};
 
 				// include all nodes
@@ -27,13 +29,16 @@ exports.module = function(phantomas) {
 					return false;
 				};
 
-				runner.walk(document.body, function(node) {
+				runner.walk(document.body, function(node, depth) {
 					switch (node.nodeType) {
 						case Node.COMMENT_NODE:
 							metrics.comments += node.textContent.length + 7; // '<!--' + '-->'.length
 							break;
 
 						case Node.ELEMENT_NODE:
+							metrics.nodes++;
+							metrics.maxDepth = Math.max(metrics.maxDepth, depth);
+
 							// ignore inline <script> tags
 							if (node.nodeName === 'SCRIPT') {
 								return false;
@@ -78,6 +83,15 @@ exports.module = function(phantomas) {
 		// total length of text nodes with whitespaces only (i.e. pretty formatting of HTML)
 		phantomas.setMetricEvaluate('whiteSpacesSize', function() {
 			return window.phantomas.DOMmetrics.whitespaces;
+		});
+
+		// count all tags
+		phantomas.setMetricEvaluate('DOMelementsCount', function() {
+			return window.phantomas.DOMmetrics.nodes;
+		});
+
+		phantomas.setMetricEvaluate('DOMelementMaxDepth', function() {
+			return window.phantomas.DOMmetrics.maxDepth;
 		});
 
 		// count <iframe> tags
