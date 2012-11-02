@@ -13,7 +13,7 @@
 
 	nodeRunner.prototype = {
 		// call callback for each child of node
-		walk: function(node, callback) {
+		walk: function(node, callback, depth) {
 			if (this.isSkipped(node)) {
 				return;
 			}
@@ -21,12 +21,14 @@
 			var childNode,
 				childNodes = node.childNodes || [];
 
+			depth = (depth || 1);
+
 			for (var n=0, len = childNodes.length; n < len; n++) {
 				childNode = childNodes[n];
 
 				// callback can return false to stop recursive
-				if (callback(childNode) !== false) {
-					this.walk(childNode, callback);
+				if (callback(childNode, depth) !== false) {
+					this.walk(childNode, callback, depth + 1);
 				}
 			}
 		},
