@@ -117,6 +117,11 @@ phantomas.prototype = {
 			return false;
 		}
 
+		if (pkg.skip) {
+			this.log('Module ' + name + ' skipped!');
+			return false;
+		}
+
 		// init a module
 		pkg.module(this.getPublicWrapper());
 
