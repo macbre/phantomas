@@ -37,6 +37,13 @@ exports.module = function(phantomas) {
 
 				// count DOM inserts
 				Node.prototype.appendChild = function(child) {
+					var hasParent = typeof this.parentNode !== 'undefined';
+
+					// ignore appending to the node that's not yet added to DOM tree
+					if (!hasParent) {
+						return;
+					}
+
 					var caller = window.phantomas.getCaller();
 
 					window.phantomas.domInserts++;
@@ -49,6 +56,13 @@ exports.module = function(phantomas) {
 				};
 
 				Node.prototype.insertBefore = function(child) {
+					var hasParent = typeof this.parentNode !== 'undefined';
+
+					// ignore appending to the node that's not yet added to DOM tree
+					if (!hasParent) {
+						return;
+					}
+
 					var caller = window.phantomas.getCaller();
 
 					window.phantomas.domInserts++;
@@ -60,57 +74,19 @@ exports.module = function(phantomas) {
 					return originalInsertBefore.call(this, child);
 				};
 
-				// the following approach is unstable
-				// @see https://github.com/osteele/jquery-profile
-				return;
-
 				// hook into $.fn.init to catch DOM queries
-				var originalJQuery,
-					originalJQueryFnInit;
+				// 
+				// TODO: use a better approach here:
+				// @see https://github.com/osteele/jquery-profile
+				var jQuery;
 		
-				window.__defineSetter__('jQuery', function(val) { console.log('jQuery setter');
-					originalJQuery = val;
-					originalJQueryFnInit = val.fn.init;
-	
-					val.fn.init = function() {
-						// log calls
-						var selector = arguments[0],
-							caller = window.phantomas.getCaller();
-
-						// count selectors
-						switch (typeof selector) {
-							case 'string':
-								//console.log('$("' + selector + '")');
-
-								window.phantomas.jQuerySelectors++;
-								window.phantomas.jQuerySelectorsBacktrace.push({
-									selector: selector,
-									url: caller.sourceURL,
-									line: caller.line
-								});
-								break;
-
-							case 'function':
-								//console.log('$( onDOMReadyFunction() {} )');
-								window.phantomas.jQueryOnDOMReadyFunctions++;
-								window.phantomas.jQueryOnDOMReadyFunctionsBacktrace.push({
-									url: caller.sourceURL,
-									line: caller.line
-								});
-								break;
-						}
-
-						return originalJQueryFnInit.apply(val.fn, arguments);
-					};
-
-					// Give the init function the jQuery prototype for later instantiation (taken from jQuery source)
-					//val.fn.init.prototype = val.fn;
-
+				window.__defineSetter__('jQuery', function(val) {
+					jQuery = val;
 					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
 				});
 
 				window.__defineGetter__('jQuery', function() {
-					return originalJQuery;
+					return jQuery;
 				});
 			})();
 		});
@@ -137,7 +113,7 @@ exports.module = function(phantomas) {
 		var selectorsBacktrace = phantomas.evaluate(function() {
 			return window.phantomas.jQuerySelectorsBacktrace;
 		});
-
+/**
 		phantomas.addNotice('jQuery selectors:');
 		selectorsBacktrace.forEach(function(item) {
 			phantomas.addNotice('* $("' + item.selector + '") called from ' + item.url + ' @ ' + item.line);
@@ -165,7 +141,6 @@ exports.module = function(phantomas) {
 			phantomas.addNotice('* from ' + item.url + ' @ ' + item.line);
 		});
 		phantomas.addNotice();
-
-
+**/
 	});
 };
