@@ -191,6 +191,6 @@ exports.module = function(phantomas) {
 		}
 
 		// completion of the last HTTP request
-		phantomas.setMetric('httpRequestsDone', entry.recvEndTime - start);
+		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - start);
 	});
 };
