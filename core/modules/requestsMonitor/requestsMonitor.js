@@ -115,18 +115,18 @@ exports.module = function(phantomas) {
 				res.headers.forEach(function(header) {
 					entry.headers[header.name] = header.value;
 
-					switch (header.name) {
+					switch (header.name.toLowerCase()) {
 						// TODO: why it's not gzipped?
 						// because: http://code.google.com/p/phantomjs/issues/detail?id=156
 						// should equal bodySize
-						case 'Content-Length':
+						case 'content-length':
 							entry.contentLength = parseInt(header.value, 10);
 							break;
 
 						// detect content type
-						case 'Content-Type':
+						case 'content-type':
 							// parse header value
-							var value = header.value.split(';').shift();
+							var value = header.value.split(';').shift().toLowerCase();
 
 							switch(value) {
 								case 'text/html':
@@ -140,6 +140,7 @@ exports.module = function(phantomas) {
 									break;
 
 								case 'application/x-javascript':
+								case 'application/javascript':
 								case 'text/javascript':
 									entry.type = 'js';
 									entry.isJS = true;
@@ -154,7 +155,7 @@ exports.module = function(phantomas) {
 							}
 
 						// detect content encoding
-						case 'Content-Encoding':
+						case 'content-encoding':
 							if (header.value === 'gzip') {
 								entry.gzip = true;
 							}
