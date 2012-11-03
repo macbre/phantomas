@@ -4,7 +4,7 @@
  * Usage:
  *  phantomjs phantomas.js
  *    --url=<page to check>
- *    [--runs=<number of repetitive runs on given URL>]
+ *    [--format=json|csv|plain]
  *    [--verbose]
  *    [--silent]
  *
