@@ -1,11 +1,12 @@
 phantomas
 =========
 
-PhantomJS-based modular web performance metrics collector
+PhantomJS-based modular web performance metrics collector.
 
 ## Requirements
 
 * [PhantomJS 1.7+](http://phantomjs.org/)
+* [NodeJS](http://nodejs.org) (for `run-multiple.js` script)
 
 ## Dependencies
 
@@ -16,17 +17,32 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 
 ## Usage
 
+### Single run
+
 ``` bash
 phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 ```
 
-### Parameters
+#### Parameters
 
 * `--url` URL of the page to generate metrics for (required)
 * `--format=[json|csv|plain]` output format (plain is the default one)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
+
+### Multiple runs
+
+This helper script requires NodeJS.
+
+``` bash
+./run-multiple.js --url=https://github.com/macbre/phantomas  --runs=5
+```
+
+#### Parameters
+
+* `--url` URL of the page to generate metrics for (required)
+* `--runs` number of runs to perform (defaults to 3)
 
 ## Features
 
