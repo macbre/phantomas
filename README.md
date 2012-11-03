@@ -62,54 +62,63 @@ phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 
 phantomas metrics for <https://github.com/macbre/phantomas>:
 
-* requests: 25
-* gzipRequests: 10
-* redirects: 1
+* requests: 21
+* gzipRequests: 9
+* redirects: 0
 * notFound: 0
-* timeToFirstByte: 473
-* timeToLastByte: 480
-* bodySize: 505545
-* contentLength: 505545
-* htmlCount: 2
-* htmlSize: 37869
+* timeToFirstByte: 505
+* timeToLastByte: 511
+* bodySize: 690513
+* contentLength: 695119
+* htmlCount: 1
+* htmlSize: 49994
 * cssCount: 2
-* cssSize: 179261
-* jsCount: 3
-* jsSize: 131764
-* imageCount: 13
-* imageSize: 45177
+* cssSize: 174562
+* jsCount: 4
+* jsSize: 328964
+* imageCount: 11
+* imageSize: 58860
 * base64Count: 0
 * base64Size: 0
-* otherCount: 5
-* otherSize: 111474
+* otherCount: 3
+* otherSize: 78133
 * cacheHits: 0
 * cacheMisses: 0
-* headersCount: 316
-* headersSentCount: 76
-* headersRecvCount: 240
-* headersSize: 12215
-* headersSentSize: 4521
-* headersRecvSize: 7694
-* httpRequestsDone: 1776
+* headersCount: 260
+* headersSentCount: 62
+* headersRecvCount: 198
+* headersSize: 9889
+* headersSentSize: 3677
+* headersRecvSize: 6212
+* assetsNotGzipped: 0
+* assetsWithQueryString: 9
+* httpTrafficCompleted: 2291
 * domains: 5
+* DOMqueries: 40
+* DOMinserts: 19
+* jQuerySelectors: 0
+* jQueryOnDOMReadyFunctions: 0
 * cookiesSent: 0
-* cookiesRecv: 536
+* cookiesRecv: 268
 * domainsWithCookies: 1
-* documentCookiesLength: 388
+* documentCookiesLength: 386
 * documentCookiesCount: 12
-* globalVariables: 15
-* bodyHTMLSize: 36636
-* commentsSize: 901
-* hiddenContentSize: 15102
-* whiteSpacesSize: 2298
-* smallestResponse: 35
-* biggestResponse: 200973
-* fastestResponse: 5
-* slowestResponse: 870
-* medianResponse: 143.5
+* bodyHTMLSize: 47043
+* commentsSize: 574
+* hiddenContentSize: 16638
+* whiteSpacesSize: 2348
+* DOMelementsCount: 521
+* DOMelementMaxDepth: 13
+* iframesCount: 0
+* globalVariables: 18
 * localStorageEntries: 0
-* onDOMReadyTime: 136
-* windowOnLoadTime: 1185
+* smallestResponse: 35
+* biggestResponse: 243785
+* fastestResponse: 42
+* slowestResponse: 796
+* medianResponse: 90
+* onDOMReadyTime: 176
+* windowOnLoadTime: 1288
 ```
 
 ### Requests monitor
@@ -122,7 +131,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * timeToLastByte: time it took to receive the last byte of the first response
 * bodySize: size of the content of all responses
 * contentLength: size of the content of all responses (based on ``Content-Length`` header)
-* httpRequestsDone: time it took to receive the last byte of the last HTTP response
+* httpTrafficCompleted: time it took to receive the last byte of the last HTTP response
 
 ### Assets types
 
@@ -174,6 +183,19 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * commentsSize: the size of HTML comments on the page
 * hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
 * whiteSpacesSize: the size of text nodes with whitespaces only
+* DOMelementsCount: total number of HTML element nodes
+* DOMelementMaxDepth: maximum level on nesting of HTML element node
+* iframesCount: number of iframe nodes
+ 
+### DOM queries
+
+* DOMqueries: number of `document.getElementById` and `document.getElementsByClassName` calls
+* DOMinserts: number of DOM nodes inserts
+* jQuerySelectors: number of jQuery selectors calls (e.g. `$('#foo > .bar')`)
+* jQueryOnDOMReadyFunctions: number of functions bound to onDOMready event
+
+### Window performance
+
 * onDOMReadyTime: time it took to fire onDOMready event
 * windowOnLoadTime: time it took to fire window.load event
 
@@ -188,6 +210,11 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 ### localStorage
 
 * localStorageEntries: number of entries in local storage
+
+### Static assets
+
+* assetsNotGzipped: static assets that were not gzipped
+* assetsWithQueryString: static assets requested with query string (e.g. ?foo) in URL
 
 ## Notices
 
