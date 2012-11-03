@@ -1,7 +1,14 @@
 #!/usr/local/bin/node
 /**
- * This is a helper script allowing you to run phantomas multiple times and
+ * This is a helper NodeJS script allowing you to run phantomas multiple times and
  * get a nice looking table with all the metrics + avg / median / min / max values
+ *
+ * Usage:
+ *  ./run-multiple.js
+ *    --url=<page to check>
+ *    --runs=<number of runs, defaults to 3>
+ *
+ * @version 0.1
  */
 var exec = require('child_process').exec,
 	args = process.argv.slice(2),
@@ -10,13 +17,14 @@ var exec = require('child_process').exec,
 	lpad = pads.lpad,
 	rpad = pads.rpad;
 
-// handle --runs CLI parameter
-var runs = parseInt(params.runs) || 3,
+// handle --url and --runs CLI parameters
+var url = params.url,
+	runs = parseInt(params.runs) || 3,
     	remainingRuns = runs,
 	metrics = [];
 
-function runPhantomas(callback) {
-	var cmd = '/home/macbre/bin/phantomjs phantomas.js --format=json --url=' + params.url;
+function runPhantomas(url, callback) {
+	var cmd = '/home/macbre/bin/phantomjs phantomas.js --format=json --url=' + url;
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
  	exec(cmd, function(error, stdout, stderr) {
@@ -35,7 +43,7 @@ function run() {
 	if (remainingRuns--) {
 		console.log('Remaining runs: ' + (remainingRuns + 1));
 
-		runPhantomas(function(res) {
+		runPhantomas(url, function(res) {
 			if (res) {
 				metrics.push(res.metrics);
 				run();
@@ -102,7 +110,7 @@ function formatResults(metrics) {
 
 	// print out a nice table
 	console.log("-------------------------------------------------------------------------------------------");
-	console.log("| " + rpad("Report from " + runs + " runs for <" + params.url + ">", 87) + " |");
+	console.log("| " + rpad("Report from " + runs + " run(s) for <" + params.url + ">", 87) + " |");
 	console.log("-------------------------------------------------------------------------------------------");
 	console.log("| Metric                      | Min          | Max          | Average      | Median       |");
 	console.log("-------------------------------------------------------------------------------------------");
@@ -124,6 +132,11 @@ function formatResults(metrics) {
 	console.log("-------------------------------------------------------------------------------------------");
 }
 
-console.log('Performing ' + runs + ' phantomas runs for <' + params.url + '>...');
+if (typeof url === 'undefined') {
+	console.log('--url argument must be provided!');
+	process.exit(1);
+}
+
+console.log('Performing ' + runs + ' phantomas run(s) for <' + params.url + '>...');
 run();
 
