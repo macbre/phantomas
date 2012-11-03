@@ -3,12 +3,23 @@
  * This is a helper script allowing you to run phantomas multiple times and
  * get a nice looking table with all the metrics + avg / median / min / max values
  */
+function lpad(str, len) {
+	var fill = new Array( Math.max(1, len - str.toString().length + 1) ).join(' ');
+	return fill + str;
+}
+
+function rpad(str, len) {
+	var fill = new Array( Math.max(1, len - str.toString().length + 1) ).join(' ');
+	return str + fill;
+}
+
 var exec = require('child_process').exec,
 	args = process.argv.slice(2),
 	params = require('./lib/args').parse(args);
 
 // handle --runs CLI parameter
 var runs = parseInt(params.runs) || 3,
+    	remainingRuns = runs,
 	metrics = [];
 
 function runPhantomas(callback) {
@@ -28,8 +39,8 @@ function runPhantomas(callback) {
 }
 
 function run() {
-	if (runs--) {
-		console.log('Remaining runs: ' + (runs + 1));
+	if (remainingRuns--) {
+		console.log('Remaining runs: ' + (remainingRuns + 1));
 
 		runPhantomas(function(res) {
 			if (res) {
@@ -73,7 +84,18 @@ function formatResults(metrics) {
 	for (metric in entries) {
 		entry = entries[metric];
 
-		entry.values = entry.values.sort(function (a, b) {return a - b});
+		entry.values = entry.values.
+			filter(function(element) {
+				return element !== null
+			}).
+			sort(function (a, b) {
+				return a - b
+			});
+
+		if (entry.values.length === 0) {
+			continue;
+		}
+
 		entry.min = entry.values.slice(0, 1).pop();
 		entry.max = entry.values.slice(-1).pop();
 
@@ -81,14 +103,34 @@ function formatResults(metrics) {
 			entry.sum += entry.values[i];
 		}
 
-		entry.average = len && (entry.sum / len);
-		entry.median = (len % 2 === 0) ? ((entry.values[len >> 1] + entry.values[len >> 1 + 1])/2) : entry.values[len >> 1];
+		entry.average = len && (entry.sum / len).toFixed(2);
+		entry.median = ( (len % 2 === 0) ? ((entry.values[len >> 1] + entry.values[len >> 1 + 1])/2) : entry.values[len >> 1] ).toFixed(2);
 	}
 
-	console.log(entries);
+	// print out a nice table
+	console.log("-------------------------------------------------------------------------------------------");
+	console.log("| " + rpad("Report from " + runs + " runs for <" + params.url + ">", 87) + " |");
+	console.log("-------------------------------------------------------------------------------------------");
+	console.log("| Metric                      | Min          | Max          | Average      | Median       |");
+	console.log("-------------------------------------------------------------------------------------------");
+
+	for (metric in entries) {
+		entry = entries[metric];
+
+		console.log("| "+ 
+			[
+				rpad(metric, 27),
+				lpad(entry.min, 12),
+				lpad(entry.max, 12),
+				lpad(entry.average, 12),
+				lpad(entry.median, 12)
+			].join(" | ") +
+			" |");
+	}
+
+	console.log("-------------------------------------------------------------------------------------------");
 }
 
 console.log('Performing ' + runs + ' phantomas runs for <' + params.url + '>...');
-
 run();
 
