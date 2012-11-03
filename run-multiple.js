@@ -24,7 +24,7 @@ var url = params.url,
 	metrics = [];
 
 function runPhantomas(url, callback) {
-	var cmd = '/home/macbre/bin/phantomjs phantomas.js --format=json --url=' + url;
+	var cmd = 'phantomjs phantomas.js --format=json --url=' + url;
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
  	exec(cmd, function(error, stdout, stderr) {
