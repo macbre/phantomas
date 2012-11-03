@@ -3,19 +3,12 @@
  * This is a helper script allowing you to run phantomas multiple times and
  * get a nice looking table with all the metrics + avg / median / min / max values
  */
-function lpad(str, len) {
-	var fill = new Array( Math.max(1, len - str.toString().length + 1) ).join(' ');
-	return fill + str;
-}
-
-function rpad(str, len) {
-	var fill = new Array( Math.max(1, len - str.toString().length + 1) ).join(' ');
-	return str + fill;
-}
-
 var exec = require('child_process').exec,
 	args = process.argv.slice(2),
-	params = require('./lib/args').parse(args);
+	params = require('./lib/args').parse(args),
+	pads = require('./core/pads'),
+	lpad = pads.lpad,
+	rpad = pads.rpad;
 
 // handle --runs CLI parameter
 var runs = parseInt(params.runs) || 3,
@@ -86,10 +79,10 @@ function formatResults(metrics) {
 
 		entry.values = entry.values.
 			filter(function(element) {
-				return element !== null
+				return element !== null;
 			}).
 			sort(function (a, b) {
-				return a - b
+				return a - b;
 			});
 
 		if (entry.values.length === 0) {
