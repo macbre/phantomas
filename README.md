@@ -1,7 +1,11 @@
 phantomas
 =========
 
+![GitHub Logo](http://upload.wikimedia.org/wikipedia/en/a/a5/Fantomas.jpg)
+
 PhantomJS-based modular web performance metrics collector.
+
+And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Requirements
 
