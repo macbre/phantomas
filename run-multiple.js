@@ -28,12 +28,19 @@ function runPhantomas(url, callback) {
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
  	exec(cmd, function(error, stdout, stderr) {
-		var res = JSON.parse(stdout) || false;
+		var res = false;
+
+		try {
+			res = JSON.parse(stdout) || false;
+		} catch(e) {
+			console.log("Unable to parse JSON from phantomas!");
+		}
 
 		if (res === false) {
 			console.log(stdout);
 		}
-		else if (typeof callback === 'function') {
+
+		if (typeof callback === 'function') {
 			callback(res);
 		}
 	});
@@ -46,8 +53,8 @@ function run() {
 		runPhantomas(url, function(res) {
 			if (res) {
 				metrics.push(res.metrics);
-				run();
 			}
+			run();
 		});
 	}
 	else {
@@ -118,7 +125,7 @@ function formatResults(metrics) {
 	for (metric in entries) {
 		entry = entries[metric];
 
-		console.log("| "+ 
+		console.log("| "+
 			[
 				rpad(metric, 27),
 				lpad(entry.min, 12),
