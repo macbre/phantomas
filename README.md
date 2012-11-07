@@ -57,73 +57,76 @@ This helper script requires NodeJS.
 
 ## Metrics
 
+_Current number of metrics: 58_
+
 Units:
 
 * ms for time
 * bytes for size
 
 ``` 
-phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
+phantomjs phantomas.js --url=https://github.com/macbre/phantomas
 
 phantomas metrics for <https://github.com/macbre/phantomas>:
 
-* requests: 21
+* requests: 22
 * gzipRequests: 9
 * redirects: 0
 * notFound: 0
-* timeToFirstByte: 505
-* timeToLastByte: 511
-* bodySize: 690513
-* contentLength: 695119
+* timeToFirstByte: 483
+* timeToLastByte: 491
+* bodySize: 756080
+* contentLength: 776875
 * htmlCount: 1
-* htmlSize: 49994
+* htmlSize: 51983
 * cssCount: 2
-* cssSize: 174562
+* cssSize: 174657
 * jsCount: 4
-* jsSize: 328964
-* imageCount: 11
-* imageSize: 58860
+* jsSize: 389734
+* imageCount: 12
+* imageSize: 61573
 * base64Count: 0
 * base64Size: 0
 * otherCount: 3
 * otherSize: 78133
 * cacheHits: 0
 * cacheMisses: 0
-* headersCount: 260
-* headersSentCount: 62
-* headersRecvCount: 198
-* headersSize: 9889
-* headersSentSize: 3677
-* headersRecvSize: 6212
+* headersCount: 269
+* headersSentCount: 65
+* headersRecvCount: 204
+* headersSize: 10258
+* headersSentSize: 3850
+* headersRecvSize: 6408
 * assetsNotGzipped: 0
 * assetsWithQueryString: 9
-* httpTrafficCompleted: 2291
+* httpTrafficCompleted: 1885
 * domains: 5
-* DOMqueries: 40
+* DOMqueries: 39
 * DOMinserts: 19
 * jQuerySelectors: 0
 * jQueryOnDOMReadyFunctions: 0
 * cookiesSent: 0
 * cookiesRecv: 268
 * domainsWithCookies: 1
-* documentCookiesLength: 386
+* documentCookiesLength: 385
 * documentCookiesCount: 12
-* bodyHTMLSize: 47043
+* bodyHTMLSize: 49029
 * commentsSize: 574
 * hiddenContentSize: 16638
-* whiteSpacesSize: 2348
-* DOMelementsCount: 521
+* whiteSpacesSize: 2375
+* DOMelementsCount: 552
 * DOMelementMaxDepth: 13
 * iframesCount: 0
+* nodesWithInlineCSS: 5
 * globalVariables: 18
 * localStorageEntries: 0
 * smallestResponse: 35
-* biggestResponse: 243785
-* fastestResponse: 42
+* biggestResponse: 244180
+* fastestResponse: 62
 * slowestResponse: 796
-* medianResponse: 90
-* onDOMReadyTime: 176
-* windowOnLoadTime: 1288
+* medianResponse: 98
+* onDOMReadyTime: 109
+* windowOnLoadTime: 1239
 ```
 
 ### Requests monitor
@@ -191,6 +194,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * DOMelementsCount: total number of HTML element nodes
 * DOMelementMaxDepth: maximum level on nesting of HTML element node
 * iframesCount: number of iframe nodes
+* nodesWithInlineCSS: number of nodes with inline CSS styling (with `style` attribute)
  
 ### DOM queries
 
