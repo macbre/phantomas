@@ -4,6 +4,7 @@
  * Usage:
  *  phantomjs phantomas.js
  *    --url=<page to check>
+ *    [--timeout=5]
  *    [--format=json|csv|plain]
  *    [--verbose]
  *    [--silent]

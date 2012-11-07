@@ -3,7 +3,6 @@
  */
 
 var VERSION = '0.3';
-var TIMEOUT = 10000; // ms
 
 var phantomas = function(params) {
 	// parse script CLI parameters
@@ -23,6 +22,9 @@ var phantomas = function(params) {
 	
 	// --silent
 	this.silentMode = params.silent === true;
+
+	// --timeout (in seconds)
+	this.timeout = (params.timeout > 0 && parseInt(params.timeout, 10)) || 15;
 
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
@@ -218,10 +220,11 @@ phantomas.prototype = {
 		this.emit('pageOpen');
 
 		// fallback - always timeout after TIMEOUT seconds
+		this.log('Run timeout set to ' + this.timeout + ' s');
 		setTimeout(this.proxy(function() {
-			this.log('Timeout of ' + TIMEOUT + ' ms was reached!');
+			this.log('Timeout of ' + this.timeout + ' s was reached!');
 			this.report();
-		}), TIMEOUT);
+		}), this.timeout * 1000);
 	},
 
 	/**
