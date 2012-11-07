@@ -21,7 +21,8 @@ exports.module = function(phantomas) {
 					comments: 0,
 					hiddenContent: 0,
 					whitespaces: 0,
-					maxDepth: 0
+					maxDepth: 0,
+					nodesWithCSS: 0
 				};
 
 				// include all nodes
@@ -54,6 +55,12 @@ exports.module = function(phantomas) {
 								// don't run for child nodes as they're hidden as well
 								return false;
 							}
+
+							// count nodes with inline CSS
+							if (node.hasAttribute('style')) {
+								metrics.nodesWithCSS++;
+							}
+
 							break;
 
 						case Node.TEXT_NODE:
@@ -97,6 +104,11 @@ exports.module = function(phantomas) {
 		// count <iframe> tags
 		phantomas.setMetricEvaluate('iframesCount', function() {
 			return document.querySelectorAll('iframe').length;
+		});
+
+		// nodes with inlines CSS (style attribute)
+		phantomas.setMetricEvaluate('nodesWithInlineCSS', function() {
+			return window.phantomas.DOMmetrics.nodesWithCSS;
 		});
 	});
 };
