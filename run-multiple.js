@@ -7,6 +7,7 @@
  *  ./run-multiple.js
  *    --url=<page to check>
  *    --runs=<number of runs, defaults to 3>
+ *    --timeout=<in seconds (for each run), default to 15>
  *
  * @version 0.1
  */
@@ -23,8 +24,12 @@ var url = params.url,
     	remainingRuns = runs,
 	metrics = [];
 
-function runPhantomas(url, callback) {
-	var cmd = 'phantomjs phantomas.js --format=json --url=' + url;
+function runPhantomas(params, callback) {
+	var cmd = 'phantomjs phantomas.js --format=json --url=' + params.url;
+
+	if (params.timeout > 0) {
+		cmd += ' --timeout=' + params.timeout;
+	}
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
  	exec(cmd, function(error, stdout, stderr) {
@@ -50,7 +55,7 @@ function run() {
 	if (remainingRuns--) {
 		console.log('Remaining runs: ' + (remainingRuns + 1));
 
-		runPhantomas(url, function(res) {
+		runPhantomas(params, function(res) {
 			if (res) {
 				metrics.push(res.metrics);
 			}
