@@ -74,6 +74,8 @@ exports.module = function(phantomas) {
 					return originalInsertBefore.call(this, child);
 				};
 
+				return;
+
 				// hook into $.fn.init to catch DOM queries
 				// 
 				// TODO: use a better approach here:
