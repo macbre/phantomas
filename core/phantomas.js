@@ -215,7 +215,7 @@ phantomas.prototype = {
 		this.emit('pageBeforeOpen', this.page);
 
 		// open the page
-		this.page.open(this.url, this.onPageOpened);
+		this.page.open(this.url);
 
 		this.emit('pageOpen');
 
