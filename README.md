@@ -17,7 +17,6 @@ And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 phantomas uses the following 3rd party libraries (located in `/lib` directory):
 
 * CommonJS modules from [phantomjs-nodify](https://github.com/jgonera/phantomjs-nodify) and nodejs source
-* [DOM monster](https://github.com/madrobby/dom-monster)
 
 ## Usage
 
