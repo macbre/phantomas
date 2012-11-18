@@ -18,6 +18,11 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 
 * CommonJS modules from [phantomjs-nodify](https://github.com/jgonera/phantomjs-nodify) and nodejs source
 
+## Let's make Web a bit faster!
+
+* [Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) (by Yahoo!)
+* [Web Performance Best Practices](https://developers.google.com/speed/docs/best-practices/rules_intro) (by Google)
+
 ## Usage
 
 ### Single run
@@ -56,7 +61,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 58_
+_Current number of metrics: 61_
 
 Units:
 
@@ -72,33 +77,36 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * gzipRequests: 9
 * redirects: 0
 * notFound: 0
-* timeToFirstByte: 483
-* timeToLastByte: 491
-* bodySize: 756080
-* contentLength: 776875
+* timeToFirstByte: 503
+* timeToLastByte: 520
+* bodySize: 675125
+* contentLength: 708206
 * htmlCount: 1
-* htmlSize: 51983
+* htmlSize: 50728
 * cssCount: 2
-* cssSize: 174657
+* cssSize: 174949
 * jsCount: 4
-* jsSize: 389734
+* jsSize: 322932
 * imageCount: 12
-* imageSize: 61573
+* imageSize: 49287
 * base64Count: 0
 * base64Size: 0
 * otherCount: 3
-* otherSize: 78133
+* otherSize: 77229
 * cacheHits: 0
 * cacheMisses: 0
-* headersCount: 269
+* cachingNotSpecified: 3
+* cachingTooShort: 2
+* cachingDisabled: 0
+* headersCount: 265
 * headersSentCount: 65
-* headersRecvCount: 204
-* headersSize: 10258
+* headersRecvCount: 200
+* headersSize: 10205
 * headersSentSize: 3850
-* headersRecvSize: 6408
+* headersRecvSize: 6355
 * assetsNotGzipped: 0
 * assetsWithQueryString: 9
-* httpTrafficCompleted: 1885
+* httpTrafficCompleted: 2460
 * domains: 5
 * DOMqueries: 39
 * DOMinserts: 19
@@ -107,25 +115,25 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * cookiesSent: 0
 * cookiesRecv: 268
 * domainsWithCookies: 1
-* documentCookiesLength: 385
+* documentCookiesLength: 387
 * documentCookiesCount: 12
-* bodyHTMLSize: 49029
-* commentsSize: 574
-* hiddenContentSize: 16638
-* whiteSpacesSize: 2375
-* DOMelementsCount: 552
+* bodyHTMLSize: 47769
+* commentsSize: 452
+* hiddenContentSize: 15635
+* whiteSpacesSize: 2378
+* DOMelementsCount: 554
 * DOMelementMaxDepth: 13
 * iframesCount: 0
 * nodesWithInlineCSS: 5
 * globalVariables: 18
 * localStorageEntries: 0
 * smallestResponse: 35
-* biggestResponse: 244180
-* fastestResponse: 62
-* slowestResponse: 796
-* medianResponse: 98
-* onDOMReadyTime: 109
-* windowOnLoadTime: 1239
+* biggestResponse: 239453
+* fastestResponse: 43
+* slowestResponse: 984
+* medianResponse: 130.5
+* onDOMReadyTime: 482
+* windowOnLoadTime: 1716
 ```
 
 ### Requests monitor
@@ -224,25 +232,35 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * assetsNotGzipped: static assets that were not gzipped
 * assetsWithQueryString: static assets requested with query string (e.g. ?foo) in URL
 
+### Caching
+
+* cachingNotSpecified: responses with no caching header sent (either `Cache-Control` or `Expires`)
+* cachingTooShort: responses with too short (less than a week) caching time
+* cachingDisabled: responses with caching disabled (`max-age=0`)
+
 ## Notices
 
 phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices with more in-depth data:
 
 ``` bash
+> Caching period is less than a week for <https://ssl.google-analytics.com/ga.js> (set to 43200 s)
+> No caching specified for <https://secure.gaug.es/track.js>
+> Caching period is less than a week for <https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png> (set to 300 s)
+> https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png (IMAGE) served with query string
 > Requests per domain:
->  github.com: 2 request(s)
->  a248.e.akamai.net: 18 request(s)
+>  github.com: 1 request(s)
+>  a248.e.akamai.net: 16 request(s)
 >  ssl.google-analytics.com: 2 request(s)
+>  secure.gaug.es: 2 request(s)
 >  secure.gravatar.com: 1 request(s)
->  secure.gaug.es: 1 request(s)
 >
-> JavaScript globals (15): html5, Modernizr, $, jQuery, jQuery17206841744652483612, $stats, moment, GitHub, DateInput, clippyCopiedCallback, debug, _gaq, _gauges, _gat, gaGlobal
+> JavaScript globals (18): html5, Modernizr, moment, $, jQuery, $stats, jQuery18302483161953277886, GitHub, DateInput, clippyCopiedCallback, debug, _gaq, _gauges, CommandBar, stringDistance, fuzzyScore, _gat, gaGlobal
 >
-> The smallest response (0.03 kB): https://ssl.google-analytics.com/__utm.gif?utmwv=5.3.3&utms=1&utmn=248876753&utmhn=github.com&utmcs=UTF-8&utmsr=1024x768&utmvp=1024x1280&utmsc=32-bit&utmul=pl-pl&utmje=0&utmfl=-&utmdt=macbre%2Fphantomas%20%C2%B7%20GitHub&utmhid=1544768543&utmr=-&utmp=%2Fmacbre%2Fphantomas&utmac=UA-3769691-2&utmcc=__utma%3D1.1733239656.1343076130.1343076130.1343076130.1%3B%2B__utmz%3D1.1343076130.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&utmu=qB~
-> The biggest response (196.26 kB): https://a248.e.akamai.net/assets.github.com/assets/github-24e061385eeaff0ed974ca8bcf1dfc4fd96ab293.js
+> The smallest response (0.03 kB): https://ssl.google-analytics.com/__utm.gif?utmwv=5.3.8&utms=1&utmn=396347331&utmhn=github.com&utmcs=UTF-8&utmsr=1024x768&utmvp=1024x1280&utmsc=32-bit&utmul=pl-pl&utmje=0&utmfl=-&utmdt=macbre%2Fphantomas%20%C2%B7%20GitHub&utmhid=1963809109&utmr=-&utmp=%2Fmacbre%2Fphantomas&utmac=UA-3769691-2&utmcc=__utma%3D1.1523233271.1353260190.1353260190.1353260190.1%3B%2B__utmz%3D1.1353260190.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&utmu=qB~
+> The biggest response (233.84 kB): https://a248.e.akamai.net/assets.github.com/assets/github-81433815e4751f68e04d42ec948cba14ab028c2d.js
 >
-> The fastest response (5 ms): https://a248.e.akamai.net/assets.github.com/images/gravatars/gravatar-140.png
-> The slowest response (870 ms): https://github.com/macbre/phantomas
+> The fastest response (43 ms): https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x.png?1340659561
+> The slowest response (984 ms): https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png
 ```
 
 ## For developers
