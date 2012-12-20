@@ -14,7 +14,7 @@ var formatter = function(results, format) {
 			default:
 				return formatPlain();
 		}
-	};
+	}
 
 	function formatJson() {
 		return JSON.stringify(results);
@@ -36,8 +36,8 @@ var formatter = function(results, format) {
 
 	function formatPlain() {
 		var res = '',
-		    obj = results.metrics,
-		    key;
+			obj = results.metrics,
+			key;
 
 		// header
 		res += 'phantomas metrics for <' + results.url + '>:\n\n';
@@ -45,7 +45,7 @@ var formatter = function(results, format) {
 		// metrics
 		for (key in obj) {
 			res += '* ' + key + ': ' + obj[key]+ '\n';
-		};
+		}
 
 		res += '\n';
 

@@ -58,7 +58,7 @@ phantomas.prototype = {
 		scope = scope || this;
 		return function () {
 			return fn.apply(scope, arguments);
-		}
+		};
 	},
 
 	// emit given event
@@ -86,25 +86,25 @@ phantomas.prototype = {
 			params: this.params,
 
 			// events
-			on: function() {self.on.apply(self, arguments)},
-			once: function() {self.once.apply(self, arguments)},
-			emit: function() {self.emit.apply(self, arguments)},
+			on: function() {self.on.apply(self, arguments);},
+			once: function() {self.once.apply(self, arguments);},
+			emit: function() {self.emit.apply(self, arguments);},
 
 			// metrics
-			setMetric: function() {self.setMetric.apply(self, arguments)},
-			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments)},
-			incrMetric: function() {self.incrMetric.apply(self, arguments)},
+			setMetric: function() {self.setMetric.apply(self, arguments);},
+			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
+			incrMetric: function() {self.incrMetric.apply(self, arguments);},
 
 			// debug
-			addNotice: function(msg) {self.addNotice(msg)},
-			log: function(msg) {self.log(msg)},
-			echo: function(msg) {self.echo(msg)},
+			addNotice: function(msg) {self.addNotice(msg);},
+			log: function(msg) {self.log(msg);},
+			echo: function(msg) {self.echo(msg);},
 
 			// phantomJS
-			evaluate: function(fn) {return self.page.evaluate(fn)},
-			injectJs: function(src) {return self.page.injectJs(src)},
-			require: function(module) {return self.require(module)},
-			getPageContent: function() {return self.page.content}
+			evaluate: function(fn) {return self.page.evaluate(fn);},
+			injectJs: function(src) {return self.page.injectJs(src);},
+			require: function(module) {return self.require(module);},
+			getPageContent: function() {return self.page.content;}
 		};
 	},
 
@@ -120,8 +120,9 @@ phantomas.prototype = {
 
 	// initialize given phantomas module
 	addModule: function(name) {
+		var pkg;
 		try {
-			var pkg = require('./../modules/' + name + '/' + name);
+			pkg = require('./../modules/' + name + '/' + name);
 		}
 		catch (e) {
 			this.log('Unable to load module "' + name + '"!');
@@ -200,7 +201,7 @@ phantomas.prototype = {
 		// observe HTTP requests
 		// finish when the last request is completed
 		
-		// update HTTP requests counter	
+		// update HTTP requests counter
 		this.on('send', this.proxy(function(entry) {
 			this.currentRequests++;
 		}));
@@ -258,7 +259,7 @@ phantomas.prototype = {
 
 		// count all metrics
 		var metricsCount = 0,
-		    i;
+			i;
 
 		for (i in this.metrics) {
 			metricsCount++;
