@@ -20,8 +20,8 @@ var exec = require('child_process').exec,
 
 // handle --url and --runs CLI parameters
 var url = params.url,
-	runs = parseInt(params.runs) || 3,
-    	remainingRuns = runs,
+	runs = parseInt(params.runs, 10) || 3,
+	remainingRuns = runs,
 	metrics = [];
 
 function runPhantomas(params, callback) {
@@ -32,7 +32,7 @@ function runPhantomas(params, callback) {
 	}
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
- 	exec(cmd, function(error, stdout, stderr) {
+	exec(cmd, function(error, stdout, stderr) {
 		var res = false;
 
 		try {
@@ -66,7 +66,7 @@ function run() {
 		console.log('Done');
 		formatResults(metrics);
 	}
-};
+}
 
 function formatResults(metrics) {
 	var entries = {},
