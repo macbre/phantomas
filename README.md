@@ -53,6 +53,7 @@ This helper script requires NodeJS.
 
 * `--url` URL of the page to generate metrics for (required)
 * `--runs` number of runs to perform (defaults to 3)
+* `--modules=[moduleOne],[moduleTwo]` run only selected modules
 
 ## Features
 

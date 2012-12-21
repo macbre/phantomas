@@ -8,6 +8,7 @@
  *    --url=<page to check>
  *    --runs=<number of runs, defaults to 3>
  *    --timeout=<in seconds (for each run), default to 15>
+ *    [--modules=moduleOne,moduleTwo]
  *
  * @version 0.1
  */
@@ -21,6 +22,7 @@ var exec = require('child_process').exec,
 // handle --url and --runs CLI parameters
 var url = params.url,
 	runs = parseInt(params.runs, 10) || 3,
+	modules = (params.modules) ? params.modules.split(',') : [],
 	remainingRuns = runs,
 	metrics = [];
 
@@ -29,6 +31,10 @@ function runPhantomas(params, callback) {
 
 	if (params.timeout > 0) {
 		cmd += ' --timeout=' + params.timeout;
+	}
+
+	if (params.modules.length > 0) {
+		cmd += ' --modules=' + params.modules;
 	}
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
