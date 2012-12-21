@@ -26,6 +26,9 @@ var phantomas = function(params) {
 	// --timeout (in seconds)
 	this.timeout = (params.timeout > 0 && parseInt(params.timeout, 10)) || 15;
 
+	// --modules=localStorage,cookies
+	this.modules = (params.modules) ? params.modules.split(',') : [];
+
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.page = require('webpage').create();
@@ -39,7 +42,7 @@ var phantomas = function(params) {
 	this.addCoreModule('requestsMonitor');
 
 	// load 3rd party modules
-	var modules = this.listModules(),
+	var modules = (this.modules.length > 0) ? this.modules : this.listModules(),
 		self = this;
 
 	modules.forEach(function(moduleName) {
