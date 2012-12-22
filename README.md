@@ -39,6 +39,7 @@ phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
+* `--modules=[moduleOne],[moduleTwo]` run only selected modules
 
 ### Multiple runs
 
@@ -52,6 +53,7 @@ This helper script requires NodeJS.
 
 * `--url` URL of the page to generate metrics for (required)
 * `--runs` number of runs to perform (defaults to 3)
+* `--modules=[moduleOne],[moduleTwo]` run only selected modules
 
 ## Features
 

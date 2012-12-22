@@ -8,6 +8,7 @@
  *    [--format=json|csv|plain]
  *    [--verbose]
  *    [--silent]
+ *    [--modules=moduleOne,moduleTwo]
  *
  * @version 0.3
  */
