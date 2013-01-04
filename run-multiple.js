@@ -22,7 +22,6 @@ var exec = require('child_process').exec,
 // handle --url and --runs CLI parameters
 var url = params.url,
 	runs = parseInt(params.runs, 10) || 3,
-	modules = (params.modules) ? params.modules.split(',') : [],
 	remainingRuns = runs,
 	metrics = [];
 
@@ -33,7 +32,7 @@ function runPhantomas(params, callback) {
 		cmd += ' --timeout=' + params.timeout;
 	}
 
-	if (params.modules.length > 0) {
+	if (params.modules) {
 		cmd += ' --modules=' + params.modules;
 	}
 
