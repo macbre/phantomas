@@ -31,6 +31,8 @@ var phantomas = function(params) {
 
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
+	this.emitter.setMaxListeners(200);
+
 	this.page = require('webpage').create();
 
 	// current HTTP requests counter
