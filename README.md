@@ -69,7 +69,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 61_
+_Current number of metrics: 62_
 
 Units:
 
@@ -83,6 +83,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 * requests: 22
 * gzipRequests: 9
+* postRequests: 0
 * redirects: 0
 * notFound: 0
 * timeToFirstByte: 503
@@ -144,10 +145,11 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * windowOnLoadTime: 1716
 ```
 
-### Requests monitor
+### Requests monitor (core module)
 
 * requests: total number of HTTP requests made
 * gzipRequests: number of gzipped HTTP responses
+* postRequests: number of POST requests
 * redirects: number of HTTP redirects (either 301 or 302)
 * notFound: number of HTTP 404 responses
 * timeToFirstByte: time it took to receive the first byte of the first response
@@ -250,7 +252,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices with more in-depth data:
 
-``` bash
+```
 > Caching period is less than a week for <https://ssl.google-analytics.com/ga.js> (set to 43200 s)
 > No caching specified for <https://secure.gaug.es/track.js>
 > Caching period is less than a week for <https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png> (set to 300 s)

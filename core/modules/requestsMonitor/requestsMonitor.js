@@ -13,6 +13,7 @@ exports.module = function(phantomas) {
 	// register metric
 	phantomas.setMetric('requests');
 	phantomas.setMetric('gzipRequests');
+	phantomas.setMetric('postRequests');
 	phantomas.setMetric('redirects');
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
@@ -55,6 +56,7 @@ exports.module = function(phantomas) {
 		var entry = requests[res.id] = {
 			id: res.id,
 			url: res.url,
+			method: res.method,
 			sendTime: res.time,
 			bodySize: 0
 		};
@@ -87,6 +89,13 @@ exports.module = function(phantomas) {
 				entry.recvEndTime = res.time;
 				entry.timeToLastByte = res.time - entry.sendTime;
 				entry.receiveTime = entry.recvEndTime - entry.recvStartTime;
+
+				// request method
+				switch(entry.method) {
+					case 'POST':
+						phantomas.incrMetric('postRequests');
+						break;
+				}
 
 				// HTTP code
 				entry.status = res.status || 200 /* for base64 data */;
@@ -152,6 +161,9 @@ exports.module = function(phantomas) {
 									entry.type = 'image';
 									entry.isImage = true;
 									break;
+
+								default:
+									phantomas.addNotice('Unknown content type found: ' + value);
 							}
 
 						// detect content encoding
