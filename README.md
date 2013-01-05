@@ -69,7 +69,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 62_
+_Current number of metrics: 63_
 
 Units:
 
@@ -90,6 +90,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * timeToLastByte: 520
 * bodySize: 675125
 * contentLength: 708206
+* ajaxRequests: 0
 * htmlCount: 1
 * htmlSize: 50728
 * cssCount: 2
@@ -157,6 +158,10 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * bodySize: size of the content of all responses
 * contentLength: size of the content of all responses (based on ``Content-Length`` header)
 * httpTrafficCompleted: time it took to receive the last byte of the last HTTP response
+
+### AJAX requests
+
+* ajaxRequests: number of AJAX requests
 
 ### Assets types
 
