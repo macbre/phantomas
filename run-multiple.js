@@ -26,7 +26,8 @@ var url = params.url,
 	metrics = [];
 
 function runPhantomas(params, callback) {
-	var cmd = 'phantomjs phantomas.js --format=json --url=' + params.url;
+	var timeMs = Date.now(),
+		cmd = 'phantomjs phantomas.js --format=json --url=' + params.url;
 
 	if (params.timeout > 0) {
 		cmd += ' --timeout=' + params.timeout;
@@ -51,7 +52,7 @@ function runPhantomas(params, callback) {
 		}
 
 		if (typeof callback === 'function') {
-			callback(res);
+			callback(res, Date.now() - timeMs);
 		}
 	});
 }
@@ -60,10 +61,12 @@ function run() {
 	if (remainingRuns--) {
 		console.log('Remaining runs: ' + (remainingRuns + 1));
 
-		runPhantomas(params, function(res) {
+		runPhantomas(params, function(res, timeMs) {
 			if (res) {
 				metrics.push(res.metrics);
 			}
+
+			console.log('Run completed in ' + (timeMs/1000).toFixed(2) + ' s');
 			run();
 		});
 	}
