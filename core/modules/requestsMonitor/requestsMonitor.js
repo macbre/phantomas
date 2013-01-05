@@ -57,9 +57,14 @@ exports.module = function(phantomas) {
 			id: res.id,
 			url: res.url,
 			method: res.method,
+			requestHeaders: {},
 			sendTime: res.time,
 			bodySize: 0
 		};
+
+		res.headers.forEach(function(header) {
+			entry.requestHeaders[header.name] = header.value;
+		});
 
 		parseEntryUrl(entry);
 
