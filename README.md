@@ -23,6 +23,12 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 * [Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) (by Yahoo!)
 * [Web Performance Best Practices](https://developers.google.com/speed/docs/best-practices/rules_intro) (by Google)
 
+## Contributors
+
+* [macbre](https://github.com/macbre)
+* [jmosney](https://github.com/jmosney)
+* All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
+
 ## Usage
 
 ### Single run
