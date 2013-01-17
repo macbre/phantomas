@@ -69,7 +69,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 63_
+_Current number of metrics: 64_
 
 Units:
 
@@ -116,6 +116,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersRecvSize: 6355
 * assetsNotGzipped: 0
 * assetsWithQueryString: 9
+* smallImages: 2
 * httpTrafficCompleted: 2460
 * domains: 5
 * DOMqueries: 39
@@ -246,6 +247,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 * assetsNotGzipped: static assets that were not gzipped
 * assetsWithQueryString: static assets requested with query string (e.g. ?foo) in URL
+* smallImages: images smaller than 2 kB that can be base64 encoded
 
 ### Caching
 

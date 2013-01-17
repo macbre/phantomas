@@ -4,8 +4,11 @@
 exports.version = '0.1';
 
 exports.module = function(phantomas) {
+	var BASE64_SIZE_THRESHOLD = 2 * 1024;
+
 	phantomas.setMetric('assetsNotGzipped');
 	phantomas.setMetric('assetsWithQueryString');
+	phantomas.setMetric('smallImages');
 
 	phantomas.on('recv', function(entry, res) {
 		// console.log(JSON.stringify(entry));
@@ -23,6 +26,14 @@ exports.module = function(phantomas) {
 			if (!entry.gzip) {
 				phantomas.addNotice(entry.url + ' (' + entry.type.toUpperCase() + ') served without compression');
 				phantomas.incrMetric('assetsNotGzipped');
+			}
+		}
+
+		// check small images that can be base64 encoded
+		if (entry.isImage) {
+			if (entry.bodySize < BASE64_SIZE_THRESHOLD) {
+				phantomas.addNotice(entry.url + ' (' + (entry.bodySize/1024).toFixed(2) + ' kB) should be served as base64 encoded');
+				phantomas.incrMetric('smallImages');
 			}
 		}
 	});
