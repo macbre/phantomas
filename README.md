@@ -12,6 +12,12 @@ And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 * [PhantomJS 1.7+](http://phantomjs.org/)
 * [NodeJS](http://nodejs.org) (for `run-multiple.js` script)
 
+## Installation
+
+```
+npm install phantomas
+```
+
 ## Dependencies
 
 phantomas uses the following 3rd party libraries (located in `/lib` directory):
