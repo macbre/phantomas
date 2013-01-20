@@ -1,0 +1,27 @@
+{
+  "name": "phantomas",
+  "version": "0.4",
+  "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
+  "description": "PhantomJS-based web performance metrics collector",
+  "main": "./core/phantomas",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/macbre/phantomas.git"
+  },
+  "keywords": [
+    "phantomas",
+    "web performance",
+    "web development",
+    "metrics",
+    "phantomjs"
+  ],
+  "license": "BSD",
+  "engines": {
+    "node": ">=0.6",
+  },
+  "dependencies": {
+    "phantomjs": ">=1.7"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
