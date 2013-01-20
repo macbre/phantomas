@@ -2,7 +2,7 @@
  * phantomas main file
  */
 
-var VERSION = '0.3';
+var VERSION = '0.4';
 
 var phantomas = function(params) {
 	// parse script CLI parameters
