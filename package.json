@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "0.4",
+  "version": "0.4.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
   "main": "./core/phantomas",
@@ -17,7 +17,7 @@
   ],
   "license": "BSD",
   "engines": {
-    "node": ">=0.6",
+    "node": ">=0.6"
   },
   "dependencies": {
     "phantomjs": ">=1.7"
