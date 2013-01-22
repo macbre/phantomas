@@ -29,6 +29,9 @@ var phantomas = function(params) {
 	// --modules=localStorage,cookies
 	this.modules = (params.modules) ? params.modules.split(',') : [];
 
+	// --user-agent=custom-agent
+	this.userAgent = params['user-agent'];
+
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
@@ -185,6 +188,11 @@ phantomas.prototype = {
 				height: parseInt(parsedViewport[0], 10) || 1280,
 				width: parseInt(parsedViewport[1], 10) || 1024
 			};
+		}
+
+		// setup user agent
+		if (this.userAgent) {
+			this.page.settings.userAgent = this.userAgent;
 		}
 
 		// print out debug messages
