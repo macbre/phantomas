@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 /**
  * This is a helper NodeJS script allowing you to run phantomas multiple times and
  * get a nice looking table with all the metrics + avg / median / min / max values
