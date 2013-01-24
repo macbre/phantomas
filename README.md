@@ -45,13 +45,14 @@ phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 
 #### Parameters
 
-* `--url` URL of the page to generate metrics for (required)
-* `--format=[json|csv|plain]` output format (plain is the default one)
+* `--url` URL of the page to generate metrics for (**required**)
+* `--format=[json|csv|plain]` output format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
+* `--user-agent='Custom user agent']` provide a custom user agent
 
 ### Multiple runs
 

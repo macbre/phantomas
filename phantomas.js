@@ -9,7 +9,7 @@
  *    [--verbose]
  *    [--silent]
  *    [--modules=moduleOne,moduleTwo]
- *	  [--user-agent='Custom user agent']
+ *    [--user-agent='Custom user agent']
  *
  * @version 0.3
  */
