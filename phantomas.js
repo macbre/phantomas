@@ -1,3 +1,4 @@
+#!/usr/bin/env phantomjs
 /**
  * PhantomJS-based web performance metrics collector
  *
