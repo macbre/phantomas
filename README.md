@@ -40,7 +40,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ### Single run
 
 ``` bash
-phantomjs phantomas.js --url=https://github.com/macbre/phantomas  --verbose
+./phantomas.js --url=https://github.com/macbre/phantomas  --verbose
 ```
 
 #### Parameters
@@ -84,7 +84,7 @@ Units:
 * bytes for size
 
 ``` 
-phantomjs phantomas.js --url=https://github.com/macbre/phantomas
+./phantomas.js --url=https://github.com/macbre/phantomas
 
 phantomas metrics for <https://github.com/macbre/phantomas>:
 

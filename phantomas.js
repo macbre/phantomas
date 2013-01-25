@@ -3,7 +3,7 @@
  * PhantomJS-based web performance metrics collector
  *
  * Usage:
- *  phantomjs phantomas.js
+ *  ./phantomas.js
  *    --url=<page to check>
  *    [--timeout=5]
  *    [--format=json|csv|plain]
@@ -12,7 +12,7 @@
  *    [--modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
  *
- * @version 0.3
+ * @version 0.4
  */
 
 // parse script arguments
