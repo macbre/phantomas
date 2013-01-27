@@ -52,7 +52,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
-* `--user-agent='Custom user agent'` provide a custom user agent
+* `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.4 (PhantomJS/1.7.0; 64bit)``)
 
 ### Multiple runs
 

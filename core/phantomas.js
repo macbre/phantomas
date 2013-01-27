@@ -4,6 +4,14 @@
 
 var VERSION = '0.4';
 
+var getDefaultUserAgent = function() {
+	var version = phantom.version,
+	    	system = require('system'),
+		os = system.os;
+
+	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.architecture + ")";
+}
+
 var phantomas = function(params) {
 	// parse script CLI parameters
 	this.params = params;
@@ -30,7 +38,7 @@ var phantomas = function(params) {
 	this.modules = (params.modules) ? params.modules.split(',') : [];
 
 	// --user-agent=custom-agent
-	this.userAgent = params['user-agent'];
+	this.userAgent = params['user-agent'] || getDefaultUserAgent();
 
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
@@ -197,7 +205,7 @@ phantomas.prototype = {
 
 		// print out debug messages
 		this.log('Opening <' + this.url + '>...');
-		this.log('Using ' + this.page.settings.userAgent);
+		this.log('Using ' + this.page.settings.userAgent + ' as user agent');
 		this.log('Viewport set to ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
 
 		// bind basic events
