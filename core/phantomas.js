@@ -2,7 +2,7 @@
  * phantomas main file
  */
 
-var VERSION = '0.4';
+var VERSION = '0.4.1';
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
