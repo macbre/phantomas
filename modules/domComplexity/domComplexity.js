@@ -111,7 +111,7 @@ exports.module = function(phantomas) {
 			return window.phantomas.DOMmetrics.nodesWithCSS;
 		});
 
-		// <img> nodes without dimensions (one of width / height missin)
+		// <img> nodes without dimensions (one of width / height missing)
 		phantomas.setMetricEvaluate('imagesWithoutDimensions', function() {
 			var imgNodes = document.body.querySelectorAll('img'),
 				node,
