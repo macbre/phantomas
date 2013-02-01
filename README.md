@@ -143,6 +143,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * DOMelementMaxDepth: 13
 * iframesCount: 0
 * nodesWithInlineCSS: 5
+* imagesWithoutDimensions: 3
 * globalVariables: 18
 * localStorageEntries: 0
 * smallestResponse: 35
@@ -225,7 +226,8 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * DOMelementMaxDepth: maximum level on nesting of HTML element node
 * iframesCount: number of iframe nodes
 * nodesWithInlineCSS: number of nodes with inline CSS styling (with `style` attribute)
- 
+* imagesWithoutDimensions: number of ``<img>`` nodes without both ``width`` and ``height`` attribute
+
 ### DOM queries
 
 * DOMqueries: number of `document.getElementById` and `document.getElementsByClassName` calls

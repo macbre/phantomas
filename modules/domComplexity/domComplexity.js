@@ -110,5 +110,21 @@ exports.module = function(phantomas) {
 		phantomas.setMetricEvaluate('nodesWithInlineCSS', function() {
 			return window.phantomas.DOMmetrics.nodesWithCSS;
 		});
+
+		// <img> nodes without dimensions (one of width / height missin)
+		phantomas.setMetricEvaluate('imagesWithoutDimensions', function() {
+			var imgNodes = document.body.querySelectorAll('img'),
+				node,
+				imagesWithoutDimensions = 0;
+
+			for (i=0, len=imgNodes.length; i<len; i++) {
+				node = imgNodes[i];
+				if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
+					imagesWithoutDimensions++;
+				}
+			};
+
+			return imagesWithoutDimensions;
+		});
 	});
 };
