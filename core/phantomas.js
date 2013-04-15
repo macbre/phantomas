@@ -6,7 +6,7 @@ var VERSION = '0.4.1';
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
-	    	system = require('system'),
+		system = require('system'),
 		os = system.os;
 
 	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.architecture + ")";
@@ -293,11 +293,16 @@ phantomas.prototype = {
 			renderer = new formatter(results, this.resultsFormat);
 
 		this.echo(renderer.render());
-
-		this.tearDown();
+		this.tearDown(0);
 	},
 
-	tearDown: function() {
+	tearDown: function(exitCode) {
+		exitCode = exitCode || 0;
+
+		if (exitCode > 0) {
+			this.log('Exiting with code #' + exitCode);
+		}
+
 		this.page.release();
 
 		// call function provided to run() method
@@ -305,7 +310,7 @@ phantomas.prototype = {
 			this.onDoneCallback();
 		}
 		else {
-			phantom.exit(0);
+			phantom.exit(exitCode);
 		}
 	},
 
@@ -346,14 +351,14 @@ phantomas.prototype = {
 		switch(status) {
 			case 'success':
 				this.emit('loadFinished', status);
+				this.enqueueReport();
 				break;
-		
+
 			default:
 				this.emit('loadFailed', status);
+				this.tearDown(2);
 				break;
 		}
-
-		this.enqueueReport();
 	},
 
 	// debug
