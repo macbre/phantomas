@@ -25,9 +25,7 @@ var args = require('system').args,
 instance = new phantomas(params);
 
 try {
-	instance.run(function() {
-		phantom.exit(0);
-	});
+	instance.run();
 }
 catch(ex) {
 	console.log('phantomas v' + phantomas.version + ' failed with an error:');
