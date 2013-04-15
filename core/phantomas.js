@@ -9,7 +9,7 @@ var getDefaultUserAgent = function() {
 		system = require('system'),
 		os = system.os;
 
-	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.architecture + ")";
+	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.name + " " + os.architecture + ")";
 }
 
 var phantomas = function(params) {
