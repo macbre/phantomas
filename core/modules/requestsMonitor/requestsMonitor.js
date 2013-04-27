@@ -170,6 +170,7 @@ exports.module = function(phantomas) {
 								default:
 									phantomas.addNotice('Unknown content type found: ' + value);
 							}
+							break;
 
 						// detect content encoding
 						case 'content-encoding':
