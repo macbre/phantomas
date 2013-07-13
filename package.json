@@ -20,7 +20,9 @@
     "node": ">=0.6"
   },
   "dependencies": {
-    "phantomjs": ">=1.7"
+    "phantomjs": ">=1.7",
+    "css-parse": "1.5",
+    "cssom": "0.2.5"
   },
   "devDependencies": {},
   "optionalDependencies": {}
