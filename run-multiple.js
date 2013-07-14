@@ -5,10 +5,14 @@
  *
  * Usage:
  *  ./run-multiple.js
- *    --url=<page to check>
- *    --runs=<number of runs, defaults to 3>
- *    --timeout=<in seconds (for each run), default to 15>
- *    [--modules=moduleOne,moduleTwo]
+ *	--url=<page to check>
+ *	--runs=<number of runs, defaults to 3>
+ *	--timeout=<in seconds (for each run), default to 15>
+ *	[--modules=moduleOne,moduleTwo]
+ *	[--format=plain|json] (plain is default)
+ *	  note: json format, prints only errorrs or the
+ *			  results in json format, no other
+ *			  messaging
  *
  * @version 0.1
  */
@@ -22,6 +26,7 @@ var exec = require('child_process').exec,
 // handle --url and --runs CLI parameters
 var url = params.url,
 	runs = parseInt(params.runs, 10) || 3,
+	format = params.format || 'plain',
 	remainingRuns = runs,
 	metrics = [];
 
@@ -59,19 +64,24 @@ function runPhantomas(params, callback) {
 
 function run() {
 	if (remainingRuns--) {
-		console.log('Remaining runs: ' + (remainingRuns + 1));
+		if (format === 'plain') {
+			console.log('Remaining runs: ' + (remainingRuns + 1));
+		}
 
 		runPhantomas(params, function(res, timeMs) {
 			if (res) {
 				metrics.push(res.metrics);
 			}
 
-			console.log('Run completed in ' + (timeMs/1000).toFixed(2) + ' s');
+			if (format === 'plain') {
+				console.log('Run completed in ' + (timeMs/1000).toFixed(2) + ' s');
+			}
 			run();
 		});
-	}
-	else {
-		console.log('Done');
+	} else {
+		if (format === 'plain') {
+			console.log('Done');
+		}
 		formatResults(metrics);
 	}
 }
@@ -129,27 +139,31 @@ function formatResults(metrics) {
 	}
 
 	// print out a nice table
-	console.log("-------------------------------------------------------------------------------------------");
-	console.log("| " + rpad("Report from " + runs + " run(s) for <" + params.url + ">", 87) + " |");
-	console.log("-------------------------------------------------------------------------------------------");
-	console.log("| Metric                      | Min          | Max          | Average      | Median       |");
-	console.log("-------------------------------------------------------------------------------------------");
+	if (format === 'plain') {
+		console.log("-------------------------------------------------------------------------------------------");
+		console.log("| " + rpad("Report from " + runs + " run(s) for <" + params.url + ">", 87) + " |");
+		console.log("-------------------------------------------------------------------------------------------");
+		console.log("| Metric					  | Min		  | Max		  | Average	  | Median	   |");
+		console.log("-------------------------------------------------------------------------------------------");
 
-	for (metric in entries) {
-		entry = entries[metric];
+		for (metric in entries) {
+			entry = entries[metric];
 
-		console.log("| "+
-			[
-				rpad(metric, 27),
-				lpad(entry.min, 12),
-				lpad(entry.max, 12),
-				lpad(entry.average, 12),
-				lpad(entry.median, 12)
-			].join(" | ") +
-			" |");
+			console.log("| "+
+				[
+					rpad(metric, 27),
+					lpad(entry.min, 12),
+					lpad(entry.max, 12),
+					lpad(entry.average, 12),
+					lpad(entry.median, 12)
+				].join(" | ") +
+				" |");
+		}
+
+		console.log("-------------------------------------------------------------------------------------------");
+	} else {
+		console.log(JSON.stringify(metrics));
 	}
-
-	console.log("-------------------------------------------------------------------------------------------");
 }
 
 if (typeof url === 'undefined') {
@@ -157,6 +171,7 @@ if (typeof url === 'undefined') {
 	process.exit(1);
 }
 
-console.log('Performing ' + runs + ' phantomas run(s) for <' + params.url + '>...');
+if (format === 'plain') {
+	console.log('Performing ' + runs + ' phantomas run(s) for <' + params.url + '>...');
+}
 run();
-
