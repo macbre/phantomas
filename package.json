@@ -20,7 +20,7 @@
     "node": ">=0.6"
   },
   "dependencies": {
-    "phantomjs": ">=1.7"
+    "phapper": "~0.1.4"
   },
   "devDependencies": {},
   "optionalDependencies": {}
