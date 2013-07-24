@@ -5,9 +5,13 @@ var program = require('commander');
 
 function analyzeCss(css) {
 	var cssParser = require('css-parse'),
+		slickParse = require('slick').Slick.parse,
 		tree = new cssParser(css),
 		rules = tree && tree.stylesheet.rules,
 		results;
+
+	// selectors longer than value below will be treated as complex ones
+	var COMPLEX_SELECTOR_THRESHOLD = 3;
 
 	if (!rules instanceof Array) {
 		return false;
@@ -21,6 +25,11 @@ function analyzeCss(css) {
 		selectorsTotal: 0,
 		selectorsPartsTotal: 0,
 		declarationsTotal: 0,
+		complexSelectors: 0,
+		selectorsByTag: 0,
+		selectorsByClass: 0,
+		selectorsById: 0,
+		selectorsByPseudo: 0,
 		importantsTotal: 0
 	};
 
@@ -31,8 +40,42 @@ function analyzeCss(css) {
 				results.selectorsTotal += rule.selectors.length;
 				results.declarationsTotal += rule.declarations.length;
 
+				// parse each selector
 				rule.selectors.forEach(function(selector) {
-					results.selectorsPartsTotal += selector.split(' ').length;
+					var parsedSelector = slickParse(selector),
+						expressions = parsedSelector.expressions[0];
+
+					//console.log([selector, expressions]);
+
+					results.selectorsPartsTotal += parsedSelector.expressions[0].length;
+
+					expressions.forEach(function(expr) {
+						// a
+						if (expr.tag && expr.tag !== '*') {
+							results.selectorsByTag++;
+						}
+
+						// .foo
+						if (expr.classList) {
+							results.selectorsByClass++;
+						}
+
+						// #bar
+						if (expr.id) {
+							results.selectorsById++;
+						}
+
+						// :hover
+						if (expr.pseudos) {
+							results.selectorsByPseudo++;
+						}
+					});
+
+					// log complex selectors
+					if (expressions.length > COMPLEX_SELECTOR_THRESHOLD) {
+						console.log(selector);
+						results.complexSelectors++;
+					}
 				});
 
 				rule.declarations.forEach(function(declaration) {

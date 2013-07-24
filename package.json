@@ -21,8 +21,9 @@
   },
   "dependencies": {
     "phantomjs": ">=1.7",
+    "commander": "2.0",
     "css-parse": "1.5",
-    "cssom": "0.2.5"
+    "slick": "1.0"
   },
   "devDependencies": {},
   "optionalDependencies": {}
