@@ -162,7 +162,7 @@ phantomas.prototype = {
 		this.log('Getting the list of all modules...');
 
 		var fs = require('fs'),
-			modulesDir = fs.workingDirectory + '/modules',
+			modulesDir = module.filename.split('/').slice(0,-2).join('/') + '/modules',
 			ls = fs.list(modulesDir) || [],
 			modules = [];
 
