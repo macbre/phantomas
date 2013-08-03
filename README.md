@@ -28,6 +28,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 
 * [Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) (by Yahoo!)
 * [Web Performance Best Practices](https://developers.google.com/speed/docs/best-practices/rules_intro) (by Google)
+* [Writing Efficient CSS](http://developer.mozilla.org/en/Writing_Efficient_CSS) (by Mozilla)
 
 ## Contributors
 
@@ -294,3 +295,25 @@ phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices
 * [Project's wiki](https://github.com/macbre/phantomas/wiki)
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
 * [TODO list](https://github.com/macbre/phantomas/wiki/TODO)
+
+## Utilities
+
+### CSS analyzer
+
+phantomas comes with nodejs script that can analyze the complexity of CSS stylesheet (local file or fetched via HTTP).
+
+```
+./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --json
+
+{"cssLength":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
+```
+
+will emit CSS metrics as JSON-encoded object that you can easily plug into your monitoring tools.
+
+```
+./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --verbose
+```
+
+will emit additional messages that can help you optimize your CSS.
+
+Run ``./analyze-css.js --help`` to get the list of supported options.
