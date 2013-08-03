@@ -123,6 +123,10 @@ function runAnalyzer(css, program) {
 		bw = program.bw,
 		res = analyzeCss(css);
 
+	if (res == false) {
+		process.exit(3);
+	}
+
 	// emit extra messages
 	if (program.verbose && !program.json) {
 		res.messages.forEach(function(msg) {
@@ -180,9 +184,20 @@ if (program.file) {
 	var css = require('fs').readFileSync(program.file.toString()).toString();
 	runAnalyzer(css, program);
 }
-else if (program.url) {
-	console.log('Not yet implemented');
+else if (typeof program.url == 'string') {
+	var request = require('request');
+
+	request(program.url, function(err, resp, body) {
+		if (err || resp.statusCode !== 200) {
+			console.log('Request for <' + program.url + '> failed: ' + (err ? err : 'HTTP response code #' + resp.statusCode));
+			process.exit(2);
+		}
+		else {
+			runAnalyzer(body, program);
+		}
+	});
 }
 else {
 	program.help();
+	process.exit(1);
 }
