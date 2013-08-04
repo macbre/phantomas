@@ -20,7 +20,12 @@
     "node": ">=0.6"
   },
   "dependencies": {
-    "phantomjs": ">=1.7"
+    "phantomjs": ">=1.7",
+    "commander": "2.0",
+    "css-parse": "1.5",
+    "slick": "1.0",
+    "ansicolors": "0.2",
+    "request": ">=2.20"
   },
   "devDependencies": {},
   "optionalDependencies": {}
