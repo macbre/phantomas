@@ -8,8 +8,16 @@ function analyzeCss(css) {
 		slickParse = require('slick').Slick.parse,
 		tree = new cssParser(css),
 		rules = tree && tree.stylesheet.rules,
+		regExp = {
+			oldIEFixes: /^\*/
+		},
 		results,
 		messages = [];
+
+	// helper functions
+	function formatCssSnippet(rule, declaration) {
+		return rule.selectors.join(', ') + ' { [[' + declaration.property + ': ' + declaration.value +  ']]; }';
+	}
 
 	// selectors longer than value below will be treated as complex ones
 	var COMPLEX_SELECTOR_THRESHOLD = 3;
@@ -28,6 +36,7 @@ function analyzeCss(css) {
 		declarationsTotal: 0,
 		complexSelectors: 0,
 		qualifiedRules: 0,
+		oldIEFixes: 0,
 		selectorsByTag: 0,
 		selectorsByClass: 0,
 		selectorsById: 0,
@@ -100,11 +109,19 @@ function analyzeCss(css) {
 					}
 				});
 
+				// parse all rules
 				rule.declarations.forEach(function(declaration) {
 					if (declaration.property) {
+						// foo: bar !important
 						if (declaration.value.indexOf('!important') > -1) {
-							messages.push('!important found: ' + rule.selectors.join(', ') + ' { [[' + declaration.property + ': ' + declaration.value +  ']]; }');
+							messages.push('!important found: ' + formatCssSnippet(rule, declaration));
 							results.importantsTotal++;
+						}
+
+						// *foo: bar // IE7- fix - @see http://www.impressivewebs.com/ie7-ie8-css-hacks/
+						if (regExp.oldIEFixes.test(declaration.property)) {
+							messages.push('Fix for old IE found: ' + formatCssSnippet(rule, declaration));
+							results.oldIEFixes++;
 						}
 					}
 				});
@@ -123,7 +140,7 @@ function runAnalyzer(css, program) {
 		bw = program.bw,
 		res = analyzeCss(css);
 
-	if (res == false) {
+	if (res === false) {
 		process.exit(3);
 	}
 
@@ -144,9 +161,10 @@ function runAnalyzer(css, program) {
 
 			// color message label
 			switch(label) {
-				case 'Qualified rule':      color = 'brightBlue';  break;
-				case 'Complex selector':    color = 'green';       break;
-				case '!important found':    color = 'red';         break;
+				case 'Qualified rule':       color = 'brightBlue';  break;
+				case 'Complex selector':     color = 'green';       break;
+				case '!important found':     color = 'red';         break;
+				case 'Fix for old IE found': color = 'yellow';      break;
 			}
 
 			// mark message parts wrapped in [[ .. ]]
