@@ -296,16 +296,16 @@ phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
 * [TODO list](https://github.com/macbre/phantomas/wiki/TODO)
 
-## Utilities
+# Utilities
 
-### CSS analyzer
+## CSS analyzer
 
 phantomas comes with nodejs script that can analyze the complexity of CSS stylesheet (local file or fetched via HTTP).
 
 ```
 ./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --json
 
-{"cssLength":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
+{"cssLength":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"oldIEFixes":0,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
 ```
 
 will emit CSS metrics as JSON-encoded object that you can easily plug into your monitoring tools.
@@ -316,4 +316,29 @@ will emit CSS metrics as JSON-encoded object that you can easily plug into your 
 
 will emit additional messages that can help you optimize your CSS.
 
-Run ``./analyze-css.js --help`` to get the list of supported options.
+## Parameters
+
+* `--url` fetch CSS via HTTP
+* `--file` analyze local CSS file
+* `--json` output results in JSON format
+* `--verbose` emit additional messages
+* `--bw` don't color additional messages
+
+Run `./analyze-css.js --help` to get the list of supported parameters.
+
+### Metrics
+
+CSS analyzer provides the following metrics:
+
+* cssLength: length of analyzed CSS file (including comments and whitespaces)
+* selectorsTotal: total number of selectors (`.foo, .bar` counts as two)
+* selectorsPartsTotal: total number of selectors parts (`ul > .bar > a` counts as three)
+* declarationsTotal: total number of properties defined in CSS file
+* complexSelectors: number of complex selectors (consisting of three or more parts)
+* qualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
+* oldIEFixes: number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
+* selectorsByTag: number of selectors by tag name
+* selectorsByClass: number of selectors by class
+* selectorsById: number of selectors by ID
+* selectorsByPseudo: number of pseudo-selectors (`:hover`)
+* importantsTotal: number of properties with value forced by `!important`
