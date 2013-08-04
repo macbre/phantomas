@@ -40,9 +40,11 @@ exports.module = function(phantomas) {
 
 			// report URLs from each domain
 			phantomas.addNotice(' ' + domain + ': ' + requests.length + ' request(s)');
+			/**
 			requests.forEach(function(url) {
 				//phantomas.addNotice('   * ' + url);
 			});
+			**/
 		}
 		phantomas.addNotice();
 	});

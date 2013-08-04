@@ -10,7 +10,7 @@ var getDefaultUserAgent = function() {
 		os = system.os;
 
 	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.name + " " + os.architecture + ")";
-}
+};
 
 var phantomas = function(params) {
 	// parse script CLI parameters

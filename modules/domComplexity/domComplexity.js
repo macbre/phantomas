@@ -122,7 +122,7 @@ exports.module = function(phantomas) {
 				if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
 					imagesWithoutDimensions++;
 				}
-			};
+			}
 
 			return imagesWithoutDimensions;
 		});

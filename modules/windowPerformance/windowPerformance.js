@@ -27,10 +27,10 @@ exports.module = function(phantomas) {
 	phantomas.on('report', function() {
 		phantomas.setMetricEvaluate('onDOMReadyTime', function() {
 			return window.phantomas.timingDOMContentLoaded - window.phantomas.timingLoadStarted;
- 		});
+		});
 
 		phantomas.setMetricEvaluate('windowOnLoadTime', function() {
 			return window.phantomas.timingOnLoad - window.phantomas.timingLoadStarted;
- 		});
+		});
 	});
 };

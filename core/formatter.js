@@ -10,8 +10,8 @@ var formatter = function(results, format) {
 			case 'csv':
 				return formatCsv();
 
-			case 'plain':
 			default:
+			case 'plain':
 				return formatPlain();
 		}
 	}

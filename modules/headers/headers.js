@@ -18,10 +18,12 @@ exports.module = function(phantomas) {
 			size: 0
 		};
 
-		headers && headers.forEach(function(header) {
-			res.count++;
-			res.size += (header.name + ': ' + header.value + '\r\n').length;
-		});
+		if (headers) {
+			headers.forEach(function(header) {
+				res.count++;
+				res.size += (header.name + ': ' + header.value + '\r\n').length;
+			});
+		}
 
 		return res;
 	}

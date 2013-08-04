@@ -8,10 +8,10 @@ exports.module = function(phantomas) {
 	phantomas.on('report', function() {
 		var globals = phantomas.evaluate(function() {
 			var globals = [],
-		    		allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', 'phantomas'],
-		    		varName,
-		    		iframe,
-		    		cleanWindow;
+				allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', 'phantomas'],
+				varName,
+				iframe,
+				cleanWindow;
 
 			// create an empty iframe to get the list of core members
 			iframe = document.createElement('iframe');
