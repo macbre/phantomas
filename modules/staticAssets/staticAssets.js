@@ -12,6 +12,7 @@ exports.module = function(phantomas) {
 
 	phantomas.on('recv', function(entry, res) {
 		// console.log(JSON.stringify(entry));
+		var isContent = entry.status === 200;
 
 		// check for query string -> foo.css?123
 		if (entry.isImage || entry.isJS || entry.isCSS) {
@@ -23,7 +24,7 @@ exports.module = function(phantomas) {
 
 		// check for not-gzipped CSS / JS / HTML files
 		if (entry.isJS || entry.isCSS || entry.isHTML) {
-			if (!entry.gzip) {
+			if (!entry.gzip && isContent) {
 				phantomas.addNotice(entry.url + ' (' + entry.type.toUpperCase() + ') served without compression');
 				phantomas.incrMetric('assetsNotGzipped');
 			}
