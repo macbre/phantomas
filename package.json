@@ -28,5 +28,8 @@
     "request": ">=2.20"
   },
   "devDependencies": {},
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "scripts": {
+    "lint": "jshint core/ modules/"
+  }
 }
