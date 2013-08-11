@@ -38,6 +38,6 @@ exports.module = function(phantomas) {
 		phantomas.addNotice('First ' + type + ' received in ' + time + ' ms: <' + entry.url + '>');
 
 		// set the flag
-		hasReceived[entry.type] = true;
+		hasReceived[type] = true;
 	});
 };
