@@ -80,7 +80,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 64_
+_Current number of metrics: 68_
 
 Units:
 
@@ -92,71 +92,74 @@ Units:
 
 phantomas metrics for <https://github.com/macbre/phantomas>:
 
-* requests: 22
-* gzipRequests: 9
+* requests: 13
+* gzipRequests: 6
 * postRequests: 0
 * redirects: 0
 * notFound: 0
-* timeToFirstByte: 503
-* timeToLastByte: 520
-* bodySize: 675125
-* contentLength: 708206
+* timeToFirstByte: 781
+* timeToLastByte: 789
+* bodySize: 398654
+* contentLength: 418082
 * ajaxRequests: 0
 * htmlCount: 1
-* htmlSize: 50728
+* htmlSize: 59041
 * cssCount: 2
-* cssSize: 174949
+* cssSize: 163000
 * jsCount: 4
-* jsSize: 322932
-* imageCount: 12
-* imageSize: 49287
+* jsSize: 124844
+* imageCount: 5
+* imageSize: 22425
 * base64Count: 0
 * base64Size: 0
-* otherCount: 3
-* otherSize: 77229
-* cacheHits: 0
+* otherCount: 1
+* otherSize: 29344
+* cacheHits: 7
 * cacheMisses: 0
 * cachingNotSpecified: 3
 * cachingTooShort: 2
 * cachingDisabled: 0
-* headersCount: 265
-* headersSentCount: 65
-* headersRecvCount: 200
-* headersSize: 10205
-* headersSentSize: 3850
-* headersRecvSize: 6355
-* assetsNotGzipped: 0
-* assetsWithQueryString: 9
+* headersCount: 225
+* headersSentCount: 38
+* headersRecvCount: 187
+* headersSize: 7477
+* headersSentSize: 1591
+* headersRecvSize: 5886
+* assetsNotGzipped: 1
+* assetsWithQueryString: 3
 * smallImages: 2
-* httpTrafficCompleted: 2460
-* domains: 5
-* DOMqueries: 39
-* DOMinserts: 19
+* timeToFirstCss: 1068
+* timeToFirstJs: 1156
+* timeToFirstImage: 1537
+* httpTrafficCompleted: 2521
+* domains: 6
+* DOMqueries: 16
+* DOMinserts: 17
 * jQuerySelectors: 0
 * jQueryOnDOMReadyFunctions: 0
 * cookiesSent: 0
-* cookiesRecv: 268
+* cookiesRecv: 434
 * domainsWithCookies: 1
-* documentCookiesLength: 387
-* documentCookiesCount: 12
-* bodyHTMLSize: 47769
-* commentsSize: 452
-* hiddenContentSize: 15635
-* whiteSpacesSize: 2378
-* DOMelementsCount: 554
-* DOMelementMaxDepth: 13
+* documentCookiesLength: 268
+* documentCookiesCount: 8
+* bodyHTMLSize: 54965
+* commentsSize: 245
+* hiddenContentSize: 7799
+* whiteSpacesSize: 3271
+* DOMelementsCount: 689
+* DOMelementMaxDepth: 12
 * iframesCount: 0
-* nodesWithInlineCSS: 5
-* imagesWithoutDimensions: 3
-* globalVariables: 18
+* nodesWithInlineCSS: 6
+* imagesWithoutDimensions: 1
+* globalVariables: 24
 * localStorageEntries: 0
 * smallestResponse: 35
-* biggestResponse: 239453
-* fastestResponse: 43
-* slowestResponse: 984
-* medianResponse: 130.5
-* onDOMReadyTime: 482
-* windowOnLoadTime: 1716
+* biggestResponse: 82017
+* fastestResponse: 35
+* slowestResponse: 1167
+* medianResponse: 315
+* onDOMReadyTime: 178
+* windowOnLoadTime: 1326
 ```
 
 ### Requests monitor (core module)
@@ -267,6 +270,12 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * cachingNotSpecified: responses with no caching header sent (either `Cache-Control` or `Expires`)
 * cachingTooShort: responses with too short (less than a week) caching time
 * cachingDisabled: responses with caching disabled (`max-age=0`)
+
+### Time to first asset
+
+* timeToFirstCss: time it took to receive the last byte of the first CSS
+* timeToFirstJs: time it took to receive the last byte of the first JS
+* timeToFirstImage: time it took to receive the last byte of the first image
 
 ## Notices
 
