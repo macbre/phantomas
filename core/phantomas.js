@@ -2,7 +2,8 @@
  * phantomas main file
  */
 
-var VERSION = '0.4.1';
+// get phantomas version from package.json file
+var VERSION = require('../package').version;
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
@@ -414,5 +415,5 @@ phantomas.prototype = {
 	}
 };
 
-exports.phantomas = phantomas;
+module.exports = phantomas;
 
