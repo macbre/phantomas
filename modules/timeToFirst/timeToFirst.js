@@ -10,7 +10,7 @@ exports.module = function(phantomas) {
 
 	var types = ['css', 'js', 'image'],
 		hasReceived = {},
-		timestampNow;
+		timestampStart;
 
 	// init metrics
 	types.forEach(function(key) {
