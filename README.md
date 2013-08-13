@@ -80,7 +80,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 69_
+_Current number of metrics: 71_
 
 Units:
 
@@ -110,6 +110,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * jsSize: 124844
 * imageCount: 5
 * imageSize: 22425
+* webfontCount: 1
+* webfontSize: 4096
 * base64Count: 0
 * base64Size: 0
 * otherCount: 1
@@ -190,7 +192,9 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * jsSize: size of js responses
 * imageCount: number of image responses
 * imageSize: size of image responses
-* base64Count: number of base64 encoded "responses" (no HTTP request was made)
+* webfontCount: number of web font responses
+* webfontSize: size of web font responses
+* base64Count: number of base64 encoded "responses" (no HTTP request was actually made)
 * base64Size: size of base64 encoded "responses"
 * otherCount: number of other responses
 * otherSize: size of other responses
