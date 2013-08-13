@@ -14,6 +14,8 @@ var getDefaultUserAgent = function() {
 };
 
 var phantomas = function(params) {
+	this.colors = require('ansicolors');
+
 	// parse script CLI parameters
 	this.params = params;
 
@@ -395,10 +397,12 @@ phantomas.prototype = {
 	// add log message
 	// will be printed out only when --verbose
 	log: function(msg) {
+		var ts = (new Date()).toJSON().substr(11, 12);
+
 		if (this.verboseMode) {
 			msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg;
 
-			this.echo('> ' + msg);
+			this.echo(ts + ' ' + this.colors.brightBlack(msg));
 		}
 	},
 
