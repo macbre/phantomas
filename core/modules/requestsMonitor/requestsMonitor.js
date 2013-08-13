@@ -167,6 +167,17 @@ exports.module = function(phantomas) {
 									entry.isImage = true;
 									break;
 
+								// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
+								case 'application/font-wof':
+								case 'application/vnd.ms-fontobject':
+								case 'application/x-font-opentype':
+								case 'application/x-font-truetype':
+								case 'application/x-font-ttf':
+								case 'application/x-font-woff':
+									entry.type = 'webfont';
+									entry.isWebFont = true;
+									break;
+
 								default:
 									phantomas.addNotice('Unknown content type found: ' + value);
 							}
