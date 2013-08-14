@@ -11,7 +11,7 @@ module.exports = function(logFile, params) {
 	if (logFile !== '') {
 		// use an absolute path
 		logFile = fs.absolute(logFile);
-		log("Logging using " + logFile);
+		log("Logging to " + logFile);
 
 		// set up a stream to be used for logging
 		stream = fs.open(logFile, 'w');
