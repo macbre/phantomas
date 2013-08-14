@@ -1,7 +1,7 @@
 /**
  * Results formatter
  */
-var formatter = function(results, format) {
+module.exports = function(results, format) {
 	function render() {
 		switch(format) {
 			case 'json':
@@ -35,23 +35,30 @@ var formatter = function(results, format) {
 	}
 
 	function formatPlain() {
-		var res = '',
-			obj = results.metrics,
-			key;
+		var colors = require('ansicolors'),
+			res = '',
+			metrics = results.metrics;
 
 		// header
 		res += 'phantomas metrics for <' + results.url + '>:\n\n';
 
 		// metrics
-		for (key in obj) {
-			res += '* ' + key + ': ' + obj[key]+ '\n';
-		}
+		Object.keys(metrics).forEach(function(metric) {
+			res += '* ' + metric + ': ' + metrics[metric]+ '\n';
+		});
 
 		res += '\n';
 
 		// notices
 		results.notices.forEach(function(msg) {
-			res += '> ' + msg + "\n";
+			msg = msg.
+				// color labels
+				replace(/^[^ <][^:<]+:/, colors.brightGreen).
+				// color URLs
+				replace(/<[^>]+>/, colors.brightBlue);
+
+			// add a notice
+			res += msg + "\n";
 		});
 
 		return res.trim();
@@ -60,6 +67,3 @@ var formatter = function(results, format) {
 	// public interface
 	this.render = render;
 };
-
-exports.formatter = formatter;
-

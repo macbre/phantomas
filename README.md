@@ -33,7 +33,9 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ## Contributors
 
 * [macbre](https://github.com/macbre)
+* [jmervine](https://github.com/jmervine)
 * [jmosney](https://github.com/jmosney)
+* [umaar](https://github.com/umaar)
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
@@ -52,6 +54,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
+* `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
 * `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.4 (PhantomJS/1.7.0; 64bit)``)
 

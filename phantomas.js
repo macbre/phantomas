@@ -10,6 +10,7 @@
  *    ]--viewport=<width>x<height>]
  *    [--verbose]
  *    [--silent]
+ *    [--log=<log file>]
  *    [--modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
  */

@@ -50,9 +50,20 @@ var phantomas = function(params) {
 	// current HTTP requests counter
 	this.currentRequests = 0;
 
-	this.log('phantomas v' + VERSION);
+	// setup logger
+	var logger = require('./logger'),
+		logFile = params.log || '';
+
+	this.logger = new logger(logFile, {
+		beVerbose: this.verboseMode,
+		beSilent: this.silentMode
+	});
+
+	// report version and installation directory
+	this.log('phantomas v' + VERSION + ' installed in ' + module.dirname.replace(/core$/, ''));
 
 	// load core modules
+	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
 
 	// load 3rd party modules
@@ -290,10 +301,12 @@ phantomas.prototype = {
 		this.log('Formatting results (' + this.resultsFormat + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
-		var formatter = require('./formatter').formatter,
+		var formatter = require('./formatter'),
 			renderer = new formatter(results, this.resultsFormat);
 
 		this.echo(renderer.render());
+
+		this.log('Done!');
 		this.tearDown(0);
 	},
 
@@ -395,18 +408,12 @@ phantomas.prototype = {
 	// add log message
 	// will be printed out only when --verbose
 	log: function(msg) {
-		if (this.verboseMode) {
-			msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg;
-
-			this.echo('> ' + msg);
-		}
+		this.logger.log(msg);
 	},
 
 	// console.log wrapper obeying --silent mode
 	echo: function(msg) {
-		if (!this.silentMode) {
-			console.log(msg);
-		}
+		this.logger.echo(msg);
 	},
 
 	// require CommonJS module from lib/modules
@@ -416,4 +423,3 @@ phantomas.prototype = {
 };
 
 module.exports = phantomas;
-
