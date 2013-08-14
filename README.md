@@ -314,15 +314,16 @@ phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
 * [TODO list](https://github.com/macbre/phantomas/wiki/TODO)
 
-# Utilities
+## Utilities
 
-## CSS analyzer
+### CSS analyzer
 
 phantomas comes with nodejs script that can analyze the complexity of CSS stylesheet (local file or fetched via HTTP).
 
 ```
 ./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --json
-
+```
+```json
 {"cssLength":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"oldIEFixes":0,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
 ```
 
@@ -334,7 +335,7 @@ will emit CSS metrics as JSON-encoded object that you can easily plug into your 
 
 will emit additional messages that can help you optimize your CSS.
 
-## Parameters
+#### Parameters
 
 * `--url` fetch CSS via HTTP
 * `--file` analyze local CSS file
@@ -344,7 +345,7 @@ will emit additional messages that can help you optimize your CSS.
 
 Run `./analyze-css.js --help` to get the list of supported parameters.
 
-### Metrics
+#### Metrics
 
 CSS analyzer provides the following metrics:
 
