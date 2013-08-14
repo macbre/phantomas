@@ -1,7 +1,7 @@
 /**
  * Results formatter
  */
-var formatter = function(results, format) {
+module.exports = function(results, format) {
 	function render() {
 		switch(format) {
 			case 'json':
@@ -67,5 +67,3 @@ var formatter = function(results, format) {
 	// public interface
 	this.render = render;
 };
-
-exports.formatter = formatter;
