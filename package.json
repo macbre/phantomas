@@ -3,7 +3,7 @@
   "version": "0.4.1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
-  "main": "./core/phantomas",
+  "main": "./phantomas.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/macbre/phantomas.git"
@@ -11,8 +11,11 @@
   "keywords": [
     "phantomas",
     "web performance",
+    "front-end performance",
+    "high performance web sites",
     "web development",
     "metrics",
+    "monitoring",
     "phantomjs"
   ],
   "license": "BSD",
@@ -20,14 +23,16 @@
     "node": ">=0.6"
   },
   "dependencies": {
-    "phantomjs": ">=1.7",
+    "ansicolors": "0.2",
     "commander": "2.0",
     "css-parse": "1.5",
-    "slick": "1.0",
-    "ansicolors": "0.2",
-    "request": ">=2.20"
+    "phantomjs": ">=1.7",
+    "request": ">=2.20",
+    "slick": "1.0"
   },
-  "devDependencies": {},
+  "devDependencies": [
+    "jshint"
+  ],
   "optionalDependencies": {},
   "scripts": {
     "lint": "jshint core/ modules/"
