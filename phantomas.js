@@ -5,14 +5,13 @@
  * Usage:
  *  ./phantomas.js
  *    --url=<page to check>
- *    [--timeout=5]
  *    [--format=json|csv|plain]
+ *    [--timeout=5]
+ *    ]--viewport=<width>x<height>]
  *    [--verbose]
  *    [--silent]
  *    [--modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
- *
- * @version 0.4
  */
 
 // parse script arguments
