@@ -34,6 +34,8 @@
     "jshint"
   ],
   "optionalDependencies": {},
+  "bin": "./phantomas.js",
+  "preferGlobal": true,
   "scripts": {
     "lint": "jshint core/ modules/"
   }

@@ -15,8 +15,10 @@ And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 ## Installation
 
 ```
-npm install phantomas
+npm install --global phantomas
 ```
+
+This will add a symlink called ``phantomas`` (pointing to ``./phantomas.js``) to your system's ``PATH``
 
 ## Dependencies
 
@@ -43,7 +45,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ### Single run
 
 ``` bash
-./phantomas.js --url=https://github.com/macbre/phantomas  --verbose
+phantomas --url=https://github.com/macbre/phantomas  --verbose
 ```
 
 #### Parameters
@@ -91,7 +93,7 @@ Units:
 * bytes for size
 
 ``` 
-./phantomas.js --url=https://github.com/macbre/phantomas
+phantomas --url=https://github.com/macbre/phantomas
 
 phantomas metrics for <https://github.com/macbre/phantomas>:
 
