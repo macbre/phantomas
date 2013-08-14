@@ -15,10 +15,13 @@
  *    [--user-agent='Custom user agent']
  */
 
-// parse script arguments
+
 var args = require('system').args,
-	params = require('./lib/args').parse(args),
-	phantomas = require('./core/phantomas'),
+	// get absolute path (useful when phantomas is installed globally)
+	dir = require('fs').readLink(args[0]).replace(/phantomas.js$/, '') || '.',
+	// parse script arguments
+	params = require(dir + '/lib/args').parse(args),
+	phantomas = require(dir + '/core/phantomas'),
 	instance;
 
 // run phantomas
