@@ -121,6 +121,7 @@ phantomas.prototype = {
 			// metrics
 			setMetric: function() {self.setMetric.apply(self, arguments);},
 			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
+			setMetricFromScope: function() {self.setMetricFromScope.apply(self, arguments);},
 			incrMetric: function() {self.incrMetric.apply(self, arguments);},
 
 			// debug
@@ -393,6 +394,16 @@ phantomas.prototype = {
 
 	setMetricEvaluate: function(name, fn) {
 		this.setMetric(name, this.page.evaluate(fn));
+	},
+
+	// set metric from browser's scope that was set there using using window.__phantomas.set()
+	setMetricFromScope: function(name, key) {
+		key = key || name;
+
+		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
+		this.setMetric(name, this.page.evaluate(function(key) {
+			return window.__phantomas.get(key);
+		}, key));
 	},
 
 	// increements given metric by given number (default is one)

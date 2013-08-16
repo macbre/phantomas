@@ -1,10 +1,11 @@
 /**
- * phantomas helper code
+ * phantomas browser "scope" with helper code
  *
- * Executed in page window
+ * Code below is executed in page's "scope" (injected by onInitialized() in core/phantomas.js)
  */
-
-(function(window) {
+(function(scope) {
+	// create a scope
+	var phantomas = (scope.__phantomas = scope.__phantomas || {});
 
 	// NodeRunner
 	var nodeRunner = function() {
@@ -40,6 +41,7 @@
 		}
 	};
 
+	// for backtraces
 	function getCaller() {
 		var caller = {};
 
@@ -52,13 +54,31 @@
 		return caller;
 	}
 
-	// create a scope
-	var phantomas = (window.__phantomas = window.__phantomas || {});
+	// setters / getters used to pass values to phantomas modules
+	(function() {
+		var storage = {};
+
+		function set(key, val) {
+			storage[key] = val;
+		}
+
+		function incr(key, incrBy /* =1 */) {
+			storage[key] = (storage[key] || 0) + (incrBy || 1);
+		}
+
+		function get(key) {
+			return storage[key];
+		}
+
+		// exports
+		phantomas.set = set;
+		phantomas.incr = incr;
+		phantomas.get = get;
+	})();
 
 	// exports
 	phantomas.nodeRunner = nodeRunner;
 	phantomas.getCaller = getCaller;
 
 	console.log('phantomas scope injected');
-
 })(window);
