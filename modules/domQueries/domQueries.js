@@ -16,21 +16,21 @@ exports.module = function(phantomas) {
 					originalInsertBefore = Node.prototype.insertBefore;
 
 				// metrics storage
-				window.phantomas.domQueries = 0;
-				window.phantomas.domInserts = 0;
-				window.phantomas.domInsertsBacktrace = [];
+				window.__phantomas.domQueries = 0;
+				window.__phantomas.domInserts = 0;
+				window.__phantomas.domInsertsBacktrace = [];
 
-				window.phantomas.jQueryOnDOMReadyFunctions = 0;
-				window.phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
+				window.__phantomas.jQueryOnDOMReadyFunctions = 0;
+				window.__phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
 	
-				window.phantomas.jQuerySelectors = 0;
-				window.phantomas.jQuerySelectorsBacktrace = [];
+				window.__phantomas.jQuerySelectors = 0;
+				window.__phantomas.jQuerySelectorsBacktrace = [];
 
 				// hook into DOM methods
 				document.getElementById = function(id) {
 					// log calls
 					console.log('document.getElementById("' + id + '")');
-					window.phantomas.domQueries++;
+					window.__phantomas.domQueries++;
 
 					return originalGetElementById.call(document, id);
 				};
@@ -44,10 +44,10 @@ exports.module = function(phantomas) {
 						return;
 					}
 
-					var caller = window.phantomas.getCaller();
+					var caller = window.__phantomas.getCaller();
 
-					window.phantomas.domInserts++;
-					window.phantomas.domInsertsBacktrace.push({
+					window.__phantomas.domInserts++;
+					window.__phantomas.domInsertsBacktrace.push({
 						url: caller.sourceURL,
 						line: caller.line
 					});
@@ -63,10 +63,10 @@ exports.module = function(phantomas) {
 						return;
 					}
 
-					var caller = window.phantomas.getCaller();
+					var caller = window.__phantomas.getCaller();
 
-					window.phantomas.domInserts++;
-					window.phantomas.domInsertsBacktrace.push({
+					window.__phantomas.domInserts++;
+					window.__phantomas.domInsertsBacktrace.push({
 						url: caller.sourceURL,
 						line: caller.line
 					});
@@ -96,24 +96,24 @@ exports.module = function(phantomas) {
 
 	phantomas.on('loadFinished', function() {
 		phantomas.setMetricEvaluate('DOMqueries', function() {
-			return window.phantomas.domQueries;
+			return window.__phantomas.domQueries;
 		});
 		
 		phantomas.setMetricEvaluate('DOMinserts', function() {
-			return window.phantomas.domInserts;
+			return window.__phantomas.domInserts;
 		});
 
 		phantomas.setMetricEvaluate('jQuerySelectors', function() {
-			return window.phantomas.jQuerySelectors;
+			return window.__phantomas.jQuerySelectors;
 		});
 
 		phantomas.setMetricEvaluate('jQueryOnDOMReadyFunctions', function() {
-			return window.phantomas.jQueryOnDOMReadyFunctions;
+			return window.__phantomas.jQueryOnDOMReadyFunctions;
 		});
 
 		// list all selectors
 		var selectorsBacktrace = phantomas.evaluate(function() {
-			return window.phantomas.jQuerySelectorsBacktrace;
+			return window.__phantomas.jQuerySelectorsBacktrace;
 		});
 /**
 		phantomas.addNotice('jQuery selectors:');
@@ -124,7 +124,7 @@ exports.module = function(phantomas) {
 
 		// list all onDOMReady functions
 		var onDOMReadyBacktrace = phantomas.evaluate(function() {
-			return window.phantomas.jQueryOnDOMReadyFunctionsBacktrace;
+			return window.__phantomas.jQueryOnDOMReadyFunctionsBacktrace;
 		});
 
 		phantomas.addNotice('jQuery onDOMReady functions (' + onDOMReadyBacktrace.length + '):');
@@ -135,7 +135,7 @@ exports.module = function(phantomas) {
 
 		// list all DOM inserts
 		var domInsertsBacktrace = phantomas.evaluate(function() {
-			return window.phantomas.domInsertsBacktrace;
+			return window.__phantomas.domInsertsBacktrace;
 		});
 
 		phantomas.addNotice('DOM inserts (' + domInsertsBacktrace.length + '):');

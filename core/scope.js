@@ -53,7 +53,7 @@
 	}
 
 	// create a scope
-	var phantomas = (window.phantomas = window.phantomas || {});
+	var phantomas = (window.__phantomas = window.__phantomas || {});
 
 	// exports
 	phantomas.nodeRunner = nodeRunner;

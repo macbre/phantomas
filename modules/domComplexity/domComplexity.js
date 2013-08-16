@@ -74,31 +74,31 @@ exports.module = function(phantomas) {
 				// store metrics
 				phantomas.DOMmetrics = metrics;
 
-			}(window.phantomas));
+			}(window.__phantomas));
 		});
 
 		// total length of HTML comments (including <!-- --> brackets)
 		phantomas.setMetricEvaluate('commentsSize', function() {
-			return window.phantomas.DOMmetrics.comments;
+			return window.__phantomas.DOMmetrics.comments;
 		});
 
 		// total length of HTML of hidden elements (i.e. display: none)
 		phantomas.setMetricEvaluate('hiddenContentSize', function() {
-			return window.phantomas.DOMmetrics.hiddenContent;
+			return window.__phantomas.DOMmetrics.hiddenContent;
 		});
 
 		// total length of text nodes with whitespaces only (i.e. pretty formatting of HTML)
 		phantomas.setMetricEvaluate('whiteSpacesSize', function() {
-			return window.phantomas.DOMmetrics.whitespaces;
+			return window.__phantomas.DOMmetrics.whitespaces;
 		});
 
 		// count all tags
 		phantomas.setMetricEvaluate('DOMelementsCount', function() {
-			return window.phantomas.DOMmetrics.nodes;
+			return window.__phantomas.DOMmetrics.nodes;
 		});
 
 		phantomas.setMetricEvaluate('DOMelementMaxDepth', function() {
-			return window.phantomas.DOMmetrics.maxDepth;
+			return window.__phantomas.DOMmetrics.maxDepth;
 		});
 
 		// count <iframe> tags
@@ -108,7 +108,7 @@ exports.module = function(phantomas) {
 
 		// nodes with inlines CSS (style attribute)
 		phantomas.setMetricEvaluate('nodesWithInlineCSS', function() {
-			return window.phantomas.DOMmetrics.nodesWithCSS;
+			return window.__phantomas.DOMmetrics.nodesWithCSS;
 		});
 
 		// <img> nodes without dimensions (one of width / height missing)
