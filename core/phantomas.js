@@ -402,7 +402,7 @@ phantomas.prototype = {
 
 		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
 		this.setMetric(name, this.page.evaluate(function(key) {
-			return window.__phantomas.get(key);
+			return window.__phantomas.get(key) || 0;
 		}, key));
 	},
 
