@@ -9,17 +9,19 @@ exports.module = function(phantomas) {
 	// @see https://groups.google.com/d/topic/phantomjs/WnXZLIb_jVc/discussion
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
-			window.__phantomas.timingLoadStarted = Date.now();
+			(function(phantomas) {
+				phantomas.timingLoadStarted = Date.now();
 
-			document.addEventListener("DOMContentLoaded", function() {
-				window.__phantomas.timingDOMContentLoaded = Date.now();
-				console.log('onDOMready');
-			}, false);
+				document.addEventListener("DOMContentLoaded", function() {
+					phantomas.timingDOMContentLoaded = Date.now();
+					console.log('onDOMready');
+				}, false);
 
-			window.addEventListener("load", function() {
-				window.__phantomas.timingOnLoad = Date.now();
-				console.log('window.onload');
-			}, false);
+				window.addEventListener("load", function() {
+					phantomas.timingOnLoad = Date.now();
+					console.log('window.onload');
+				}, false);
+			})(window.__phantomas);
 		});
 	});
 
