@@ -27,7 +27,7 @@ module.exports = function(logFile, params) {
 		var ts = (new Date()).toJSON().substr(11, 12);
 
 		// format a message
-		msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg;
+		msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg.toString().trim();
 
 		// log to the console (--verbose)
 		if (beVerbose) {
