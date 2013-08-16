@@ -19,21 +19,21 @@ exports.module = function(phantomas) {
 					originalInsertBefore = Node.prototype.insertBefore;
 
 				// metrics storage
-				phantomas.domQueries = 0;
-				phantomas.domInserts = 0;
-				phantomas.domInsertsBacktrace = [];
+				phantomas.set('DOMqueries', 0);
+				phantomas.set('DOMinserts', 0);
+				//phantomas.domInsertsBacktrace = [];
 
-				phantomas.jQueryOnDOMReadyFunctions = 0;
-				phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
+				//phantomas.set('jQueryOnDOMReadyFunctions', 0);
+				//phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
 	
-				phantomas.jQuerySelectors = 0;
-				phantomas.jQuerySelectorsBacktrace = [];
+				//phantomas.set('jQuerySelectors', 0);
+				//phantomas.jQuerySelectorsBacktrace = [];
 
 				// hook into DOM methods
 				document.getElementById = function(id) {
 					// log calls
 					console.log('document.getElementById("' + id + '")');
-					phantomas.domQueries++;
+					phantomas.incr('DOMqueries');
 
 					return originalGetElementById.call(document, id);
 				};
@@ -47,13 +47,14 @@ exports.module = function(phantomas) {
 						return;
 					}
 
+					phantomas.incr('DOMinserts');
+					/**
 					var caller = phantomas.getCaller();
-
-					phantomas.domInserts++;
 					phantomas.domInsertsBacktrace.push({
 						url: caller.sourceURL,
 						line: caller.line
 					});
+					**/
 
 					return originalAppendChild.call(this, child);
 				};
@@ -66,13 +67,14 @@ exports.module = function(phantomas) {
 						return;
 					}
 
+					phantomas.incr('DOMinserts');
+					/**
 					var caller = phantomas.getCaller();
-
-					phantomas.domInserts++;
 					phantomas.domInsertsBacktrace.push({
 						url: caller.sourceURL,
 						line: caller.line
 					});
+					**/
 
 					return originalInsertBefore.call(this, child);
 				};
@@ -98,23 +100,12 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('report', function() {
-		phantomas.setMetricEvaluate('DOMqueries', function() {
-			return window.__phantomas.domQueries;
-		});
-		
-		phantomas.setMetricEvaluate('DOMinserts', function() {
-			return window.__phantomas.domInserts;
-		});
-
-		phantomas.setMetricEvaluate('jQuerySelectors', function() {
-			return window.__phantomas.jQuerySelectors;
-		});
-
-		phantomas.setMetricEvaluate('jQueryOnDOMReadyFunctions', function() {
-			return window.__phantomas.jQueryOnDOMReadyFunctions;
-		});
-
+		phantomas.setMetricFromScope('DOMqueries');
+		phantomas.setMetricFromScope('DOMinserts');
 /**
+		phantomas.setMetricFromScope('jQuerySelectors');
+		phantomas.setMetricFromScope('jQueryOnDOMReadyFunctions');
+
 		// list all selectors
 		var selectorsBacktrace = phantomas.evaluate(function() {
 			return window.__phantomas.jQuerySelectorsBacktrace;
