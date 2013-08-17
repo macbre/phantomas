@@ -121,6 +121,7 @@ phantomas.prototype = {
 			// metrics
 			setMetric: function() {self.setMetric.apply(self, arguments);},
 			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
+			setMetricFromScope: function() {self.setMetricFromScope.apply(self, arguments);},
 			incrMetric: function() {self.incrMetric.apply(self, arguments);},
 
 			// debug
@@ -230,6 +231,7 @@ phantomas.prototype = {
 		// debug
 		this.page.onAlert = this.proxy(this.onAlert);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
+		this.page.onCallback = this.proxy(this.onCallback);
 
 		// observe HTTP requests
 		// finish when the last request is completed
@@ -317,7 +319,7 @@ phantomas.prototype = {
 			this.log('Exiting with code #' + exitCode);
 		}
 
-		this.page.release();
+		this.page.close();
 
 		// call function provided to run() method
 		if (typeof this.onDoneCallback === 'function') {
@@ -330,8 +332,12 @@ phantomas.prototype = {
 
 	// core events
 	onInitialized: function() {
-		// add helper tools into window.phantomas "namespace"
-		this.page.injectJs(module.dirname + '/helper.js');
+		// add helper tools into window.__phantomas "namespace"
+		if (!this.page.injectJs(module.dirname + '/scope.js')) {
+			this.log('Unable to inject scope.js file!');
+			this.tearDown(3);
+			return;
+		}
 
 		this.log('Page object initialized');
 		this.emit('init');
@@ -386,6 +392,22 @@ phantomas.prototype = {
 		this.emit('consoleLog', msg);
 	},
 
+	// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
+	onCallback: function(msg) {
+		var type = msg && msg.type || '',
+			data = msg && msg.data;
+
+		switch(type) {
+			case 'log':
+				this.log(data);
+				break;
+
+			default:
+				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
+				this.emit('message', msg);
+		}
+	},
+
 	// metrics reporting
 	setMetric: function(name, value) {
 		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
@@ -393,6 +415,16 @@ phantomas.prototype = {
 
 	setMetricEvaluate: function(name, fn) {
 		this.setMetric(name, this.page.evaluate(fn));
+	},
+
+	// set metric from browser's scope that was set there using using window.__phantomas.set()
+	setMetricFromScope: function(name, key) {
+		key = key || name;
+
+		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
+		this.setMetric(name, this.page.evaluate(function(key) {
+			return window.__phantomas.get(key) || 0;
+		}, key));
 	},
 
 	// increements given metric by given number (default is one)
