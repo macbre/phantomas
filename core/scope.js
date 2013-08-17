@@ -76,9 +76,30 @@
 		phantomas.get = get;
 	})();
 
+	/**
+	 * Proxy function to be used to track calls to native DOM functions
+	 *
+	 * Callback is provided with arguments original function was called with
+	 *
+	 * Example:
+	 *
+	 *   window.__phantomas.proxy(window.document, 'getElementById', function() {
+	 *     // ...
+	 *   });
+	 */
+	function spy(obj, fn, callback) {
+		var origFn = obj[fn];
+
+		obj[fn] = function() {
+			callback.apply(this, arguments);
+			return origFn.apply(this, arguments);
+		};
+	}
+
 	// exports
 	phantomas.nodeRunner = nodeRunner;
 	phantomas.getCaller = getCaller;
+	phantomas.spy = spy;
 
 	console.log('phantomas scope injected');
 })(window);
