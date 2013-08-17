@@ -141,7 +141,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * timeToFirstImage: 1537
 * httpTrafficCompleted: 2521
 * domains: 6
-* DOMqueries: 16
+* DOMqueries: 58
 * DOMinserts: 17
 * jQuerySelectors: 0
 * jQueryOnDOMReadyFunctions: 0
