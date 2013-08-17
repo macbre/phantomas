@@ -141,7 +141,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * timeToFirstImage: 1537
 * httpTrafficCompleted: 2521
 * domains: 6
-* DOMqueries: 16
+* DOMqueries: 58
 * DOMinserts: 17
 * jQuerySelectors: 0
 * jQueryOnDOMReadyFunctions: 0
@@ -317,6 +317,7 @@ phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices
 
 * [Project's wiki](https://github.com/macbre/phantomas/wiki)
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
+* Description of [helper functions available to the browser in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope)
 * [TODO list](https://github.com/macbre/phantomas/wiki/TODO)
 
 ## Utilities
