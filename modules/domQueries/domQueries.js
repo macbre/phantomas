@@ -13,11 +13,6 @@ exports.module = function(phantomas) {
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-				var originalGetElementById = window.document.getElementById,
-					originalGetElementsByClassName = window.document.getElementsByClassName,
-					originalAppendChild = Node.prototype.appendChild,
-					originalInsertBefore = Node.prototype.insertBefore;
-
 				// metrics storage
 				phantomas.set('DOMqueries', 0);
 				phantomas.set('DOMinserts', 0);
@@ -29,17 +24,21 @@ exports.module = function(phantomas) {
 				//phantomas.set('jQuerySelectors', 0);
 				//phantomas.jQuerySelectorsBacktrace = [];
 
-				// hook into DOM methods
-				document.getElementById = function(id) {
-					// log calls
-					console.log('document.getElementById("' + id + '")');
+				// count DOM queries by either ID or class name
+				var querySpy = function(query) {
+					console.log('DOM query: "' + query + '"');
 					phantomas.incr('DOMqueries');
-
-					return originalGetElementById.call(document, id);
 				};
+
+				phantomas.spy(window.document, 'getElementById', function(id) {
+					querySpy('#' + id);
+				});
+				phantomas.spy(window.document, 'getElementsByClassName', function(className) {
+					querySpy('.' + className);
+				});
 
 				// count DOM inserts
-				Node.prototype.appendChild = function(child) {
+				var appendSpy = function(child) {
 					var hasParent = typeof this.parentNode !== 'undefined';
 
 					// ignore appending to the node that's not yet added to DOM tree
@@ -55,29 +54,10 @@ exports.module = function(phantomas) {
 						line: caller.line
 					});
 					**/
-
-					return originalAppendChild.call(this, child);
 				};
 
-				Node.prototype.insertBefore = function(child) {
-					var hasParent = typeof this.parentNode !== 'undefined';
-
-					// ignore appending to the node that's not yet added to DOM tree
-					if (!hasParent) {
-						return;
-					}
-
-					phantomas.incr('DOMinserts');
-					/**
-					var caller = phantomas.getCaller();
-					phantomas.domInsertsBacktrace.push({
-						url: caller.sourceURL,
-						line: caller.line
-					});
-					**/
-
-					return originalInsertBefore.call(this, child);
-				};
+				phantomas.spy(Node.prototype, 'appendChild', appendSpy);
+				phantomas.spy(Node.prototype, 'insertBefore', appendSpy);
 
 				/**
 				// hook into $.fn.init to catch DOM queries
