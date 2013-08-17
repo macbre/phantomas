@@ -318,7 +318,7 @@ phantomas.prototype = {
 			this.log('Exiting with code #' + exitCode);
 		}
 
-		this.page.release();
+		this.page.close();
 
 		// call function provided to run() method
 		if (typeof this.onDoneCallback === 'function') {
