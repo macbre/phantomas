@@ -231,6 +231,7 @@ phantomas.prototype = {
 		// debug
 		this.page.onAlert = this.proxy(this.onAlert);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
+		this.page.onCallback = this.proxy(this.onCallback);
 
 		// observe HTTP requests
 		// finish when the last request is completed
@@ -389,6 +390,22 @@ phantomas.prototype = {
 	onConsoleMessage: function(msg) {
 		this.log('console.log: ' + msg);
 		this.emit('consoleLog', msg);
+	},
+
+	// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
+	onCallback: function(msg) {
+		var type = msg && msg.type || '',
+			data = msg && msg.data;
+
+		switch(type) {
+			case 'log':
+				this.log(data);
+				break;
+
+			default:
+				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
+				this.emit('message', msg);
+		}
 	},
 
 	// metrics reporting

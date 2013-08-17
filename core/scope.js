@@ -76,6 +76,23 @@
 		phantomas.get = get;
 	})();
 
+	// communication with phantomas core
+	(function() {
+		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
+		function sendMsg(type, data) {
+			if (typeof window.callPhantom === 'function') {
+				window.callPhantom({type: type, data: data});
+			}
+		}
+
+		function log(msg) {
+			sendMsg('log', msg);
+		}
+
+		// exports
+		phantomas.log = log;
+	})();
+
 	/**
 	 * Proxy function to be used to track calls to native DOM functions
 	 *

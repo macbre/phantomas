@@ -26,7 +26,7 @@ exports.module = function(phantomas) {
 
 				// count DOM queries by either ID or class name
 				var querySpy = function(query) {
-					console.log('DOM query: "' + query + '"');
+					phantomas.log('DOM query: "' + query + '"');
 					phantomas.incr('DOMqueries');
 				};
 
