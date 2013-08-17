@@ -85,7 +85,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 71_
+_Current number of metrics: 72_
 
 Units:
 
@@ -145,6 +145,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * DOMinserts: 17
 * jQuerySelectors: 0
 * jQueryOnDOMReadyFunctions: 0
+* eventsBound: 113
 * cookiesSent: 0
 * cookiesRecv: 434
 * domainsWithCookies: 1
@@ -251,6 +252,10 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * DOMinserts: number of DOM nodes inserts
 * jQuerySelectors: number of jQuery selectors calls (e.g. `$('#foo > .bar')`)
 * jQueryOnDOMReadyFunctions: number of functions bound to onDOMready event
+
+### Event listeners
+
+* eventsBound: number of ``EventTarget.addEventListener`` calls
 
 ### Window performance
 
