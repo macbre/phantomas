@@ -317,6 +317,7 @@ phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices
 
 * [Project's wiki](https://github.com/macbre/phantomas/wiki)
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
+* Description of [helper functions available to the browser in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope)
 * [TODO list](https://github.com/macbre/phantomas/wiki/TODO)
 
 ## Utilities
