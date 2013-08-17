@@ -13,12 +13,12 @@ exports.module = function(phantomas) {
 
 				document.addEventListener("DOMContentLoaded", function() {
 					phantomas.set('onDOMReadyTime', Date.now() - start);
-					console.log('onDOMready');
+					phantomas.log('onDOMready');
 				}, false);
 
 				window.addEventListener("load", function() {
 					phantomas.set('windowOnLoadTime', Date.now() - start);
-					console.log('window.onload');
+					phantomas.log('window.onload');
 				}, false);
 			})(window.__phantomas);
 		});

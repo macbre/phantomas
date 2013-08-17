@@ -118,5 +118,5 @@
 	phantomas.getCaller = getCaller;
 	phantomas.spy = spy;
 
-	console.log('phantomas scope injected');
+	phantomas.log('phantomas scope injected');
 })(window);
