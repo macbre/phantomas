@@ -47,6 +47,7 @@ exports.module = function(phantomas) {
 					}
 
 					phantomas.incr('DOMinserts');
+					phantomas.log('DOM insert: node "' + phantomas.getDOMPath(child) + '" added to "' + phantomas.getDOMPath(this) + '"');
 					/**
 					var caller = phantomas.getCaller();
 					phantomas.domInsertsBacktrace.push({

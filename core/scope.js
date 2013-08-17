@@ -113,9 +113,51 @@
 		};
 	}
 
+	/**
+	 * Returns "DOM path" to a given node (starting from <body> down to the node)
+	 *
+	 * Example: body.logged_out.vis-public.env-production > div > div
+	 */
+	function getDOMPath(node) {
+		var path = [],
+			entry;
+
+		if (!node instanceof Node) {
+			return false;
+		}
+
+		do {
+			// div
+			entry = node.nodeName.toLowerCase();
+
+			// shorten the path a bit
+			if (['body', 'head', 'html'].indexOf(entry) > -1) {
+				path.push(entry);
+				break;
+			}
+
+			// div#foo
+			if (node.id && node.id !== '') {
+				entry += '#' + node.id;
+			}
+			// div#foo.bar.test
+			else if (node.className && node.className !== '') {
+				entry += '.' + node.className.trim().replace(/ +/g, '.');
+			}
+
+			path.push(entry);
+
+			// go up the DOM
+			node = node && node.parentNode;
+		} while(node);
+
+		return path.reverse().join(' > ');
+	}
+
 	// exports
-	phantomas.nodeRunner = nodeRunner;
 	phantomas.getCaller = getCaller;
+	phantomas.getDOMPath = getDOMPath;
+	phantomas.nodeRunner = nodeRunner;
 	phantomas.spy = spy;
 
 	phantomas.log('phantomas scope injected');
