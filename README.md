@@ -14,6 +14,9 @@ And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Installation
 
+[![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
+
+
 ```
 npm install --global phantomas
 ```
