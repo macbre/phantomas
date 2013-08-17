@@ -332,7 +332,11 @@ phantomas.prototype = {
 	// core events
 	onInitialized: function() {
 		// add helper tools into window.__phantomas "namespace"
-		this.page.injectJs(module.dirname + '/scope.js');
+		if (!this.page.injectJs(module.dirname + '/scope.js')) {
+			this.log('Unable to inject scope.js file!');
+			this.tearDown(3);
+			return;
+		}
 
 		this.log('Page object initialized');
 		this.emit('init');
