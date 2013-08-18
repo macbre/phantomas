@@ -50,15 +50,15 @@ exports.module = function(phantomas) {
 		// static assets
 		if (entry.isImage || entry.isJS || entry.isCSS) {
 			if (ttl === false) {
-				phantomas.addNotice("No caching specified for <" + entry.url + ">");
+				phantomas.log("Caching: no caching specified for <" + entry.url + ">");
 				phantomas.incrMetric('cachingNotSpecified');
 			}
 			else if (ttl === 0) {
-				phantomas.addNotice("Caching disabled for <" + entry.url + ">");
+				phantomas.log("Caching: disabled for <" + entry.url + ">");
 				phantomas.incrMetric('cachingDisabled');
 			}
 			else if (ttl < 7 * 86400) {
-				phantomas.addNotice("Caching period is less than a week for <" + entry.url + "> (set to " + ttl + " s)");
+				phantomas.log("Caching: caching period is less than a week for <" + entry.url + "> (set to " + ttl + " s)");
 				phantomas.incrMetric('cachingTooShort');
 			}
 		}

@@ -8,7 +8,7 @@ exports.module = function(phantomas) {
 
 	phantomas.on('send', function(entry, res) {
 		if (entry.requestHeaders['X-Requested-With'] === 'XMLHttpRequest') {
-			phantomas.addNotice('AJAX request: ' + entry.url);
+			phantomas.log('AJAX request: ' + entry.url);
 			phantomas.incrMetric('ajaxRequests');
 		}
 	});
