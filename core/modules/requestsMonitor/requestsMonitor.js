@@ -179,7 +179,7 @@ exports.module = function(phantomas) {
 									break;
 
 								default:
-									phantomas.addNotice('Unknown content type found: ' + value);
+									phantomas.log('Unknown content type found: ' + value + ' for <' + entry.url + '>');
 							}
 							break;
 
