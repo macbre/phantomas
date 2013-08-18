@@ -89,8 +89,18 @@
 			sendMsg('log', msg);
 		}
 
+		function setMetric(name, value) {
+			sendMsg('setMetric', {name: name, value: (typeof value !== 'undefined') ? value : 0});
+		}
+
+		function incrMetric(name, incr /* =1 */) {
+			sendMsg('incrMetric', {name: name, incr: incr || 1});
+		}
+
 		// exports
 		phantomas.log = log;
+		phantomas.setMetric = setMetric;
+		phantomas.incrMetric = incrMetric;
 	})();
 
 	/**
