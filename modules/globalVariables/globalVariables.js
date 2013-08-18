@@ -27,18 +27,21 @@ exports.module = function(phantomas) {
 
 			// get all members of window and filter them
 			for (varName in window) {
-				if (allowed.indexOf(varName) > -1) {
+				if ( (allowed.indexOf(varName) > -1) || (typeof window[varName] === 'undefined') /* ignore variables exposed by window.__defineGetter__ */) {
 					continue;
 				}
 
 				globals.push(varName);
 			}
 
-			return globals;
+			return globals.sort();
 		}) || [];
 
 		phantomas.setMetric('globalVariables', globals.length);
-		phantomas.addNotice('JavaScript globals (' + globals.length + '): ' + globals.join(', '));
-		phantomas.addNotice();
+
+		if (globals.length > 0) {
+			phantomas.addNotice('JavaScript globals (' + globals.length + '): ' + globals.join(', '));
+			phantomas.addNotice();
+		}
 	});
 };
