@@ -110,12 +110,12 @@ exports.module = function(phantomas) {
 					case 301:
 					case 302:
 						phantomas.incrMetric('redirects');
-						phantomas.addNotice(entry.url + ' is a redirect (HTTP ' + entry.status + ')');
+						phantomas.addNotice('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ')');
 						break;
 
 					case 404:
 						phantomas.incrMetric('notFound');
-						phantomas.addNotice(entry.url + ' was not found (HTTP 404)');
+						phantomas.addNotice('HTTP 404: <' + entry.url + '> was not found (HTTP 404)');
 						break;
 				}
 

@@ -53,16 +53,16 @@ exports.module = function(phantomas) {
 		phantomas.setMetric('smallestResponse', smallestResponse.bodySize);
 		phantomas.setMetric('biggestResponse', biggestResponse.bodySize);
 
-		phantomas.addNotice('The smallest response (' + (smallestResponse.bodySize/1024).toFixed(2) + ' kB): ' + smallestResponse.url);
-		phantomas.addNotice('The biggest response (' + (biggestResponse.bodySize/1024).toFixed(2) + ' kB): ' + biggestResponse.url);
+		phantomas.addNotice('The smallest response (' + (smallestResponse.bodySize/1024).toFixed(2) + ' kB): <' + smallestResponse.url + '>');
+		phantomas.addNotice('The biggest response (' + (biggestResponse.bodySize/1024).toFixed(2) + ' kB): <' + biggestResponse.url + '>');
 
 		phantomas.addNotice();
 
 		phantomas.setMetric('fastestResponse', fastestResponse.timeToLastByte);
 		phantomas.setMetric('slowestResponse', slowestResponse.timeToLastByte);
 
-		phantomas.addNotice('The fastest response (' + fastestResponse.timeToLastByte + ' ms): ' + fastestResponse.url);
-		phantomas.addNotice('The slowest response (' + slowestResponse.timeToLastByte + ' ms): ' + slowestResponse.url);
+		phantomas.addNotice('The fastest response (' + fastestResponse.timeToLastByte + ' ms): <' + fastestResponse.url + '>');
+		phantomas.addNotice('The slowest response (' + slowestResponse.timeToLastByte + ' ms): <' + slowestResponse.url + '>');
 
 		phantomas.addNotice();
 
