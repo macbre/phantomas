@@ -395,11 +395,19 @@ phantomas.prototype = {
 	// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
 	onCallback: function(msg) {
 		var type = msg && msg.type || '',
-			data = msg && msg.data;
+			data = msg && msg.data || {};
 
 		switch(type) {
 			case 'log':
 				this.log(data);
+				break;
+
+			case 'setMetric':
+				this.setMetric(data.name, data.value);
+				break;
+
+			case 'incrMetric':
+				this.incrMetric(data.name, data.incr);
 				break;
 
 			default:

@@ -4,29 +4,26 @@
 exports.version = '0.2';
 
 exports.module = function(phantomas) {
+	phantomas.setMetric('onDOMReadyTime');
+	phantomas.setMetric('windowOnLoadTime');
+
 	// emulate window.performance
-	// @see https://groups.google.com/d/topic/phantomjs/WnXZLIb_jVc/discussion
+	// @see https://github.com/ariya/phantomjs/issues/10031
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
 				var start = Date.now();
 
 				document.addEventListener("DOMContentLoaded", function() {
-					phantomas.set('onDOMReadyTime', Date.now() - start);
+					phantomas.setMetric('onDOMReadyTime', Date.now() - start);
 					phantomas.log('onDOMready');
 				}, false);
 
 				window.addEventListener("load", function() {
-					phantomas.set('windowOnLoadTime', Date.now() - start);
+					phantomas.setMetric('windowOnLoadTime', Date.now() - start);
 					phantomas.log('window.onload');
 				}, false);
 			})(window.__phantomas);
 		});
-	});
-
-	// called just before report is generated
-	phantomas.on('report', function() {
-		phantomas.setMetricFromScope('onDOMReadyTime');
-		phantomas.setMetricFromScope('windowOnLoadTime');
 	});
 };
