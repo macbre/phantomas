@@ -88,7 +88,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 72_
+_Current number of metrics: 74_
 
 Units:
 
@@ -135,6 +135,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersSize: 7477
 * headersSentSize: 1591
 * headersRecvSize: 5886
+* jQueryVersion: 2.0.0
+* jQueryOnDOMReadyFunctions: 40
 * assetsNotGzipped: 1
 * assetsWithQueryString: 3
 * smallImages: 2
@@ -276,6 +278,11 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 ### localStorage
 
 * localStorageEntries: number of entries in local storage
+
+### jQuery
+
+* jQueryVersion: version of jQuery framework (if loaded)
+* jQueryOnDOMReadyFunctions: number of functions bound to onDOMReady event
 
 ### Static assets
 

@@ -42,16 +42,18 @@
 	};
 
 	// for backtraces
-	function getCaller() {
-		var caller = {};
+	function getCaller(stepBack) {
+		var caller = false;
+
+		stepBack = stepBack || 0;
 
 		try {
 			throw new Error('backtrace');
 		} catch(e) {
-			caller = (e.stackArray && e.stackArray[3]) || {};
+			caller = (e.stackArray && e.stackArray[3 + stepBack]) || {};
 		}
 
-		return caller;
+		return caller ? (caller.sourceURL + ' @ ' + caller.line) : '';
 	}
 
 	// setters / getters used to pass values to phantomas modules
