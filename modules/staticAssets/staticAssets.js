@@ -21,7 +21,7 @@ exports.module = function(phantomas) {
 		// check for query string -> foo.css?123
 		if (entry.isImage || entry.isJS || entry.isCSS) {
 			if (entry.url.indexOf('?') > -1) {
-				phantomas.addNotice('<' + entry.url + '> (' + entry.type.toUpperCase() + ') served with query string');
+				phantomas.log('Query string: <' + entry.url + '> (' + entry.type.toUpperCase() + ') served with query string');
 				phantomas.incrMetric('assetsWithQueryString');
 			}
 		}
@@ -29,7 +29,7 @@ exports.module = function(phantomas) {
 		// check for not-gzipped CSS / JS / HTML files
 		if (entry.isJS || entry.isCSS || entry.isHTML) {
 			if (!entry.gzip && isContent) {
-				phantomas.addNotice('<' + entry.url + '> (' + entry.type.toUpperCase() + ') served without compression');
+				phantomas.log('GZIP: <' + entry.url + '> (' + entry.type.toUpperCase() + ') served without compression');
 				phantomas.incrMetric('assetsNotGzipped');
 			}
 		}
@@ -37,7 +37,7 @@ exports.module = function(phantomas) {
 		// check small images that can be base64 encoded
 		if (entry.isImage) {
 			if (entry.bodySize < BASE64_SIZE_THRESHOLD) {
-				phantomas.addNotice('<' + entry.url + '> (' + (entry.bodySize/1024).toFixed(2) + ' kB) should be served as base64 encoded');
+				phantomas.log('base64: <' + entry.url + '> (' + (entry.bodySize/1024).toFixed(2) + ' kB) should be considered to be served base64-encoded');
 				phantomas.incrMetric('smallImages');
 			}
 		}
