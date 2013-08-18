@@ -31,7 +31,23 @@ module.exports = function(logFile, params) {
 
 		// log to the console (--verbose)
 		if (beVerbose) {
-			echo(ts + ' ' + colors.brightBlack(msg));
+			var consoleMsg = msg;
+
+			// error!
+			if (/!$/.test(consoleMsg)) {
+				consoleMsg = colors.brightRed(consoleMsg);
+			}
+			// label: message
+			else if (/^(.*): /.test(consoleMsg)) {
+				var idx = consoleMsg.indexOf(': ') + 1;
+				consoleMsg = colors.brightGreen(consoleMsg.substr(0, idx)) + colors.brightBlack(consoleMsg.substr(idx));
+			}
+			// the rest
+			else {
+				consoleMsg = colors.brightBlack(consoleMsg);
+			}
+
+			echo(ts + ' ' + consoleMsg);
 		}
 
 		// log to the file (--log)
