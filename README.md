@@ -147,9 +147,9 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * httpTrafficCompleted: 2521
 * domains: 6
 * DOMqueries: 58
-* DOMinserts: 17
-* jQuerySelectors: 0
-* jQueryOnDOMReadyFunctions: 0
+* DOMqueriesById: 16
+* DOMqueriesByClassName: 42
+* DOMinserts: 18
 * eventsBound: 113
 * cookiesSent: 0
 * cookiesRecv: 434
@@ -252,9 +252,9 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 ### DOM queries
 
 * DOMqueries: number of `document.getElementById` and `document.getElementsByClassName` calls
+* DOMqueriesById: number of `document.getElementById` calls
+* DOMqueriesByClassName: number of `document.getElementsByClassName` calls
 * DOMinserts: number of DOM nodes inserts
-* jQuerySelectors: number of jQuery selectors calls (e.g. `$('#foo > .bar')`)
-* jQueryOnDOMReadyFunctions: number of functions bound to onDOMready event
 
 ### Event listeners
 
