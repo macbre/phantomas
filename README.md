@@ -142,6 +142,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * timeToFirstCss: 1068
 * timeToFirstJs: 1156
 * timeToFirstImage: 1537
+* onDOMReadyTime: 192
+* windowOnLoadTime: 985
 * httpTrafficCompleted: 2521
 * domains: 6
 * DOMqueries: 58
@@ -170,8 +172,6 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * fastestResponse: 35
 * slowestResponse: 1167
 * medianResponse: 315
-* onDOMReadyTime: 178
-* windowOnLoadTime: 1326
 ```
 
 ### Requests monitor (core module)
