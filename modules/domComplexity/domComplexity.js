@@ -91,7 +91,7 @@ exports.module = function(phantomas) {
 				node,
 				imagesWithoutDimensions = 0;
 
-			for (i=0, len=imgNodes.length; i<len; i++) {
+			for (var i=0, len=imgNodes.length; i<len; i++) {
 				node = imgNodes[i];
 				if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
 					imagesWithoutDimensions++;
