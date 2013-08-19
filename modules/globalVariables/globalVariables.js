@@ -7,7 +7,7 @@ exports.module = function(phantomas) {
 
 	phantomas.on('report', function() {
 		var globals = phantomas.evaluate(function() {
-		(function(phantomas) {
+		return (function(phantomas) {
 			var globals = [],
 				allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', '__phantomas'],
 				varName,
