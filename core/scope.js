@@ -116,14 +116,29 @@
 	 *     // ...
 	 *   });
 	 */
-	function spy(obj, fn, callback) {
-		var origFn = obj[fn];
+	(function() {
+		var enabled = true;
 
-		obj[fn] = function() {
-			callback.apply(this, arguments);
-			return origFn.apply(this, arguments);
-		};
-	}
+		// turn off spying to not include internal phantomas actions
+		function spyEnabled(state, reason) {
+			enabled = (state === true);
+
+			phantomas.log('Spying ' + (enabled ? 'enabled' : 'disabled') + (reason ? ' - ' + reason : ''));
+		}
+
+		function spy(obj, fn, callback) {
+			var origFn = obj[fn];
+
+			obj[fn] = function() {
+				if (enabled) callback.apply(this, arguments);
+				return origFn.apply(this, arguments);
+			};
+		}
+
+		// exports
+		phantomas.spy = spy;
+		phantomas.spyEnabled = spyEnabled;
+	})();
 
 	/**
 	 * Returns "DOM path" to a given node (starting from <body> down to the node)
@@ -170,7 +185,6 @@
 	phantomas.getCaller = getCaller;
 	phantomas.getDOMPath = getDOMPath;
 	phantomas.nodeRunner = nodeRunner;
-	phantomas.spy = spy;
 
 	phantomas.log('phantomas scope injected');
 })(window);
