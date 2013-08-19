@@ -7,17 +7,22 @@ exports.module = function(phantomas) {
 
 	phantomas.on('report', function() {
 		var globals = phantomas.evaluate(function() {
+		(function(phantomas) {
 			var globals = [],
 				allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', '__phantomas'],
 				varName,
 				iframe,
 				cleanWindow;
 
+			phantomas.spyEnabled(false, 'counting global variables (injecting an empty iframe)');
+
 			// create an empty iframe to get the list of core members
 			iframe = document.createElement('iframe');
 			iframe.style.display = 'none';
 			iframe.src = 'about:blank';
 			document.body.appendChild(iframe);
+
+			phantomas.spyEnabled(true);
 
 			cleanWindow = iframe.contentWindow;
 
@@ -35,6 +40,7 @@ exports.module = function(phantomas) {
 			}
 
 			return globals.sort();
+		})(window.__phantomas);
 		}) || [];
 
 		phantomas.setMetric('globalVariables', globals.length);
