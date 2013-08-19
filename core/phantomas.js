@@ -316,7 +316,7 @@ phantomas.prototype = {
 		exitCode = exitCode || 0;
 
 		if (exitCode > 0) {
-			this.log('Exiting with code #' + exitCode);
+			this.log('Exiting with code #' + exitCode + '!');
 		}
 
 		this.page.close();
