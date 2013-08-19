@@ -88,7 +88,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 74_
+_Current number of metrics: 77_
 
 Units:
 
@@ -148,10 +148,12 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * windowOnLoadTime: 985
 * httpTrafficCompleted: 2521
 * domains: 6
-* DOMqueries: 58
-* DOMqueriesById: 16
-* DOMqueriesByClassName: 42
-* DOMinserts: 18
+* DOMqueries: 91
+* DOMqueriesById: 17
+* DOMqueriesByClassName: 53
+* DOMqueriesByTagName: 0
+* DOMqueriesByQuerySelectorAll: 0
+* DOMinserts: 16
 * eventsBound: 113
 * cookiesSent: 0
 * cookiesRecv: 434
@@ -253,9 +255,11 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 ### DOM queries
 
-* DOMqueries: number of `document.getElementById` and `document.getElementsByClassName` calls
+* DOMqueries: the sum of all four metrics below
 * DOMqueriesById: number of `document.getElementById` calls
 * DOMqueriesByClassName: number of `document.getElementsByClassName` calls
+* DOMqueriesByTagName: number of `document.getElementsByTagName` calls
+* DOMqueriesByQuerySelectorAll: number of `document.querySelectorAll` calls
 * DOMinserts: number of DOM nodes inserts
 
 ### Event listeners
