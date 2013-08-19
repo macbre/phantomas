@@ -14,6 +14,8 @@ exports.module = function(phantomas) {
 			(function(phantomas) {
 				var start = Date.now();
 
+				phantomas.spyEnabled(false, 'installing window.performance metrics');
+
 				document.addEventListener("DOMContentLoaded", function() {
 					phantomas.setMetric('onDOMReadyTime', Date.now() - start);
 					phantomas.log('onDOMready');
@@ -23,6 +25,8 @@ exports.module = function(phantomas) {
 					phantomas.setMetric('windowOnLoadTime', Date.now() - start);
 					phantomas.log('window.onload');
 				}, false);
+
+				phantomas.spyEnabled(true);
 			})(window.__phantomas);
 		});
 	});
