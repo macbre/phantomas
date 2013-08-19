@@ -61,6 +61,30 @@ exports.module = function(phantomas) {
 							break;
 					}
 				});
+
+				phantomas.spyEnabled(false, 'counting iframes and images');
+
+				// count <iframe> tags
+				phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length);
+
+				// <img> nodes without dimensions (one of width / height missing)
+				phantomas.setMetric('imagesWithoutDimensions', (function() {
+					var imgNodes = document.body.querySelectorAll('img'),
+						node,
+						imagesWithoutDimensions = 0;
+
+					for (var i=0, len=imgNodes.length; i<len; i++) {
+						node = imgNodes[i];
+						if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
+							phantomas.log('Image without dimensions: ' + phantomas.getDOMPath(node));
+							imagesWithoutDimensions++;
+						}
+					}
+
+					return imagesWithoutDimensions;
+				})());
+
+				phantomas.spyEnabled(true);
 			}(window.__phantomas));
 		});
 
@@ -79,26 +103,5 @@ exports.module = function(phantomas) {
 
 		// nodes with inlines CSS (style attribute)
 		phantomas.setMetricFromScope('nodesWithInlineCSS');
-
-		// count <iframe> tags
-		phantomas.setMetricEvaluate('iframesCount', function() {
-			return document.querySelectorAll('iframe').length;
-		});
-
-		// <img> nodes without dimensions (one of width / height missing)
-		phantomas.setMetricEvaluate('imagesWithoutDimensions', function() {
-			var imgNodes = document.body.querySelectorAll('img'),
-				node,
-				imagesWithoutDimensions = 0;
-
-			for (var i=0, len=imgNodes.length; i<len; i++) {
-				node = imgNodes[i];
-				if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
-					imagesWithoutDimensions++;
-				}
-			}
-
-			return imagesWithoutDimensions;
-		});
 	});
 };
