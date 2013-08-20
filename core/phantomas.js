@@ -142,7 +142,9 @@ phantomas.prototype = {
 		// modules API
 		return {
 			url: this.params.url,
-			params: this.params,
+			getParam: function(key) {
+				return self.params[key];
+			},
 
 			// events
 			on: function() {self.on.apply(self, arguments);},
