@@ -89,7 +89,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 77_
+_Current number of metrics: 78_
 
 Units:
 
@@ -137,7 +137,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersSentSize: 1591
 * headersRecvSize: 5886
 * jQueryVersion: 2.0.0
-* jQueryOnDOMReadyFunctions: 40
+* jQueryOnDOMReadyFunctions: 41
+* jQuerySizzleCalls: 90
 * assetsNotGzipped: 1
 * assetsWithQueryString: 3
 * smallImages: 2
@@ -288,6 +289,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 * jQueryVersion: version of jQuery framework (if loaded)
 * jQueryOnDOMReadyFunctions: number of functions bound to onDOMReady event
+* jQuerySizzleCalls: number of calls to [Sizzle](http://sizzlejs.com/) (including those that will be resolved using ``querySelectorAll``)
 
 ### Static assets
 

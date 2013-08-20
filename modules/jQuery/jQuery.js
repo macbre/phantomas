@@ -1,33 +1,23 @@
 /**
  * Analyzes jQuery activity
+ *
+ * @see http://code.jquery.com/jquery-1.10.2.js
+ * @see http://code.jquery.com/jquery-2.0.3.js
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
         phantomas.setMetric('jQueryVersion', '');
-        //phantomas.setMetric('jQuerySelectors');
         phantomas.setMetric('jQueryOnDOMReadyFunctions');
+        phantomas.setMetric('jQuerySizzleCalls');
 
-	// fake native DOM functions
+	// spy calls to jQuery functions
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-				// hook into $.fn.init to catch DOM queries
-				/**
-				var jQueryPolling = setInterval(function() {
-					if (typeof window.jQuery !== 'undefined') {
-						phantomas.log('jQuery: loaded v' + window.jQuery.fn.jquery);
-
-						phantomas.spy(window.jQuery.fn, 'init', function(selector, context, rootjQuery) {
-							phantomas.log('jQuery called ' + (typeof selector));
-						});
-
-						clearInterval(jQueryPolling);
-					}
-				}, 50);
-				**/
 				var jQuery;
 
+				// TODO: create a helper - phantomas.spyGlobalVar() ?
 				window.__defineSetter__('jQuery', function(val) {
 					var version = val.fn.jquery;
 					jQuery = val;
@@ -39,6 +29,12 @@ exports.module = function(phantomas) {
 					phantomas.spy(val.ready, 'promise', function() {
 						phantomas.log('jQuery.ready called: from ' + phantomas.getCaller(3));
 						phantomas.incrMetric('jQueryOnDOMReadyFunctions');
+					});
+
+					// Sizzle calls - jQuery.find
+					phantomas.spy(val, 'find', function(selector, context) {
+						phantomas.log('Sizzle called: ' + selector + ' (context: ' + phantomas.getDOMPath(context) + ')');
+						phantomas.incrMetric('jQuerySizzleCalls');
 					});
 				});
 
