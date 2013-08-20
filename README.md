@@ -62,6 +62,7 @@ phantomas --url=https://github.com/macbre/phantomas  --verbose
 * `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
 * `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.4 (PhantomJS/1.7.0; 64bit)``)
+* `--config=[JSON config file]` uses JSON-formatted config file to set parameters
 
 ### Multiple runs
 

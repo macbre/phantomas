@@ -13,9 +13,8 @@
  *    [--log=<log file>]
  *    [--modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
+ *    [--config='JSON config file']
  */
-
-
 var args = require('system').args,
 	// get absolute path (useful when phantomas is installed globally)
 	dir = require('fs').readLink(args[0]).replace(/phantomas.js$/, '') || '.',
