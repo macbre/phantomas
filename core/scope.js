@@ -133,6 +133,11 @@
 				if (enabled) callback.apply(this, arguments);
 				return origFn.apply(this, arguments);
 			};
+
+			// copy custom properties of original function to the mocked one
+			Object.keys(origFn).forEach(function(key) {
+				obj[fn][key] = origFn[key];
+			});
 		}
 
 		// exports
