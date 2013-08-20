@@ -14,6 +14,28 @@ var getDefaultUserAgent = function() {
 };
 
 var phantomas = function(params) {
+	// handle JSON config file provided via --config
+	var fs = require('fs'),
+		jsonConfig;
+
+	if (params.config && fs.isReadable(params.config)) {
+		try {
+			jsonConfig = JSON.parse( fs.read(params.config) ) || {};
+		}
+		catch(ex) {
+			jsonConfig = {};
+			params.config = false;
+		}
+
+		// allow parameters from JSON config to be overwritten
+		// by those coming from command line
+		Object.keys(jsonConfig).forEach(function(key) {
+			if (typeof params[key] === 'undefined') {
+				params[key] = jsonConfig[key];
+			}
+		});
+	}
+
 	// parse script CLI parameters
 	this.params = params;
 
@@ -61,6 +83,15 @@ var phantomas = function(params) {
 
 	// report version and installation directory
 	this.log('phantomas v' + VERSION + ' installed in ' + module.dirname.replace(/core$/, ''));
+
+	// report config file being used
+	if (params.config) {
+		this.log('Using JSON config file: ' + params.config);
+	}
+	else if (params.config === false) {
+		this.log('Failed parsing JSON config file');
+		this.tearDown(4);
+	}
 
 	// load core modules
 	this.log('Loading core modules...');
