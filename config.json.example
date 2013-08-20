@@ -1,0 +1,5 @@
+{
+	"url": "http://phantomjs.org",
+	"verbose": true,
+	"log": "log/phantomjs.log"
+}
