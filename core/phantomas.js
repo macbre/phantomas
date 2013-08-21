@@ -142,7 +142,9 @@ phantomas.prototype = {
 		// modules API
 		return {
 			url: this.params.url,
-			params: this.params,
+			getParam: function(key) {
+				return self.params[key];
+			},
 
 			// events
 			on: function() {self.on.apply(self, arguments);},
@@ -379,8 +381,8 @@ phantomas.prototype = {
 		this.emit('loadStarted');
 	},
 
-	onResourceRequested: function(res) {
-		this.emit('onResourceRequested', res);
+	onResourceRequested: function(res, request /* added in PhantomJS v1.9 */) {
+		this.emit('onResourceRequested', res, request);
 		//this.log(JSON.stringify(res));
 	},
 

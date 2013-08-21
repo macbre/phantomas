@@ -14,6 +14,9 @@
  *    [--modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
  *    [--config='JSON config file']
+ *    [--no-externals]
+ *    [--allow-domain='domain,domain']
+ *    [--block-domain='domain,domain']
  */
 var args = require('system').args,
 	// get absolute path (useful when phantomas is installed globally)
