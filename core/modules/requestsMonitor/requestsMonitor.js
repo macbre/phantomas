@@ -51,7 +51,7 @@ exports.module = function(phantomas) {
 		start = Date.now();
 	});
 
-	phantomas.on('onResourceRequested', function(res) {
+	phantomas.on('onResourceRequested', function(res, request) {
 		// store current request data
 		var entry = requests[res.id] = {
 			id: res.id,
@@ -59,7 +59,13 @@ exports.module = function(phantomas) {
 			method: res.method,
 			requestHeaders: {},
 			sendTime: res.time,
-			bodySize: 0
+			bodySize: 0,
+			isBlocked: false
+		};
+
+		// allow modules to block requests
+		entry.block = function() {
+			this.isBlocked = true;
 		};
 
 		res.headers.forEach(function(header) {
@@ -69,6 +75,17 @@ exports.module = function(phantomas) {
 		parseEntryUrl(entry);
 
 		if (!entry.isBase64) {
+			// give modules a chance to block requests using entry.block()
+			// @see https://github.com/ariya/phantomjs/issues/10230
+			phantomas.emit('beforeSend', entry, res);
+
+			if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
+				phantomas.log('Blocked request: <' + entry.url + '>');
+				request.abort();
+				return;
+			}
+
+			// proceed
 			phantomas.emit('send', entry, res);
 		}
 	});
