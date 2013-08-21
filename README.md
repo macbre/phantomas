@@ -48,7 +48,13 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ### Single run
 
 ``` bash
-phantomas --url=https://github.com/macbre/phantomas  --verbose
+phantomas --url=https://github.com/macbre/phantomas --verbose
+```
+
+You can measure the performance of your site without requests to 3rd party domains (but allowing CDN that serves your static assets):
+
+```bash
+phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --allow-domain .fastly.net
 ```
 
 #### Parameters
@@ -61,8 +67,11 @@ phantomas --url=https://github.com/macbre/phantomas  --verbose
 * `--silent` don't write anything to the console
 * `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
-* `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.4 (PhantomJS/1.7.0; 64bit)``)
+* `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.6.0 (PhantomJS/1.9.0; linux 64bit)``)
 * `--config=[JSON config file]` uses JSON-formatted config file to set parameters
+* `--no-externals` block requests to 3rd party domains
+* `--allow-domain=[domain],[domain]` allow requests to given domai(s) - aka whitelist
+* `--block-domain=[domain],[domain]` disallow requests to given domai(s) - aka blacklist
 
 ### Multiple runs
 
