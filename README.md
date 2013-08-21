@@ -9,7 +9,7 @@ And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Requirements
 
-* [PhantomJS 1.7+](http://phantomjs.org/)
+* [PhantomJS 1.9+](http://phantomjs.org/)
 * [NodeJS](http://nodejs.org) (for `run-multiple.js` script)
 
 ## Installation
