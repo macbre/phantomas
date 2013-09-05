@@ -37,6 +37,6 @@
   "bin": "./phantomas.js",
   "preferGlobal": true,
   "scripts": {
-    "lint": "jshint core/ modules/"
+    "lint": "jshint --verbose core/ modules/"
   }
 }

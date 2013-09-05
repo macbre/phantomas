@@ -1,0 +1,4 @@
+{
+	"node": true,
+	"-W030": false // allow foo() || log('warn') shortcuts
+}
