@@ -5,7 +5,7 @@ var program = require('commander');
 
 function analyzeCss(css) {
 	var cssParser = require('css-parse'),
-		slickParse = require('slick').Slick.parse,
+		slickParse = require('slick/Source/Slick.Parser.js'),
 		tree = new cssParser(css),
 		rules = tree && tree.stylesheet.rules,
 		regExp = {
