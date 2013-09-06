@@ -1,11 +1,9 @@
 #!/usr/bin/env node
-/* jshint node: true */
-
 var program = require('commander');
 
 function analyzeCss(css) {
 	var cssParser = require('css-parse'),
-		slickParse = require('slick/Source/Slick.Parser.js'),
+		slickParse = require('slick/Source/Slick.Parser.js').Slick.parse,
 		tree = new cssParser(css),
 		rules = tree && tree.stylesheet.rules,
 		regExp = {
@@ -26,7 +24,7 @@ function analyzeCss(css) {
 		return false;
 	}
 
-	//console.log(rules);
+	//console.log(JSON.stringify(rules, undefined, 2)); process.exit(1);
 
 	// initialize stats
 	results = {
@@ -41,6 +39,8 @@ function analyzeCss(css) {
 		selectorsByClass: 0,
 		selectorsById: 0,
 		selectorsByPseudo: 0,
+		selectorsByAttribute: 0,
+		selectorsByAttributeComplex: 0,
 		importantsTotal: 0
 	};
 
@@ -56,7 +56,7 @@ function analyzeCss(css) {
 					var parsedSelector = slickParse(selector),
 						expressions = parsedSelector.expressions[0];
 
-					//console.log([selector, expressions]);
+					//console.log(JSON.stringify([selector, expressions], undefined, 2));
 
 					results.selectorsPartsTotal += parsedSelector.expressions[0].length;
 
@@ -85,6 +85,26 @@ function analyzeCss(css) {
 						if (expr.pseudos) {
 							results.selectorsByPseudo++;
 							hasPseudo = true;
+						}
+
+						// .foo[type=bar]
+						// @see http://www.w3.org/TR/css3-selectors/#attribute-selectors
+						if (expr.attributes) {
+							results.selectorsByAttribute++;
+
+							switch(expr.attributes[0].operator) {
+								case '=':
+									break;
+
+								case '~=': // contains value in a whitespace-separated list of words
+								case '|=': // starts with value or value-
+								case '^=': // starts with
+								case '$=': // ends with
+								case '*=': // contains
+									results.selectorsByAttributeComplex++;
+									messages.push('Selector by attribute (complex): ' + selector);
+									break;
+							}
 						}
 
 						// qualified rules
@@ -189,7 +209,7 @@ function runAnalyzer(css, program) {
 
 // parse command line options
 program
-	.version('0.0.1')
+	.version('0.2')
 	.option('--url [value]', 'CSS to fetch and analyze')
 	.option('--file [value]', 'Local CSS file to analyze')
 	.option('--json', 'Format results as JSON and don\'t emit any addiitonal messages (i.e. supressed --json)')
