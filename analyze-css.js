@@ -7,7 +7,8 @@ function analyzeCss(css) {
 		tree = new cssParser(css),
 		rules = tree && tree.stylesheet.rules,
 		regExp = {
-			oldIEFixes: /^\*/
+			oldIEFixesProperty: /^\*/,
+			oldIEFixesSelector: /\* html /
 		},
 		results,
 		messages = [];
@@ -61,6 +62,15 @@ function analyzeCss(css) {
 
 					results.selectorsPartsTotal += parsedSelector.expressions[0].length;
 
+					// check selector(s)
+
+					// * html // below IE7 fix - @see http://blogs.msdn.com/b/ie/archive/2005/09/02/460115.aspx
+					if (regExp.oldIEFixesSelector.test(selector)) {
+						messages.push('Fix for old IE found: ' + selector);
+						results.oldIEFixes++;
+					}
+
+					// parse and check each selector
 					expressions.forEach(function(expr) {
 						var hasTag, hasClass, hasId, hasPseudo;
 
@@ -149,8 +159,8 @@ function analyzeCss(css) {
 							results.importantsTotal++;
 						}
 
-						// *foo: bar // IE7- fix - @see http://www.impressivewebs.com/ie7-ie8-css-hacks/
-						if (regExp.oldIEFixes.test(declaration.property)) {
+						// *foo: bar // IE7 and below fix - @see http://www.impressivewebs.com/ie7-ie8-css-hacks/
+						if (regExp.oldIEFixesProperty.test(declaration.property)) {
 							messages.push('Fix for old IE found: ' + formatCssSnippet(rule, declaration));
 							results.oldIEFixes++;
 						}
