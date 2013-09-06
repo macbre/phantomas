@@ -36,6 +36,7 @@ function analyzeCss(css) {
 		qualifiedRules: 0,
 		oldIEFixes: 0,
 		selectorsByTag: 0,
+		selectorsByWildcard: 0,
 		selectorsByClass: 0,
 		selectorsById: 0,
 		selectorsByPseudo: 0,
@@ -63,10 +64,20 @@ function analyzeCss(css) {
 					expressions.forEach(function(expr) {
 						var hasTag, hasClass, hasId, hasPseudo;
 
-						// a
-						if (expr.tag && expr.tag !== '*') {
-							results.selectorsByTag++;
-							hasTag = true;
+						if (expr.tag) {
+							// a
+							if (expr.tag !== '*') {
+								results.selectorsByTag++;
+								hasTag = true;
+							}
+							// nav *
+							else {
+								// {"combinator": " ","tag": "*"}
+								if (Object.keys(expr).length === 2) {
+									results.selectorsByWildcard++;
+									messages.push('Selector by wildcard: ' + selector);
+								}
+							}
 						}
 
 						// .foo
