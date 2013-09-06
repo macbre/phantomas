@@ -394,7 +394,10 @@ CSS analyzer provides the following metrics:
 * qualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
 * oldIEFixes: number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
 * selectorsByTag: number of selectors by tag name
+* selectorsByWildcard: number of selectors matching all tags (`nav *`)
 * selectorsByClass: number of selectors by class
 * selectorsById: number of selectors by ID
 * selectorsByPseudo: number of pseudo-selectors (`:hover`)
+* selectorsByAttribute: number of selectors by attribute (`.foo[value=bar]`)
+* selectorsByAttributeComplex: number of selectors by attribute's value with "regular expressions matching" (`img[src$=.jpg]`)
 * importantsTotal: number of properties with value forced by `!important`
