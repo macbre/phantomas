@@ -392,7 +392,9 @@ CSS analyzer provides the following metrics:
 * declarationsTotal: total number of properties defined in CSS file
 * complexSelectors: number of complex selectors (consisting of three or more parts)
 * qualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
-* oldIEFixes: number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
+* oldIEFixes: hacky fixes for old versions of Internet Explorer including:
+** number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
+** number of selectors starting with `* html` (hacky fix for IE6 and below)
 * selectorsByTag: number of selectors by tag name
 * selectorsByWildcard: number of selectors matching all tags (`nav *`)
 * selectorsByClass: number of selectors by class
