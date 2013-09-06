@@ -129,7 +129,7 @@
 		function spy(obj, fn, callback) {
 			var origFn = obj[fn];
 
-			if (typeof origFn !== 'function') {
+			if (typeof origFn !== 'function' || typeof origFn !== 'object') {
 				return false;
 			}
 
