@@ -186,6 +186,7 @@ exports.module = function(phantomas) {
 
 								// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
 								case 'application/font-wof':
+								case 'application/font-woff':
 								case 'application/vnd.ms-fontobject':
 								case 'application/x-font-opentype':
 								case 'application/x-font-truetype':
