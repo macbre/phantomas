@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/*jshint -W083: false, -W099: false */
+
 /**
  * This is a helper NodeJS script allowing you to run phantomas multiple times and
  * get a nice looking table with all the metrics + avg / median / min / max values
@@ -10,9 +12,9 @@
  *	--timeout=<in seconds (for each run), default to 15>
  *	[--modules=moduleOne,moduleTwo]
  *	[--format=plain|json] (plain is default)
- *	  note: json format, prints only errorrs or the
- *			  results in json format, no other
- *			  messaging
+ *		note: json format, prints only errorrs or the
+ *		results in json format, no other
+ *		messaging
  *
  * @version 0.1
  */
