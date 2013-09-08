@@ -42,19 +42,40 @@
 	};
 
 	// for backtraces
-	function getCaller(stepBack) {
-		var caller = false;
-
-		stepBack = stepBack || 0;
-
-		try {
-			throw new Error('backtrace');
-		} catch(e) {
-			caller = (e.stackArray && e.stackArray[3 + stepBack]) || {};
+	(function() {
+		function formatEntry(entry) {
+			return entry ? ((entry.function ? entry.function + '(): ' : 'unknown fn: ') + entry.sourceURL + ' @ ' + entry.line) : '';
 		}
 
-		return caller ? (caller.sourceURL + ' @ ' + caller.line) : '';
-	}
+		function getBacktrace() {
+			var stack = [];
+
+			try {
+				throw new Error('backtrace');
+			} catch(e) {
+				stack = e.stackArray.slice(3);
+			}
+
+			return stack.map(formatEntry).join(' / ');
+		}
+
+		function getCaller(stepBack) {
+			var caller = false;
+
+			stepBack = stepBack || 0;
+
+			try {
+				throw new Error('backtrace');
+			} catch(e) {
+				caller = (e.stackArray && e.stackArray[3 + stepBack]) || {};
+			}
+
+			return formatEntry(caller);
+		}
+
+		phantomas.getBacktrace = getBacktrace;
+		phantomas.getCaller = getCaller;
+	})();
 
 	// setters / getters used to pass values to phantomas modules
 	(function() {
@@ -193,7 +214,6 @@
 	}
 
 	// exports
-	phantomas.getCaller = getCaller;
 	phantomas.getDOMPath = getDOMPath;
 	phantomas.nodeRunner = nodeRunner;
 
