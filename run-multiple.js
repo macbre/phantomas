@@ -19,7 +19,8 @@
  * @version 0.1
  */
 var exec = require('child_process').exec,
-	args = process.argv.slice(2),
+	VERSION = require('./package').version,
+	args = process.argv.slice(1),
 	params = require('./lib/args').parse(args),
 	pads = require('./core/pads'),
 	lpad = pads.lpad,
@@ -100,8 +101,8 @@ function formatResults(metrics) {
 			sum: 0,
 			min: 0,
 			max: 0,
-			median: 0,
-			average: 0
+			median: undefined,
+			average: undefined
 		};
 	}
 
@@ -117,13 +118,18 @@ function formatResults(metrics) {
 	for (metric in entries) {
 		entry = entries[metric];
 
-		entry.values = entry.values.
-			filter(function(element) {
-				return element !== null;
-			}).
-			sort(function (a, b) {
-				return a - b;
-			});
+		if (typeof entry.values[0] === 'string') {
+			// don't sort metric with string value
+		}
+		else {
+			entry.values = entry.values.
+				filter(function(element) {
+					return element !== null;
+				}).
+				sort(function (a, b) {
+					return a - b;
+				});
+		}
 
 		if (entry.values.length === 0) {
 			continue;
@@ -131,6 +137,10 @@ function formatResults(metrics) {
 
 		entry.min = entry.values.slice(0, 1).pop();
 		entry.max = entry.values.slice(-1).pop();
+
+		if (typeof entry.values[0] === 'string') {
+			continue;
+		}
 
 		for (var i=0, len = entry.values.length++; i<len; i++) {
 			entry.sum += entry.values[i];
@@ -142,18 +152,18 @@ function formatResults(metrics) {
 
 	// print out a nice table
 	if (format === 'plain') {
-		console.log("-------------------------------------------------------------------------------------------");
-		console.log("| " + rpad("Report from " + runs + " run(s) for <" + params.url + ">", 87) + " |");
-		console.log("-------------------------------------------------------------------------------------------");
-		console.log("| Metric					  | Min		  | Max		  | Average	  | Median	   |");
-		console.log("-------------------------------------------------------------------------------------------");
+		console.log("----------------------------------------------------------------------------------------------");
+		console.log("| " + rpad("Report from " + runs + " run(s) for <" + params.url + "> using phantomas v" + VERSION, 90) + " |");
+		console.log("----------------------------------------------------------------------------------------------");
+		console.log("| " + [rpad("Metric", 30), rpad("Min", 12), rpad("Max", 12), rpad("Average", 12), rpad("Median", 12)].join(" | ") + " |");
+		console.log("----------------------------------------------------------------------------------------------");
 
 		for (metric in entries) {
 			entry = entries[metric];
 
 			console.log("| "+
 				[
-					rpad(metric, 27),
+					rpad(metric, 30),
 					lpad(entry.min, 12),
 					lpad(entry.max, 12),
 					lpad(entry.average, 12),
@@ -162,7 +172,7 @@ function formatResults(metrics) {
 				" |");
 		}
 
-		console.log("-------------------------------------------------------------------------------------------");
+		console.log("---------------------------------------------------------------------------------------------");
 	} else {
 		console.log(JSON.stringify(metrics));
 	}
@@ -174,6 +184,6 @@ if (typeof url === 'undefined') {
 }
 
 if (format === 'plain') {
-	console.log('Performing ' + runs + ' phantomas run(s) for <' + params.url + '>...');
+	console.log('Performing ' + runs + ' phantomas v' + VERSION + ' run(s) for <' + params.url + '>...');
 }
 run();
