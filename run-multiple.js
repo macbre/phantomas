@@ -16,12 +16,15 @@
  *		results in json format, no other
  *		messaging
  *
- * @version 0.1
+ * @version 0.2
  */
 var exec = require('child_process').exec,
+	phantomjs = require('phantomjs'),
 	VERSION = require('./package').version,
+
 	args = process.argv.slice(1),
 	params = require('./lib/args').parse(args),
+
 	pads = require('./core/pads'),
 	lpad = pads.lpad,
 	rpad = pads.rpad;
@@ -35,18 +38,23 @@ var url = params.url,
 
 function runPhantomas(params, callback) {
 	var timeMs = Date.now(),
-		cmd = 'phantomjs phantomas.js --format=json --url=' + params.url;
+		cmd = [
+			phantomjs.path,
+			'phantomas.js',
+			'--format json',
+			'--url "' + params.url + '"'
+		];
 
 	if (params.timeout > 0) {
-		cmd += ' --timeout=' + params.timeout;
+		cmd.push(' --timeout ' + params.timeout);
 	}
 
 	if (params.modules) {
-		cmd += ' --modules=' + params.modules;
+		cmd.push(' --modules ' + params.modules);
 	}
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
-	exec(cmd, function(error, stdout, stderr) {
+	exec(cmd.join(' '), function(error, stdout, stderr) {
 		var res = false;
 
 		try {
@@ -184,6 +192,7 @@ if (typeof url === 'undefined') {
 }
 
 if (format === 'plain') {
-	console.log('Performing ' + runs + ' phantomas v' + VERSION + ' run(s) for <' + params.url + '>...');
+	console.log('phantomas v' + VERSION + ' / PhantomJS v' + phantomjs.version + ' / nodejs ' + process.version);
+	console.log('Performing ' + runs + ' run(s) for <' + params.url + '>...');
 }
 run();
