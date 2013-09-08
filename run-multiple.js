@@ -57,6 +57,11 @@ function runPhantomas(params, callback) {
 	exec(cmd.join(' '), function(error, stdout, stderr) {
 		var res = false;
 
+		if (stderr) {
+			console.log("Error from phantomas: " + stderr);
+			process.exit(2);
+		}
+
 		try {
 			res = JSON.parse(stdout) || false;
 		} catch(e) {
