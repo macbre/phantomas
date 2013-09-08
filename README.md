@@ -98,7 +98,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 78_
+_Current number of metrics: 79_
 
 Units:
 
@@ -145,6 +145,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersSize: 7477
 * headersSentSize: 1591
 * headersRecvSize: 5886
+* evalCalls: 0
 * jQueryVersion: 2.0.0
 * jQueryOnDOMReadyFunctions: 41
 * jQuerySizzleCalls: 90
@@ -318,6 +319,10 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * timeToFirstCss: time it took to receive the last byte of the first CSS
 * timeToFirstJs: time it took to receive the last byte of the first JS
 * timeToFirstImage: time it took to receive the last byte of the first image
+
+### JavaScript bootlenecks
+
+* evalCalls: number of calls to ``eval`` (either direct or via ``setTimeout`` / ``setInterval``)
 
 ## Notices
 
