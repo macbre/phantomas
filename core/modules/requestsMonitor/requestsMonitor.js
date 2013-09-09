@@ -177,9 +177,15 @@ exports.module = function(phantomas) {
 									entry.isJS = true;
 									break;
 
+								case 'application/json':
+									entry.type = 'json';
+									entry.isJSON = true;
+									break;
+
 								case 'image/png':
 								case 'image/jpeg':
 								case 'image/gif':
+								case 'image/svg+xml':
 									entry.type = 'image';
 									entry.isImage = true;
 									break;
