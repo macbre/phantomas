@@ -14,6 +14,7 @@
  *    [--modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
  *    [--config='JSON config file']
+ *    [--cookie='bar=foo;domain=url']
  *    [--no-externals]
  *    [--allow-domain='domain,domain']
  *    [--block-domain='domain,domain']
