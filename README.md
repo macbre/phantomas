@@ -103,7 +103,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 80_
+_Current number of metrics: 82_
 
 Units:
 
@@ -131,6 +131,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * cssSize: 163000
 * jsCount: 4
 * jsSize: 124844
+* jsonCount: 0
+* jsonSize: 0
 * imageCount: 5
 * imageSize: 22425
 * webfontCount: 1
@@ -215,12 +217,14 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Assets types
 
-* htmlCount: number of html responses
-* htmlSize: size of html responses
-* cssCount: number of css responses
-* cssSize: size of css responses
-* jsCount: number of js responses
-* jsSize: size of js responses
+* htmlCount: number of HTML responses
+* htmlSize: size of HTML responses
+* cssCount: number of CSS responses
+* cssSize: size of CSS responses
+* jsCount: number of JS responses
+* jsSize: size of JS responses
+* jsonCount: number of JSON responses
+* jsonSize: size of JSON responses
 * imageCount: number of image responses
 * imageSize: size of image responses
 * webfontCount: number of web font responses
