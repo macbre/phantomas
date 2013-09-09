@@ -103,7 +103,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 79_
+_Current number of metrics: 80_
 
 Units:
 
@@ -150,6 +150,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersSize: 7477
 * headersSentSize: 1591
 * headersRecvSize: 5886
+* documentWriteCalls: 0
 * evalCalls: 0
 * jQueryVersion: 2.0.0
 * jQueryOnDOMReadyFunctions: 41
@@ -327,6 +328,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 ### JavaScript bottlenecks
 
+* documentWriteCalls: number of calls to either ``document.write`` or ``document.writeln``
 * evalCalls: number of calls to ``eval`` (either direct or via ``setTimeout`` / ``setInterval``)
 
 ## Notices
