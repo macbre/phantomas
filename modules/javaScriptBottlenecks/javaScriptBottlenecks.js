@@ -1,5 +1,5 @@
 /**
- * Reports the use of functions known to be serious performance bootlenecks in JS
+ * Reports the use of functions known to be serious performance bottlenecks in JS
  *
  * @see http://www.nczonline.net/blog/2013/06/25/eval-isnt-evil-just-misunderstood/
  */
