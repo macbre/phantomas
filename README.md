@@ -325,7 +325,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * timeToFirstJs: time it took to receive the last byte of the first JS
 * timeToFirstImage: time it took to receive the last byte of the first image
 
-### JavaScript bootlenecks
+### JavaScript bottlenecks
 
 * evalCalls: number of calls to ``eval`` (either direct or via ``setTimeout`` / ``setInterval``)
 
