@@ -68,6 +68,7 @@ var phantomas = function(params) {
 	this.cookies = [];
 
 	// --cookie='bar=foo;domain=url'
+	// for multiple cookies, please use config.json `cookies`.
 	if (params.cookie) {
 
 		// Parse cookie. at minimum, need a key=value pair, and a domain.
