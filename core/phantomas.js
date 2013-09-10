@@ -65,7 +65,10 @@ var phantomas = function(params) {
 
 	// cookie handling via command line and config.json
 	phantom.cookiesEnabled = true;
-	this.cookies = [];
+
+	// handles multiple cookies from config.json, and used for storing
+	// constructed cookies from command line.
+	this.cookies = params.cookies || [];
 
 	// --cookie='bar=foo;domain=url'
 	// for multiple cookies, please use config.json `cookies`.
@@ -270,10 +273,11 @@ phantomas.prototype = {
 			throw '--url argument must be provided!';
 		}
 
-		// TODO add cookies, if any, providing a domain shim.
+		// add cookies, if any, providing a domain shim.
 		if (this.cookies && this.cookies.length > 0) {
 
 			this.cookies.forEach(function(cookie) {
+
 				// phantomjs required attrs: *name, *value, *domain
 				if (!cookie.name || !cookie.value) {
 					throw 'this cookie is missing a name or value property: ' + JSON.stringify(cookie);
@@ -286,6 +290,7 @@ phantomas.prototype = {
 				if (!phantom.addCookie(cookie)) {
 					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
 				}
+
 			});
 		}
 
