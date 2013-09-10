@@ -34,6 +34,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 * [Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) (by Yahoo!)
 * [Web Performance Best Practices](https://developers.google.com/speed/docs/best-practices/rules_intro) (by Google)
 * [Writing Efficient CSS](http://developer.mozilla.org/en/Writing_Efficient_CSS) (by Mozilla)
+* [Planet Performance](http://www.perfplanet.com/) - news and views from the web performance blogosphere
 
 ### Slides
  
@@ -103,7 +104,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 79_
+_Current number of metrics: 82_
 
 Units:
 
@@ -131,6 +132,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * cssSize: 163000
 * jsCount: 4
 * jsSize: 124844
+* jsonCount: 0
+* jsonSize: 0
 * imageCount: 5
 * imageSize: 22425
 * webfontCount: 1
@@ -150,6 +153,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * headersSize: 7477
 * headersSentSize: 1591
 * headersRecvSize: 5886
+* documentWriteCalls: 0
 * evalCalls: 0
 * jQueryVersion: 2.0.0
 * jQueryOnDOMReadyFunctions: 41
@@ -214,12 +218,14 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Assets types
 
-* htmlCount: number of html responses
-* htmlSize: size of html responses
-* cssCount: number of css responses
-* cssSize: size of css responses
-* jsCount: number of js responses
-* jsSize: size of js responses
+* htmlCount: number of HTML responses
+* htmlSize: size of HTML responses
+* cssCount: number of CSS responses
+* cssSize: size of CSS responses
+* jsCount: number of JS responses
+* jsSize: size of JS responses
+* jsonCount: number of JSON responses
+* jsonSize: size of JSON responses
 * imageCount: number of image responses
 * imageSize: size of image responses
 * webfontCount: number of web font responses
@@ -325,8 +331,9 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * timeToFirstJs: time it took to receive the last byte of the first JS
 * timeToFirstImage: time it took to receive the last byte of the first image
 
-### JavaScript bootlenecks
+### JavaScript bottlenecks
 
+* documentWriteCalls: number of calls to either ``document.write`` or ``document.writeln``
 * evalCalls: number of calls to ``eval`` (either direct or via ``setTimeout`` / ``setInterval``)
 
 ## Notices

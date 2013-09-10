@@ -194,6 +194,7 @@ phantomas.prototype = {
 			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
 			setMetricFromScope: function() {self.setMetricFromScope.apply(self, arguments);},
 			incrMetric: function() {self.incrMetric.apply(self, arguments);},
+			getMetric: function() {return self.getMetric.apply(self, arguments);},
 
 			// debug
 			addNotice: function(msg) {self.addNotice(msg);},
@@ -532,6 +533,10 @@ phantomas.prototype = {
 	// increements given metric by given number (default is one)
 	incrMetric: function(name, incr /* =1 */) {
 		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
+	},
+
+	getMetric: function(name) {
+		return this.metrics[name];
 	},
 
 	// adds a notice that will be emitted after results
