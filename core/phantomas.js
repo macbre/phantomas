@@ -270,22 +270,20 @@ phantomas.prototype = {
 		}
 
 		// TODO add cookies, if any, providing a domain shim.
-		if (this.cookies && this.cookies.length) {
+		if (this.cookies && this.cookies.length > 0) {
 
 			this.cookies.forEach(function(cookie) {
-				// phantomjs required attr: *name, *value, *domain
+				// phantomjs required attrs: *name, *value, *domain
 				if (!cookie.name || !cookie.value) {
-					throw 'cookie missing name or value property';
+					throw 'this cookie is missing a name or value property: ' + JSON.stringify(cookie);
 				}
 
-
-				// shim domain.
 				if (!cookie.domain) {
-					cookie.domain = params.url.replace(/(http(s)?:\/\/)+(www)?/, '') :
+					cookie.domain = params.url.replace(/(http(s)?:\/\/)+(www)?/, '');
 				}
 
-				if (phantom.addCookie(cookie) === false) {
-					throw 'PhantomJS could not add cookie';
+				if (!phantom.addCookie(cookie)) {
+					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
 				}
 			});
 		}
