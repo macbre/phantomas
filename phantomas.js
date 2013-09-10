@@ -15,6 +15,7 @@
  *    [--user-agent='Custom user agent']
  *    [--config='JSON config file']
  *    [--cookie='bar=foo;domain=url']
+ *    [--cookies-file=/path/to/cookies.txt]
  *    [--no-externals]
  *    [--allow-domain='domain,domain']
  *    [--block-domain='domain,domain']
