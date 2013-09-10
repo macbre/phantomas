@@ -266,7 +266,6 @@ phantomas.prototype = {
 
 	// runs phantomas
 	run: function(callback) {
-		var self = this;
 
 		// check required params
 		if (!this.url) {
