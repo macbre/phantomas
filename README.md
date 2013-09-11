@@ -73,6 +73,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--silent` don't write anything to the console
 * `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
+* `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
 * `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.6.0 (PhantomJS/1.9.0; linux 64bit)``)
 * `--config=[JSON config file]` uses JSON-formatted config file to set parameters
 * `--cookie='bar=foo;domain=url'` document.cookie formatted string for setting a single cookie
@@ -93,6 +94,7 @@ This helper script requires NodeJS.
 * `--url` URL of the page to generate metrics for (required)
 * `--runs` number of runs to perform (defaults to 3)
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
+* `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
 
 ## Features
 
