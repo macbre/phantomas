@@ -2,5 +2,12 @@
 	"url": "http://phantomjs.org",
 	"verbose": true,
 	"log": "log/phantomjs.log",
-	"block-domain": "google-analytics.com"
+	"block-domain": "google-analytics.com",
+	"cookies": [
+		{
+			"name": "mobile",
+			"value": "on",
+			"domain": ".phantomjs.org"
+		}
+	]
 }
