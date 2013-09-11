@@ -58,7 +58,10 @@ var phantomas = function(params) {
 	this.timeout = (params.timeout > 0 && parseInt(params.timeout, 10)) || 15;
 
 	// --modules=localStorage,cookies
-	this.modules = (params.modules) ? params.modules.split(',') : [];
+	this.modules = (typeof params.modules === 'string') ? params.modules.split(',') : [];
+
+	// --skip-modules=jQeury,domQueries
+	this.skipModules = (typeof params['skip-modules'] === 'string') ? params['skip-modules'].split(',') : [];
 
 	// --user-agent=custom-agent
 	this.userAgent = params['user-agent'] || getDefaultUserAgent();
@@ -144,6 +147,11 @@ var phantomas = function(params) {
 		self = this;
 
 	modules.forEach(function(moduleName) {
+		if (self.skipModules.indexOf(moduleName) > -1) {
+			self.log('Module ' + moduleName + ' skipped!');
+			return;
+		}
+
 		self.addModule(moduleName);
 	});
 };
