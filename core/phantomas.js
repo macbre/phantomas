@@ -72,7 +72,7 @@ var phantomas = function(params) {
 
 	// --cookie='bar=foo;domain=url'
 	// for multiple cookies, please use config.json `cookies`.
-	if (params.cookie) {
+	if (typeof params.cookie === 'string') {
 
 		// Parse cookie. at minimum, need a key=value pair, and a domain.
 		// Domain attr, if unavailble, is created from `params.url` during
