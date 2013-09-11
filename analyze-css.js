@@ -228,6 +228,28 @@ function runAnalyzer(css, program) {
 	}
 }
 
+// simplified implementation of "request" npm module
+// @see http://nodejs.org/api/http.html#http_http_get_options_callback
+// @see http://nodejs.org/api/https.html#https_https_get_options_callback
+function request(url, callback) {
+	var isHttps = url.indexOf('https://') === 0,
+		client = require(isHttps ? 'https' : 'http');
+
+	client.get(url, function(resp) {
+		var out = '';
+
+		resp.on('data', function(chunk) {
+			out += chunk;
+		});
+
+		resp.on('end', function() {
+			callback(null, resp, out);
+		});
+	}).on('error', function(err) {
+		callback(err);
+	});
+}
+
 // parse command line options
 program
 	.version('0.2')
@@ -244,8 +266,6 @@ if (program.file) {
 	runAnalyzer(css, program);
 }
 else if (typeof program.url == 'string') {
-	var request = require('request');
-
 	request(program.url, function(err, resp, body) {
 		if (err || resp.statusCode !== 200) {
 			console.log('Request for <' + program.url + '> failed: ' + (err ? err : 'HTTP response code #' + resp.statusCode));

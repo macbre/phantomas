@@ -27,7 +27,6 @@
     "commander": "2.0",
     "css-parse": "1.5",
     "phantomjs": ">=1.9",
-    "request": ">=2.20",
     "slick": "1.0"
   },
   "devDependencies": [
