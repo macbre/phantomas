@@ -50,7 +50,7 @@ var phantomas = function(params) {
 
 	// --verbose
 	this.verboseMode = params.verbose === true;
-	
+
 	// --silent
 	this.silentMode = params.silent === true;
 
@@ -62,6 +62,48 @@ var phantomas = function(params) {
 
 	// --user-agent=custom-agent
 	this.userAgent = params['user-agent'] || getDefaultUserAgent();
+
+	// cookie handling via command line and config.json
+	phantom.cookiesEnabled = true;
+
+	// handles multiple cookies from config.json, and used for storing
+	// constructed cookies from command line.
+	this.cookies = params.cookies || [];
+
+	// --cookie='bar=foo;domain=url'
+	// for multiple cookies, please use config.json `cookies`.
+	if (typeof params.cookie === 'string') {
+
+		// Parse cookie. at minimum, need a key=value pair, and a domain.
+		// Domain attr, if unavailble, is created from `params.url` during
+		//  addition to phantomjs in `phantomas.run`
+		// Full JS cookie syntax is supported.
+
+		var cookieComponents = params.cookie.split(';'),
+			cookie = {};
+
+		for (var i = 0, len = cookieComponents.length; i < len; i++) {
+			var frag = cookieComponents[i].split('=');
+
+			// special case: key-value
+			if (i === 0) {
+				cookie.name = frag[0];
+				cookie.value = frag[1];
+
+			// special case: secure
+			} else if (frag[0] === 'secure') {
+				cookie.secure = true;
+
+			// everything else
+			} else {
+				cookie[frag[0]] = frag[1];
+			}
+		}
+
+		// see phantomas.run for validation.
+		this.cookies.push(cookie);
+	}
+
 
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
@@ -221,7 +263,7 @@ phantomas.prototype = {
 
 		return modules;
 	},
- 
+
 	// runs phantomas
 	run: function(callback) {
 
@@ -229,6 +271,28 @@ phantomas.prototype = {
 		if (!this.url) {
 			throw '--url argument must be provided!';
 		}
+
+		// add cookies, if any, providing a domain shim.
+		if (this.cookies && this.cookies.length > 0) {
+
+			this.cookies.forEach(function(cookie) {
+
+				// phantomjs required attrs: *name, *value, *domain
+				if (!cookie.name || !cookie.value) {
+					throw 'this cookie is missing a name or value property: ' + JSON.stringify(cookie);
+				}
+
+				if (!cookie.domain) {
+					cookie.domain = params.url.replace(/(http(s)?:\/\/)+(www)?/, '');
+				}
+
+				if (!phantom.addCookie(cookie)) {
+					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
+				}
+
+			});
+		}
+
 
 		// to be called by tearDown
 		this.onDoneCallback = callback;
