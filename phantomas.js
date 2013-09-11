@@ -12,6 +12,7 @@
  *    [--silent]
  *    [--log=<log file>]
  *    [--modules=moduleOne,moduleTwo]
+ *    [--skip-modules=moduleOne,moduleTwo]
  *    [--user-agent='Custom user agent']
  *    [--config='JSON config file']
  *    [--cookie='bar=foo;domain=url']

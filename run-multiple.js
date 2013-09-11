@@ -11,6 +11,7 @@
  *	--runs=<number of runs, defaults to 3>
  *	--timeout=<in seconds (for each run), default to 15>
  *	[--modules=moduleOne,moduleTwo]
+ *	[--skip-modules=moduleOne,moduleTwo]
  *	[--format=plain|json] (plain is default)
  *		note: json format, prints only errorrs or the
  *		results in json format, no other
@@ -51,6 +52,10 @@ function runPhantomas(params, callback) {
 
 	if (params.modules) {
 		cmd.push(' --modules ' + params.modules);
+	}
+
+	if (params['skip-modules']) {
+		cmd.push(' --skip-modules ' + params['skip-modules']);
 	}
 
 	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
