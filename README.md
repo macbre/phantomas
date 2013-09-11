@@ -1,5 +1,45 @@
-phantomas
-=========
+__Contents__
+
+1. [phantomas](#phantomas)
+	* [Requirements](#requirements)
+	* [Installation](#installation)
+	* [Dependencies](#dependencies)
+	* [Let's make Web a bit faster!](#let's-make-web-a-bit-faster!)
+		* [Slides](#slides)
+	* [Contributors](#contributors)
+	* [Usage](#usage)
+		* [Single run](#single-run)
+			* [Parameters](#parameters)
+		* [Multiple runs](#multiple-runs)
+			* [Parameters](#parameters)
+	* [Features](#features)
+	* [Metrics](#metrics)
+		* [Requests monitor (core module)](#requests-monitor-core-module)
+		* [AJAX requests](#ajax-requests)
+		* [Assets types](#assets-types)
+		* [Cache Hits](#cache-hits)
+		* [Headers](#headers)
+		* [Domains](#domains)
+		* [Cookies](#cookies)
+		* [DOM complexity](#dom-complexity)
+		* [DOM queries](#dom-queries)
+		* [Event listeners](#event-listeners)
+		* [Window performance](#window-performance)
+		* [Requests statistics](#requests-statistics)
+		* [localStorage](#localstorage)
+		* [jQuery](#jquery)
+		* [Static assets](#static-assets)
+		* [Caching](#caching)
+		* [Time to first asset](#time-to-first-asset)
+		* [JavaScript bottlenecks](#javascript-bottlenecks)
+	* [Notices](#notices)
+	* [For developers](#for-developers)
+	* [Utilities](#utilities)
+		* [CSS analyzer](#css-analyzer)
+			* [Parameters](#parameters)
+			* [Metrics](#metrics)
+
+# phantomas
 
 ![GitHub Logo](http://upload.wikimedia.org/wikipedia/en/a/a5/Fantomas.jpg)
 
