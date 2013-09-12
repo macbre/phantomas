@@ -154,6 +154,8 @@
 				return false;
 			}
 
+			phantomas.log('Attaching a spy to "' + fn + '" function...');
+
 			obj[fn] = function() {
 				if (enabled) callback.apply(this, arguments);
 				return origFn.apply(this, arguments);
@@ -163,6 +165,8 @@
 			Object.keys(origFn).forEach(function(key) {
 				obj[fn][key] = origFn[key];
 			});
+
+			obj[fn].prototype = origFn.prototype;
 
 			return true;
 		}
