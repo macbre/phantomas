@@ -114,9 +114,6 @@ var phantomas = function(params) {
 
 	this.page = require('webpage').create();
 
-	// current HTTP requests counter
-	this.currentRequests = 0;
-
 	// setup logger
 	var logger = require('./logger'),
 		logFile = params.log || '';
@@ -339,20 +336,6 @@ phantomas.prototype = {
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 		this.page.onCallback = this.proxy(this.onCallback);
 
-		// observe HTTP requests
-		// finish when the last request is completed
-		
-		// update HTTP requests counter
-		this.on('send', this.proxy(function(entry) {
-			this.currentRequests++;
-		}));
-	
-		this.on('recv', this.proxy(function(entry) {
-			this.currentRequests--;
-
-			this.enqueueReport();
-		}));
-
 		// last time changes?
 		this.emit('pageBeforeOpen', this.page);
 
@@ -367,19 +350,6 @@ phantomas.prototype = {
 			this.log('Timeout of ' + this.timeout + ' s was reached!');
 			this.report();
 		}), this.timeout * 1000);
-	},
-
-	/**
-	 * Wait a second before finishing the monitoring (i.e. report generation)
-	 *
-	 * This one is called when response is received. Previously scheduled reporting is removed and the new is created.
-	 */
-	enqueueReport: function() {
-		clearTimeout(this.lastRequestTimeout);
-
-		if (this.currentRequests < 1) {
-			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
-		}
 	},
 
 	// called when all HTTP requests are completed
@@ -477,7 +447,7 @@ phantomas.prototype = {
 		switch(status) {
 			case 'success':
 				this.emit('loadFinished', status);
-				this.enqueueReport();
+				this.report();
 				break;
 
 			default:
