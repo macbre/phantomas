@@ -114,9 +114,6 @@ var phantomas = function(params) {
 
 	this.page = require('webpage').create();
 
-	// current HTTP requests counter
-	this.currentRequests = 0;
-
 	// setup logger
 	var logger = require('./logger'),
 		logFile = params.log || '';
