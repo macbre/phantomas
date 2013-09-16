@@ -495,9 +495,14 @@ phantomas.prototype = {
 
 	onConsoleMessage: function(msg) {
 		// parse JSON-encoded messages from browser's scope sendMsg()
-		if (msg.indexOf('msg:{') === 0) {
-			msg = msg.substring(4); // strip the prefix
-			this.onCallback(JSON.parse(msg));
+		if (msg.indexOf('msg:{"') === 0) {
+			msg = decodeURI(msg.substring(4)); // strip the prefix
+			try {
+				this.onCallback(JSON.parse(msg));
+			}
+			catch(ex) {
+				this.log('Unable to parse JSON message from browser: ' + msg + '!');
+			}
 			return;
 		}
 

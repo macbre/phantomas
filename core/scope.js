@@ -101,6 +101,8 @@
 
 	// communication with phantomas core
 	(function() {
+		var stringify = JSON.stringify;
+
 		function sendMsg(type, data) {
 			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
 			// Stability: EXPERIMENTAL - see issue #62
@@ -110,7 +112,7 @@
 			}
 			**/
 
-			console.log('msg:' + JSON.stringify({type: type || false, data: data || false}));
+			console.log('msg:' + stringify({type: type || false, data: data || false}));
 		}
 
 		function log(msg) {
