@@ -50,6 +50,11 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('report', function() {
+		if (!smallestResponse || !biggestResponse || !fastestResponse || !slowestResponse) {
+			phantomas.log('requestsStats: no requests data gathered!');
+			return;
+		}
+
 		phantomas.setMetric('smallestResponse', smallestResponse.bodySize);
 		phantomas.setMetric('biggestResponse', biggestResponse.bodySize);
 
