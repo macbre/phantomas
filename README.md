@@ -54,7 +54,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ### Single run
 
 ``` bash
-phantomas --url=https://github.com/macbre/phantomas --verbose
+phantomas --url https://github.com/macbre/phantomas --verbose
 ```
 
 You can measure the performance of your site without requests to 3rd party domains (but allowing CDN that serves your static assets):
@@ -107,7 +107,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 82_
+_Current number of metrics: 81_
 
 Units:
 
@@ -115,91 +115,91 @@ Units:
 * bytes for size
 
 ``` 
-phantomas --url=https://github.com/macbre/phantomas
+$ phantomas --url https://github.com/macbre/phantomas
 
 phantomas metrics for <https://github.com/macbre/phantomas>:
 
-* requests: 13
-* gzipRequests: 6
+* requests: 15
+* gzipRequests: 8
 * postRequests: 0
-* redirects: 0
+* redirects: 1
 * notFound: 0
-* timeToFirstByte: 781
-* timeToLastByte: 789
-* bodySize: 398654
-* contentLength: 418082
+* timeToFirstByte: 722
+* timeToLastByte: 730
+* bodySize: 394612
+* contentLength: 420351
 * ajaxRequests: 0
 * htmlCount: 1
-* htmlSize: 59041
+* htmlSize: 68335
 * cssCount: 2
-* cssSize: 163000
+* cssSize: 163237
 * jsCount: 4
-* jsSize: 124844
+* jsSize: 115046
 * jsonCount: 0
 * jsonSize: 0
-* imageCount: 5
-* imageSize: 22425
+* imageCount: 7
+* imageSize: 24514
 * webfontCount: 1
-* webfontSize: 4096
+* webfontSize: 23480
 * base64Count: 0
 * base64Size: 0
-* otherCount: 1
-* otherSize: 29344
-* cacheHits: 7
+* otherCount: 0
+* otherSize: 0
+* cacheHits: 9
 * cacheMisses: 0
-* cachingNotSpecified: 3
-* cachingTooShort: 2
+* cachingNotSpecified: 4
+* cachingTooShort: 3
 * cachingDisabled: 0
-* headersCount: 225
-* headersSentCount: 38
-* headersRecvCount: 187
-* headersSize: 7477
-* headersSentSize: 1591
-* headersRecvSize: 5886
+* DOMqueries: 90
+* DOMqueriesById: 17
+* DOMqueriesByClassName: 52
+* DOMqueriesByTagName: 21
+* DOMqueriesByQuerySelectorAll: 0
+* DOMinserts: 16
+* eventsBound: 119
+* headersCount: 264
+* headersSentCount: 44
+* headersRecvCount: 220
+* headersSize: 8922
+* headersSentSize: 1829
+* headersRecvSize: 7093
 * documentWriteCalls: 0
 * evalCalls: 0
 * jQueryVersion: 2.0.0
-* jQueryOnDOMReadyFunctions: 41
-* jQuerySizzleCalls: 90
+* jQueryOnDOMReadyFunctions: 42
+* jQuerySizzleCalls: 92
 * assetsNotGzipped: 1
-* assetsWithQueryString: 3
-* smallImages: 2
+* assetsWithQueryString: 4
+* smallImages: 4
 * multipleRequests: 0
-* timeToFirstCss: 1068
-* timeToFirstJs: 1156
-* timeToFirstImage: 1537
-* onDOMReadyTime: 192
-* windowOnLoadTime: 985
-* httpTrafficCompleted: 2521
-* domains: 6
-* DOMqueries: 91
-* DOMqueriesById: 17
-* DOMqueriesByClassName: 53
-* DOMqueriesByTagName: 0
-* DOMqueriesByQuerySelectorAll: 0
-* DOMinserts: 16
-* eventsBound: 113
+* timeToFirstCss: 1069
+* timeToFirstJs: 1407
+* timeToFirstImage: 1994
+* onDOMReadyTime: 204
+* windowOnLoadTime: 5526
+* httpTrafficCompleted: 7089
+* domains: 8
 * cookiesSent: 0
-* cookiesRecv: 434
-* domainsWithCookies: 1
+* cookiesRecv: 492
+* domainsWithCookies: 2
 * documentCookiesLength: 268
 * documentCookiesCount: 8
-* bodyHTMLSize: 54965
-* commentsSize: 245
-* hiddenContentSize: 7799
-* whiteSpacesSize: 3271
-* DOMelementsCount: 689
-* DOMelementMaxDepth: 12
+* bodyHTMLSize: 64146
 * iframesCount: 0
-* nodesWithInlineCSS: 6
-* imagesWithoutDimensions: 1
-* globalVariables: 24
+* imagesWithoutDimensions: 2
+* commentsSize: 245
+* hiddenContentSize: 9933
+* whiteSpacesSize: 3277
+* DOMelementsCount: 831
+* DOMelementMaxDepth: 12
+* nodesWithInlineCSS: 5
+* globalVariables: 23
 * localStorageEntries: 0
 * smallestResponse: 35
-* biggestResponse: 82017
-* fastestResponse: 35
-* slowestResponse: 1167
-* medianResponse: 315
+* biggestResponse: 82544
+* fastestResponse: 41
+* slowestResponse: 5323
+* medianResponse: 429.5
 ```
 
 ### Requests monitor (core module)
@@ -339,29 +339,43 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * documentWriteCalls: number of calls to either ``document.write`` or ``document.writeln``
 * evalCalls: number of calls to ``eval`` (either direct or via ``setTimeout`` / ``setInterval``)
 
-## Notices
+## Debug logs and notices
 
-phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices with more in-depth data:
+phantomas apart from "raw" metrics data, when in `--verbose` mode, emits debug logs and notices with more in-depth data:
 
 ```
-> Caching period is less than a week for <https://ssl.google-analytics.com/ga.js> (set to 43200 s)
-> No caching specified for <https://secure.gaug.es/track.js>
-> Caching period is less than a week for <https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png> (set to 300 s)
-> https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png (IMAGE) served with query string
-> Requests per domain:
->  github.com: 1 request(s)
->  a248.e.akamai.net: 16 request(s)
->  ssl.google-analytics.com: 2 request(s)
->  secure.gaug.es: 2 request(s)
->  secure.gravatar.com: 1 request(s)
->
-> JavaScript globals (18): html5, Modernizr, moment, $, jQuery, $stats, jQuery18302483161953277886, GitHub, DateInput, clippyCopiedCallback, debug, _gaq, _gauges, CommandBar, stringDistance, fuzzyScore, _gat, gaGlobal
->
-> The smallest response (0.03 kB): https://ssl.google-analytics.com/__utm.gif?utmwv=5.3.8&utms=1&utmn=396347331&utmhn=github.com&utmcs=UTF-8&utmsr=1024x768&utmvp=1024x1280&utmsc=32-bit&utmul=pl-pl&utmje=0&utmfl=-&utmdt=macbre%2Fphantomas%20%C2%B7%20GitHub&utmhid=1963809109&utmr=-&utmp=%2Fmacbre%2Fphantomas&utmac=UA-3769691-2&utmcc=__utma%3D1.1523233271.1353260190.1353260190.1353260190.1%3B%2B__utmz%3D1.1353260190.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&utmu=qB~
-> The biggest response (233.84 kB): https://a248.e.akamai.net/assets.github.com/assets/github-81433815e4751f68e04d42ec948cba14ab028c2d.js
->
-> The fastest response (43 ms): https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x.png?1340659561
-> The slowest response (984 ms): https://secure.gravatar.com/avatar/57548e3255bfa0e74afff98289dae839?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png
+21:20:04.553 Sizzle called: .mfbb .frm:not(.fst) (context: #document)
+21:20:08.309 DOM insert: node "script" added to "head"
+21:26:52.348 eval() called directly: from unknown fn: http://lib.onet.pl/s.csr/init/20130829,init.js @ 53!
+21:26:52.348 Backtrace: unknown fn: http://lib.onet.pl/s.csr/init/20130829,init.js @ 53 / onetShowAsyncSlots(): http://lib.onet.pl/s.csr/init/20130829,init.js @ 18 / onetShowAsynchAds(): http://lib.onet.pl/s.csr/init/20130829,init.js @ 15 / unknown fn: http://csr.onet.pl/_s/csr-005/GLOWNA/NOWASG/slots=top,right,flat-sidebarbox,flat-search,flat-boks1,flat-link1,flat-link2,flat-link3,flat-link5,flat-link4,flat-link6,flat-link7,flat-link8,flat-link11,flat-link12,flat-link13,flat-boxright1,flat-boxright2,flat-boxright3,flat-boxright4,flat-boxright5,flat-boxright6,flat-boxright9,flat-boxright10,flat-config/kwrd=SEGG+BETA2+POZNAN/async=1/kvcity=POZNAN/IV=201309162326510007913073/csr.js?AC=13d1c5237779b317&callback=onetShowAsynchAds @ 4
+21:26:52.348 eval'ed code: link13spons = {
+        "link": "Panele pod&#322;ogowe 31,50 z&#322;/m2. Zobacz", 
+        "url": "http://fa4.clk.onet.pl/adclick/CID=102119/CCID=5399(...)
+```
+
+```
+First css received in 1131 ms: <http://ir.ebaystatic.com/z/m2/0tqxqnqe2y2xzdar5mv4zhkd2.css>
+First image received in 1290 ms: <http://p.ebaystatic.com/aw/pics/globalheader/spr9.png>
+First js received in 1307 ms: <http://gh.ebaystatic.com/header/js/rpt.min?combo=11&ds=3&siteid=0&rvr=138&h=24036>
+Redirect: <http://srx.main.ebayrtm.com/rtm?RtmCmd&a=json&l=@@__@@__@@&g=28a4f3d81410a565e5e5dcf5ffded58f&c=1H4sIAAAAAAAAACWNQQuCQBSE7%2F6KhS4V9Jz31tbVeOcgCIQ6FHTRChJKFzKsf5%2FWZYaZYfgm27Yxu2sw7AwnuSAHm%2FV2v0CaA0bANgrWQsOtbLr2UT5jkCM20%2BJfbHYxU0ayMve6eb2NS6q6mw0f7xRRYBn0XF%2FU%2BtMLAEdBbKKLwdlbFSzh8AusmcfIEr11XTjlcdz3PV2r8kPn9jEurAzyKXHmSJYyQlINRXE83JN59AVjhi39ywAAAA%3D%3D&p=11527:11528:11529:11530&di=11527:11528:11529:11530&v=4&enc=UTF-8&bm=401804&ord=1379366402040&cg=1379366402040&cb=$.billboard.callback&callback=jQuery1704923024866729975_1379366401938&_=1379366402042> is a redirect (HTTP 302)
+(...)
+Requests per domain:
+ ir.ebaystatic.com: 2 request(s)
+ www.ebay.com: 1 request(s)
+ p.ebaystatic.com: 33 request(s)
+ gh.ebaystatic.com: 2 request(s)
+ thumbs.ebaystatic.com: 30 request(s)
+(...)
+JavaScript globals (34): $, $load, $radd, $rget, $rset, $rwidgets, $trk, $uri, GH, GH_config, Handlebars, Lens, _GlobalNavHeaderSrcPageId, activateSearch, buildFallback, cfg, checkLoginStatus, define, ebay, fmttime, functionType, handlebars, jQuery, jQuery1704923024866729975, loaded, max, openWindow, ppaOverlay, raptor, require, tick, toString, updateSignInLinkWithAction, vjo
+
+The smallest response (0.00 kB): <http://rtm.ebaystatic.com/0/RTMS/Image/EDCO-eBP_Awareness_Q312-Refresh0928_shieldRightGlow_dkGreyBkgd-760x270.jpg>
+The biggest response (85.29 kB): <http://www.ebay.com/>
+
+The fastest response (14 ms): <http://rtm.ebaystatic.com/0/RTMS/Image/EDCO-eBP_Awareness_Q312-Refresh0928_shieldRightGlow_dkGreyBkgd-760x270.jpg>
+The slowest response (5117 ms): <http://ebay-stories.com/wp-content/uploads/2013/09/lucky-380.jpg>
+
+<http://rtm.ebaystatic.com/0/RTMS/Image/EDCO-eBP_Awareness_Q312-Refresh0928_shieldRightGlow_dkGreyBkgd-760x270.jpg> requested multiple times
+Time spent on backend / frontend: 14% / 86%
 ```
 
 ## For developers
@@ -369,7 +383,6 @@ phantomas apart from "raw" metrics data, when in `--verbose` mode, emits notices
 * [Project's wiki](https://github.com/macbre/phantomas/wiki)
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
 * Description of [helper functions available to the browser in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope)
-* [TODO list](https://github.com/macbre/phantomas/wiki/TODO)
 
 ## Utilities
 
