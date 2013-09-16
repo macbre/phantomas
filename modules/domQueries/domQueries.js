@@ -33,7 +33,7 @@ exports.module = function(phantomas) {
 				});
 
 				phantomas.spy(Document.prototype, 'getElementsByTagName', function(tagName) {
-					phantomas.incrMetric('getElementsByTagName');
+					phantomas.incrMetric('DOMqueriesByTagName');
 					querySpy('tag name', tagName);
 				});
 
