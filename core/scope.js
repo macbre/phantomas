@@ -101,11 +101,16 @@
 
 	// communication with phantomas core
 	(function() {
-		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
 		function sendMsg(type, data) {
+			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
+			// Stability: EXPERIMENTAL - see issue #62
+			/**
 			if (typeof window.callPhantom === 'function') {
 				window.callPhantom({type: type, data: data});
 			}
+			**/
+
+			console.log('msg:' + JSON.stringify({type: type || false, data: data || false}));
 		}
 
 		function log(msg) {
