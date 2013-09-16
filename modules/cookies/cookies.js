@@ -1,7 +1,7 @@
 /**
  * cookies metrics
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
 	// monitor cookies in HTTP headers
@@ -44,11 +44,23 @@ exports.module = function(phantomas) {
 		phantomas.setMetric('domainsWithCookies', domainsWithCookies);
 
 		phantomas.setMetricEvaluate('documentCookiesLength', function() {
-			return document.cookie.length;
+			try {
+				return document.cookie.length;
+			}
+			catch(ex) {
+				window.__phantomas.log('documentCookiesLength: not set because ' + ex + '!');
+				return 0;
+			}
 		});
 
 		phantomas.setMetricEvaluate('documentCookiesCount', function() {
-			return document.cookie.split(';').length;
+			try {
+				return document.cookie.split(';').length;
+			}
+			catch(ex) {
+				window.__phantomas.log('documentCookiesCount: not set because ' + ex + '!');
+				return 0;
+			}
 		});
 	});
 };

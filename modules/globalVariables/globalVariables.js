@@ -14,6 +14,10 @@ exports.module = function(phantomas) {
 				iframe,
 				cleanWindow;
 
+			if (!document.body) {
+				return false;
+			}
+
 			phantomas.spyEnabled(false, 'counting global variables (injecting an empty iframe)');
 
 			// create an empty iframe to get the list of core members
