@@ -20,7 +20,7 @@
 			}
 
 			var childNode,
-				childNodes = node.childNodes || [];
+				childNodes = node && node.childNodes || [];
 
 			depth = (depth || 1);
 
