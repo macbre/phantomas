@@ -464,6 +464,13 @@ phantomas.prototype = {
 	},
 
 	onConsoleMessage: function(msg) {
+		// parse JSON-encoded messages from browser's scope sendMsg()
+		if (msg.indexOf('msg:{') === 0) {
+			msg = msg.substring(4); // strip the prefix
+			this.onCallback(JSON.parse(msg));
+			return;
+		}
+
 		this.log('console.log: ' + msg);
 		this.emit('consoleLog', msg);
 	},

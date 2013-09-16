@@ -101,11 +101,16 @@
 
 	// communication with phantomas core
 	(function() {
-		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
 		function sendMsg(type, data) {
+			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
+			// Stability: EXPERIMENTAL - see issue #62
+			/**
 			if (typeof window.callPhantom === 'function') {
 				window.callPhantom({type: type, data: data});
 			}
+			**/
+
+			console.log('msg:' + JSON.stringify({type: type || false, data: data || false}));
 		}
 
 		function log(msg) {
@@ -154,6 +159,8 @@
 				return false;
 			}
 
+			phantomas.log('Attaching a spy to "' + fn + '" function...');
+
 			obj[fn] = function() {
 				if (enabled) callback.apply(this, arguments);
 				return origFn.apply(this, arguments);
@@ -163,6 +170,8 @@
 			Object.keys(origFn).forEach(function(key) {
 				obj[fn][key] = origFn[key];
 			});
+
+			obj[fn].prototype = origFn.prototype;
 
 			return true;
 		}
