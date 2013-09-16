@@ -8,7 +8,7 @@ exports.module = function(phantomas) {
 	// HTML size
 	phantomas.on('report', function() {
 		phantomas.setMetricEvaluate('bodyHTMLSize', function() {
-			return document.body.innerHTML.length;
+			return document.body && document.body.innerHTML.length || 0;
 		});
 
 		phantomas.evaluate(function() {
@@ -69,7 +69,7 @@ exports.module = function(phantomas) {
 
 				// <img> nodes without dimensions (one of width / height missing)
 				phantomas.setMetric('imagesWithoutDimensions', (function() {
-					var imgNodes = document.body.querySelectorAll('img'),
+					var imgNodes = document.body && document.body.querySelectorAll('img') || [],
 						node,
 						imagesWithoutDimensions = 0;
 
