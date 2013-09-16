@@ -36,6 +36,6 @@
   "bin": "./phantomas.js",
   "preferGlobal": true,
   "scripts": {
-    "lint": "jshint --verbose core/ modules/ phantomas.js analyze-css.js run-multiple.js"
+    "lint": "jshint --verbose core/ modules/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
   }
 }
