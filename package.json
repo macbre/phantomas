@@ -37,5 +37,9 @@
   "preferGlobal": true,
   "scripts": {
     "lint": "jshint --verbose core/ modules/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
-  }
+  },
+  "jshintConfig": {
+    "node": true,
+    "-W030": false
+ }
 }
