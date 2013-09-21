@@ -283,6 +283,9 @@ phantomas.prototype = {
 		// add cookies, if any, providing a domain shim.
 		if (this.cookies && this.cookies.length > 0) {
 
+			// @see http://nodejs.org/docs/latest/api/url.html
+			var parseUrl = this.require('url').parse;
+
 			this.cookies.forEach(function(cookie) {
 
 				// phantomjs required attrs: *name, *value, *domain
@@ -291,12 +294,10 @@ phantomas.prototype = {
 				}
 
 				if (!cookie.domain) {
-					// Strip protocol, www, and anything after a first trailing slash
-					// (subdirs, queries, or hashes).
-					var root = params.url.replace(/(http(s)?:\/\/)+(www)?/, ''),
-						ix = root.search(/[\/#\?]/);
+					var parsed = parseUrl(params.url),
+						root = parsed.hostname.replace(/^www/, ''); // strip www
 
-					cookie.domain = (ix > -1) ? root.substring(0, ix) : root;
+					cookie.domain = root;
 				}
 
 				if (!phantom.addCookie(cookie)) {
