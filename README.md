@@ -107,7 +107,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 81_
+_Current number of metrics: 83_
 
 Units:
 
@@ -150,6 +150,9 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * cachingNotSpecified: 4
 * cachingTooShort: 3
 * cachingDisabled: 0
+* domains: 8
+* maxRequestsPerDomain: 7
+* medianRequestsPerDomain: 1.5
 * DOMqueries: 90
 * DOMqueriesById: 17
 * DOMqueriesByClassName: 52
@@ -178,7 +181,6 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * onDOMReadyTime: 204
 * windowOnLoadTime: 5526
 * httpTrafficCompleted: 7089
-* domains: 8
 * cookiesSent: 0
 * cookiesRecv: 492
 * domainsWithCookies: 2
@@ -257,6 +259,8 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 ### Domains
 
 * domains: number of domains used to fetch the page
+* maxRequestsPerDomain: maximum number of requests fetched from a single domain
+* medianRequestsPerDomain: median of requests fetched from each domain
 
 ### Cookies
 
