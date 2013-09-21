@@ -347,6 +347,8 @@ phantomas.prototype = {
 
 		// debug
 		this.page.onAlert = this.proxy(this.onAlert);
+		this.page.onConfirm = this.proxy(this.onConfirm);
+		this.page.onPrompt = this.proxy(this.onPrompt);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 		this.page.onCallback = this.proxy(this.onCallback);
 
@@ -502,6 +504,16 @@ phantomas.prototype = {
 	onAlert: function(msg) {
 		this.log('Alert: ' + msg);
 		this.emit('alert', msg);
+	},
+
+	onConfirm: function(msg) {
+		this.log('Confirm: ' + msg);
+		this.emit('confirm', msg);
+	},
+
+	onPrompt: function(msg) {
+		this.log('Prompt: ' + msg);
+		this.emit('prompt', msg);
 	},
 
 	onConsoleMessage: function(msg) {
