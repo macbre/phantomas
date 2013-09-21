@@ -302,7 +302,10 @@ phantomas.prototype = {
 				if (!phantom.addCookie(cookie)) {
 					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
 				}
-			});
+
+				this.log('Cookie set: ' + JSON.stringify(cookie));
+
+			}, this /* scope */);
 		}
 
 
