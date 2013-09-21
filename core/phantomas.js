@@ -291,13 +291,17 @@ phantomas.prototype = {
 				}
 
 				if (!cookie.domain) {
-					cookie.domain = params.url.replace(/(http(s)?:\/\/)+(www)?/, '');
+					// Strip protocol, www, and anything after a first trailing slash
+					// (subdirs, queries, or hashes).
+					var root = params.url.replace(/(http(s)?:\/\/)+(www)?/, ''),
+						ix = root.search(/[\/#\?]/);
+
+					cookie.domain = (ix > -1) ? root.substring(0, ix) : root;
 				}
 
 				if (!phantom.addCookie(cookie)) {
 					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
 				}
-
 			});
 		}
 
