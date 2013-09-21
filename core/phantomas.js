@@ -217,7 +217,10 @@ phantomas.prototype = {
 			evaluate: function(fn) {return self.page.evaluate(fn);},
 			injectJs: function(src) {return self.page.injectJs(src);},
 			require: function(module) {return self.require(module);},
-			getPageContent: function() {return self.page.content;}
+			getPageContent: function() {return self.page.content;},
+
+			// utils
+			median: function(arr) {return self.median(arr);}
 		};
 	},
 
@@ -581,6 +584,17 @@ phantomas.prototype = {
 	// require CommonJS module from lib/modules
 	require: function(module) {
 		return require('../lib/modules/' + module);
+	},
+
+	// returns median value for given set
+	median: function(arr) {
+		var half = Math.floor(arr.length/2);
+
+		arr.sort(function(a,b) {
+			return a - b;
+		});
+
+		return (arr.length % 2) ? arr[half] : ((arr[half-1] + arr[half]) / 2.0);
 	}
 };
 
