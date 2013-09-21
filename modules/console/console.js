@@ -15,7 +15,7 @@ exports.module = function(phantomas) {
 		phantomas.setMetric('consoleMessages', cmsgs.length);
 
 		if (cmsgs.length > 0) {
-			phantomas.addNotice('\nConsole Messages ('+ cmsgs.length +'):');
+			phantomas.addNotice('Console Messages (' + cmsgs.length + '):');
 			cmsgs.forEach(function(msg) {
 				phantomas.addNotice(' ' + msg);
 			});
