@@ -11,16 +11,6 @@ exports.module = function(phantomas) {
 
 	var responseTimes = [];
 
-	function median(arr) {
-		var half = Math.floor(arr.length/2);
-
-		arr.sort(function(a,b) {
-			return a - b;
-		});
-
-		return (arr.length % 2) ? arr[half] : ((arr[half-1] + arr[half]) / 2.0);
-	}
-
 	phantomas.on('recv', function(entry, res) {
 		// ignore anything different than HTTP 200
 		if (entry.status !== 200) {
@@ -71,6 +61,6 @@ exports.module = function(phantomas) {
 
 		phantomas.addNotice();
 
-		phantomas.setMetric('medianResponse', median(responseTimes));
+		phantomas.setMetric('medianResponse', phantomas.median(responseTimes));
 	});
 };

@@ -6,6 +6,8 @@ exports.version = '0.2';
 exports.module = function(phantomas) {
 	var domains = {};
 	phantomas.setMetric('domains');
+	phantomas.setMetric('maxRequestsPerDomain');
+	phantomas.setMetric('medianRequestsPerDomain');
 
 	phantomas.on('recv', function(entry,res) {
 		var domain = entry.domain;
@@ -27,7 +29,8 @@ exports.module = function(phantomas) {
 
 	// add metrics
 	phantomas.on('report', function() {
-		var domainsStats = [];
+		var domainsStats = [],
+			domainsRequests = [];
 
 		Object.keys(domains).forEach(function(domain) {
 			var cnt = domains[domain].requests.length;
@@ -36,13 +39,19 @@ exports.module = function(phantomas) {
 				name: domain,
 				cnt: cnt
 			});
+
+			domainsRequests.push(cnt);
 		});
 
 		domainsStats.sort(function(a, b) {
 			return (a.cnt > b.cnt) ? -1 : 1;
 		});
 
-		phantomas.setMetric('domains', domainsStats.length);
+		if (domainsStats.length > 0) {
+			phantomas.setMetric('domains', domainsStats.length);
+			phantomas.setMetric('maxRequestsPerDomain', domainsStats[0].cnt);
+			phantomas.setMetric('medianRequestsPerDomain', phantomas.median(domainsRequests));
+		}
 
 		phantomas.addNotice('Requests per domain:');
 		domainsStats.forEach(function(domain) {
