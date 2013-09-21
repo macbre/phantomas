@@ -286,6 +286,9 @@ phantomas.prototype = {
 		// add cookies, if any, providing a domain shim.
 		if (this.cookies && this.cookies.length > 0) {
 
+			// @see http://nodejs.org/docs/latest/api/url.html
+			var parseUrl = this.require('url').parse;
+
 			this.cookies.forEach(function(cookie) {
 
 				// phantomjs required attrs: *name, *value, *domain
@@ -294,14 +297,19 @@ phantomas.prototype = {
 				}
 
 				if (!cookie.domain) {
-					cookie.domain = params.url.replace(/(http(s)?:\/\/)+(www)?/, '');
+					var parsed = parseUrl(params.url),
+						root = parsed.hostname.replace(/^www/, ''); // strip www
+
+					cookie.domain = root;
 				}
 
 				if (!phantom.addCookie(cookie)) {
 					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
 				}
 
-			});
+				this.log('Cookie set: ' + JSON.stringify(cookie));
+
+			}, this /* scope */);
 		}
 
 
