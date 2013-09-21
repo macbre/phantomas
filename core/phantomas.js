@@ -161,6 +161,7 @@ phantomas.version = VERSION;
 phantomas.prototype = {
 	metrics: {},
 	notices: [],
+	errors: [],
 
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
@@ -210,6 +211,7 @@ phantomas.prototype = {
 
 			// debug
 			addNotice: function(msg) {self.addNotice(msg);},
+			addError: function(msg) {self.addError(msg);},
 			log: function(msg) {self.log(msg);},
 			echo: function(msg) {self.echo(msg);},
 
@@ -349,15 +351,16 @@ phantomas.prototype = {
 		this.page.onAlert = this.proxy(this.onAlert);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 		this.page.onCallback = this.proxy(this.onCallback);
+		this.page.onError = this.proxy(this.onError);
 
 		// observe HTTP requests
 		// finish when the last request is completed
-		
+
 		// update HTTP requests counter
 		this.on('send', this.proxy(function(entry) {
 			this.currentRequests++;
 		}));
-	
+
 		this.on('recv', this.proxy(function(entry) {
 			this.currentRequests--;
 
@@ -404,7 +407,8 @@ phantomas.prototype = {
 		var results = {
 			url: this.url,
 			metrics: this.metrics,
-			notices: this.notices
+			notices: this.notices,
+			errors: this.errors
 		};
 
 		this.emit('results', results);
@@ -545,6 +549,11 @@ phantomas.prototype = {
 		}
 	},
 
+	onError: function(msg, trace) {
+		this.log(msg);
+		this.emit('pageerror', msg, trace);
+	},
+
 	// metrics reporting
 	setMetric: function(name, value) {
 		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
@@ -576,6 +585,11 @@ phantomas.prototype = {
 	// adds a notice that will be emitted after results
 	addNotice: function(msg) {
 		this.notices.push(msg || '');
+	},
+
+	// adds an error, emitted after notices
+	addError: function(msg) {
+		this.errors.push(msg || '');
 	},
 
 	// add log message
