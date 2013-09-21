@@ -1,12 +1,11 @@
 /**
  * Domains monitor
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
-	// count requests per domain
-	var domains = {},
-		domainsCount = 0;
+	var domains = {};
+	phantomas.setMetric('domains');
 
 	phantomas.on('recv', function(entry,res) {
 		var domain = entry.domain;
@@ -18,8 +17,6 @@ exports.module = function(phantomas) {
 
 		// init domain entry
 		if (!domains[domain]) {
-			domainsCount++;
-
 			domains[domain] = {
 				requests: []
 			};
@@ -29,23 +26,28 @@ exports.module = function(phantomas) {
 	});
 
 	// add metrics
-	phantomas.on('loadFinished', function() {
-		//console.log(domains);
-		phantomas.setMetric('domains', domainsCount);
+	phantomas.on('report', function() {
+		var domainsStats = [];
+
+		Object.keys(domains).forEach(function(domain) {
+			var cnt = domains[domain].requests.length;
+
+			domainsStats.push({
+				name: domain,
+				cnt: cnt
+			});
+		});
+
+		domainsStats.sort(function(a, b) {
+			return (a.cnt > b.cnt) ? -1 : 1;
+		});
+
+		phantomas.setMetric('domains', domainsStats.length);
 
 		phantomas.addNotice('Requests per domain:');
-		for(var domain in domains) {
-			var entry = domains[domain],
-				requests = entry.requests;
-
-			// report URLs from each domain
-			phantomas.addNotice(' ' + domain + ': ' + requests.length + ' request(s)');
-			/**
-			requests.forEach(function(url) {
-				//phantomas.addNotice('   * ' + url);
-			});
-			**/
-		}
+		domainsStats.forEach(function(domain) {
+			phantomas.addNotice(' ' + domain.name + ': ' + domain.cnt + ' request(s)');
+		});
 		phantomas.addNotice();
 	});
 };
