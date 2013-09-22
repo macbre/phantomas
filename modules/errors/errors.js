@@ -14,16 +14,5 @@ exports.module = function(phantomas) {
 	phantomas.on('report', function() {
 		var len = errors.length || 0;
 		phantomas.setMetric('jsErrors', len);
-
-		if (len > 0) {
-			errors.forEach(function(e) {
-				phantomas.addJSError(e.msg);
-				e.trace.forEach(function(item) {
-					var fn = item.function || '(anonymous function)';
-					phantomas.addJSError(' ' + fn + ' ' + item.file + ':' + item.line);
-				});
-				phantomas.addJSError();
-			});
-		}
 	});
 };

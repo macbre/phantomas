@@ -211,7 +211,6 @@ phantomas.prototype = {
 
 			// debug
 			addNotice: function(msg) {self.addNotice(msg);},
-			addJSError: function(msg) {self.addJSError(msg);},
 			log: function(msg) {self.log(msg);},
 			echo: function(msg) {self.echo(msg);},
 
@@ -585,11 +584,6 @@ phantomas.prototype = {
 	// adds a notice that will be emitted after results
 	addNotice: function(msg) {
 		this.notices.push(msg || '');
-	},
-
-	// adds an error, emitted after notices
-	addJSError: function(msg) {
-		this.jsErrors.push(msg || '');
 	},
 
 	// add log message
