@@ -551,7 +551,7 @@ phantomas.prototype = {
 
 	onError: function(msg, trace) {
 		this.log(msg);
-		this.emit('pageerror', msg, trace);
+		this.emit('jserror', msg, trace);
 	},
 
 	// metrics reporting

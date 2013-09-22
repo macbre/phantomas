@@ -7,7 +7,7 @@ exports.version = '0.1';
 exports.module = function(phantomas) {
 	var errors = [];
 
-	phantomas.on('pageerror', function(msg, trace) {
+	phantomas.on('jserror', function(msg, trace) {
 		errors.push({"msg":msg, "trace":trace});
 	});
 
