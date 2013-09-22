@@ -237,11 +237,15 @@ exports.module = function(phantomas) {
 	});
 
 	// TTFB / TTLB metrics
+	var ttfbMeasured = false;
+
 	phantomas.on('recv', function(entry, res) {
-		// check the first request
-		if (entry.id === 1) {
+		// check the first response which is not a redirect (issue #74)
+		if (!ttfbMeasured && !entry.isRedirect) {
 			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte);
 			phantomas.setMetric('timeToLastByte', entry.timeToLastByte);
+
+			ttfbMeasured = true;
 		}
 
 		// completion of the last HTTP request
