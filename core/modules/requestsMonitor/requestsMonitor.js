@@ -122,15 +122,16 @@ exports.module = function(phantomas) {
 				// HTTP code
 				entry.status = res.status || 200 /* for base64 data */;
 				entry.statusText = HTTP_STATUS_CODES[entry.status];
+				entry.isRedirect = typeof res.redirectURL === 'string';
 
 				switch(entry.status) {
-					case 301:
-					case 302:
+					case 301: // Moved Permanently
+					case 302: // Found
 						phantomas.incrMetric('redirects');
-						phantomas.addNotice('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ')');
+						phantomas.addNotice('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') to <' + res.redirectURL + '>');
 						break;
 
-					case 404:
+					case 404: // Not Found
 						phantomas.incrMetric('notFound');
 						phantomas.addNotice('HTTP 404: <' + entry.url + '> was not found (HTTP 404)');
 						break;
