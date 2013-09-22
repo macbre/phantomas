@@ -55,7 +55,7 @@ module.exports = function(results, format) {
 				// color labels
 				replace(/^[^ <][^:<]+:/, colors.brightGreen).
 				// color URLs
-				replace(/<[^>]+>/, colors.brightBlue);
+				replace(/<[^>]+>/g, colors.brightBlue);
 
 			// add a notice
 			res += msg + "\n";
