@@ -17,13 +17,17 @@ exports.module = function(phantomas) {
 				phantomas.spyEnabled(false, 'installing window.performance metrics');
 
 				document.addEventListener("DOMContentLoaded", function() {
-					phantomas.setMetric('onDOMReadyTime', Date.now() - start);
-					phantomas.log('onDOMready');
+					var time = Date.now() - start;
+
+					phantomas.setMetric('onDOMReadyTime', time);
+					phantomas.log('onDOMready: ' + time + ' ms');
 				}, false);
 
 				window.addEventListener("load", function() {
-					phantomas.setMetric('windowOnLoadTime', Date.now() - start);
-					phantomas.log('window.onload');
+					var time = Date.now() - start;
+
+					phantomas.setMetric('windowOnLoadTime', time);
+					phantomas.log('window.onload: ' + time + ' ms');
 				}, false);
 
 				phantomas.spyEnabled(true);
