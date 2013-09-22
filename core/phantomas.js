@@ -161,6 +161,7 @@ phantomas.version = VERSION;
 phantomas.prototype = {
 	metrics: {},
 	notices: [],
+	jsErrors: [],
 
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
@@ -351,15 +352,16 @@ phantomas.prototype = {
 		this.page.onPrompt = this.proxy(this.onPrompt);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 		this.page.onCallback = this.proxy(this.onCallback);
+		this.page.onError = this.proxy(this.onError);
 
 		// observe HTTP requests
 		// finish when the last request is completed
-		
+
 		// update HTTP requests counter
 		this.on('send', this.proxy(function(entry) {
 			this.currentRequests++;
 		}));
-	
+
 		this.on('recv', this.proxy(function(entry) {
 			this.currentRequests--;
 
@@ -406,7 +408,8 @@ phantomas.prototype = {
 		var results = {
 			url: this.url,
 			metrics: this.metrics,
-			notices: this.notices
+			notices: this.notices,
+			jsErrors: this.jsErrors
 		};
 
 		this.emit('results', results);
@@ -555,6 +558,11 @@ phantomas.prototype = {
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
 				this.emit('message', msg);
 		}
+	},
+
+	onError: function(msg, trace) {
+		this.log(msg);
+		this.emit('jserror', msg, trace);
 	},
 
 	// metrics reporting
