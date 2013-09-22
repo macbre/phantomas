@@ -13,16 +13,16 @@ exports.module = function(phantomas) {
 
 	phantomas.on('report', function() {
 		var len = errors.length || 0;
-		phantomas.setMetric('errors', len);
+		phantomas.setMetric('jsErrors', len);
 
 		if (len > 0) {
 			errors.forEach(function(e) {
-				phantomas.addError(e.msg);
+				phantomas.addJSError(e.msg);
 				e.trace.forEach(function(item) {
 					var fn = item.function || '(anonymous function)';
-					phantomas.addError(' ' + fn + ' ' + item.file + ':' + item.line);
+					phantomas.addJSError(' ' + fn + ' ' + item.file + ':' + item.line);
 				});
-				phantomas.addError();
+				phantomas.addJSError();
 			});
 		}
 	});

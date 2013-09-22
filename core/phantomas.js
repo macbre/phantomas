@@ -161,7 +161,7 @@ phantomas.version = VERSION;
 phantomas.prototype = {
 	metrics: {},
 	notices: [],
-	errors: [],
+	jsErrors: [],
 
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
@@ -211,7 +211,7 @@ phantomas.prototype = {
 
 			// debug
 			addNotice: function(msg) {self.addNotice(msg);},
-			addError: function(msg) {self.addError(msg);},
+			addJSError: function(msg) {self.addJSError(msg);},
 			log: function(msg) {self.log(msg);},
 			echo: function(msg) {self.echo(msg);},
 
@@ -408,7 +408,7 @@ phantomas.prototype = {
 			url: this.url,
 			metrics: this.metrics,
 			notices: this.notices,
-			errors: this.errors
+			jsErrors: this.jsErrors
 		};
 
 		this.emit('results', results);
@@ -588,8 +588,8 @@ phantomas.prototype = {
 	},
 
 	// adds an error, emitted after notices
-	addError: function(msg) {
-		this.errors.push(msg || '');
+	addJSError: function(msg) {
+		this.jsErrors.push(msg || '');
 	},
 
 	// add log message
