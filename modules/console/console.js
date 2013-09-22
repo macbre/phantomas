@@ -13,13 +13,5 @@ exports.module = function(phantomas) {
 
 	phantomas.on('report', function() {
 		phantomas.setMetric('consoleMessages', cmsgs.length);
-
-		if (cmsgs.length > 0) {
-			phantomas.addNotice('Console Messages (' + cmsgs.length + '):');
-			cmsgs.forEach(function(msg) {
-				phantomas.addNotice(' ' + msg);
-			});
-			phantomas.addNotice();
-		}
 	});
 };
