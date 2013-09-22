@@ -107,7 +107,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 84_
+_Current number of metrics: 88_
 
 Units:
 
@@ -181,6 +181,10 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * onDOMReadyTime: 204
 * windowOnLoadTime: 5526
 * httpTrafficCompleted: 7089
+* windowAlerts: 0
+* windowConfirms: 0
+* windowPrompts: 0
+* consoleMessages: 0
 * cookiesSent: 0
 * cookiesRecv: 492
 * domainsWithCookies: 2
@@ -347,6 +351,13 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 ### JavaScript errors
 
 * jsErrors: number of JavaScript errors
+
+### JavaScript console and alert
+
+* windowAlerts: number of calls to ``alert``
+* windowConfirms: number of calls to ``confirm``
+* windowPrompts: number of calls to ``prompt``
+* consoleMessages: number of calls to ``console.*`` functions
 
 ## Debug logs and notices
 
