@@ -34,7 +34,7 @@ module.exports = function(logFile, params) {
 			var consoleMsg = msg;
 
 			// error!
-			if (/!$/.test(consoleMsg)) {
+			if (/!$/.test(consoleMsg) || /Error:/.test(consoleMsg)) {
 				consoleMsg = colors.brightRed(consoleMsg);
 			}
 			// label: message
