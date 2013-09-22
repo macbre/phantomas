@@ -26,20 +26,5 @@ exports.module = function(phantomas) {
 		phantomas.setMetric('windowAlerts', alerts.length);
 		phantomas.setMetric('windowConfirms', confirms.length);
 		phantomas.setMetric('windowPrompts', prompts.length);
-
-		notifyWhenPresent(alerts, 'alert');
-		notifyWhenPresent(confirms, 'confirm');
-		notifyWhenPresent(prompts, 'prompt');
 	});
-
-	function notifyWhenPresent(array, nameOfWindowFn) {
-		var len = array.length;
-		if (len > 0) {
-			phantomas.addNotice('window.' + nameOfWindowFn + ' (' + len + '):');
-			array.forEach(function(msg) {
-				phantomas.addNotice(' ' + msg);
-			});
-			phantomas.addNotice(); // Extra Line
-		}
-	}
 };
