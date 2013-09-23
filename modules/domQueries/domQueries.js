@@ -81,6 +81,7 @@ exports.module = function(phantomas) {
 		var DOMqueries = phantomas.getFromScope('DOMqueries') || {},
 			queries = [];
 
+		// TODO: implement phantomas.collection
 		Object.keys(DOMqueries).forEach(function(query) {
 			var cnt = DOMqueries[query];
 
