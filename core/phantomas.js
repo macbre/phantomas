@@ -206,6 +206,7 @@ phantomas.prototype = {
 			setMetric: function() {self.setMetric.apply(self, arguments);},
 			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
 			setMetricFromScope: function() {self.setMetricFromScope.apply(self, arguments);},
+			getFromScope: function() {return self.getFromScope.apply(self, arguments);},
 			incrMetric: function() {self.incrMetric.apply(self, arguments);},
 			getMetric: function() {return self.getMetric.apply(self, arguments);},
 
@@ -582,6 +583,13 @@ phantomas.prototype = {
 		this.setMetric(name, this.page.evaluate(function(key) {
 			return window.__phantomas.get(key) || 0;
 		}, key));
+	},
+
+	// get a value set using window.__phantomas browser scope
+	getFromScope: function(key) {
+		return this.page.evaluate(function(key) {
+			return window.__phantomas.get(key);
+		}, key);
 	},
 
 	// increements given metric by given number (default is one)
