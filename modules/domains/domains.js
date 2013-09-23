@@ -32,6 +32,7 @@ exports.module = function(phantomas) {
 		var domainsStats = [],
 			domainsRequests = [];
 
+		// TODO: implement phantomas.collection
 		Object.keys(domains).forEach(function(domain) {
 			var cnt = domains[domain].requests.length;
 
