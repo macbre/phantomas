@@ -15,6 +15,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('requests');
 	phantomas.setMetric('gzipRequests');
 	phantomas.setMetric('postRequests');
+	phantomas.setMetric('httpsRequests');
 	phantomas.setMetric('redirects');
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
@@ -239,6 +240,10 @@ exports.module = function(phantomas) {
 
 				if (entry.gzip) {
 					phantomas.incrMetric('gzipRequests');
+				}
+
+				if (entry.isSSL) {
+					phantomas.incrMetric('httpsRequests');
 				}
 
 				// emit an event for other modules

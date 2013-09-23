@@ -107,7 +107,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 88_
+_Current number of metrics: 89_
 
 Units:
 
@@ -122,6 +122,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * requests: 15
 * gzipRequests: 8
 * postRequests: 0
+* httpsRequests: 15
 * redirects: 1
 * notFound: 0
 * timeToFirstByte: 722
@@ -214,6 +215,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * requests: total number of HTTP requests made
 * gzipRequests: number of gzipped HTTP responses
 * postRequests: number of POST requests
+* httpsRequests: number of HTTPS requests
 * redirects: number of HTTP redirects (either 301 or 302)
 * notFound: number of HTTP 404 responses
 * timeToFirstByte: time it took to receive the first byte of the first response
@@ -446,8 +448,8 @@ CSS analyzer provides the following metrics:
 * complexSelectors: number of complex selectors (consisting of three or more parts)
 * qualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
 * oldIEFixes: hacky fixes for old versions of Internet Explorer including:
-** number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
-** number of selectors starting with `* html` (hacky fix for IE6 and below)
+ * number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
+ * number of selectors starting with `* html` (hacky fix for IE6 and below)
 * selectorsByTag: number of selectors by tag name
 * selectorsByWildcard: number of selectors matching all tags (`nav *`)
 * selectorsByClass: number of selectors by class
