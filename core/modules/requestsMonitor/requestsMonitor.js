@@ -8,7 +8,8 @@ exports.module = function(phantomas) {
 	var HTTP_STATUS_CODES = phantomas.require('http').STATUS_CODES,
 		parseUrl = phantomas.require('url').parse;
 
-	var requests = [];
+	var requests = [],
+		notices = [];
 
 	// register metric
 	phantomas.setMetric('requests');
@@ -128,12 +129,12 @@ exports.module = function(phantomas) {
 					case 301: // Moved Permanently
 					case 302: // Found
 						phantomas.incrMetric('redirects');
-						phantomas.addNotice('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') to <' + res.redirectURL + '>');
+						notices.push('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') to <' + res.redirectURL + '>');
 						break;
 
 					case 404: // Not Found
 						phantomas.incrMetric('notFound');
-						phantomas.addNotice('HTTP 404: <' + entry.url + '> was not found (HTTP 404)');
+						notices.push('Not found: <' + entry.url + '> returned HTTP 404');
 						break;
 				}
 
@@ -250,5 +251,14 @@ exports.module = function(phantomas) {
 
 		// completion of the last HTTP request
 		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - start);
+	});
+
+	phantomas.on('report', function() {
+		if (notices.length === 0) {
+			return;
+		}
+
+		notices.forEach(phantomas.addNotice);
+		phantomas.addNotice();
 	});
 };
