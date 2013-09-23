@@ -1,7 +1,7 @@
 /**
  * Analyzes DOM queries done via native DOM methods
  */
-exports.version = '0.4';
+exports.version = '0.5';
 
 exports.module = function(phantomas) {
         phantomas.setMetric('DOMqueries');
@@ -10,6 +10,7 @@ exports.module = function(phantomas) {
         phantomas.setMetric('DOMqueriesByTagName');
         phantomas.setMetric('DOMqueriesByQuerySelectorAll');
         phantomas.setMetric('DOMinserts');
+        phantomas.setMetric('DOMqueriesDuplicated');
 
 	// fake native DOM functions
 	phantomas.once('init', function() {
@@ -17,9 +18,20 @@ exports.module = function(phantomas) {
 			(function(phantomas) {
 				// count DOM queries by either ID, tag name, class name and selector query
 				// @see https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-doctype
+				var DOMqueries = {};
+				phantomas.set('DOMqueries', DOMqueries);
+
 				function querySpy(type, query) {
 					phantomas.log('DOM query: by ' + type + ' "' + query + '"');
 					phantomas.incrMetric('DOMqueries');
+
+					// detect duplicates
+					var key = type + ' "' + query + '"';
+					if (typeof DOMqueries[key] === 'undefined')  {
+						DOMqueries[key] = 0;
+					}
+
+					DOMqueries[key]++;
 				}
 
 				phantomas.spy(Document.prototype, 'getElementById', function(id) {
@@ -63,5 +75,35 @@ exports.module = function(phantomas) {
 				phantomas.spy(Node.prototype, 'insertBefore', appendSpy);
 			})(window.__phantomas);
 		});
+	});
+
+	phantomas.on('report', function() {
+		var DOMqueries = phantomas.getFromScope('DOMqueries') || {},
+			queries = [];
+
+		// TODO: implement phantomas.collection
+		Object.keys(DOMqueries).forEach(function(query) {
+			var cnt = DOMqueries[query];
+
+			if (cnt > 1) {
+				phantomas.incrMetric('DOMqueriesDuplicated');
+				queries.push({
+					query: query,
+					cnt: cnt
+				});
+			}
+		});
+
+		queries.sort(function(a, b) {
+			return (a.cnt > b.cnt) ? -1 : 1;
+		});
+
+		if (queries.length > 0) {
+			phantomas.addNotice('Duplicated DOM queries (' + queries.length + '):');
+			queries.forEach(function(query) {
+				phantomas.addNotice(' ' + query.query + ': ' + query.cnt + ' queries');
+			});
+			phantomas.addNotice();
+		}
 	});
 };
