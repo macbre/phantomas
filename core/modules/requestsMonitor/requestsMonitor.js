@@ -71,24 +71,35 @@ exports.module = function(phantomas) {
 
 		res.headers.forEach(function(header) {
 			entry.requestHeaders[header.name] = header.value;
+
+			switch (header.name.toLowerCase()) {
+				// AJAX requests
+				case 'x-requested-with':
+					if (header.value === 'XMLHttpRequest') {
+						entry.isAjax = true;
+					}
+					break;
+			}
 		});
 
 		parseEntryUrl(entry);
 
-		if (!entry.isBase64) {
-			// give modules a chance to block requests using entry.block()
-			// @see https://github.com/ariya/phantomjs/issues/10230
-			phantomas.emit('beforeSend', entry, res);
-
-			if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
-				phantomas.log('Blocked request: <' + entry.url + '>');
-				request.abort();
-				return;
-			}
-
-			// proceed
-			phantomas.emit('send', entry, res);
+		if (entry.isBase64) {
+			return;
 		}
+
+		// give modules a chance to block requests using entry.block()
+		// @see https://github.com/ariya/phantomjs/issues/10230
+		phantomas.emit('beforeSend', entry, res);
+
+		if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
+			phantomas.log('Blocked request: <' + entry.url + '>');
+			request.abort();
+			return;
+		}
+
+		// proceed
+		phantomas.emit('send', entry, res);
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
