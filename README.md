@@ -107,7 +107,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 89_
+_Current number of metrics: 90_
 
 Units:
 
@@ -160,6 +160,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * DOMqueriesByTagName: 21
 * DOMqueriesByQuerySelectorAll: 0
 * DOMinserts: 16
+* DOMqueriesDuplicated: 10
 * eventsBound: 119
 * headersCount: 264
 * headersSentCount: 44
@@ -298,6 +299,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * DOMqueriesByTagName: number of `document.getElementsByTagName` calls
 * DOMqueriesByQuerySelectorAll: number of `document.querySelectorAll` calls
 * DOMinserts: number of DOM nodes inserts
+* DOMqueriesDuplicated: number of duplicated DOM queries
 
 ### Event listeners
 
