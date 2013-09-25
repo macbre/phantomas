@@ -3,9 +3,10 @@ phantomas
 
 ![GitHub Logo](http://upload.wikimedia.org/wikipedia/en/a/a5/Fantomas.jpg)
 
-PhantomJS-based modular web performance metrics collector.
+PhantomJS-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
-And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
+[![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
+[![Build Status](https://secure.travis-ci.org/macbre/phantomas.png)](http://travis-ci.org/macbre/phantomas)
 
 ## Requirements
 
@@ -14,14 +15,11 @@ And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Installation
 
-[![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
-
-
 ```
 npm install --global phantomas
 ```
 
-This will add a symlink called ``phantomas`` (pointing to ``./phantomas.js``) to your system's ``PATH``
+> This will add a symlink called ``phantomas`` (pointing to ``./phantomas.js``) to your system's ``PATH``
 
 ## Dependencies
 
