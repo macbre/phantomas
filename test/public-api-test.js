@@ -25,7 +25,7 @@ mockery.enable({
 
 // helper
 function getPhantomasAPI(params) {
-	var instance = new phantomas(params);
+	var instance = new phantomas(params || {});
 	return instance.getPublicWrapper();
 }
 
@@ -65,6 +65,31 @@ vows.describe('phantomas public API').addBatch({
 			methods.forEach(function(method) {
 				assert.equal(typeof api[method], 'function');
 			});
+		}
+	},
+	'events are processed': {
+		topic: getPhantomasAPI,
+		'event is triggered': function(api) {
+			var triggered;
+
+			api.on('foo', function() {
+				triggered = true;
+			});
+			api.emit('foo');
+
+			assert.isTrue(triggered);
+		},
+		'params are passed': function(api) {
+			var a, b;
+
+			api.on('foo', function(valA, valB) {
+				a = valA;
+				b = valB;
+			});
+			api.emit('foo', 123, 456);
+
+			assert.equal(a, 123);
+			assert.equal(b, 456);
 		}
 	}
 }).export(module);
