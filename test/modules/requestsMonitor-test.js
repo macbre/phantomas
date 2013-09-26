@@ -49,7 +49,7 @@ function recvContentType(contentType) {
 function assertField(name, value) {
 	return function(entry) {
 		assert.equal(entry[name], value);
-	}
+	};
 }
 
 vows.describe('requestMonitor').addBatch({

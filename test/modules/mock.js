@@ -7,7 +7,7 @@ var phantomas = function() {
 	this.emitter = new (require('events').EventEmitter)();
 	this.wasEmitted = {};
 	this.metrics = [];
-}
+};
 
 phantomas.prototype = {
 	require: function(name) {
@@ -96,9 +96,11 @@ phantomas.prototype = {
 };
 
 function initCoreModule(name) {
+	var instance, def;
+
 	try {
-		var instance = new phantomas(),
-			def = require('../../core/modules/' + name + '/' + name + '.js');
+		instance = new phantomas();
+		def = require('../../core/modules/' + name + '/' + name + '.js');
 
 		new (def.module)(instance);
 	}
@@ -116,6 +118,6 @@ module.exports = {
 
 		return function(phantomas) {
 			phantomas.hasValue(name, value);
-		}
+		};
 	}
 };
