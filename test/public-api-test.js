@@ -91,5 +91,34 @@ vows.describe('phantomas public API').addBatch({
 			assert.equal(a, 123);
 			assert.equal(b, 456);
 		}
+	},
+	'metrics': {
+		topic: getPhantomasAPI,
+		'have default value': function(api) {
+			assert.equal(typeof api.getMetric('undef'), 'undefined');
+		},
+		'are set': function(api) {
+			api.setMetric('foo', 123);
+			assert.equal(api.getMetric('foo'), 123);
+		},
+		'are properly incremented': function(api) {
+			api.incrMetric('bar');
+			assert.equal(api.getMetric('bar'), 1);
+
+			api.incrMetric('bar', 3);
+			assert.equal(api.getMetric('bar'), 4);
+		}
+	},
+	'parameters': {
+		topic: function() {
+			return getPhantomasAPI({
+				foo: 123,
+				bar: 'abc'
+			});
+		},
+		'params are accessible': function(api) {
+			assert.equal(api.getParam('foo'), 123);
+			assert.equal(api.getParam('bar'), 'abc');
+		},
 	}
 }).export(module);
