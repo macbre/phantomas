@@ -1,14 +1,15 @@
 /**
  * Defines phantomas global API mock
  */
-var emitter = new (require('events').EventEmitter)();
-var emitted = {};
-
-var metrics = [];
-
 var noop = function() {};
 
-var phantomas = {
+var phantomas = function() {
+	this.emitter = new (require('events').EventEmitter)();
+	this.wasEmitted = {};
+	this.metrics = [];
+}
+
+phantomas.prototype = {
 	require: function(name) {
 		return require(name);
 	},
@@ -17,32 +18,32 @@ var phantomas = {
 
 	// events
 	emit: function(/* eventName, arg1, arg2, ... */) { //console.log('emit: ' + arguments[0]);
-		emitter.emit.apply(emitter, arguments);
-		emitted[arguments[0]] = true;
+		this.emitter.emit.apply(this.emitter, arguments);
+		this.wasEmitted[arguments[0]] = true;
 	},
 	on: function(ev, fn) { //console.log('on: ' + ev);
-		emitter.on(ev, fn);
+		this.emitter.on(ev, fn);
 	},
 	once: function(ev, fn) {
-		emitter.once(ev, fn);
+		this.emitter.once(ev, fn);
 	},
 
 	emitted: function(ev) {
-		return emitted[ev] === true;
+		return this.wasEmitted[ev] === true;
 	},
 
 	// metrics
 	setMetric: function(name, value) {
-		metrics[name] = (typeof value !== 'undefined') ? value : 0;
+		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
 	},
 	setMetricEvaluate: noop,
 	setMetricFromScope: noop,
 	getFromScope: noop,
 	incrMetric: function(name, incr /* =1 */) {
-		metrics[name] = (metrics[name] || 0) + (incr || 1);
+		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
 	},
 	getMetric: function(name) {
-		return metrics[name];
+		return this.metrics[name];
 	},
 	hasValue: function(name, val) {
 		return this.getMetric(name) === val;
@@ -57,15 +58,31 @@ var phantomas = {
 		req.headers = req.headers || [];
 
 		try {
-			emitter.emit('onResourceRequested', req);
+			this.emitter.emit('onResourceRequested', req, {abort: noop});
 		}
 		catch(ex) {
 			console.log(ex);
 		}
+
+		return this;
 	},
 	recvRequest: function(req) {
 		req = req || {};
-		emitter.emit('onResourceReceived', req);
+		req.stage = req.stage || 'end';
+		req.id = req.id || 1;
+		req.method = req.method || 'GET';
+		req.url = req.url || 'http://example.com';
+		req.headers = req.headers || [];
+
+		try {
+			this.emitter.emit('onResourceRequested', req);
+			this.emitter.emit('onResourceReceived', req);
+		}
+		catch(ex) {
+			console.log(ex);
+		}
+
+		return this;
 	},
 
 	// noop mocks
@@ -80,17 +97,25 @@ var phantomas = {
 
 function initCoreModule(name) {
 	try {
-		var def = require('../../core/modules/' + name + '/' + name + '.js');
-		var instance = new (def.module)(phantomas);
+		var instance = new phantomas(),
+			def = require('../../core/modules/' + name + '/' + name + '.js');
+
+		new (def.module)(instance);
 	}
 	catch(ex) {
 		console.log(ex);
 	}
 
-	return phantomas;
+	return instance;
 }
 
 module.exports = {
-	phantomas: phantomas,
-	initCoreModule: initCoreModule
+	initCoreModule: initCoreModule,
+	assertMetric: function(name, value) {
+		value = value || 1;
+
+		return function(phantomas) {
+			phantomas.hasValue(name, value);
+		}
+	}
 };
