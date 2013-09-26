@@ -1,7 +1,6 @@
 /**
  * Test requestsMonitor core module
  */
-
 var vows = require('vows'),
 	assert = require('assert'),
 	mock = require('./mock');

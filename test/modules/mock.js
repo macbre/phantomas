@@ -18,8 +18,15 @@ phantomas.prototype = {
 
 	// events
 	emit: function(/* eventName, arg1, arg2, ... */) { //console.log('emit: ' + arguments[0]);
-		this.emitter.emit.apply(this.emitter, arguments);
+		try {
+			this.emitter.emit.apply(this.emitter, arguments);
+		}
+		catch(ex) {
+			console.log(ex);
+		}
+
 		this.wasEmitted[arguments[0]] = true;
+		return this;
 	},
 	on: function(ev, fn) { //console.log('on: ' + ev);
 		this.emitter.on(ev, fn);
@@ -85,6 +92,19 @@ phantomas.prototype = {
 		return this;
 	},
 
+	// phantomas-specific events
+	send: function(entry, res) {
+		return this.emit('send', entry || {}, res || {});
+	},
+
+	recv: function(entry, res) {
+		return this.emit('recv', entry || {}, res || {});
+	},
+
+	report: function() {
+		return this.emit('report');
+	},
+
 	// noop mocks
 	addNotice: noop,
 	log: noop,
@@ -95,12 +115,12 @@ phantomas.prototype = {
 	median: noop,
 };
 
-function initCoreModule(name) {
+function _initModule(name, isCore) {
 	var instance, def;
 
 	try {
 		instance = new phantomas();
-		def = require('../../core/modules/' + name + '/' + name + '.js');
+		def = require('../../' + (isCore ? 'core/modules' : 'modules') + '/' + name + '/' + name + '.js');
 
 		new (def.module)(instance);
 	}
@@ -109,9 +129,19 @@ function initCoreModule(name) {
 	}
 
 	return instance;
+
+}
+
+function initCoreModule(name) {
+	return _initModule(name, true);
+}
+
+function initModule(name) {
+	return _initModule(name);
 }
 
 module.exports = {
+	initModule: initModule,
 	initCoreModule: initCoreModule,
 	assertMetric: function(name, value) {
 		value = value || 1;
