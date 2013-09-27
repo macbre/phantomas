@@ -105,7 +105,7 @@ exports.module = function(phantomas) {
 
 	phantomas.on('onResourceReceived', function(res) {
 		// current request data
-		var entry = requests[res.id];
+		var entry = requests[res.id] || {};
 
 		switch(res.stage) {
 			// the beginning of response

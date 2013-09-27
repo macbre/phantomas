@@ -30,13 +30,16 @@
     "slick": "1.0"
   },
   "devDependencies": [
-    "jshint"
+    "jshint",
+    "mockery",
+    "vows"
   ],
   "optionalDependencies": {},
   "bin": "./phantomas.js",
   "preferGlobal": true,
   "scripts": {
-    "lint": "jshint --verbose core/ modules/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
+    "test": "vows --spec",
+    "lint": "jshint --verbose core/ modules/ test/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
   },
   "jshintConfig": {
     "node": true,

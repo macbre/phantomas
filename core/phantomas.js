@@ -127,7 +127,9 @@ var phantomas = function(params) {
 	});
 
 	// report version and installation directory
-	this.log('phantomas v' + VERSION + ' installed in ' + module.dirname.replace(/core$/, ''));
+	if (typeof module.dirname !== 'undefined') {
+		this.log('phantomas v' + VERSION + ' installed in ' + module.dirname.replace(/core$/, ''));
+	}
 
 	// report config file being used
 	if (params.config) {
