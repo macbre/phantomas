@@ -115,7 +115,7 @@ phantomas.prototype = {
 	median: noop,
 };
 
-function _initModule(name, isCore) {
+function initModule(name, isCore) {
 	var instance, def;
 
 	try {
@@ -129,25 +129,41 @@ function _initModule(name, isCore) {
 	}
 
 	return instance;
-
 }
 
-function initCoreModule(name) {
-	return _initModule(name, true);
-}
+function assertMetric(name, value) {
+	value = value || 1;
 
-function initModule(name) {
-	return _initModule(name);
+	return function(phantomas) {
+		phantomas.hasValue(name, value);
+	};
 }
 
 module.exports = {
-	initModule: initModule,
-	initCoreModule: initCoreModule,
-	assertMetric: function(name, value) {
-		value = value || 1;
+	initModule: function(name) {
+		return initModule(name);
+	},
+	initCoreModule: function(name) {
+		return initModule(name, true /* core */);
+	},
 
-		return function(phantomas) {
-			phantomas.hasValue(name, value);
+	assertMetric: assertMetric,
+
+	getContext: function(moduleName, topic, metricsCheck) {
+		var phantomas = initModule(moduleName),
+			context;
+
+		context = {
+			topic: function() {
+				return topic(phantomas);
+			}
 		};
+
+		Object.keys(metricsCheck || {}).forEach(function(name) {
+			var check = 'sets "' + name + '" metric correctly';
+			context[check] = assertMetric(name, metricsCheck[name]);
+		});
+
+		return context;
 	}
 };
