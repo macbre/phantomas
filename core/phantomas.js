@@ -107,10 +107,11 @@ var phantomas = function(params) {
 		this.cookies.push(cookie);
 	}
 
-
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
+
+	this.util = this.require('util');
 
 	this.page = require('webpage').create();
 
@@ -522,7 +523,11 @@ phantomas.prototype = {
 		this.emit('prompt', msg);
 	},
 
-	onConsoleMessage: function(msg) {
+	onConsoleMessage: function(args) {
+		// console.log arguments are passed as JSON-encoded array
+		var data = JSON.parse(args),
+			msg = data[0];
+
 		// parse JSON-encoded messages from browser's scope sendMsg()
 		if (msg.indexOf('msg:{"') === 0) {
 			msg = decodeURI(msg.substring(4)); // strip the prefix
@@ -535,8 +540,10 @@ phantomas.prototype = {
 			return;
 		}
 
+		msg = this.util.format.apply(this, data);
+
 		this.log('console.log: ' + msg);
-		this.emit('consoleLog', msg);
+		this.emit('consoleLog', msg, data);
 	},
 
 	// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
