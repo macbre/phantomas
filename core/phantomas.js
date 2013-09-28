@@ -145,7 +145,8 @@ var phantomas = function(params) {
 
 	// report version and installation directory
 	if (typeof module.dirname !== 'undefined') {
-		this.log('phantomas v' + VERSION + ' installed in ' + module.dirname.replace(/core$/, ''));
+		this.dir = module.dirname.replace(/core$/, '');
+		this.log('phantomas v' + VERSION + ' installed in ' + this.dir);
 	}
 
 	// report config file being used
@@ -238,7 +239,8 @@ phantomas.prototype = {
 			require: this.require.bind(this),
 
 			// utils
-			median: this.median.bind(this)
+			median: this.median.bind(this),
+			runScript: this.runScript.bind(this)
 		};
 	},
 
@@ -654,6 +656,52 @@ phantomas.prototype = {
 		});
 
 		return (arr.length % 2) ? arr[half] : ((arr[half-1] + arr[half]) / 2.0);
+	},
+
+	// run a given helper script from phantomas main directory
+	// and tries to parse it's output (assumes JSON formatted output)
+	runScript: function(script, args, callback) {
+		var execFile = require("child_process").execFile,
+			time = Date.now(),
+			self = this,
+			pid,
+			ctx;
+
+		if (typeof args === 'function') {
+			callback = args;
+		}
+
+		// format a command
+		// @see https://github.com/ariya/phantomjs/blob/master/examples/child_process-examples.js
+		args = [
+			'node',
+			this.dir + script,
+		].concat(
+			Array.isArray(args) ? args : []
+		);
+
+		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
+		// execFile(file, args, options, callback)
+		ctx = execFile('/usr/bin/env', args, null, function (err, stdout, stderr) {
+			if (err) {
+				self.log('runScript: pid #%d failed %s (%s)', pid, err, stderr);
+				return;
+			}
+
+			self.log('runScript: pid #%d done in %d ms', pid, Date.now() - time);
+
+			// (try to) parse JSON-encoded output
+			try {
+				callback(null, JSON.parse(stdout));
+			}
+			catch(ex) {
+				callback(stderr, stdout);
+			}
+		});
+
+		pid = ctx.pid;
+
+		this.log('runScript: %s (pid #%d)', args.join(' '), pid);
 	}
 };
 
