@@ -1,5 +1,7 @@
 /**
- * Runs analyze-css helper script and add CSS related metrics
+ * Runs analyze-css helper script and adds CSS related metrics
+ *
+ * Run phantomas with --analyze-css option to use this module
  */
 exports.version = '0.1';
 

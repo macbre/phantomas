@@ -658,8 +658,8 @@ phantomas.prototype = {
 		return (arr.length % 2) ? arr[half] : ((arr[half-1] + arr[half]) / 2.0);
 	},
 
-	// run a given helper script from phantomas main directory
-	// and tries to parse it's output (assumes JSON formatted output)
+	// runs a given helper script from phantomas main directory
+	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
 			time = Date.now(),
