@@ -29,7 +29,7 @@ function analyzeCss(css) {
 
 	// initialize stats
 	results = {
-		cssLength: css.length,
+		length: css.length,
 		selectorsTotal: 0,
 		selectorsPartsTotal: 0,
 		declarationsTotal: 0,

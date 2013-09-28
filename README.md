@@ -416,7 +416,7 @@ phantomas comes with nodejs script that can analyze the complexity of CSS styles
 ./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --json
 ```
 ```json
-{"cssLength":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"oldIEFixes":0,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
+{"length":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"oldIEFixes":0,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
 ```
 
 will emit CSS metrics as JSON-encoded object that you can easily plug into your monitoring tools.
@@ -441,7 +441,7 @@ Run `./analyze-css.js --help` to get the list of supported parameters.
 
 CSS analyzer provides the following metrics:
 
-* cssLength: length of analyzed CSS file (including comments and whitespaces)
+* length: length of analyzed CSS file (including comments and whitespaces)
 * selectorsTotal: total number of selectors (`.foo, .bar` counts as two)
 * selectorsPartsTotal: total number of selectors parts (`ul > .bar > a` counts as three)
 * declarationsTotal: total number of properties defined in CSS file
