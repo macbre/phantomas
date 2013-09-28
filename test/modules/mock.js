@@ -111,7 +111,6 @@ phantomas.prototype = {
 	echo: noop,
 	evaluate: noop,
 	injectJs: noop,
-	getPageContent: noop,
 	median: noop,
 };
 

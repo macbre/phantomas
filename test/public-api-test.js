@@ -17,7 +17,12 @@ mockery.registerMock('system', {
 	os: {}
 });
 mockery.registerMock('webpage', {
-	create: function() {}
+	create: function() {
+		return {
+			evaluate: function() {},
+			injectJs: function() {}
+		};
+	},
 });
 mockery.enable({
 	warnOnUnregistered: false
@@ -58,7 +63,6 @@ vows.describe('phantomas public API').addBatch({
 				'evaluate',
 				'injectJs',
 				'require',
-				'getPageContent',
 				'median'
 			];
 
