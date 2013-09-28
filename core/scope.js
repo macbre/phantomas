@@ -101,7 +101,15 @@
 
 	// communication with phantomas core
 	(function() {
-		var stringify = JSON.stringify;
+		var stringify = JSON.stringify,
+			origConsoleLog = console.log;
+
+		// overrride console.log (issue #69)
+		console.log = function() {
+			// pass all arguments as an array, let phantomas format them
+			// @see https://developer.mozilla.org/en-US/docs/Web/API/console
+			origConsoleLog.call(console, JSON.stringify(Array.prototype.slice.call(arguments)));
+		};
 
 		function sendMsg(type, data) {
 			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
