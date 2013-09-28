@@ -78,6 +78,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--no-externals` block requests to 3rd party domains
 * `--allow-domain=[domain],[domain]` allow requests to given domai(s) - aka whitelist
 * `--block-domain=[domain],[domain]` disallow requests to given domai(s) - aka blacklist
+* `--analyze-css` emit in-depth CSS metrics
 
 ### Multiple runs
 
@@ -361,6 +362,28 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * windowPrompts: number of calls to ``prompt``
 * consoleMessages: number of calls to ``console.*`` functions
 
+### CSS metrics
+
+> This is an experimental feature. Use `--analyze-css` option to enable it.
+
+* cssLength: total length of all analyzed CSS files (including comments and whitespaces)
+* cssSelectorsTotal: total number of selectors (`.foo, .bar` counts as two)
+* cssSelectorsPartsTotal: total number of selectors parts (`ul > .bar > a` counts as three)
+* cssDeclarationsTotal: total number of properties defined in CSS file
+* cssComplexSelectors: number of complex selectors (consisting of three or more parts)
+* cssQualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
+* cssOldIEFixes: hacky fixes for old versions of Internet Explorer including:
+ * number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
+ * number of selectors starting with `* html` (hacky fix for IE6 and below)
+* cssSelectorsByTag: number of selectors by tag name
+* cssSelectorsByWildcard: number of selectors matching all tags (`nav *`)
+* cssSelectorsByClass: number of selectors by class
+* cssSelectorsById: number of selectors by ID
+* cssSelectorsByPseudo: number of pseudo-selectors (`:hover`)
+* cssSelectorsByAttribute: number of selectors by attribute (`.foo[value=bar]`)
+* cssSelectorsByAttributeComplex: number of selectors by attribute's value with "regular expressions matching" (`img[src$=.jpg]`)
+* cssImportantsTotal: number of properties with value forced by `!important`
+
 ## Debug logs and notices
 
 phantomas apart from "raw" metrics data, when in `--verbose` mode, emits debug logs and notices with more in-depth data:
@@ -408,53 +431,4 @@ Time spent on backend / frontend: 14% / 86%
 
 ## Utilities
 
-### CSS analyzer
-
-phantomas comes with nodejs script that can analyze the complexity of CSS stylesheet (local file or fetched via HTTP).
-
-```
-./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --json
-```
-```json
-{"length":176896,"selectorsTotal":2359,"selectorsPartsTotal":5703,"declarationsTotal":5188,"complexSelectors":300,"qualifiedRules":745,"oldIEFixes":0,"selectorsByTag":1523,"selectorsByClass":4373,"selectorsById":543,"selectorsByPseudo":291,"importantsTotal":9}
-```
-
-will emit CSS metrics as JSON-encoded object that you can easily plug into your monitoring tools.
-
-```
-./analyze-css.js --url "https://github.global.ssl.fastly.net/assets/github2-d35b02ba3940bde9b9f2c3e58f2dfb1ceff5886c.css" --verbose
-```
-
-will emit additional messages that can help you optimize your CSS.
-
-#### Parameters
-
-* `--url` fetch CSS via HTTP
-* `--file` analyze local CSS file
-* `--json` output results in JSON format
-* `--verbose` emit additional messages
-* `--bw` don't color additional messages
-
-Run `./analyze-css.js --help` to get the list of supported parameters.
-
-#### Metrics
-
-CSS analyzer provides the following metrics:
-
-* length: length of analyzed CSS file (including comments and whitespaces)
-* selectorsTotal: total number of selectors (`.foo, .bar` counts as two)
-* selectorsPartsTotal: total number of selectors parts (`ul > .bar > a` counts as three)
-* declarationsTotal: total number of properties defined in CSS file
-* complexSelectors: number of complex selectors (consisting of three or more parts)
-* qualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
-* oldIEFixes: hacky fixes for old versions of Internet Explorer including:
- * number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
- * number of selectors starting with `* html` (hacky fix for IE6 and below)
-* selectorsByTag: number of selectors by tag name
-* selectorsByWildcard: number of selectors matching all tags (`nav *`)
-* selectorsByClass: number of selectors by class
-* selectorsById: number of selectors by ID
-* selectorsByPseudo: number of pseudo-selectors (`:hover`)
-* selectorsByAttribute: number of selectors by attribute (`.foo[value=bar]`)
-* selectorsByAttributeComplex: number of selectors by attribute's value with "regular expressions matching" (`img[src$=.jpg]`)
-* importantsTotal: number of properties with value forced by `!important`
+* [CSS analyzer](https://github.com/macbre/phantomas/wiki/CSS-analyzer)
