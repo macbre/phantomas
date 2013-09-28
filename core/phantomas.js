@@ -2,6 +2,22 @@
  * phantomas main file
  */
 
+/**
+ * Environment such PhantomJS 1.8.* does not provides the bind method on Function prototype.
+ * This shim will ensure that source-map will not break when running on PhantomJS.
+ *
+ * @see https://github.com/abe33/source-map/commit/61131e53ceb3b69d387da3c6daad6adbbaaae9b3
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+ */
+if(!Function.prototype.bind) {
+	Function.prototype.bind = function(scope) {
+		var self = this;
+		return function() {
+			return self.apply(scope, arguments);
+		};
+	};
+}
+
 // get phantomas version from package.json file
 var VERSION = require('../package').version;
 
@@ -191,41 +207,38 @@ phantomas.prototype = {
 
 	// returns "wrapped" version of phantomas object with public methods / fields only
 	getPublicWrapper: function() {
-		var self = this;
-
 		// modules API
 		return {
 			url: this.params.url,
-			getParam: function(key) {
-				return self.params[key];
-			},
+			getParam: (function(key) {
+				return this.params[key];
+			}).bind(this),
 
 			// events
-			on: function() {self.on.apply(self, arguments);},
-			once: function() {self.once.apply(self, arguments);},
-			emit: function() {self.emit.apply(self, arguments);},
+			on: this.on.bind(this),
+			once: this.once.bind(this),
+			emit: this.emit.bind(this),
 
 			// metrics
-			setMetric: function() {self.setMetric.apply(self, arguments);},
-			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
-			setMetricFromScope: function() {self.setMetricFromScope.apply(self, arguments);},
-			getFromScope: function() {return self.getFromScope.apply(self, arguments);},
-			incrMetric: function() {self.incrMetric.apply(self, arguments);},
-			getMetric: function() {return self.getMetric.apply(self, arguments);},
+			setMetric: this.setMetric.bind(this),
+			setMetricEvaluate: this.setMetricEvaluate.bind(this),
+			setMetricFromScope: this.setMetricFromScope.bind(this),
+			getFromScope: this.getFromScope.bind(this),
+			incrMetric: this.incrMetric.bind(this),
+			getMetric: this.getMetric.bind(this),
 
 			// debug
-			addNotice: function(msg) {self.addNotice(msg);},
-			log: function(msg) {self.log(msg);},
-			echo: function(msg) {self.echo(msg);},
+			addNotice: this.addNotice.bind(this),
+			log: this.log.bind(this),
+			echo: this.echo.bind(this),
 
 			// phantomJS
-			evaluate: function(fn) {return self.page.evaluate(fn);},
-			injectJs: function(src) {return self.page.injectJs(src);},
-			require: function(module) {return self.require(module);},
-			getPageContent: function() {return self.page.content;},
+			evaluate: this.page.evaluate.bind(this.page),
+			injectJs: this.page.injectJs.bind(this.page),
+			require: this.require.bind(this),
 
 			// utils
-			median: function(arr) {return self.median(arr);}
+			median: this.median.bind(this)
 		};
 	},
 
@@ -617,8 +630,9 @@ phantomas.prototype = {
 
 	// add log message
 	// will be printed out only when --verbose
-	log: function(msg) {
-		this.logger.log(msg);
+	// supports phantomas.log('foo: <%s>', url);
+	log: function() {
+		this.logger.log(this.util.format.apply(this, arguments));
 	},
 
 	// console.log wrapper obeying --silent mode
