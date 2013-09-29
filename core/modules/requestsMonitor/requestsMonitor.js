@@ -275,7 +275,7 @@ exports.module = function(phantomas) {
 		}
 
 		notices.forEach(function(msg) {
-			phantomas.addNotice(msg)
+			phantomas.addNotice(msg);
 		});
 		phantomas.addNotice();
 	});
