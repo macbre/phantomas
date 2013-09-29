@@ -33,6 +33,7 @@ function analyzeCss(css) {
 		selectorsTotal: 0,
 		selectorsPartsTotal: 0,
 		declarationsTotal: 0,
+		emptyDeclarations: 0,
 		complexSelectors: 0,
 		qualifiedRules: 0,
 		oldIEFixes: 0,
@@ -52,6 +53,11 @@ function analyzeCss(css) {
 			case 'rule':
 				results.selectorsTotal += rule.selectors.length;
 				results.declarationsTotal += rule.declarations.length;
+
+				if (rule.declarations.length === 0) {
+					messages.push('Empty declaration: ' + rule.selectors);
+					results.emptyDeclarations++;
+				}
 
 				// parse each selector
 				rule.selectors.forEach(function(selector) {
