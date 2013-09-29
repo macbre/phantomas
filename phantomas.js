@@ -19,6 +19,7 @@
  *    [--no-externals]
  *    [--allow-domain='domain,domain']
  *    [--block-domain='domain,domain']
+ *    [--analyze-css]
  */
 var args = require('system').args,
 	// get absolute path (useful when phantomas is installed globally)
