@@ -626,8 +626,9 @@ phantomas.prototype = {
 	},
 
 	// adds a notice that will be emitted after results
-	addNotice: function(msg) {
-		this.notices.push(msg || '');
+	// supports phantomas.addNotice('foo: <%s>', url);
+	addNotice: function() {
+		this.notices.push(this.util.format.apply(this, arguments));
 	},
 
 	// add log message
