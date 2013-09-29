@@ -6,7 +6,7 @@ phantomas
 PhantomJS-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 [![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
-[![Build Status](https://secure.travis-ci.org/macbre/phantomas.png)](http://travis-ci.org/macbre/phantomas)
+[![Build Status](https://api.travis-ci.org/macbre/phantomas.png)](http://travis-ci.org/macbre/phantomas)
 
 ## Requirements
 
