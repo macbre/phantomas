@@ -274,7 +274,9 @@ exports.module = function(phantomas) {
 			return;
 		}
 
-		notices.forEach(phantomas.addNotice);
+		notices.forEach(function(msg) {
+			phantomas.addNotice(msg);
+		});
 		phantomas.addNotice();
 	});
 };
