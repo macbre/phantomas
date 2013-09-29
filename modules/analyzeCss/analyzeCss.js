@@ -23,6 +23,8 @@ exports.module = function(phantomas) {
 		return f + str.substr(1);
 	}
 
+	var cssMessages = [];
+
 	phantomas.on('recv', function(entry, res) {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
@@ -33,12 +35,40 @@ exports.module = function(phantomas) {
 					return;
 				}
 
-				//phantomas.log('CSS: results - %s', JSON.stringify(results));
+				var metrics = results.metrics || {},
+					messages = results.messages || [];
 
-				Object.keys(results).forEach(function(metric) {
-					phantomas.incrMetric('css' + ucfirst(metric), results[metric]);
+				// increase metrics
+				Object.keys(metrics).forEach(function(metric) {
+					phantomas.incrMetric('css' + ucfirst(metric), metrics[metric]);
 				});
+
+				// register CSS notices
+				cssMessages = cssMessages.concat(messages);
 			});
+		}
+	});
+
+	phantomas.on('report', function() {
+		// limit number of messages
+		var limit = 50,
+			len = cssMessages.length;
+
+		phantomas.setMetric('cssNotices', len);
+
+		if (len > 0) {
+			cssMessages = cssMessages.slice(0, limit);
+
+			phantomas.addNotice('CSS notices (%s):', len);
+			cssMessages.forEach(function(msg) {
+				phantomas.addNotice(' ' + msg);
+			});
+
+			if (len > limit) {
+				phantomas.addNotice(' (%d more...)', len - limit);
+			}
+
+			phantomas.addNotice();
 		}
 	});
 };
