@@ -370,6 +370,7 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * cssSelectorsTotal: total number of selectors (`.foo, .bar` counts as two)
 * cssSelectorsPartsTotal: total number of selectors parts (`ul > .bar > a` counts as three)
 * cssDeclarationsTotal: total number of properties defined in CSS file
+* cssEmptyDeclarations: total number of selectors with no properties defined (`.foo { }`)
 * cssComplexSelectors: number of complex selectors (consisting of three or more parts)
 * cssQualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
 * cssOldIEFixes: hacky fixes for old versions of Internet Explorer including:
