@@ -219,7 +219,15 @@ function runAnalyzer(css, program) {
 
 	// format output
 	if (program.json) {
-		console.log(JSON.stringify(res.results));
+		// clean up messages
+		res.messages = res.messages.map(function(msg) {
+			return msg.replace(/\[\[|\]\]/g, '');
+		});
+
+		console.log(JSON.stringify({
+			metrics: res.results,
+			messages: res.messages
+		}));
 	}
 	else {
 		Object.keys(res.results).forEach(function(key) {
