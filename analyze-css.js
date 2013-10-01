@@ -185,9 +185,18 @@ function analyzeCss(css) {
 function runAnalyzer(css, program) {
 	var colors = require('ansicolors'),
 		bw = program.bw,
+		res;
+
+	try {
 		res = analyzeCss(css);
+	}
+	catch(ex) {
+		console.error(ex.toString());
+		process.exit(4);
+	}
 
 	if (res === false) {
+		console.error('Error: parsing failed');
 		process.exit(3);
 	}
 
@@ -282,7 +291,7 @@ if (program.file) {
 else if (typeof program.url == 'string') {
 	request(program.url, function(err, resp, body) {
 		if (err || resp.statusCode !== 200) {
-			console.log('Request for <' + program.url + '> failed: ' + (err ? err : 'HTTP response code #' + resp.statusCode));
+			console.error('Request for <' + program.url + '> failed: ' + (err ? err : 'HTTP response code #' + resp.statusCode));
 			process.exit(2);
 		}
 		else {

@@ -663,7 +663,7 @@ phantomas.prototype = {
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
-			time = Date.now(),
+			start = Date.now(),
 			self = this,
 			pid,
 			ctx;
@@ -684,12 +684,14 @@ phantomas.prototype = {
 		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
 		// execFile(file, args, options, callback)
 		ctx = execFile('/usr/bin/env', args, null, function (err, stdout, stderr) {
-			if (err) {
-				self.log('runScript: pid #%d failed %s (%s)', pid, err, stderr);
-				return;
-			}
+			var time = Date.now() - start;
 
-			self.log('runScript: pid #%d done in %d ms', pid, Date.now() - time);
+			if (err || stderr) {
+				self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+			}
+			else {
+				self.log('runScript: pid #%d done (took %d ms)', pid, time);
+			}
 
 			// (try to) parse JSON-encoded output
 			try {

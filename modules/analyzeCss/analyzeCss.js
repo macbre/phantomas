@@ -31,7 +31,7 @@ exports.module = function(phantomas) {
 
 			phantomas.runScript('analyze-css.js', ['--url', entry.url, '--json'], function(err, results) {
 				if (err !== null) {
-					phantomas.log('CSS: failed!');
+					phantomas.log('CSS: parsing failed!');
 					return;
 				}
 
