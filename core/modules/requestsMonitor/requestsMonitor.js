@@ -132,26 +132,6 @@ exports.module = function(phantomas) {
 						break;
 				}
 
-				// HTTP code
-				entry.status = res.status || 200 /* for base64 data */;
-				entry.statusText = HTTP_STATUS_CODES[entry.status];
-				entry.isRedirect = typeof res.redirectURL === 'string';
-
-				switch(entry.status) {
-					case 301: // Moved Permanently
-					case 302: // Found
-						phantomas.incrMetric('redirects');
-						notices.push('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') to <' + res.redirectURL + '>');
-						break;
-
-					case 404: // Not Found
-						phantomas.incrMetric('notFound');
-						notices.push('Not found: <' + entry.url + '> returned HTTP 404');
-						break;
-				}
-
-				parseEntryUrl(entry);
-
 				// asset type
 				entry.type = 'other';
 
@@ -229,6 +209,28 @@ exports.module = function(phantomas) {
 							break;
 					}
 				});
+
+				parseEntryUrl(entry);
+
+				// HTTP code
+				entry.status = res.status || 200 /* for base64 data */;
+				entry.statusText = HTTP_STATUS_CODES[entry.status];
+
+				switch(entry.status) {
+					case 301: // Moved Permanently
+					case 302: // Found
+						entry.isRedirect = true;
+						phantomas.incrMetric('redirects');
+
+						notices.push('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') ' +
+							'to <' + (res.redirectURL || (res.url.replace(/\/$/, '') + entry.headers.Location)) + '>');
+						break;
+
+					case 404: // Not Found
+						phantomas.incrMetric('notFound');
+						notices.push('Not found: <' + entry.url + '> returned HTTP 404');
+						break;
+				}
 
 				// requests stats
 				if (!entry.isBase64) {
