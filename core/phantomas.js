@@ -538,27 +538,40 @@ phantomas.prototype = {
 		this.emit('prompt', msg);
 	},
 
-	onConsoleMessage: function(args) {
-		// console.log arguments are passed as JSON-encoded array
-		var data = JSON.parse(args),
-			msg = data[0];
+	onConsoleMessage: function(msg) {
+		var prefix, data;
 
-		// parse JSON-encoded messages from browser's scope sendMsg()
-		if (msg.indexOf('msg:{"') === 0) {
-			msg = decodeURI(msg.substring(4)); // strip the prefix
-			try {
-				this.onCallback(JSON.parse(msg));
-			}
-			catch(ex) {
-				this.log('Unable to parse JSON message from browser: ' + msg + '!');
-			}
-			return;
+		// split "foo:content"
+		prefix = msg.substr(0,3);
+		data = msg.substr(4);
+
+		try {
+			data = JSON.parse(data);
+		}
+		catch(ex) {
+			// fallback to plain log
+			prefix = false;
 		}
 
-		msg = this.util.format.apply(this, data);
+		//console.log(JSON.stringify([prefix, data]));
 
-		this.log('console.log: ' + msg);
-		this.emit('consoleLog', msg, data);
+		switch(prefix) {
+			// handle JSON-encoded messages from browser's scope sendMsg()
+			case 'msg':
+				this.onCallback(data);
+				break;
+
+			// console.log arguments are passed as JSON-encoded array
+			case 'log':
+				msg = this.util.format.apply(this, data);
+
+				this.log('console.log: ' + msg);
+				this.emit('consoleLog', msg, data);
+				break;
+
+			default:
+				this.log(msg);
+		}
 	},
 
 	// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
