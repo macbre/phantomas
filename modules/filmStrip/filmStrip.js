@@ -1,6 +1,9 @@
 /**
  * Renders a serie of screenshots of page being loaded
  *
+ * Please note that rendering each screenshot takes
+ * several hundreds ms. Consider increasing default timeout.
+ *
  * Run phantomas with --film-strip option to use this module
  */
 exports.version = '0.1';
@@ -12,7 +15,7 @@ exports.module = function(phantomas) {
 	}
 
 	var zoomFactor = 0.5;
-	//phantomas.setZoom(zoomFactor);
+	phantomas.setZoom(zoomFactor);
 
 	var util = phantomas.require('util'),
 		// throttling
