@@ -108,7 +108,7 @@
 		console.log = function() {
 			// pass all arguments as an array, let phantomas format them
 			// @see https://developer.mozilla.org/en-US/docs/Web/API/console
-			origConsoleLog.call(console, JSON.stringify(Array.prototype.slice.call(arguments)));
+			origConsoleLog.call(console, 'log:' + stringify(Array.prototype.slice.call(arguments)));
 		};
 
 		function sendMsg(type, data) {
@@ -120,7 +120,7 @@
 			}
 			**/
 
-			console.log('msg:' + stringify({type: type || false, data: data || false}));
+			origConsoleLog.call(console, 'msg:' + stringify({type: type || false, data: data || false}));
 		}
 
 		function log(msg) {
