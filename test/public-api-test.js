@@ -20,7 +20,8 @@ mockery.registerMock('webpage', {
 	create: function() {
 		return {
 			evaluate: function() {},
-			injectJs: function() {}
+			injectJs: function() {},
+			render: function() {}
 		};
 	},
 });
