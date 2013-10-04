@@ -18,17 +18,19 @@ exports.module = function(phantomas) {
 	phantomas.setZoom(zoomFactor);
 
 	var util = phantomas.require('util'),
+		fs = require('fs'),
 		// throttling
 		SCREENSHOTS_MIN_INTERVAL = 75,
 		lastScreenshot = 0,
 		start = Date.now(),
 		// stats
 		timeTotal = 0,
-		screenshotsTotal = 0;
+		screenshots = [];
 
 	function screenshot() {
 		var now = Date.now(),
-			path;
+			path,
+			ts;
 
 		// check when was the last screenshot taken (exclude time it took to render the screenshot)
 		if (now - lastScreenshot < SCREENSHOTS_MIN_INTERVAL) {
@@ -36,16 +38,28 @@ exports.module = function(phantomas) {
 			return;
 		}
 
-		path = util.format('filmstrip/screenshot-%d-%d.png', start, now - start - timeTotal);
+		// time offset excluding time it took to render screenshots
+		ts = now - start - timeTotal;
+		path = util.format('filmstrip/screenshot-%d-%d.png', start, ts);
 
 		phantomas.render(path);
 		lastScreenshot = Date.now();
 
-		phantomas.log('Film strip: rendered to %s in %d ms...', path, Date.now() - now);
+		// verify that the screnshot was really taken
+		if (fs.isReadable(path)) {
+			phantomas.log('Film strip: rendered to %s in %d ms', path, Date.now() - now);
 
-		// stats
-		timeTotal += (Date.now() - now);
-		screenshotsTotal++;
+			screenshots.push({
+				path: path,
+				ts: ts
+			});
+
+			// stats
+			timeTotal += (Date.now() - now);
+		}
+		else {
+			phantomas.log('Film strip: rendering to %s failed!', path);
+		}
 	}
 
 	// bind to events to render screenshots on
@@ -61,6 +75,8 @@ exports.module = function(phantomas) {
 
 	// print-out stats
 	phantomas.on('report', function() {
-		phantomas.log('Film strip: spent %d ms on rendering %d screenshots', timeTotal, screenshotsTotal);
+		phantomas.log('Film strip: spent %d ms on rendering %d screenshots', timeTotal, screenshots.length);
+
+		// TODO: generate a movie
 	});
 };
