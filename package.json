@@ -9,14 +9,13 @@
     "url": "git://github.com/macbre/phantomas.git"
   },
   "keywords": [
-    "phantomas",
-    "web performance",
-    "front-end performance",
     "high performance web sites",
-    "web development",
     "metrics",
     "monitoring",
-    "phantomjs"
+    "phantomas",
+    "phantomjs",
+    "web development",
+    "webperf"
   ],
   "license": "BSD",
   "engines": {
@@ -24,6 +23,7 @@
   },
   "dependencies": {
     "ansicolors": "0.2",
+    "ansistyles": "0.1",
     "commander": "2.0",
     "css-parse": "1.5",
     "phantomjs": ">=1.9",

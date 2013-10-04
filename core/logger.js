@@ -3,6 +3,7 @@
  */
 module.exports = function(logFile, params) {
 	var colors = require('ansicolors'),
+		styles = require('ansistyles'),
 		fs = require('fs'),
 		beVerbose = params.beVerbose === true,
 		beSilent = params.beSilent === true,
@@ -35,7 +36,7 @@ module.exports = function(logFile, params) {
 
 			// error!
 			if (/!$/.test(consoleMsg) || /Error:/.test(consoleMsg)) {
-				consoleMsg = colors.brightRed(consoleMsg);
+				consoleMsg = colors.brightRed(styles.bright(consoleMsg));
 			}
 			// label: message
 			else if (/^(.*): /.test(consoleMsg)) {
