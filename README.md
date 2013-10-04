@@ -79,7 +79,8 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--no-externals` block requests to 3rd party domains
 * `--allow-domain=[domain],[domain]` allow requests to given domai(s) - aka whitelist
 * `--block-domain=[domain],[domain]` disallow requests to given domai(s) - aka blacklist
-* `--analyze-css` emit in-depth CSS metrics
+* `--analyze-css` emit in-depth CSS metrics **experimental**
+* `--film-strip` register film strip when page is loading (PNG files will be saved in ``./filmstrip`` directory) **experimental**
 
 ### Multiple runs
 

@@ -1,6 +1,7 @@
 log
 *.log
 *.swp
+filmstrip
 
 node_modules
 npm-debug.log

@@ -237,6 +237,10 @@ phantomas.prototype = {
 			evaluate: this.page.evaluate.bind(this.page),
 			injectJs: this.page.injectJs.bind(this.page),
 			require: this.require.bind(this),
+			render: this.page.render.bind(this.page),
+			setZoom: (function(zoomFactor) {
+				this.page.zoomFactor = zoomFactor;
+			}).bind(this),
 
 			// utils
 			median: this.median.bind(this),
