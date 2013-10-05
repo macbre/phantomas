@@ -1,11 +1,13 @@
 /**
  * Measure when onDOMready and window.onload events are fired
  */
-exports.version = '0.3';
+exports.version = '0.4';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('onDOMReadyTime');
+	phantomas.setMetric('onDOMReadyTimeEnd');
 	phantomas.setMetric('windowOnLoadTime');
+	phantomas.setMetric('windowOnLoadTimeEnd');
 
 	// emulate window.performance
 	// @see https://github.com/ariya/phantomjs/issues/10031
@@ -21,6 +23,13 @@ exports.module = function(phantomas) {
 
 					phantomas.setMetric('onDOMReadyTime', time);
 					phantomas.log('onDOMready: ' + time + ' ms');
+
+					setTimeout(function() {
+						var time = Date.now() - start;
+
+						phantomas.setMetric('onDOMReadyTimeEnd', time);
+						phantomas.log('onDOMready: completed ' + time + ' ms');
+					}, 0);
 				}, false);
 
 				window.addEventListener("load", function() {
@@ -28,6 +37,13 @@ exports.module = function(phantomas) {
 
 					phantomas.setMetric('windowOnLoadTime', time);
 					phantomas.log('window.onload: ' + time + ' ms');
+
+					setTimeout(function() {
+						var time = Date.now() - start;
+
+						phantomas.setMetric('windowOnLoadTimeEnd', time);
+						phantomas.log('window.onload: completed ' + time + ' ms');
+					}, 0);
 				}, false);
 
 				phantomas.spyEnabled(true);
