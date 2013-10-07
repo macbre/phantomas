@@ -1,16 +1,17 @@
 /**
- * Measure when onDOMready and window.onload events are fired
+ * Measure when document state reaches certain states
+ *
+ * @see http://w3c-test.org/webperf/specs/NavigationTiming/#dom-performancetiming-domloading
  */
 exports.version = '0.4';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('onDOMReadyTime');
-	phantomas.setMetric('onDOMReadyTimeEnd');
-	phantomas.setMetric('windowOnLoadTime');
-	phantomas.setMetric('windowOnLoadTimeEnd');
+	phantomas.setMetric('onDOMReadyTime');       // i.e. Navigation Timing - domContentLoadedEventStart and domComplete
+	phantomas.setMetric('onDOMReadyTimeEnd');    // i.e. Navigation Timing - domContentLoadedEventEnd
+	phantomas.setMetric('windowOnLoadTime');     // i.e. Navigation Timing - loadEventStart
+	phantomas.setMetric('windowOnLoadTimeEnd');  // i.e. Navigation Timing - loadEventEnd
 
 	// emulate window.performance
-	// @see https://github.com/ariya/phantomjs/issues/10031
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
@@ -18,33 +19,39 @@ exports.module = function(phantomas) {
 
 				phantomas.spyEnabled(false, 'installing window.performance metrics');
 
-				document.addEventListener("DOMContentLoaded", function() {
-					var time = Date.now() - start;
+				// emulate Navigation Timing
+				document.addEventListener('readystatechange', function() {
+					var readyState = document.readyState,
+						time = Date.now() - start,
+						metricName;
 
-					phantomas.setMetric('onDOMReadyTime', time);
-					phantomas.log('onDOMready: ' + time + ' ms');
+					// @see http://www.w3.org/TR/html5/dom.html#current-document-readiness
+					switch(readyState) {
+						// DOMContentLoaded
+						case 'interactive':
+							metricName = 'onDOMReadyTime';
+							break;
 
+						// window.onload
+						case 'complete':
+							metricName = 'windowOnLoadTime';
+							break;
+
+						default:
+							return;
+					}
+
+					phantomas.setMetric(metricName, time);
+					phantomas.log('Performance timing: document reached "' + readyState + '" state after ' + time + ' ms');
+
+					// measure when event handling is completed
 					setTimeout(function() {
 						var time = Date.now() - start;
 
-						phantomas.setMetric('onDOMReadyTimeEnd', time);
-						phantomas.log('onDOMready: completed ' + time + ' ms');
+						phantomas.setMetric(metricName + 'End', time);
+						phantomas.log('Performance timing: "' + readyState + '" state handling completed after ' + time + ' ms');
 					}, 0);
-				}, false);
-
-				window.addEventListener("load", function() {
-					var time = Date.now() - start;
-
-					phantomas.setMetric('windowOnLoadTime', time);
-					phantomas.log('window.onload: ' + time + ' ms');
-
-					setTimeout(function() {
-						var time = Date.now() - start;
-
-						phantomas.setMetric('windowOnLoadTimeEnd', time);
-						phantomas.log('window.onload: completed ' + time + ' ms');
-					}, 0);
-				}, false);
+				});
 
 				phantomas.spyEnabled(true);
 			})(window.__phantomas);
