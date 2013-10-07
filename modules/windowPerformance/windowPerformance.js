@@ -25,7 +25,7 @@ exports.module = function(phantomas) {
 						time = Date.now() - start,
 						metricName;
 
-					// @see http://www.w3.org/TR/html5/dom.html#current-document-readiness
+					// @see http://www.w3.org/TR/html5/dom.html#documentreadystate
 					switch(readyState) {
 						// DOMContentLoaded
 						case 'interactive':
