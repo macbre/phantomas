@@ -22,7 +22,7 @@
     "node": ">=0.6"
   },
   "dependencies": {
-    "phapper": "~0.1.4"
+    "phapper": "~0.1.7",
     "ansicolors": "0.2",
     "ansistyles": "0.1",
     "commander": "2.0",
