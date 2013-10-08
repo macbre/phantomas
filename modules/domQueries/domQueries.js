@@ -1,42 +1,65 @@
 /**
- * Analyzes DOM queries done via native DOM methods & jQuery
- *
+ * Analyzes DOM queries done via native DOM methods
  */
-exports.version = '0.2';
+exports.version = '0.5';
 
 exports.module = function(phantomas) {
+        phantomas.setMetric('DOMqueries');
+        phantomas.setMetric('DOMqueriesById');
+        phantomas.setMetric('DOMqueriesByClassName');
+        phantomas.setMetric('DOMqueriesByTagName');
+        phantomas.setMetric('DOMqueriesByQuerySelectorAll');
+        phantomas.setMetric('DOMinserts');
+        phantomas.setMetric('DOMqueriesDuplicated');
 
 	// fake native DOM functions
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
-			(function() {
-				var originalGetElementById = window.document.getElementById,
-					originalGetElementsByClassName = window.document.getElementsByClassName,
-					originalAppendChild = Node.prototype.appendChild,
-					originalInsertBefore = Node.prototype.insertBefore;
+			(function(phantomas) {
+				// count DOM queries by either ID, tag name, class name and selector query
+				// @see https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-doctype
+				var DOMqueries = {};
+				phantomas.set('DOMqueries', DOMqueries);
 
-				// metrics storage
-				window.phantomas.domQueries = 0;
-				window.phantomas.domInserts = 0;
-				window.phantomas.domInsertsBacktrace = [];
+				function querySpy(type, query) {
+					phantomas.log('DOM query: by ' + type + ' "' + query + '"');
+					phantomas.incrMetric('DOMqueries');
 
-				window.phantomas.jQueryOnDOMReadyFunctions = 0;
-				window.phantomas.jQueryOnDOMReadyFunctionsBacktrace = [];
-	
-				window.phantomas.jQuerySelectors = 0;
-				window.phantomas.jQuerySelectorsBacktrace = [];
+					// detect duplicates
+					var key = type + ' "' + query + '"';
+					if (typeof DOMqueries[key] === 'undefined')  {
+						DOMqueries[key] = 0;
+					}
 
-				// hook into DOM methods
-				document.getElementById = function(id) {
-					// log calls
-					console.log('document.getElementById("' + id + '")');
-					window.phantomas.domQueries++;
+					DOMqueries[key]++;
+				}
 
-					return originalGetElementById.call(document, id);
-				};
+				phantomas.spy(Document.prototype, 'getElementById', function(id) {
+					phantomas.incrMetric('DOMqueriesById');
+					querySpy('id', '#' + id);
+				});
+
+				phantomas.spy(Document.prototype, 'getElementsByClassName', function(className) {
+					phantomas.incrMetric('DOMqueriesByClassName');
+					querySpy('class', '.' + className);
+				});
+
+				phantomas.spy(Document.prototype, 'getElementsByTagName', function(tagName) {
+					phantomas.incrMetric('DOMqueriesByTagName');
+					querySpy('tag name', tagName);
+				});
+
+				// selector queries
+				function selectorQuerySpy(selector) {
+					phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
+					querySpy('selector', selector);
+				}
+
+				phantomas.spy(Document.prototype, 'querySelectorAll', selectorQuerySpy);
+				phantomas.spy(Element.prototype, 'querySelectorAll', selectorQuerySpy);
 
 				// count DOM inserts
-				Node.prototype.appendChild = function(child) {
+				function appendSpy(child) {
 					var hasParent = typeof this.parentNode !== 'undefined';
 
 					// ignore appending to the node that's not yet added to DOM tree
@@ -44,105 +67,43 @@ exports.module = function(phantomas) {
 						return;
 					}
 
-					var caller = window.phantomas.getCaller();
+					phantomas.incrMetric('DOMinserts');
+					phantomas.log('DOM insert: node "' + phantomas.getDOMPath(child) + '" added to "' + phantomas.getDOMPath(this) + '"');
+				}
 
-					window.phantomas.domInserts++;
-					window.phantomas.domInsertsBacktrace.push({
-						url: caller.sourceURL,
-						line: caller.line
-					});
-
-					return originalAppendChild.call(this, child);
-				};
-
-				Node.prototype.insertBefore = function(child) {
-					var hasParent = typeof this.parentNode !== 'undefined';
-
-					// ignore appending to the node that's not yet added to DOM tree
-					if (!hasParent) {
-						return;
-					}
-
-					var caller = window.phantomas.getCaller();
-
-					window.phantomas.domInserts++;
-					window.phantomas.domInsertsBacktrace.push({
-						url: caller.sourceURL,
-						line: caller.line
-					});
-
-					return originalInsertBefore.call(this, child);
-				};
-
-				return;
-
-				// hook into $.fn.init to catch DOM queries
-				// 
-				// TODO: use a better approach here:
-				// @see https://github.com/osteele/jquery-profile
-				var jQuery;
-		
-				window.__defineSetter__('jQuery', function(val) {
-					jQuery = val;
-					console.log('Mocked jQuery v' + val.fn.jquery + ' object');
-				});
-
-				window.__defineGetter__('jQuery', function() {
-					return jQuery;
-				});
-			})();
+				phantomas.spy(Node.prototype, 'appendChild', appendSpy);
+				phantomas.spy(Node.prototype, 'insertBefore', appendSpy);
+			})(window.__phantomas);
 		});
 	});
 
-	phantomas.on('loadFinished', function() {
-		phantomas.setMetricEvaluate('DOMqueries', function() {
-			return window.phantomas.domQueries;
-		});
-		
-		phantomas.setMetricEvaluate('DOMinserts', function() {
-			return window.phantomas.domInserts;
+	phantomas.on('report', function() {
+		var DOMqueries = phantomas.getFromScope('DOMqueries') || {},
+			queries = [];
+
+		// TODO: implement phantomas.collection
+		Object.keys(DOMqueries).forEach(function(query) {
+			var cnt = DOMqueries[query];
+
+			if (cnt > 1) {
+				phantomas.incrMetric('DOMqueriesDuplicated');
+				queries.push({
+					query: query,
+					cnt: cnt
+				});
+			}
 		});
 
-		phantomas.setMetricEvaluate('jQuerySelectors', function() {
-			return window.phantomas.jQuerySelectors;
+		queries.sort(function(a, b) {
+			return (a.cnt > b.cnt) ? -1 : 1;
 		});
 
-		phantomas.setMetricEvaluate('jQueryOnDOMReadyFunctions', function() {
-			return window.phantomas.jQueryOnDOMReadyFunctions;
-		});
-
-		// list all selectors
-		var selectorsBacktrace = phantomas.evaluate(function() {
-			return window.phantomas.jQuerySelectorsBacktrace;
-		});
-/**
-		phantomas.addNotice('jQuery selectors:');
-		selectorsBacktrace.forEach(function(item) {
-			phantomas.addNotice('* $("' + item.selector + '") called from ' + item.url + ' @ ' + item.line);
-		});
-		phantomas.addNotice();
-
-		// list all onDOMReady functions
-		var onDOMReadyBacktrace = phantomas.evaluate(function() {
-			return window.phantomas.jQueryOnDOMReadyFunctionsBacktrace;
-		});
-
-		phantomas.addNotice('jQuery onDOMReady functions (' + onDOMReadyBacktrace.length + '):');
-		onDOMReadyBacktrace.forEach(function(item) {
-			phantomas.addNotice('* bound from ' + item.url + ' @ ' + item.line);
-		});
-		phantomas.addNotice();
-
-		// list all DOM inserts
-		var domInsertsBacktrace = phantomas.evaluate(function() {
-			return window.phantomas.domInsertsBacktrace;
-		});
-
-		phantomas.addNotice('DOM inserts (' + domInsertsBacktrace.length + '):');
-		domInsertsBacktrace.forEach(function(item) {
-			phantomas.addNotice('* from ' + item.url + ' @ ' + item.line);
-		});
-		phantomas.addNotice();
-**/
+		if (queries.length > 0) {
+			phantomas.addNotice('Duplicated DOM queries (' + queries.length + '):');
+			queries.forEach(function(query) {
+				phantomas.addNotice(' ' + query.query + ': ' + query.cnt + ' queries');
+			});
+			phantomas.addNotice();
+		}
 	});
 };

@@ -21,7 +21,7 @@ exports.module = function(phantomas) {
 			phantomas.incrMetric(isHit ? 'cacheHits' : 'cacheMisses');
 
 			if (!isHit) {
-				phantomas.addNotice('Cache miss on ' + entry.url + ' (X-Cache: ' + header + ')');
+				phantomas.log('Cache miss: on <' + entry.url + '> (X-Cache: ' + header + ')');
 			}
 		}
 	});

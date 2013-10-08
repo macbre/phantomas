@@ -8,12 +8,14 @@ exports.module = function(phantomas) {
 	var HTTP_STATUS_CODES = phantomas.require('http').STATUS_CODES,
 		parseUrl = phantomas.require('url').parse;
 
-	var requests = [];
+	var requests = [],
+		notices = [];
 
 	// register metric
 	phantomas.setMetric('requests');
 	phantomas.setMetric('gzipRequests');
 	phantomas.setMetric('postRequests');
+	phantomas.setMetric('httpsRequests');
 	phantomas.setMetric('redirects');
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
@@ -51,7 +53,7 @@ exports.module = function(phantomas) {
 		start = Date.now();
 	});
 
-	phantomas.on('onResourceRequested', function(res) {
+	phantomas.on('onResourceRequested', function(res, request) {
 		// store current request data
 		var entry = requests[res.id] = {
 			id: res.id,
@@ -59,23 +61,51 @@ exports.module = function(phantomas) {
 			method: res.method,
 			requestHeaders: {},
 			sendTime: res.time,
-			bodySize: 0
+			bodySize: 0,
+			isBlocked: false
+		};
+
+		// allow modules to block requests
+		entry.block = function() {
+			this.isBlocked = true;
 		};
 
 		res.headers.forEach(function(header) {
 			entry.requestHeaders[header.name] = header.value;
+
+			switch (header.name.toLowerCase()) {
+				// AJAX requests
+				case 'x-requested-with':
+					if (header.value === 'XMLHttpRequest') {
+						entry.isAjax = true;
+					}
+					break;
+			}
 		});
 
 		parseEntryUrl(entry);
 
-		if (!entry.isBase64) {
-			phantomas.emit('send', entry, res);
+		if (entry.isBase64) {
+			return;
 		}
+
+		// give modules a chance to block requests using entry.block()
+		// @see https://github.com/ariya/phantomjs/issues/10230
+		phantomas.emit('beforeSend', entry, res);
+
+		if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
+			phantomas.log('Blocked request: <' + entry.url + '>');
+			request.abort();
+			return;
+		}
+
+		// proceed
+		phantomas.emit('send', entry, res);
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
 		// current request data
-		var entry = requests[res.id];
+		var entry = requests[res.id] || {};
 
 		switch(res.stage) {
 			// the beginning of response
@@ -101,25 +131,6 @@ exports.module = function(phantomas) {
 						phantomas.incrMetric('postRequests');
 						break;
 				}
-
-				// HTTP code
-				entry.status = res.status || 200 /* for base64 data */;
-				entry.statusText = HTTP_STATUS_CODES[entry.status];
-
-				switch(entry.status) {
-					case 301:
-					case 302:
-						phantomas.incrMetric('redirects');
-						phantomas.addNotice(entry.url + ' is a redirect (HTTP ' + entry.status + ')');
-						break;
-
-					case 404:
-						phantomas.incrMetric('notFound');
-						phantomas.addNotice(entry.url + ' was not found (HTTP 404)');
-						break;
-				}
-
-				parseEntryUrl(entry);
 
 				// asset type
 				entry.type = 'other';
@@ -160,15 +171,33 @@ exports.module = function(phantomas) {
 									entry.isJS = true;
 									break;
 
+								case 'application/json':
+									entry.type = 'json';
+									entry.isJSON = true;
+									break;
+
 								case 'image/png':
 								case 'image/jpeg':
 								case 'image/gif':
+								case 'image/svg+xml':
 									entry.type = 'image';
 									entry.isImage = true;
 									break;
 
+								// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
+								case 'application/font-wof':
+								case 'application/font-woff':
+								case 'application/vnd.ms-fontobject':
+								case 'application/x-font-opentype':
+								case 'application/x-font-truetype':
+								case 'application/x-font-ttf':
+								case 'application/x-font-woff':
+									entry.type = 'webfont';
+									entry.isWebFont = true;
+									break;
+
 								default:
-									phantomas.addNotice('Unknown content type found: ' + value);
+									phantomas.log('Unknown content type found: ' + value + ' for <' + entry.url + '>');
 							}
 							break;
 
@@ -180,6 +209,28 @@ exports.module = function(phantomas) {
 							break;
 					}
 				});
+
+				parseEntryUrl(entry);
+
+				// HTTP code
+				entry.status = res.status || 200 /* for base64 data */;
+				entry.statusText = HTTP_STATUS_CODES[entry.status];
+
+				switch(entry.status) {
+					case 301: // Moved Permanently
+					case 302: // Found
+						entry.isRedirect = true;
+						phantomas.incrMetric('redirects');
+
+						notices.push('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') ' +
+							'to <' + (res.redirectURL || (res.url.replace(/\/$/, '') + entry.headers.Location)) + '>');
+						break;
+
+					case 404: // Not Found
+						phantomas.incrMetric('notFound');
+						notices.push('Not found: <' + entry.url + '> returned HTTP 404');
+						break;
+				}
 
 				// requests stats
 				if (!entry.isBase64) {
@@ -193,6 +244,10 @@ exports.module = function(phantomas) {
 					phantomas.incrMetric('gzipRequests');
 				}
 
+				if (entry.isSSL) {
+					phantomas.incrMetric('httpsRequests');
+				}
+
 				// emit an event for other modules
 				phantomas.emit(entry.isBase64 ? 'base64recv' : 'recv' , entry, res);
 				//phantomas.log(entry);
@@ -201,14 +256,29 @@ exports.module = function(phantomas) {
 	});
 
 	// TTFB / TTLB metrics
+	var ttfbMeasured = false;
+
 	phantomas.on('recv', function(entry, res) {
-		// check the first request
-		if (entry.id === 1) {
+		// check the first response which is not a redirect (issue #74)
+		if (!ttfbMeasured && !entry.isRedirect) {
 			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte);
 			phantomas.setMetric('timeToLastByte', entry.timeToLastByte);
+
+			ttfbMeasured = true;
 		}
 
 		// completion of the last HTTP request
 		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - start);
+	});
+
+	phantomas.on('report', function() {
+		if (notices.length === 0) {
+			return;
+		}
+
+		notices.forEach(function(msg) {
+			phantomas.addNotice(msg);
+		});
+		phantomas.addNotice();
 	});
 };

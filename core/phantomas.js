@@ -2,7 +2,24 @@
  * phantomas main file
  */
 
-var VERSION = '0.4.1';
+/**
+ * Environment such PhantomJS 1.8.* does not provides the bind method on Function prototype.
+ * This shim will ensure that source-map will not break when running on PhantomJS.
+ *
+ * @see https://github.com/abe33/source-map/commit/61131e53ceb3b69d387da3c6daad6adbbaaae9b3
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+ */
+if(!Function.prototype.bind) {
+	Function.prototype.bind = function(scope) {
+		var self = this;
+		return function() {
+			return self.apply(scope, arguments);
+		};
+	};
+}
+
+// get phantomas version from package.json file
+var VERSION = require('../package').version;
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
@@ -10,9 +27,31 @@ var getDefaultUserAgent = function() {
 		os = system.os;
 
 	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.name + " " + os.architecture + ")";
-}
+};
 
 var phantomas = function(params) {
+	// handle JSON config file provided via --config
+	var fs = require('fs'),
+		jsonConfig;
+
+	if (params.config && fs.isReadable(params.config)) {
+		try {
+			jsonConfig = JSON.parse( fs.read(params.config) ) || {};
+		}
+		catch(ex) {
+			jsonConfig = {};
+			params.config = false;
+		}
+
+		// allow parameters from JSON config to be overwritten
+		// by those coming from command line
+		Object.keys(jsonConfig).forEach(function(key) {
+			if (typeof params[key] === 'undefined') {
+				params[key] = jsonConfig[key];
+			}
+		});
+	}
+
 	// parse script CLI parameters
 	this.params = params;
 
@@ -27,7 +66,7 @@ var phantomas = function(params) {
 
 	// --verbose
 	this.verboseMode = params.verbose === true;
-	
+
 	// --silent
 	this.silentMode = params.silent === true;
 
@@ -35,23 +74,92 @@ var phantomas = function(params) {
 	this.timeout = (params.timeout > 0 && parseInt(params.timeout, 10)) || 15;
 
 	// --modules=localStorage,cookies
-	this.modules = (params.modules) ? params.modules.split(',') : [];
+	this.modules = (typeof params.modules === 'string') ? params.modules.split(',') : [];
+
+	// --skip-modules=jQeury,domQueries
+	this.skipModules = (typeof params['skip-modules'] === 'string') ? params['skip-modules'].split(',') : [];
 
 	// --user-agent=custom-agent
 	this.userAgent = params['user-agent'] || getDefaultUserAgent();
 
+	// cookie handling via command line and config.json
+	phantom.cookiesEnabled = true;
+
+	// handles multiple cookies from config.json, and used for storing
+	// constructed cookies from command line.
+	this.cookies = params.cookies || [];
+
+	// --cookie='bar=foo;domain=url'
+	// for multiple cookies, please use config.json `cookies`.
+	if (typeof params.cookie === 'string') {
+
+		// Parse cookie. at minimum, need a key=value pair, and a domain.
+		// Domain attr, if unavailble, is created from `params.url` during
+		//  addition to phantomjs in `phantomas.run`
+		// Full JS cookie syntax is supported.
+
+		var cookieComponents = params.cookie.split(';'),
+			cookie = {};
+
+		for (var i = 0, len = cookieComponents.length; i < len; i++) {
+			var frag = cookieComponents[i].split('=');
+
+			// special case: key-value
+			if (i === 0) {
+				cookie.name = frag[0];
+				cookie.value = frag[1];
+
+			// special case: secure
+			} else if (frag[0] === 'secure') {
+				cookie.secure = true;
+
+			// everything else
+			} else {
+				cookie[frag[0]] = frag[1];
+			}
+		}
+
+		// see phantomas.run for validation.
+		this.cookies.push(cookie);
+	}
+
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
+
+	this.util = this.require('util');
 
 	this.page = require('webpage').create();
 
 	// current HTTP requests counter
 	this.currentRequests = 0;
 
-	this.log('phantomas v' + VERSION);
+	// setup logger
+	var logger = require('./logger'),
+		logFile = params.log || '';
+
+	this.logger = new logger(logFile, {
+		beVerbose: this.verboseMode,
+		beSilent: this.silentMode
+	});
+
+	// report version and installation directory
+	if (typeof module.dirname !== 'undefined') {
+		this.dir = module.dirname.replace(/core$/, '');
+		this.log('phantomas v' + VERSION + ' installed in ' + this.dir);
+	}
+
+	// report config file being used
+	if (params.config) {
+		this.log('Using JSON config file: ' + params.config);
+	}
+	else if (params.config === false) {
+		this.log('Failed parsing JSON config file');
+		this.tearDown(4);
+	}
 
 	// load core modules
+	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
 
 	// load 3rd party modules
@@ -59,6 +167,11 @@ var phantomas = function(params) {
 		self = this;
 
 	modules.forEach(function(moduleName) {
+		if (self.skipModules.indexOf(moduleName) > -1) {
+			self.log('Module ' + moduleName + ' skipped!');
+			return;
+		}
+
 		self.addModule(moduleName);
 	});
 };
@@ -68,6 +181,7 @@ phantomas.version = VERSION;
 phantomas.prototype = {
 	metrics: {},
 	notices: [],
+	jsErrors: [],
 
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
@@ -94,33 +208,43 @@ phantomas.prototype = {
 
 	// returns "wrapped" version of phantomas object with public methods / fields only
 	getPublicWrapper: function() {
-		var self = this;
-
 		// modules API
 		return {
 			url: this.params.url,
-			params: this.params,
+			getParam: (function(key) {
+				return this.params[key];
+			}).bind(this),
 
 			// events
-			on: function() {self.on.apply(self, arguments);},
-			once: function() {self.once.apply(self, arguments);},
-			emit: function() {self.emit.apply(self, arguments);},
+			on: this.on.bind(this),
+			once: this.once.bind(this),
+			emit: this.emit.bind(this),
 
 			// metrics
-			setMetric: function() {self.setMetric.apply(self, arguments);},
-			setMetricEvaluate: function() {self.setMetricEvaluate.apply(self, arguments);},
-			incrMetric: function() {self.incrMetric.apply(self, arguments);},
+			setMetric: this.setMetric.bind(this),
+			setMetricEvaluate: this.setMetricEvaluate.bind(this),
+			setMetricFromScope: this.setMetricFromScope.bind(this),
+			getFromScope: this.getFromScope.bind(this),
+			incrMetric: this.incrMetric.bind(this),
+			getMetric: this.getMetric.bind(this),
 
 			// debug
-			addNotice: function(msg) {self.addNotice(msg);},
-			log: function(msg) {self.log(msg);},
-			echo: function(msg) {self.echo(msg);},
+			addNotice: this.addNotice.bind(this),
+			log: this.log.bind(this),
+			echo: this.echo.bind(this),
 
 			// phantomJS
-			evaluate: function(fn) {return self.page.evaluate(fn);},
-			injectJs: function(src) {return self.page.injectJs(src);},
-			require: function(module) {return self.require(module);},
-			getPageContent: function() {return self.page.content;}
+			evaluate: this.page.evaluate.bind(this.page),
+			injectJs: this.page.injectJs.bind(this.page),
+			require: this.require.bind(this),
+			render: this.page.render.bind(this.page),
+			setZoom: (function(zoomFactor) {
+				this.page.zoomFactor = zoomFactor;
+			}).bind(this),
+
+			// utils
+			median: this.median.bind(this),
+			runScript: this.runScript.bind(this)
 		};
 	},
 
@@ -162,7 +286,7 @@ phantomas.prototype = {
 		this.log('Getting the list of all modules...');
 
 		var fs = require('fs'),
-			modulesDir = fs.workingDirectory + '/modules',
+			modulesDir = module.dirname + '/../modules',
 			ls = fs.list(modulesDir) || [],
 			modules = [];
 
@@ -174,7 +298,7 @@ phantomas.prototype = {
 
 		return modules;
 	},
- 
+
 	// runs phantomas
 	run: function(callback) {
 
@@ -182,6 +306,36 @@ phantomas.prototype = {
 		if (!this.url) {
 			throw '--url argument must be provided!';
 		}
+
+		// add cookies, if any, providing a domain shim.
+		if (this.cookies && this.cookies.length > 0) {
+
+			// @see http://nodejs.org/docs/latest/api/url.html
+			var parseUrl = this.require('url').parse;
+
+			this.cookies.forEach(function(cookie) {
+
+				// phantomjs required attrs: *name, *value, *domain
+				if (!cookie.name || !cookie.value) {
+					throw 'this cookie is missing a name or value property: ' + JSON.stringify(cookie);
+				}
+
+				if (!cookie.domain) {
+					var parsed = parseUrl(params.url),
+						root = parsed.hostname.replace(/^www/, ''); // strip www
+
+					cookie.domain = root;
+				}
+
+				if (!phantom.addCookie(cookie)) {
+					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
+				}
+
+				this.log('Cookie set: ' + JSON.stringify(cookie));
+
+			}, this /* scope */);
+		}
+
 
 		// to be called by tearDown
 		this.onDoneCallback = callback;
@@ -217,16 +371,20 @@ phantomas.prototype = {
 
 		// debug
 		this.page.onAlert = this.proxy(this.onAlert);
+		this.page.onConfirm = this.proxy(this.onConfirm);
+		this.page.onPrompt = this.proxy(this.onPrompt);
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
+		this.page.onCallback = this.proxy(this.onCallback);
+		this.page.onError = this.proxy(this.onError);
 
 		// observe HTTP requests
 		// finish when the last request is completed
-		
+
 		// update HTTP requests counter
 		this.on('send', this.proxy(function(entry) {
 			this.currentRequests++;
 		}));
-	
+
 		this.on('recv', this.proxy(function(entry) {
 			this.currentRequests--;
 
@@ -273,7 +431,8 @@ phantomas.prototype = {
 		var results = {
 			url: this.url,
 			metrics: this.metrics,
-			notices: this.notices
+			notices: this.notices,
+			jsErrors: this.jsErrors
 		};
 
 		this.emit('results', results);
@@ -289,10 +448,12 @@ phantomas.prototype = {
 		this.log('Formatting results (' + this.resultsFormat + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
-		var formatter = require('./formatter').formatter,
+		var formatter = require('./formatter'),
 			renderer = new formatter(results, this.resultsFormat);
 
 		this.echo(renderer.render());
+
+		this.log('Done!');
 		this.tearDown(0);
 	},
 
@@ -300,10 +461,10 @@ phantomas.prototype = {
 		exitCode = exitCode || 0;
 
 		if (exitCode > 0) {
-			this.log('Exiting with code #' + exitCode);
+			this.log('Exiting with code #' + exitCode + '!');
 		}
 
-		this.page.release();
+		this.page.close();
 
 		// call function provided to run() method
 		if (typeof this.onDoneCallback === 'function') {
@@ -316,8 +477,12 @@ phantomas.prototype = {
 
 	// core events
 	onInitialized: function() {
-		// add helper tools into window.phantomas "namespace"
-		this.page.injectJs('./core/helper.js');
+		// add helper tools into window.__phantomas "namespace"
+		if (!this.page.injectJs(module.dirname + '/scope.js')) {
+			this.log('Unable to inject scope.js file!');
+			this.tearDown(3);
+			return;
+		}
 
 		this.log('Page object initialized');
 		this.emit('init');
@@ -328,8 +493,8 @@ phantomas.prototype = {
 		this.emit('loadStarted');
 	},
 
-	onResourceRequested: function(res) {
-		this.emit('onResourceRequested', res);
+	onResourceRequested: function(res, request /* added in PhantomJS v1.9 */) {
+		this.emit('onResourceRequested', res, request);
 		//this.log(JSON.stringify(res));
 	},
 
@@ -367,9 +532,79 @@ phantomas.prototype = {
 		this.emit('alert', msg);
 	},
 
+	onConfirm: function(msg) {
+		this.log('Confirm: ' + msg);
+		this.emit('confirm', msg);
+	},
+
+	onPrompt: function(msg) {
+		this.log('Prompt: ' + msg);
+		this.emit('prompt', msg);
+	},
+
 	onConsoleMessage: function(msg) {
-		this.log('console.log: ' + msg);
-		this.emit('consoleLog', msg);
+		var prefix, data;
+
+		// split "foo:content"
+		prefix = msg.substr(0,3);
+		data = msg.substr(4);
+
+		try {
+			data = JSON.parse(data);
+		}
+		catch(ex) {
+			// fallback to plain log
+			prefix = false;
+		}
+
+		//console.log(JSON.stringify([prefix, data]));
+
+		switch(prefix) {
+			// handle JSON-encoded messages from browser's scope sendMsg()
+			case 'msg':
+				this.onCallback(data);
+				break;
+
+			// console.log arguments are passed as JSON-encoded array
+			case 'log':
+				msg = this.util.format.apply(this, data);
+
+				this.log('console.log: ' + msg);
+				this.emit('consoleLog', msg, data);
+				break;
+
+			default:
+				this.log(msg);
+		}
+	},
+
+	// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
+	onCallback: function(msg) {
+		var type = msg && msg.type || '',
+			data = msg && msg.data || {};
+
+		switch(type) {
+			case 'log':
+				this.log(data);
+				break;
+
+			case 'setMetric':
+				this.setMetric(data.name, data.value);
+				break;
+
+			case 'incrMetric':
+				this.incrMetric(data.name, data.incr);
+				break;
+
+			default:
+				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
+				this.emit('message', msg);
+		}
+	},
+
+	onError: function(msg, trace) {
+		this.log(msg);
+		this.emit('jserror', msg, trace);
 	},
 
 	// metrics reporting
@@ -381,38 +616,113 @@ phantomas.prototype = {
 		this.setMetric(name, this.page.evaluate(fn));
 	},
 
+	// set metric from browser's scope that was set there using using window.__phantomas.set()
+	setMetricFromScope: function(name, key) {
+		key = key || name;
+
+		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
+		this.setMetric(name, this.page.evaluate(function(key) {
+			return window.__phantomas.get(key) || 0;
+		}, key));
+	},
+
+	// get a value set using window.__phantomas browser scope
+	getFromScope: function(key) {
+		return this.page.evaluate(function(key) {
+			return window.__phantomas.get(key);
+		}, key);
+	},
+
 	// increements given metric by given number (default is one)
 	incrMetric: function(name, incr /* =1 */) {
 		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
 	},
 
+	getMetric: function(name) {
+		return this.metrics[name];
+	},
+
 	// adds a notice that will be emitted after results
-	addNotice: function(msg) {
-		this.notices.push(msg || '');
+	// supports phantomas.addNotice('foo: <%s>', url);
+	addNotice: function() {
+		this.notices.push(this.util.format.apply(this, arguments));
 	},
 
 	// add log message
 	// will be printed out only when --verbose
-	log: function(msg) {
-		if (this.verboseMode) {
-			msg = (typeof msg === 'object') ? JSON.stringify(msg) : msg;
-
-			this.echo('> ' + msg);
-		}
+	// supports phantomas.log('foo: <%s>', url);
+	log: function() {
+		this.logger.log(this.util.format.apply(this, arguments));
 	},
 
 	// console.log wrapper obeying --silent mode
 	echo: function(msg) {
-		if (!this.silentMode) {
-			console.log(msg);
-		}
+		this.logger.echo(msg);
 	},
 
 	// require CommonJS module from lib/modules
 	require: function(module) {
 		return require('../lib/modules/' + module);
+	},
+
+	// returns median value for given set
+	median: function(arr) {
+		var half = Math.floor(arr.length/2);
+
+		arr.sort(function(a,b) {
+			return a - b;
+		});
+
+		return (arr.length % 2) ? arr[half] : ((arr[half-1] + arr[half]) / 2.0);
+	},
+
+	// runs a given helper script from phantomas main directory
+	// tries to parse it's output (assumes JSON formatted output)
+	runScript: function(script, args, callback) {
+		var execFile = require("child_process").execFile,
+			start = Date.now(),
+			self = this,
+			pid,
+			ctx;
+
+		if (typeof args === 'function') {
+			callback = args;
+		}
+
+		// format a command
+		// @see https://github.com/ariya/phantomjs/blob/master/examples/child_process-examples.js
+		args = [
+			'node',
+			this.dir + script,
+		].concat(
+			Array.isArray(args) ? args : []
+		);
+
+		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
+		// execFile(file, args, options, callback)
+		ctx = execFile('/usr/bin/env', args, null, function (err, stdout, stderr) {
+			var time = Date.now() - start;
+
+			if (err || stderr) {
+				self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+			}
+			else {
+				self.log('runScript: pid #%d done (took %d ms)', pid, time);
+			}
+
+			// (try to) parse JSON-encoded output
+			try {
+				callback(null, JSON.parse(stdout));
+			}
+			catch(ex) {
+				callback(stderr, stdout);
+			}
+		});
+
+		pid = ctx.pid;
+
+		this.log('runScript: %s (pid #%d)', args.join(' '), pid);
 	}
 };
 
-exports.phantomas = phantomas;
-
+module.exports = phantomas;

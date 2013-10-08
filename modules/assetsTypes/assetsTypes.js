@@ -4,7 +4,7 @@
 exports.version = '0.1';
 
 exports.module = function(phantomas) {
-	['html', 'css', 'js', 'image', 'base64', 'other'].forEach(function(key) {
+	['html', 'css', 'js', 'json', 'image', 'webfont', 'base64', 'other'].forEach(function(key) {
 		phantomas.setMetric(key + 'Count');
 		phantomas.setMetric(key + 'Size');
 	});

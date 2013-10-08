@@ -1,15 +1,7 @@
-lib-cov
-*.seed
+log
 *.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-
-pids
-logs
-results
+*.swp
+filmstrip
 
 node_modules
 npm-debug.log
