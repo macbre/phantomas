@@ -2,17 +2,12 @@
  * Meters the number of page errors, and provides traces after notices.
  */
 
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
-	var errors = [];
-
+	phantomas.setMetric('jsErrors', 0);
 	phantomas.on('jserror', function(msg, trace) {
-		errors.push({"msg":msg, "trace":trace});
-	});
-
-	phantomas.on('report', function() {
-		var len = errors.length || 0;
-		phantomas.setMetric('jsErrors', len);
+		phantomas.addJsError({"msg" : msg, "trace" : trace});
+		phantomas.incrMetric('jsErrors');
 	});
 };
