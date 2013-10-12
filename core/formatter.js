@@ -71,8 +71,7 @@ module.exports = function(results, format) {
 				errorReport = [];
 				error.trace.forEach(function(t) {
 					/* t['function'] to skip error on eclipse */
-					errorReport.push('  file: ' + t.file+ ' @ line: ' + t.line
-									+ (t['function'] ? ' (in function "' + t['function'] + '")' : ''));
+					errorReport.push('  file: ' + t.file+ ' @ line: ' + t.line + (t['function'] ? ' (in function "' + t['function'] + '")' : ''));
 				});
 				msg += '\n Backtrace:\n' + errorReport.join('\n');
 			}
