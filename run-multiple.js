@@ -20,7 +20,7 @@
  * @version 0.2
  */
 var exec = require('child_process').exec,
-	phantomjs = require('phantomjs'),
+	Phapper = require('phapper'),
 	VERSION = require('./package').version,
 
 	args = process.argv.slice(1),
@@ -38,43 +38,37 @@ var url = params.url,
 	metrics = [];
 
 function runPhantomas(params, callback) {
-	var timeMs = Date.now(),
-		cmd = [
-			phantomjs.path,
-			'phantomas.js',
-			'--format json',
-			'--url "' + params.url + '"'
-		];
+	var cmdArgs = [ '--format', 'json', '--url', params.url ];
+	var timeMs = Date.now();
 
 	if (params.timeout > 0) {
-		cmd.push(' --timeout ' + params.timeout);
+		cmdArgs.push('--timeout');
+		cmdArgs.push(params.timeout);
 	}
 
 	if (params.modules) {
-		cmd.push(' --modules ' + params.modules);
+		cmdArgs.push('--modules');
+		cmdArgs(params.modules);
 	}
 
 	if (params['skip-modules']) {
-		cmd.push(' --skip-modules ' + params['skip-modules']);
+		cmdArgs.push('--skip-modules');
+		cmdArgs(params['skip-modules']);
 	}
 
-	// @see http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
-	exec(cmd.join(' '), function(error, stdout, stderr) {
-		var res = false;
-
-		if (stderr) {
-			console.log("Error from phantomas: " + stderr);
+	var phap = new Phapper('phantomas.js', cmdArgs);
+	phap.run(function(res, raw) {
+		if (raw.error) {
+			console.log("Error from phantomas: ");
+			console.trace(raw.error);
 			process.exit(2);
 		}
-
-		try {
-			res = JSON.parse(stdout) || false;
-		} catch(e) {
-			console.log("Unable to parse JSON from phantomas!");
+		if (raw.stderr) {
+			console.log("Error from phantomas: " + raw.stderr);
+			process.exit(2);
 		}
-
-		if (res === false) {
-			console.log(stdout);
+		if (!res) {
+			console.log(raw.stdout);
 		}
 
 		if (typeof callback === 'function') {
@@ -202,7 +196,7 @@ if (typeof url === 'undefined') {
 }
 
 if (format === 'plain') {
-	console.log('phantomas v' + VERSION + ' / PhantomJS v' + phantomjs.version + ' / nodejs ' + process.version);
+	console.log('phantomas v' + VERSION + ' / PhantomJS v' + Phapper.phantomjs.version + ' / nodejs ' + process.version);
 	console.log('Performing ' + runs + ' run(s) for <' + params.url + '>...');
 }
 run();

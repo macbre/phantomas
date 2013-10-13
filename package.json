@@ -22,11 +22,11 @@
     "node": ">=0.6"
   },
   "dependencies": {
+    "phapper": "~0.1.7",
     "ansicolors": "0.2",
     "ansistyles": "0.1",
     "commander": "2.0",
     "css-parse": "1.5",
-    "phantomjs": ">=1.9",
     "slick": "1.0"
   },
   "devDependencies": [
