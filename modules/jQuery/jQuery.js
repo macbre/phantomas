@@ -19,7 +19,14 @@ exports.module = function(phantomas) {
 
 				// TODO: create a helper - phantomas.spyGlobalVar() ?
 				window.__defineSetter__('jQuery', function(val) {
-					var version = val.fn.jquery;
+					var version;
+
+					if (!val || !val.fn) {
+						phantomas.log('jQuery: unable to detect version!');
+						return;
+					}
+
+					version = val.fn.jquery;
 					jQuery = val;
 
 					phantomas.log('jQuery: loaded v' + version);
