@@ -232,7 +232,12 @@ phantomas.prototype = {
 			addNotice: this.addNotice.bind(this),
 			log: this.log.bind(this),
 			echo: this.echo.bind(this),
-
+			
+			// js error report 
+			addJsError: (function(error) {
+				this.jsErrors.push(error);
+			}).bind(this),
+			
 			// phantomJS
 			evaluate: this.page.evaluate.bind(this.page),
 			injectJs: this.page.injectJs.bind(this.page),
@@ -603,7 +608,6 @@ phantomas.prototype = {
 	},
 
 	onError: function(msg, trace) {
-		this.log(msg);
 		this.emit('jserror', msg, trace);
 	},
 
