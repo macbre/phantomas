@@ -64,9 +64,18 @@ module.exports = function(results, format) {
 		res += '\n';
 
 		// errors
-		results.jsErrors.forEach(function(msg) {
-			msg = msg.replace(/^[^ <].*/, colors.brightRed);
-			res += msg + "\n";
+		results.jsErrors.forEach(function(error) {
+			var msg = error.msg.replace(/^[^ <][^ ]+:/, colors.brightRed),
+				errorReport;
+			if(error.trace && error.trace.length) {
+				errorReport = [];
+				error.trace.forEach(function(t) {
+					/* t['function'] to skip error on eclipse */
+					errorReport.push('  file: ' + t.file+ ' @ line: ' + t.line + (t['function'] ? ' (in function "' + t['function'] + '")' : ''));
+				});
+				msg += '\n Backtrace:\n' + errorReport.join('\n');
+			}
+			res += msg + '\n';
 		});
 
 		res += '\n';
