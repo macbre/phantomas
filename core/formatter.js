@@ -63,14 +63,6 @@ module.exports = function(results, format) {
 
 		res += '\n';
 
-		// errors
-		results.jsErrors.forEach(function(msg) {
-			msg = msg.replace(/^[^ <].*/, colors.brightRed);
-			res += msg + "\n";
-		});
-
-		res += '\n';
-
 		return res.trim();
 	}
 
