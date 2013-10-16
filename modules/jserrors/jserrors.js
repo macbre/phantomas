@@ -8,29 +8,31 @@ exports.module = function(phantomas) {
 	var jsErrors = [];
 	phantomas.setMetric('jsErrors', 0);
 	
-	function error_log(error) {
-		var errorReport;
+	function formatTrace(trace) {
+		var ret = [];
 
-		phantomas.log(error.msg);
-
-		if(error.trace && error.trace.length) {
-			errorReport = [];
-			error.trace.forEach(function(t) {
-				errorReport.push('file: ' + t.file+ ' @ line: ' + t.line + (t['function'] ? ' (in function "' + t['function'] + '")' : ''));
+		if(Array.isArray(trace)) {
+			trace.forEach(function(entry) {
+				ret.push((entry.function ? entry.function + '(): ' : 'unknown fn: ') + entry.sourceURL + ' @ ' + entry.line);
 			});
-			phantomas.log('Backtrace: ' + errorReport.join(' / '));
 		}
+
+		return ret;
 	}
 
 	phantomas.on('jserror', function(msg, trace) {
-		var error = {
+		trace = formatTrace(trace);
+
+		// register errors and show them in post-report notices section
+		jsErrors.push({
 			msg: msg,
 			trace: trace
-		};
-		jsErrors.push(error);
+		});
+
+		phantomas.log(msg);
+		phantomas.log('Backtrace: ' + trace.join(' / '));
 
 		phantomas.incrMetric('jsErrors');
-		error_log(error);
 	});
 
 	phantomas.on('report', function() {
@@ -43,12 +45,9 @@ exports.module = function(phantomas) {
 		jsErrors.forEach(function(error) {
 			phantomas.addNotice(' ' + error.msg);
 
-			if(error.trace.length) {
-				error.trace.forEach(function(t) {
-					/* t['function'] to skip error on eclipse */
-					phantomas.addNotice('  file: ' + t.file+ ' @ line: ' + t.line + (t['function'] ? ' (in function "' + t['function'] + '")' : ''));
-				});
-			}
+			error.trace.forEach(function(t) {
+				phantomas.addNotice('  ' + t);
+			});
 		});
 
 		phantomas.addNotice();
