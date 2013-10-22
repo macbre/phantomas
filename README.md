@@ -222,8 +222,8 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * httpsRequests: number of HTTPS requests
 * redirects: number of HTTP redirects (either 301 or 302)
 * notFound: number of HTTP 404 responses
-* timeToFirstByte: time it took to receive the first byte of the first response
-* timeToLastByte: time it took to receive the last byte of the first response
+* timeToFirstByte: time it took to receive the first byte of the first response (that was not a redirect)
+* timeToLastByte: time it took to receive the last byte of the first response (that was not a redirect)
 * bodySize: size of the content of all responses
 * contentLength: size of the content of all responses (based on ``Content-Length`` header)
 * httpTrafficCompleted: time it took to receive the last byte of the last HTTP response
@@ -253,7 +253,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Cache Hits
 
-_Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid servers._
+> Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid servers
 
 * cacheHits: number of cache hits
 * cacheMisses: number of cache misses
@@ -332,6 +332,8 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 * localStorageEntries: number of entries in local storage
 
 ### jQuery
+
+> Requires jQuery 1.8.0+
 
 * jQueryVersion: version of jQuery framework (if loaded)
 * jQueryOnDOMReadyFunctions: number of functions bound to onDOMReady event
