@@ -283,8 +283,10 @@ _Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid se
 
 ### DOM complexity
 
+> Metrics listed below are generated after the full page load
+
 * globalVariables: number of JS globals variables
-* bodyHTMLSize: the size of body tag content
+* bodyHTMLSize: the size of body tag content (``document.body.innerHTML.length``)
 * commentsSize: the size of HTML comments on the page
 * hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
 * whiteSpacesSize: the size of text nodes with whitespaces only
