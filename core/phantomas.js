@@ -436,12 +436,7 @@ phantomas.prototype = {
 		this.emit('results', results);
 
 		// count all metrics
-		var metricsCount = 0,
-			i;
-
-		for (i in this.metrics) {
-			metricsCount++;
-		}
+		var metricsCount = Object.keys(this.metrics).length;
 
 		this.log('Formatting results (' + this.resultsFormat + ') with ' + metricsCount+ ' metric(s)...');
 
