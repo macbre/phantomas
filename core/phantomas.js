@@ -59,7 +59,7 @@ var phantomas = function(params) {
 	this.url = this.params.url;
 
 	// --format=[csv|json]
-	this.resultsFormat = params.format || 'plain';
+	this.format = params.format || 'plain';
 
 	// --viewport=1280x1024
 	this.viewport = params.viewport || '1280x1024';
@@ -438,11 +438,11 @@ phantomas.prototype = {
 		// count all metrics
 		var metricsCount = Object.keys(this.metrics).length;
 
-		this.log('Formatting results (' + this.resultsFormat + ') with ' + metricsCount+ ' metric(s)...');
+		this.log('Formatting results (' + this.format + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
 		var formatter = require('./formatter'),
-			renderer = new formatter(results, this.resultsFormat);
+			renderer = new formatter(results, this.format);
 
 		this.echo(renderer.render());
 
