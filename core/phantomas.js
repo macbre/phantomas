@@ -608,7 +608,8 @@ phantomas.prototype = {
 
 	// metrics reporting
 	setMetric: function(name, value) {
-		this.results.setMetric(name, (typeof value !== 'undefined') ? value : 0);
+		value = value || 0; // set to zero if undefined / null is provided
+		this.results.setMetric(name, value);
 	},
 
 	setMetricEvaluate: function(name, fn) {
