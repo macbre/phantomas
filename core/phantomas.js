@@ -82,6 +82,9 @@ var phantomas = function(params) {
 	// --user-agent=custom-agent
 	this.userAgent = params['user-agent'] || getDefaultUserAgent();
 
+	// disable JavaScript on the page that will be loaded
+	this.disableJs = params['disable-js'] === true;
+
 	// cookie handling via command line and config.json
 	phantom.cookiesEnabled = true;
 
@@ -361,6 +364,12 @@ phantomas.prototype = {
 			this.page.settings.userAgent = this.userAgent;
 		}
 
+		// disable JavaScript on the page that will be loaded
+		if (this.disableJs) {
+			this.page.settings.javascriptEnabled = false;
+			this.log('JavaScript execution disabled by --disable-js!');
+		}
+
 		// print out debug messages
 		this.log('Opening <' + this.url + '>...');
 		this.log('Using ' + this.page.settings.userAgent + ' as user agent');
@@ -599,7 +608,8 @@ phantomas.prototype = {
 
 	// metrics reporting
 	setMetric: function(name, value) {
-		this.results.setMetric(name, (typeof value !== 'undefined') ? value : 0);
+		value = value || 0; // set to zero if undefined / null is provided
+		this.results.setMetric(name, value);
 	},
 
 	setMetricEvaluate: function(name, fn) {

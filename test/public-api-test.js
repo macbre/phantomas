@@ -110,6 +110,14 @@ vows.describe('phantomas public API').addBatch({
 			api.setMetric('foo');
 			assert.equal(api.getMetric('foo'), 0);
 		},
+		'treat "undefined" value as 0': function(api) {
+			api.setMetric('foo', undefined);
+			assert.equal(api.getMetric('foo'), 0);
+		},
+		'treat "null" value as 0': function(api) {
+			api.setMetric('foo', null);
+			assert.equal(api.getMetric('foo'), 0);
+		},
 		'are properly incremented': function(api) {
 			api.incrMetric('bar');
 			assert.equal(api.getMetric('bar'), 1);

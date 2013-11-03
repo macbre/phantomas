@@ -19,6 +19,7 @@
  *    [--no-externals]
  *    [--allow-domain='domain,domain']
  *    [--block-domain='domain,domain']
+ *    [--disable-js]
  *    [--analyze-css]
  *    [--film-strip]
  */
