@@ -40,7 +40,7 @@ module.exports = function(results, format) {
 			metrics = results.metrics;
 
 		// header
-		res += 'phantomas metrics for <' + results.url + '>:\n\n';
+		res += 'phantomas metrics for <' + results.getUrl() + '>:\n\n';
 
 		// metrics
 		Object.keys(metrics).forEach(function(metric) {

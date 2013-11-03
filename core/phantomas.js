@@ -158,6 +158,11 @@ var phantomas = function(params) {
 		this.tearDown(4);
 	}
 
+	// set up results wrapper
+	var results = require('./results');
+	this.results = new results();
+	this.results.setUrl(this.url);
+
 	// load core modules
 	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
@@ -426,23 +431,16 @@ phantomas.prototype = {
 		var time = Date.now() - this.start;
 		this.log('phantomas work done in ' + time + ' ms');
 
-		// format results
-		var results = {
-			url: this.url,
-			metrics: this.metrics,
-			notices: this.notices
-		};
-
-		this.emit('results', results);
+		this.emit('results', this.results);
 
 		// count all metrics
-		var metricsCount = Object.keys(this.metrics).length;
+		var metricsCount = this.results.getMetricsNames().length;
 
 		this.log('Formatting results (' + this.format + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
 		var formatter = require('./formatter'),
-			renderer = new formatter(results, this.format);
+			renderer = new formatter(this.results, this.format);
 
 		this.echo(renderer.render());
 
@@ -601,7 +599,7 @@ phantomas.prototype = {
 
 	// metrics reporting
 	setMetric: function(name, value) {
-		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
+		this.results.setMetric(name, (typeof value !== 'undefined') ? value : 0);
 	},
 
 	setMetricEvaluate: function(name, fn) {
@@ -633,13 +631,13 @@ phantomas.prototype = {
 	},
 
 	getMetric: function(name) {
-		return this.metrics[name];
+		return this.results.getMetric(name);
 	},
 
 	// adds a notice that will be emitted after results
 	// supports phantomas.addNotice('foo: <%s>', url);
 	addNotice: function() {
-		this.notices.push(this.util.format.apply(this, arguments));
+		this.results.addNotice(this.util.format.apply(this, arguments));
 	},
 
 	// add log message
