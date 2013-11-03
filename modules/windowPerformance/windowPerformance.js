@@ -58,6 +58,22 @@ exports.module = function(phantomas) {
 		});
 	});
 
+	// fallback for --disable-js mode
+	var start;
+
+	phantomas.once('recv', function() {
+		start = (new Date()).getTime();
+	});
+
+	phantomas.on('loadFinished', function() {
+		var time = (new Date()).getTime() - start;
+
+		if (phantomas.getMetric('windowOnLoadTime') === 0) {
+			phantomas.setMetric('windowOnLoadTime', time);
+			phantomas.setMetric('windowOnLoadTimeEnd', time);
+		}
+	});
+
 	/**
 	 * Emit a notice with backend vs frontend time
 	 *
