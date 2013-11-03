@@ -12,12 +12,20 @@ module.exports = function() {
 		notices.push(msg);
 	}
 
+	function getNotices() {
+		return notices;
+	}
+
 	function setMetric(name, value) {
 		metrics[name] = value;
 	}
 
 	function getMetric(name) {
 		return metrics[name];
+	}
+
+	function getMetrics() {
+		return metrics;
 	}
 
 	function getMetricsNames() {
@@ -34,14 +42,13 @@ module.exports = function() {
 
 	// public API
 	this.addNotice = addNotice;
+	this.getNotices = getNotices;
+
 	this.setMetric = setMetric;
 	this.getMetric = getMetric;
+	this.getMetrics = getMetrics;
 	this.getMetricsNames = getMetricsNames;
 
 	this.setUrl = setUrl;
 	this.getUrl = getUrl;
-
-	// tmp
-	this.metrics = metrics;
-	this.notices = notices;
 };
