@@ -19,7 +19,7 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 npm install --global phantomas
 ```
 
-> This will add a symlink called ``phantomas`` (pointing to ``./phantomas.js``) to your system's ``PATH``
+> This will install the latest version of PhantomJS and add a symlink called ``phantomas`` (pointing to ``./phantomas.js``) to your system's ``PATH``
 
 ## Dependencies
 
@@ -37,7 +37,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 ### Slides
  
 * [Know Your Engines: How to Make Your JavaScript Fast](http://cdn.oreillystatic.com/en/assets/1/event/60/Know%20Your%20Engines_%20How%20to%20Make%20Your%20JavaScript%20Fast%20Presentation%201.pdf) (by David Mandelin from Mozilla)
-
+* [Velocity Conf 2013 Workshop: Avoiding Web Performance Regression](http://www.slideshare.net/marcelduran/velocity-conf-2013) (by Marcel Duran from Twitter)
 
 ## Contributors
 
