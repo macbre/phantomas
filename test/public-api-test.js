@@ -106,6 +106,10 @@ vows.describe('phantomas public API').addBatch({
 			api.setMetric('foo', 123);
 			assert.equal(api.getMetric('foo'), 123);
 		},
+		'are set with default value': function(api) {
+			api.setMetric('foo');
+			assert.equal(api.getMetric('foo'), 0);
+		},
 		'are properly incremented': function(api) {
 			api.incrMetric('bar');
 			assert.equal(api.getMetric('bar'), 1);

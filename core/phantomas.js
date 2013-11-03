@@ -59,7 +59,7 @@ var phantomas = function(params) {
 	this.url = this.params.url;
 
 	// --format=[csv|json]
-	this.resultsFormat = params.format || 'plain';
+	this.format = params.format || 'plain';
 
 	// --viewport=1280x1024
 	this.viewport = params.viewport || '1280x1024';
@@ -157,6 +157,11 @@ var phantomas = function(params) {
 		this.log('Failed parsing JSON config file');
 		this.tearDown(4);
 	}
+
+	// set up results wrapper
+	var results = require('./results');
+	this.results = new results();
+	this.results.setUrl(this.url);
 
 	// load core modules
 	this.log('Loading core modules...');
@@ -426,28 +431,16 @@ phantomas.prototype = {
 		var time = Date.now() - this.start;
 		this.log('phantomas work done in ' + time + ' ms');
 
-		// format results
-		var results = {
-			url: this.url,
-			metrics: this.metrics,
-			notices: this.notices
-		};
-
-		this.emit('results', results);
+		this.emit('results', this.results);
 
 		// count all metrics
-		var metricsCount = 0,
-			i;
+		var metricsCount = this.results.getMetricsNames().length;
 
-		for (i in this.metrics) {
-			metricsCount++;
-		}
-
-		this.log('Formatting results (' + this.resultsFormat + ') with ' + metricsCount+ ' metric(s)...');
+		this.log('Formatting results (' + this.format + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
 		var formatter = require('./formatter'),
-			renderer = new formatter(results, this.resultsFormat);
+			renderer = new formatter(this.results, this.format);
 
 		this.echo(renderer.render());
 
@@ -606,7 +599,7 @@ phantomas.prototype = {
 
 	// metrics reporting
 	setMetric: function(name, value) {
-		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
+		this.results.setMetric(name, (typeof value !== 'undefined') ? value : 0);
 	},
 
 	setMetricEvaluate: function(name, fn) {
@@ -632,17 +625,19 @@ phantomas.prototype = {
 
 	// increements given metric by given number (default is one)
 	incrMetric: function(name, incr /* =1 */) {
-		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
+		var currVal = this.getMetric(name) || 0;
+
+		this.setMetric(name, currVal + (incr || 1));
 	},
 
 	getMetric: function(name) {
-		return this.metrics[name];
+		return this.results.getMetric(name);
 	},
 
 	// adds a notice that will be emitted after results
 	// supports phantomas.addNotice('foo: <%s>', url);
 	addNotice: function() {
-		this.notices.push(this.util.format.apply(this, arguments));
+		this.results.addNotice(this.util.format.apply(this, arguments));
 	},
 
 	// add log message
