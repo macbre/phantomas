@@ -82,6 +82,9 @@ var phantomas = function(params) {
 	// --user-agent=custom-agent
 	this.userAgent = params['user-agent'] || getDefaultUserAgent();
 
+	// disable JavaScript on the page that will be loaded
+	this.disableJs = params['disable-js'] === true;
+
 	// cookie handling via command line and config.json
 	phantom.cookiesEnabled = true;
 
@@ -359,6 +362,12 @@ phantomas.prototype = {
 		// setup user agent
 		if (this.userAgent) {
 			this.page.settings.userAgent = this.userAgent;
+		}
+
+		// disable JavaScript on the page that will be loaded
+		if (this.disableJs) {
+			this.page.settings.javascriptEnabled = false;
+			this.log('JavaScript execution disabled by --disable-js!');
 		}
 
 		// print out debug messages
