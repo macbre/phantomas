@@ -2,6 +2,8 @@
 /**
  * PhantomJS-based web performance metrics collector
  *
+ * @see https://github.com/macbre/phantomas
+ *
  * Usage:
  *  ./phantomas.js
  *    --url=<page to check>
@@ -41,5 +43,5 @@ catch(ex) {
 	console.log('phantomas v' + phantomas.version + ' failed with an error:');
 	console.log(ex);
 
-	phantom.exit(1);
+	phantom.exit(255);
 }

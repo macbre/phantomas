@@ -18,6 +18,12 @@ if(!Function.prototype.bind) {
 	};
 }
 
+// exit codes
+var EXIT_SUCCESS = 0,
+	EXIT_CONFIG_FAILED = 253,
+	EXIT_LOAD_FAILED = 254,
+	EXIT_ERROR = 255;
+
 // get phantomas version from package.json file
 var VERSION = require('../package').version;
 
@@ -158,7 +164,8 @@ var phantomas = function(params) {
 	}
 	else if (params.config === false) {
 		this.log('Failed parsing JSON config file');
-		this.tearDown(4);
+		this.tearDown(EXIT_CONFIG_FAILED);
+		return;
 	}
 
 	// set up results wrapper
@@ -307,8 +314,7 @@ phantomas.prototype = {
 	},
 
 	// runs phantomas
-	run: function(callback) {
-
+	run: function() {
 		// check required params
 		if (!this.url) {
 			throw '--url argument must be provided!';
@@ -342,10 +348,6 @@ phantomas.prototype = {
 
 			}, this /* scope */);
 		}
-
-
-		// to be called by tearDown
-		this.onDoneCallback = callback;
 
 		this.start = Date.now();
 
@@ -454,25 +456,18 @@ phantomas.prototype = {
 		this.echo(renderer.render());
 
 		this.log('Done!');
-		this.tearDown(0);
+		this.tearDown();
 	},
 
 	tearDown: function(exitCode) {
-		exitCode = exitCode || 0;
+		exitCode = exitCode || EXIT_SUCCESS;
 
 		if (exitCode > 0) {
 			this.log('Exiting with code #' + exitCode + '!');
 		}
 
 		this.page.close();
-
-		// call function provided to run() method
-		if (typeof this.onDoneCallback === 'function') {
-			this.onDoneCallback();
-		}
-		else {
-			phantom.exit(exitCode);
-		}
+		phantom.exit(exitCode);
 	},
 
 	// core events
@@ -480,7 +475,7 @@ phantomas.prototype = {
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(module.dirname + '/scope.js')) {
 			this.log('Unable to inject scope.js file!');
-			this.tearDown(3);
+			this.tearDown(EXIT_ERROR);
 			return;
 		}
 
@@ -521,7 +516,7 @@ phantomas.prototype = {
 
 			default:
 				this.emit('loadFailed', status);
-				this.tearDown(2);
+				this.tearDown(EXIT_LOAD_FAILED);
 				break;
 		}
 	},
