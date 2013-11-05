@@ -603,7 +603,7 @@ phantomas.prototype = {
 
 	// metrics reporting
 	setMetric: function(name, value) {
-		value = value || 0; // set to zero if undefined / null is provided
+		value = typeof value === 'string' ? value : (value || 0); // set to zero if undefined / null is provided
 		this.results.setMetric(name, value);
 	},
 

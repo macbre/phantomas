@@ -108,15 +108,19 @@ vows.describe('phantomas public API').addBatch({
 		},
 		'are set with default value': function(api) {
 			api.setMetric('foo');
-			assert.equal(api.getMetric('foo'), 0);
+			assert.strictEqual(api.getMetric('foo'), 0);
 		},
 		'treat "undefined" value as 0': function(api) {
 			api.setMetric('foo', undefined);
-			assert.equal(api.getMetric('foo'), 0);
+			assert.strictEqual(api.getMetric('foo'), 0);
 		},
 		'treat "null" value as 0': function(api) {
 			api.setMetric('foo', null);
-			assert.equal(api.getMetric('foo'), 0);
+			assert.strictEqual(api.getMetric('foo'), 0);
+		},
+		'treat empty string as empty string': function(api) {
+			api.setMetric('foo', '');
+			assert.strictEqual(api.getMetric('foo'), '');
 		},
 		'are properly incremented': function(api) {
 			api.incrMetric('bar');
