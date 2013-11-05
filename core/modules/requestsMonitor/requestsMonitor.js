@@ -48,9 +48,9 @@ exports.module = function(phantomas) {
 	}
 
 	// when the monitoring started?
-	var start;
-	phantomas.on('pageOpen', function(res) {
-		start = Date.now();
+	var loadStartedTime;
+	phantomas.on('loadStarted', function(res) {
+		loadStartedTime = Date.now();
 	});
 
 	phantomas.on('onResourceRequested', function(res, request) {
@@ -265,10 +265,12 @@ exports.module = function(phantomas) {
 			phantomas.setMetric('timeToLastByte', entry.timeToLastByte);
 
 			ttfbMeasured = true;
+
+			phantomas.emit('responseEnd', entry, res);
 		}
 
 		// completion of the last HTTP request
-		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - start);
+		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - loadStartedTime);
 	});
 
 	phantomas.on('report', function() {
