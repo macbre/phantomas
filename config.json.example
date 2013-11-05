@@ -9,5 +9,11 @@
 			"value": "on",
 			"domain": ".phantomjs.org"
 		}
-	]
+	],
+	"asserts": {
+		"requests": 12,
+		"redirects": 0,
+		"domains": 2,
+		"timeToFirstByte": 600
+	}
 }
