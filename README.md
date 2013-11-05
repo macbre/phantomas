@@ -313,12 +313,12 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Window performance
 
-> See [NavigationTiming spec](http://w3c-test.org/webperf/specs/NavigationTiming/) for more information
+> Times below are relative to ``responseEnd`` entry in NavigationTiming (represented by ``timeToLastByte`` metric). See [NavigationTiming spec](http://w3c-test.org/webperf/specs/NavigationTiming/) for more information.
 
 * onDOMReadyTime: time it took to fire onDOMready event
-* onDOMReadyTimeEnd: time it took to finish processing onDOMready event
+* onDOMReadyTimeEnd: time it took to finish processing onDOMready event **experimental**
 * windowOnLoadTime: time it took to fire window.load event
-* windowOnLoadTimeEnd: time it took to finish processing window.load event
+* windowOnLoadTimeEnd: time it took to finish processing window.load event **experimental**
 
 ### Requests statistics
 
