@@ -76,7 +76,12 @@ module.exports = function() {
 				return true;
 			}
 
-			return val <= expected;
+			return (typeof val === 'number') ? val <= expected : true;
 		},
+		getFailedAsserts: function() {
+			return this.getMetricsNames().filter(function(metric) {
+				return this.assert(metric) === false;
+			}, this);
+		}
 	};
 };
