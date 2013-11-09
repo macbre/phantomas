@@ -462,8 +462,8 @@ phantomas.prototype = {
 		this.log('Formatting results (' + this.format + ') with ' + metricsCount+ ' metric(s)...');
 
 		// render results
-		var formatter = require('./formatter'),
-			renderer = new formatter(this.results, this.format);
+		var Formatter = require('./formatter'),
+			renderer = new Formatter(this.results, this.format);
 
 		this.echo(renderer.render());
 
