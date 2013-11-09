@@ -106,10 +106,10 @@ var phantomas = function(params) {
 	this.currentRequests = 0;
 
 	// setup logger
-	var logger = require('./logger'),
+	var Logger = require('./logger'),
 		logFile = params.log || '';
 
-	this.logger = new logger(logFile, {
+	this.logger = new Logger(logFile, {
 		beVerbose: this.verboseMode,
 		beSilent: this.silentMode
 	});

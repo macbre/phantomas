@@ -5,6 +5,7 @@ module.exports = function(logFile, params) {
 	var colors = require('ansicolors'),
 		styles = require('ansistyles'),
 		fs = require('fs'),
+		stderr = require('system').stderr,
 		beVerbose = params.beVerbose === true,
 		beSilent = params.beSilent === true,
 		stream;
@@ -48,7 +49,9 @@ module.exports = function(logFile, params) {
 				consoleMsg = colors.brightBlack(consoleMsg);
 			}
 
-			echo(ts + ' ' + consoleMsg);
+			if (!beSilent) {
+				stderr.writeLine(ts + ' ' + consoleMsg);
+			}
 		}
 
 		// log to the file (--log)
@@ -58,7 +61,9 @@ module.exports = function(logFile, params) {
 		}
 	}
 
-	// public interface
-	this.echo = echo;
-	this.log = log;
+	// public API
+	return {
+		echo: echo,
+		log: log
+	};
 };
