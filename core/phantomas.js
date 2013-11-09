@@ -82,7 +82,7 @@ var phantomas = function(params) {
 	// --modules=localStorage,cookies
 	this.modules = (typeof params.modules === 'string') ? params.modules.split(',') : [];
 
-	// --skip-modules=jQeury,domQueries
+	// --skip-modules=jQuery,domQueries
 	this.skipModules = (typeof params['skip-modules'] === 'string') ? params['skip-modules'].split(',') : [];
 
 	// --user-agent=custom-agent
