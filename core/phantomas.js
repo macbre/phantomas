@@ -131,26 +131,28 @@ var phantomas = function(params) {
 	}
 
 	// set up results wrapper
-	var results = require('./results');
-	this.results = new results();
+	var Results = require('./results');
+	this.results = new Results();
+
+	this.results.setGenerator('phantomas v' + VERSION);
 	this.results.setUrl(this.url);
+	this.results.setAsserts(this.params.asserts);
 
 	// load core modules
 	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
 
 	// load 3rd party modules
-	var modules = (this.modules.length > 0) ? this.modules : this.listModules(),
-		self = this;
+	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
 
 	modules.forEach(function(moduleName) {
-		if (self.skipModules.indexOf(moduleName) > -1) {
-			self.log('Module ' + moduleName + ' skipped!');
+		if (this.skipModules.indexOf(moduleName) > -1) {
+			this.log('Module ' + moduleName + ' skipped!');
 			return;
 		}
 
-		self.addModule(moduleName);
-	});
+		this.addModule(moduleName);
+	}, this);
 };
 
 phantomas.version = VERSION;

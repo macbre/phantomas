@@ -4,51 +4,79 @@
  * Will be passed via events and to formatters
  */
 module.exports = function() {
-	var metrics = {},
+	var asserts = {},
+		generator = '',
+		metrics = {},
 		notices = [],
 		url;
 
-	function addNotice(msg) {
-		notices.push(msg);
-	}
-
-	function getNotices() {
-		return notices;
-	}
-
-	function setMetric(name, value) {
-		metrics[name] = value;
-	}
-
-	function getMetric(name) {
-		return metrics[name];
-	}
-
-	function getMetrics() {
-		return metrics;
-	}
-
-	function getMetricsNames() {
-		return Object.keys(metrics);
-	}
-
-	function setUrl(_url) {
-		url = _url;
-	}
-
-	function getUrl() {
-		return url;
-	}
-
 	// public API
-	this.addNotice = addNotice;
-	this.getNotices = getNotices;
+	return {
+		// notices
+		addNotice: function(msg) {
+			notices.push(msg);
+		},
+		getNotices: function() {
+			return notices;
+		},
 
-	this.setMetric = setMetric;
-	this.getMetric = getMetric;
-	this.getMetrics = getMetrics;
-	this.getMetricsNames = getMetricsNames;
+		// metrics
+		setMetric: function(name, value) {
+			metrics[name] = value;
+		},
+		getMetric: function(name) {
+			return metrics[name];
+		},
+		getMetrics: function() {
+			return metrics;
+		},
+		getMetricsNames: function() {
+			return Object.keys(metrics);
+		},
 
-	this.setUrl = setUrl;
-	this.getUrl = getUrl;
+		// set URL report was generated for
+		setUrl: function(val) {
+			url = val;
+		},
+		getUrl: function() {
+			return url;
+		},
+
+		// generator - phantomas vX.X.X
+		setGenerator: function(val) {
+			generator = val;
+		},
+		getGenerator: function() {
+			return generator;
+		},
+
+		// asserts handling
+		setAssert: function(metric, val) {
+			asserts[metric] = val;
+		},
+		setAsserts: function(val) {
+			asserts = val;
+		},
+		getAsserts: function() {
+			return asserts;
+		},
+		hasAssertion: function(metric) {
+			return typeof asserts[metric] !== 'undefined';
+		},
+		getAssertion: function(metric) {
+			return asserts[metric];
+		},
+
+		// assertions
+		assert: function(metric) {
+			var expected = this.getAssertion(metric),
+				val = this.getMetric(metric);
+
+			if (!this.hasAssertion(metric) || typeof val === 'undefined') {
+				return true;
+			}
+
+			return val <= expected;
+		},
+	};
 };
