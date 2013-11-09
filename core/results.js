@@ -55,7 +55,7 @@ module.exports = function() {
 			asserts[metric] = val;
 		},
 		setAsserts: function(val) {
-			asserts = val;
+			asserts = val || {};
 		},
 		getAsserts: function() {
 			return asserts;
