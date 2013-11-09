@@ -467,6 +467,18 @@ phantomas.prototype = {
 
 		this.echo(renderer.render());
 
+		// asserts handling
+		var failedAsserts = this.results.getFailedAsserts(),
+			failedAssertsCnt = failedAsserts.length;
+
+		if (failedAssertsCnt > 0) {
+			this.log('Failed on %d assert(s) on the following metric(s): %s!', failedAssertsCnt, failedAsserts.join(', '));
+
+			// exit code should equal number of failed assertions
+			this.tearDown(failedAssertsCnt);
+			return;
+		}
+
 		this.log('Done!');
 		this.tearDown();
 	},
