@@ -7,7 +7,7 @@
  * Usage:
  *  ./phantomas.js
  *    --url=<page to check>
- *    [--format=json|csv|plain]
+ *    [--format=json|csv|tap|plain]
  *    [--timeout=5]
  *    ]--viewport=<width>x<height>]
  *    [--verbose]
