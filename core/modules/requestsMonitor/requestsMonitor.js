@@ -104,6 +104,11 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
+		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
+		if (res.status === null) {
+			return;
+		}
+
 		// current request data
 		var entry = requests[res.id] || {};
 
