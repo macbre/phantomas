@@ -5,6 +5,8 @@
  * @see https://github.com/isaacs/node-tap
  */
 module.exports = function(results) {
+	var yaml = require('yamlish');
+
 	// public API
 	return {
 		render: function() {
@@ -25,7 +27,8 @@ module.exports = function(results) {
 			// metrics
 			metrics.forEach(function(metric) {
 				var isOk = true,
-					msg = metric;
+					msg = metric,
+					data = false;
 
 				// check asserts
 				if (results.hasAssertion(metric)) {
@@ -33,7 +36,11 @@ module.exports = function(results) {
 						isOk = false;
 						failedCnt++;
 
-						msg += ' # expected ' + results.getMetric(metric)  + ' to be less than or equal ' + results.getAssertion(metric);
+						// TODO: add metric offenders and helpful message
+						data = {
+							expected: results.getAssertion(metric),
+							actual: results.getMetric(metric),
+						};
 					}
 				}
 				else {
@@ -46,6 +53,13 @@ module.exports = function(results) {
 					testNo++,
 					msg
 				].join(' '));
+
+				// emit additional data (if any)
+				// @see http://testanything.org/wiki/index.php/YAMLish
+				if (data) {
+					res.push("  ---" + yaml.encode(data));
+					res.push("  ...");
+				}
 			});
 
 			res.push('# Total: ' + metrics.length);
