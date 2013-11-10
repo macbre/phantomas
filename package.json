@@ -28,7 +28,8 @@
     "css-parse": "1.5",
     "phantomjs": ">=1.9",
     "slick": "1.0",
-    "tap-eater": ">=0.0.1"
+    "tap-eater": ">=0.0.1",
+    "yamlish": ">=0.0.5"
   },
   "devDependencies": [
     "jshint",
