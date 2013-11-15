@@ -20,6 +20,7 @@ if(!Function.prototype.bind) {
 
 // exit codes
 var EXIT_SUCCESS = 0,
+	EXIT_TIMED_OUT = 252,
 	EXIT_CONFIG_FAILED = 253,
 	EXIT_LOAD_FAILED = 254,
 	EXIT_ERROR = 255;
@@ -428,10 +429,12 @@ phantomas.prototype = {
 
 		// fallback - always timeout after TIMEOUT seconds
 		this.log('Run timeout set to ' + this.timeout + ' s');
-		setTimeout(this.proxy(function() {
+		setTimeout(function() {
 			this.log('Timeout of ' + this.timeout + ' s was reached!');
+			this.timedOut = true;
+
 			this.report();
-		}), this.timeout * 1000);
+		}.bind(this), this.timeout * 1000);
 	},
 
 	/**
@@ -443,7 +446,7 @@ phantomas.prototype = {
 		clearTimeout(this.lastRequestTimeout);
 
 		if (this.currentRequests < 1) {
-			this.lastRequestTimeout = setTimeout(this.proxy(this.report), 1000);
+			this.lastRequestTimeout = setTimeout(this.report.bind(this), 1000);
 		}
 	},
 
@@ -466,6 +469,13 @@ phantomas.prototype = {
 			renderer = new Formatter(this.results, this.format);
 
 		this.echo(renderer.render());
+
+		// handle timeouts (issue #129)
+		if (this.timedOut) {
+			this.log('Timed out!');
+			this.tearDown(EXIT_TIMED_OUT);
+			return;
+		}
 
 		// asserts handling
 		var failedAsserts = this.results.getFailedAsserts(),
