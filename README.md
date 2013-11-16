@@ -33,6 +33,7 @@ phantomas uses the following 3rd party libraries (located in `/lib` directory):
 * [Web Performance Best Practices](https://developers.google.com/speed/docs/best-practices/rules_intro) (by Google)
 * [Writing Efficient CSS](http://developer.mozilla.org/en/Writing_Efficient_CSS) (by Mozilla)
 * [Planet Performance](http://www.perfplanet.com/) - news and views from the web performance blogosphere
+* [Performance of 3rd Party Content](http://stevesouders.com/p3pc/) (by Steve Souders)
 
 ### Slides
  
