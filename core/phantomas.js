@@ -455,8 +455,9 @@ phantomas.prototype = {
 		this.emit('report');
 
 		var time = Date.now() - this.start;
-		this.log('phantomas work done in ' + time + ' ms');
+		this.log('phantomas run for <%s> completed in %d ms', this.page.url, time);
 
+		this.results.setUrl(this.page.url);
 		this.emit('results', this.results);
 
 		// count all metrics
