@@ -139,6 +139,20 @@ var phantomas = function(params) {
 	this.results.setUrl(this.url);
 	this.results.setAsserts(this.params.asserts);
 
+	// allow asserts to be provided via command-line options (#128)
+	Object.keys(this.params).forEach(function(param) {
+		var value = parseFloat(this.params[param]),
+			name;
+
+		if (!isNaN(value) && param.indexOf('assert-') === 0) {
+			name = param.substr(7);
+
+			if (name.length > 0) {
+				this.results.setAssert(name, value);
+			}
+		}
+	}, this);
+
 	// load core modules
 	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
