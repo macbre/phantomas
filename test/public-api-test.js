@@ -55,6 +55,7 @@ vows.describe('phantomas public API').addBatch({
 				'setMetric',
 				'setMetricEvaluate',
 				'setMetricFromScope',
+				'setMarkerMetric',
 				'getFromScope',
 				'incrMetric',
 				'getMetric',
@@ -128,7 +129,25 @@ vows.describe('phantomas public API').addBatch({
 
 			api.incrMetric('bar', 3);
 			assert.equal(api.getMetric('bar'), 4);
-		}
+		},
+		'marker is properly calculated': function(api) {
+			var origDateNow = Date.now,
+				now = Date.now(),
+				diff = 5;
+
+			// emit fake responseEnd event
+			Date.now = function() { return now - diff; };
+			api.emit('responseEnd');
+
+			// set the marker
+			Date.now = function() { return now; };
+			api.setMarkerMetric('marker');
+
+			assert.equal(api.getMetric('marker'), diff);
+
+			// tearDown
+			Date.now = origDateNow;
+		},
 	},
 	'parameters': {
 		topic: function() {
