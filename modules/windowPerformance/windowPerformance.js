@@ -3,7 +3,7 @@
  *
  * @see http://w3c-test.org/webperf/specs/NavigationTiming/#dom-performancetiming-domloading
  */
-exports.version = '0.4';
+exports.version = '0.5';
 
 exports.module = function(phantomas) {
 	// times below are calculated relative to performance.timing.responseEnd (#117)
@@ -12,16 +12,15 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('windowOnLoadTime');     // i.e. Navigation Timing - loadEventStart
 	phantomas.setMetric('windowOnLoadTimeEnd');  // i.e. Navigation Timing - loadEventEnd
 
-	// emulate window.performance
-	var responseEndTime;
-
 	// measure onDOMReadyTime and windowOnLoadTime from the moment HTML response was fully received
 	phantomas.once('responseEnd', function() {
-		responseEndTime = (new Date()).getTime();
+		var responseEndTime = Date.now();
 		phantomas.log('Performance timing: responseEnd');
 
+		// extend window.performance
 		phantomas.evaluate(function(responseEndTime) {
-			window.__phantomas.set('responseEndTime', responseEndTime);
+			window.performance = window.performance || {timing: {}};
+			window.performance.timing.responseEnd = responseEndTime;
 		}, responseEndTime);
 	});
 
@@ -33,7 +32,7 @@ exports.module = function(phantomas) {
 				// emulate Navigation Timing
 				document.addEventListener('readystatechange', function() {
 					var readyState = document.readyState,
-						responseEndTime = phantomas.get('responseEndTime'),
+						responseEndTime = window.performance.timing.responseEnd,
 						time = Date.now() - responseEndTime,
 						metricName;
 
@@ -54,15 +53,15 @@ exports.module = function(phantomas) {
 							return;
 					}
 
-					phantomas.setMetric(metricName, time);
+					phantomas.setMarkerMetric(metricName);
 					phantomas.log('Performance timing: document reached "' + readyState + '" state after ' + time + ' ms');
 
 					// measure when event handling is completed
 					setTimeout(function() {
 						var time = Date.now() - responseEndTime;
 
-						phantomas.setMetric(metricName + 'End', time);
-						phantomas.log('Performance timing: "' + readyState + '" state handling completed after ' + time + ' ms');
+						phantomas.setMarkerMetric(metricName + 'End');
+						phantomas.log('Performance timing: "' + readyState + '" state handling completed after ' + time + ' ms (experimental)');
 					}, 0);
 				});
 
@@ -73,11 +72,11 @@ exports.module = function(phantomas) {
 
 	// fallback for --disable-js mode
 	phantomas.on('loadFinished', function() {
-		var time = (new Date()).getTime() - responseEndTime;
+		var time;
 
 		if (phantomas.getMetric('onDOMReadyTime') === 0) {
-			phantomas.setMetric('windowOnLoadTime', time);
-			phantomas.setMetric('windowOnLoadTimeEnd', time);
+			time = phantomas.setMarkerMetric('windowOnLoadTime');
+			phantomas.setMarkerMetric('windowOnLoadTimeEnd');
 
 			phantomas.log('Performance timing: document reached "complete" state after ' + time + ' ms (no JS fallback)');
 		}

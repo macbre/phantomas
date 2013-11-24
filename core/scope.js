@@ -135,10 +135,15 @@
 			sendMsg('incrMetric', {name: name, incr: incr || 1});
 		}
 
+		function setMarkerMetric(name) {
+			sendMsg('setMarkerMetric', {name: name});
+		}
+
 		// exports
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
 		phantomas.incrMetric = incrMetric;
+		phantomas.setMarkerMetric = setMarkerMetric;
 	})();
 
 	/**
