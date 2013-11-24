@@ -9,7 +9,7 @@ exports.module = function(phantomas) {
 		var globals = phantomas.evaluate(function() {
 		return (function(phantomas) {
 			var globals = [],
-				allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', '__phantomas'],
+				allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', '__phantomas', 'performance'],
 				varName,
 				iframe,
 				cleanWindow;
