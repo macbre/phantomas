@@ -106,6 +106,12 @@ var phantomas = function(params) {
 	// current HTTP requests counter
 	this.currentRequests = 0;
 
+	// store the timestamp of responseEnd event
+	// should be bound before modules
+	this.on('responseEnd', this.proxy(function() {
+		this.responseEndTime = Date.now();
+	}));
+
 	// setup logger
 	var Logger = require('./logger'),
 		logFile = params.log || '';
@@ -217,6 +223,7 @@ phantomas.prototype = {
 			setMetric: this.setMetric.bind(this),
 			setMetricEvaluate: this.setMetricEvaluate.bind(this),
 			setMetricFromScope: this.setMetricFromScope.bind(this),
+			setMarkerMetric: this.setMarkerMetric.bind(this),
 			getFromScope: this.getFromScope.bind(this),
 			incrMetric: this.incrMetric.bind(this),
 			getMetric: this.getMetric.bind(this),
@@ -640,6 +647,10 @@ phantomas.prototype = {
 				this.incrMetric(data.name, data.incr);
 				break;
 
+			case 'setMarkerMetric':
+				this.setMarkerMetric(data.name);
+				break;
+
 			default:
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
 				this.emit('message', msg);
@@ -658,6 +669,18 @@ phantomas.prototype = {
 
 	setMetricEvaluate: function(name, fn) {
 		this.setMetric(name, this.page.evaluate(fn));
+	},
+
+	setMarkerMetric: function(name) {
+		var now = Date.now(),
+			value = now - this.responseEndTime;
+
+		if (typeof this.responseEndTime === 'undefined') {
+			throw 'setMarkerMetric() called before responseEnd event!';
+		}
+
+		this.results.setMetric(name, value);
+		return value;
 	},
 
 	// set metric from browser's scope that was set there using using window.__phantomas.set()
