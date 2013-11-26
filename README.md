@@ -221,7 +221,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Requests monitor (core module)
 
-> Due to (PhantomJS issue #10156)[https://github.com/ariya/phantomjs/issues/10156] body size related metrics are not reliable!
+> Due to [PhantomJS issue #10156](https://github.com/ariya/phantomjs/issues/10156) **body size related metrics are not reliable**
 
 * requests: total number of HTTP requests made
 * gzipRequests: number of gzipped HTTP responses
@@ -241,7 +241,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Assets types
 
-> Due to (PhantomJS issue #10156)[https://github.com/ariya/phantomjs/issues/10156] body size related metrics are not reliable!
+> Due to [PhantomJS issue #10156](https://github.com/ariya/phantomjs/issues/10156) **body size related metrics are not reliable**
 
 * htmlCount: number of HTML responses
 * htmlSize: size of HTML responses
