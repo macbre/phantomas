@@ -1,4 +1,4 @@
 language: node_js
 node_js: "0.10"
-install: "npm install jshint vows mockery ansicolors ansistyles"
+install: "npm install jshint vows mockery ansicolors ansistyles fast-stats"
 script: "npm test && npm run-script lint"
