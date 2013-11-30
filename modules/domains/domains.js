@@ -30,7 +30,8 @@ exports.module = function(phantomas) {
 	// add metrics
 	phantomas.on('report', function() {
 		var domainsStats = [],
-			domainsRequests = [];
+			Stats = require('fast-stats').Stats,
+			domainsRequests = new Stats();
 
 		// TODO: implement phantomas.collection
 		Object.keys(domains).forEach(function(domain) {
@@ -50,8 +51,8 @@ exports.module = function(phantomas) {
 
 		if (domainsStats.length > 0) {
 			phantomas.setMetric('domains', domainsStats.length);
-			phantomas.setMetric('maxRequestsPerDomain', domainsStats[0].cnt);
-			phantomas.setMetric('medianRequestsPerDomain', phantomas.median(domainsRequests));
+			phantomas.setMetric('maxRequestsPerDomain', domainsRequests.range()[1]);
+			phantomas.setMetric('medianRequestsPerDomain', domainsRequests.median());
 		}
 
 		phantomas.addNotice('Requests per domain:');

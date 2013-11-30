@@ -9,7 +9,8 @@ exports.module = function(phantomas) {
 		fastestResponse,
 		slowestResponse;
 
-	var responseTimes = [];
+	var Stats = require('fast-stats').Stats,
+		responseTimes = new Stats();
 
 	phantomas.on('recv', function(entry, res) {
 		// ignore anything different than HTTP 200
@@ -61,6 +62,6 @@ exports.module = function(phantomas) {
 
 		phantomas.addNotice();
 
-		phantomas.setMetric('medianResponse', phantomas.median(responseTimes));
+		phantomas.setMetric('medianResponse', responseTimes.median());
 	});
 };

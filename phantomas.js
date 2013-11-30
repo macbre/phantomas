@@ -33,6 +33,9 @@ var args = require('system').args,
 	phantomas = require(dir + '/core/phantomas'),
 	instance;
 
+// compatibility layer for NodeJS modules
+process = {argv: []};
+
 // run phantomas
 instance = new phantomas(params);
 

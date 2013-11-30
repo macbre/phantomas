@@ -110,8 +110,7 @@ phantomas.prototype = {
 	log: noop,
 	echo: noop,
 	evaluate: noop,
-	injectJs: noop,
-	median: noop,
+	injectJs: noop
 };
 
 function initModule(name, isCore) {
