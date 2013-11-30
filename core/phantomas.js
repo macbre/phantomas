@@ -243,7 +243,6 @@ phantomas.prototype = {
 			}).bind(this),
 
 			// utils
-			median: this.median.bind(this),
 			runScript: this.runScript.bind(this)
 		};
 	},
@@ -732,17 +731,6 @@ phantomas.prototype = {
 	// require CommonJS module from lib/modules
 	require: function(module) {
 		return require('../lib/modules/' + module);
-	},
-
-	// returns median value for given set
-	median: function(arr) {
-		var half = Math.floor(arr.length/2);
-
-		arr.sort(function(a,b) {
-			return a - b;
-		});
-
-		return (arr.length % 2) ? arr[half] : ((arr[half-1] + arr[half]) / 2.0);
 	},
 
 	// runs a given helper script from phantomas main directory

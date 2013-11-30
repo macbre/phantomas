@@ -64,8 +64,7 @@ vows.describe('phantomas public API').addBatch({
 				'echo',
 				'evaluate',
 				'injectJs',
-				'require',
-				'median'
+				'require'
 			];
 
 			methods.forEach(function(method) {
