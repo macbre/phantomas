@@ -1,7 +1,8 @@
 /**
  * Defines phantomas global API mock
  */
-var noop = function() {};
+var assert = require('assert'),
+	noop = function() {};
 
 var phantomas = function() {
 	this.emitter = new (require('events').EventEmitter)();
@@ -133,7 +134,7 @@ function assertMetric(name, value) {
 	value = value || 1;
 
 	return function(phantomas) {
-		phantomas.hasValue(name, value);
+		assert.strictEqual(value, phantomas.getMetric(name));
 	};
 }
 
@@ -149,12 +150,10 @@ module.exports = {
 
 	getContext: function(moduleName, topic, metricsCheck) {
 		var phantomas = initModule(moduleName),
-			context;
+			context = {};
 
-		context = {
-			topic: function() {
-				return topic(phantomas);
-			}
+		context.topic = function() {
+			return topic(phantomas);
 		};
 
 		Object.keys(metricsCheck || {}).forEach(function(name) {
