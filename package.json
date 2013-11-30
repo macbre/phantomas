@@ -26,6 +26,7 @@
     "ansistyles": "0.1",
     "commander": "2.0",
     "css-parse": "1.5",
+    "fast-stats": ">=0.0.2",
     "phantomjs": ">=1.9",
     "slick": "1.0",
     "tap-eater": ">=0.0.1",
@@ -45,6 +46,7 @@
   },
   "jshintConfig": {
     "node": true,
+    "-W020": false,
     "-W030": false
   }
 }
