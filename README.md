@@ -113,7 +113,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 92_
+_Current number of metrics: 95_
 
 Units:
 
@@ -212,11 +212,15 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * globalVariables: 23
 * jsErrors: 0
 * localStorageEntries: 0
-* smallestResponse: 35
-* biggestResponse: 82544
-* fastestResponse: 41
-* slowestResponse: 5323
-* medianResponse: 429.5
+* smallestResponse: 1
+* biggestResponse: 78145
+* fastestResponse: 56
+* slowestResponse: 901
+* smallestLatency: 55
+* biggestLatency: 901
+* medianResponse: 256.5
+* medianLatency: 241
+
 ```
 
 ### Requests monitor (core module)
@@ -330,11 +334,19 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 ### Requests statistics
 
+> **Time** is total duration, from the start of the request to the receipt of the final byte in the response. **Latency** is the time to load the first byte in the response.
+> https://developers.google.com/chrome-developer-tools/docs/network
+>
+> Includes ``HTTP 200`` responses only
+
 * smallestResponse: the size of the smallest response
 * biggestResponse: the size of the biggest response
 * fastestResponse: the time to the last byte of the fastest response
 * slowestResponse: the time to the last byte of the slowest response
+* smallestLatency: the time to the first byte of the fastest response
+* biggestLatency: the time to the first byte of the slowest response
 * medianResponse: median value of time to the last byte for all responses
+* medianLatency: median value of time to the first byte for all responses
 
 ### localStorage
 
