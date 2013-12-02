@@ -32,11 +32,11 @@
     "tap-eater": ">=0.0.1",
     "yamlish": ">=0.0.5"
   },
-  "devDependencies": [
-    "jshint",
-    "mockery",
-    "vows"
-  ],
+  "devDependencies": {
+    "jshint": ">=2.1.11",
+    "mockery": ">=1.4",
+    "vows": ">=0.7"
+  },
   "optionalDependencies": {},
   "bin": "./phantomas.js",
   "preferGlobal": true,
