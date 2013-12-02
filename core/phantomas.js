@@ -27,7 +27,7 @@ var EXIT_SUCCESS = 0,
 
 // get phantomas version from package.json file
 var VERSION = require('../package').version,
-    fs = require('fs');
+	fs = require('fs');
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
@@ -63,7 +63,7 @@ var phantomas = function(params) {
 	// parse script CLI parameters
 	this.params = params;
 
-    this.cookieJar = params['cookie-jar'] || false;
+	this.cookieJar = params['cookie-jar'] || false;
 
 	// --url=http://example.com
 	this.url = this.params.url;
@@ -95,8 +95,19 @@ var phantomas = function(params) {
 	// disable JavaScript on the page that will be loaded
 	this.disableJs = params['disable-js'] === true;
 
-    //use cookie jar if specified
-    this.initCookieJar();
+	this.util = this.require('util');
+
+	// setup logger
+	var Logger = require('./logger'),
+		logFile = params.log || '';
+
+	this.logger = new Logger(logFile, {
+		beVerbose: this.verboseMode,
+		beSilent: this.silentMode
+	});
+
+	//use cookie jar if specified
+	this.initCookieJar();
 
 	// setup cookies handling
 	this.initCookies();
@@ -105,7 +116,6 @@ var phantomas = function(params) {
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
 
-	this.util = this.require('util');
 
 	this.page = require('webpage').create();
 
@@ -118,14 +128,6 @@ var phantomas = function(params) {
 		this.responseEndTime = Date.now();
 	}));
 
-	// setup logger
-	var Logger = require('./logger'),
-		logFile = params.log || '';
-
-	this.logger = new Logger(logFile, {
-		beVerbose: this.verboseMode,
-		beSilent: this.silentMode
-	});
 
 	// report version and installation directory
 	if (typeof module.dirname !== 'undefined') {
@@ -303,16 +305,22 @@ phantomas.prototype = {
 
 		return modules;
 	},
-    //use cookie jar if specified
-    initCookieJar: function(){
-        if (this.cookieJar) {
-            try {
-                 phantom.cookies = JSON.parse(fs.read(this.cookieJar));
-            } catch(e) {
-                phantom.cookies = [];
-            }
-        }
-    },
+
+	//use cookie jar if specified
+	initCookieJar: function(){
+		if (this.cookieJar) {
+			phantom.cookies = [];
+			if (fs.isReadable(this.cookieJar)) {
+				try {
+					phantom.cookies = JSON.parse(fs.read(this.cookieJar));
+				} catch (e) {
+					this.log('Error: A problem occurred attempting to parse cookie jar.');
+				}
+			} else {
+				this.log('Cookies could not be read from cookie jar.');
+			}
+		}
+	},
 
 	// setup cookies handling
 	initCookies: function() {
@@ -357,16 +365,18 @@ phantomas.prototype = {
 			this.cookies.push(cookie);
 		}
 	},
-    saveCookieJar: function(){
-        if(this.cookieJar){
-            try{
-                this.log('Writing Cookies to cookie jar');
-                fs.write(this.cookieJar,JSON.stringify(phantom.cookies),'w');
-            } catch(_e){
-                this.log('Error: Could not write to cookie jar \n\n' + _e.message);
-            }
-        }
-    },
+
+	// saves cookies to cookie jar if specified
+	saveCookieJar: function(){
+		if(this.cookieJar){
+			try{
+				this.log('Writing Cookies to cookie jar');
+				fs.write(this.cookieJar,JSON.stringify(phantom.cookies, null, 4),'w');
+			} catch(_e){
+				this.log('Error: Could not write to cookie jar');
+			}
+		}
+	},
 
 	// add cookies, if any, providing a domain shim
 	injectCookies: function() {
@@ -469,10 +479,7 @@ phantomas.prototype = {
 		this.emit('pageBeforeOpen', this.page);
 
 		// open the page
-
-		this.page.open(this.url, function(){
-            this.saveCookieJar();
-        }.bind(this)) ;
+		this.page.open(this.url);
 
 		this.emit('pageOpen');
 
@@ -588,6 +595,9 @@ phantomas.prototype = {
 			return;
 		}
 		this.onLoadFinishedEmitted = true;
+
+		// saves cookies to cookie jar if specified
+		this.saveCookieJar();
 
 		// we're done
 		this.log('Page loading finished ("' + status + '")');
