@@ -26,7 +26,8 @@ var EXIT_SUCCESS = 0,
 	EXIT_ERROR = 255;
 
 // get phantomas version from package.json file
-var VERSION = require('../package').version;
+var VERSION = require('../package').version,
+    fs = require('fs');
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
@@ -62,6 +63,8 @@ var phantomas = function(params) {
 	// parse script CLI parameters
 	this.params = params;
 
+    this.cookieJar = params['cookie-jar'] || false;
+
 	// --url=http://example.com
 	this.url = this.params.url;
 
@@ -91,6 +94,9 @@ var phantomas = function(params) {
 
 	// disable JavaScript on the page that will be loaded
 	this.disableJs = params['disable-js'] === true;
+
+    //use cookie jar if specified
+    this.initCookieJar();
 
 	// setup cookies handling
 	this.initCookies();
@@ -297,6 +303,11 @@ phantomas.prototype = {
 
 		return modules;
 	},
+    //use cookie jar if specified
+    initCookieJar: function(){
+        try{phantom.cookies = JSON.parse(fs.read(this.cookieJar));}
+        catch(e){phantom.cookies = []; }
+    },
 
 	// setup cookies handling
 	initCookies: function() {
@@ -341,6 +352,16 @@ phantomas.prototype = {
 			this.cookies.push(cookie);
 		}
 	},
+    saveCookieJar: function(){
+        if(this.cookieJar){
+            try{
+                this.log('Writing Cookies to cookie jar');
+                fs.write(this.cookieJar,JSON.stringify(phantom.cookies),'w');
+            } catch(_e){
+                this.log('Error: Could not write to cookie jar \n\n' + _e.message);
+            }
+        }
+    },
 
 	// add cookies, if any, providing a domain shim
 	injectCookies: function() {
@@ -443,7 +464,10 @@ phantomas.prototype = {
 		this.emit('pageBeforeOpen', this.page);
 
 		// open the page
-		this.page.open(this.url);
+
+		this.page.open(this.url, function(){
+            this.saveCookieJar();
+        }.bind(this)) ;
 
 		this.emit('pageOpen');
 
