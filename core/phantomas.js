@@ -466,7 +466,6 @@ phantomas.prototype = {
 		// open the page
 
 		this.page.open(this.url, function(){
-            console.log(this.page.content);
             this.saveCookieJar();
         }.bind(this)) ;
 
