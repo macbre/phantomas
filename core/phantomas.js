@@ -305,8 +305,13 @@ phantomas.prototype = {
 	},
     //use cookie jar if specified
     initCookieJar: function(){
-        try{phantom.cookies = JSON.parse(fs.read(this.cookieJar));}
-        catch(e){phantom.cookies = []; }
+        if (this.cookieJar) {
+            try {
+                 phantom.cookies = JSON.parse(fs.read(this.cookieJar));
+            } catch(e) {
+                phantom.cookies = [];
+            }
+        }
     },
 
 	// setup cookies handling
