@@ -372,7 +372,7 @@ phantomas.prototype = {
 			try{
 				this.log('Writing Cookies to cookie jar');
 				fs.write(this.cookieJar,JSON.stringify(phantom.cookies, null, 4),'w');
-			} catch(_e){
+			} catch(e){
 				this.log('Error: Could not write to cookie jar');
 			}
 		}
