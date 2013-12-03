@@ -789,7 +789,7 @@ phantomas.prototype = {
 		// @see https://github.com/ariya/phantomjs/blob/master/examples/child_process-examples.js
 		args = [
 			'node',
-			this.dir + script,
+			this.dir + script
 		].concat(
 			Array.isArray(args) ? args : []
 		);
