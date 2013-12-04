@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-
-var path    = require('path'),
+var path = require('path'),
 	spawn = require('child_process').spawn,
 	phantomjs = require('phantomjs');
 

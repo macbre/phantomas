@@ -42,7 +42,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ test/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
+    "lint": "jshint --verbose core/ modules/ phantomjs/ test/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
   },
   "jshintConfig": {
     "node": true,
