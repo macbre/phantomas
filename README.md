@@ -10,8 +10,8 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 
 ## Requirements
 
+* [NodeJS](http://nodejs.org)
 * [PhantomJS 1.9+](http://phantomjs.org/)
-* [NodeJS](http://nodejs.org) (for `run-multiple.js` script and `--analyze-css` option)
 
 ## Installation
 
@@ -55,6 +55,7 @@ npm install --global phantomas
 * [umaar](https://github.com/umaar)
 * [sjhcockrell](https://github.com/sjhcockrell)
 * [cphoover](https://github.com/cphoover)
+* [LaurentGoderre](https://github.com/LaurentGoderre)
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
