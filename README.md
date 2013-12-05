@@ -41,6 +41,7 @@ npm install --global phantomas
 * [Planet Performance](http://www.perfplanet.com/) - news and views from the web performance blogosphere
 * [Performance of 3rd Party Content](http://stevesouders.com/p3pc/) (by Steve Souders)
 * [Profiling CSS for fun and profit. Optimization notes.](http://perfectionkills.com/profiling-css-for-fun-and-profit-optimization-notes/)
+* [phantomas – PhantomJS based, modular web performance metrics generator](http://calendar.perfplanet.com/2013/phantomas/) (an article for Performance Calendar)
 
 ### Slides
  
