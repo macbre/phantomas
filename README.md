@@ -95,6 +95,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--analyze-css` emit in-depth CSS metrics **experimental**
 * `--film-strip` register film strip when page is loading (PNG files will be saved in ``./filmstrip`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value
+* `--screenshot=[file name]` render fully loaded page to a given file
 
 ### Multiple runs
 

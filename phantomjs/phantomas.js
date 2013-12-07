@@ -18,12 +18,14 @@
  *    [--user-agent='Custom user agent']
  *    [--config='JSON config file']
  *    [--cookie='bar=foo;domain=url']
+ *    [--cookie-jar='cookies JAR file']
  *    [--no-externals]
  *    [--allow-domain='domain,domain']
  *    [--block-domain='domain,domain']
  *    [--disable-js]
  *    [--analyze-css]
  *    [--film-strip]
+ *    [--screenshot='file name']
  */
 var args = require('system').args,
         // parse script arguments
