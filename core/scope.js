@@ -224,7 +224,7 @@
 				entry += '#' + node.id;
 			}
 			// div#foo.bar.test
-			else if (node.className && node.className !== '') {
+			else if (typeof node.className === 'string' && node.className !== '') {
 				entry += '.' + node.className.trim().replace(/ +/g, '.');
 			}
 

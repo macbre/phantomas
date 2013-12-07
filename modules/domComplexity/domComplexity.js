@@ -37,11 +37,19 @@ exports.module = function(phantomas) {
 							}
 
 							// @see https://developer.mozilla.org/en/DOM%3awindow.getComputedStyle
-							var styles = window.getComputedStyle(node);
+							var styles = window.getComputedStyle(node),
+								size = 0;
 
 							if (styles && styles.getPropertyValue('display') === 'none') {
-								//console.log(node.innerHTML);
-								phantomas.incr('hiddenContentSize', node.innerHTML.length);
+								if (typeof node.innerHTML === 'string') {
+									size = node.innerHTML.length;
+									phantomas.incr('hiddenContentSize', size);
+
+									// log hidden containers bigger than 1 kB
+									if (size > 1024) {
+										phantomas.log('Hidden content: ' + phantomas.getDOMPath(node) + ' (' + size + ' bytes)');
+									}
+								}
 
 								// don't run for child nodes as they're hidden as well
 								return false;
