@@ -15,7 +15,7 @@ exports.module = function(phantomas) {
 
 	// --screenshot
 	if (param === true) {
-		// default to "2013-12-07T20:15:01.521Z.png"
+		// defaults to "2013-12-07T20:15:01.521Z.png"
 		path = (new Date()).toJSON() + '.png';
 	}
 	// --screenshot [file name]

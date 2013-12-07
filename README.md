@@ -89,8 +89,8 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--cookie='bar=foo;domain=url'` document.cookie formatted string for setting a single cookie
 * `--cookie-jar=[cookies JAR file]` persistent cookie JAR across requests
 * `--no-externals` block requests to 3rd party domains
-* `--allow-domain=[domain],[domain]` allow requests to given domai(s) - aka whitelist
-* `--block-domain=[domain],[domain]` disallow requests to given domai(s) - aka blacklist
+* `--allow-domain=[domain],[domain]` allow requests to given domain(s) - aka whitelist
+* `--block-domain=[domain],[domain]` disallow requests to given domain(s) - aka blacklist
 * `--disable-js` disable JavaScript on the page that will be loaded
 * `--analyze-css` emit in-depth CSS metrics **experimental**
 * `--film-strip` register film strip when page is loading (PNG files will be saved in ``./filmstrip`` directory) **experimental**
