@@ -47,7 +47,7 @@ exports.module = function(phantomas) {
 
 									// log hidden containers bigger than 1 kB
 									if (size > 1024) {
-										phantomas.log('Hidden content: ' + phantomas.getDOMPath(node) + ' (' + size + ' bytes)');
+										phantomas.addOffender('hiddenContentSize', phantomas.getDOMPath(node) + ' (' + size + ' bytes)');
 									}
 								}
 
