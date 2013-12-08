@@ -692,6 +692,10 @@ phantomas.prototype = {
 				this.setMarkerMetric(data.name);
 				break;
 
+			case 'addOffender':
+				this.addOffender(data.metricName, data.msg);
+				break;
+
 			default:
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
 				this.emit('message', msg);
