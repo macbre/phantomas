@@ -28,6 +28,20 @@ vows.describe('Results wrapper').addBatch({
 			assert.deepEqual(results.getMetrics(), {foo: 'bar', bar: null});
 		},
 	},
+	'Offenders': {
+		topic: topic,
+		'should be registered': function(results) {
+			results.addOffender('metric', 'foo');
+			results.addOffender('metric', 'bar');
+			results.addOffender('metric2', 'test');
+		},
+		'should be kept in order': function(results) {
+			assert.deepEqual(results.getOffenders('metric'), ['foo', 'bar']);
+			assert.deepEqual(results.getOffenders('metric2'), ['test']);
+
+			assert.equal('undefined', typeof results.getOffenders('metric3'));
+		}
+	},
 	'Notices': {
 		topic: topic,
 		'should be registered': function(results) {
