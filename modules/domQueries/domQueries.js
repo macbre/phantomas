@@ -99,11 +99,9 @@ exports.module = function(phantomas) {
 		});
 
 		if (queries.length > 0) {
-			phantomas.addNotice('Duplicated DOM queries (' + queries.length + '):');
 			queries.forEach(function(query) {
-				phantomas.addNotice(' ' + query.query + ': ' + query.cnt + ' queries');
+				phantomas.addOffender('DOMqueries', query.query + ': ' + query.cnt + ' queries');
 			});
-			phantomas.addNotice();
 		}
 	});
 };

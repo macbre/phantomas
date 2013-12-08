@@ -55,10 +55,8 @@ exports.module = function(phantomas) {
 			phantomas.setMetric('medianRequestsPerDomain', domainsRequests.median());
 		}
 
-		phantomas.addNotice('Requests per domain:');
 		domainsStats.forEach(function(domain) {
-			phantomas.addNotice(' ' + domain.name + ': ' + domain.cnt + ' request(s)');
+			phantomas.addOffender('domains', domain.name + ': ' + domain.cnt + ' request(s)');
 		});
-		phantomas.addNotice();
 	});
 };

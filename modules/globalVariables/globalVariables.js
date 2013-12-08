@@ -50,8 +50,7 @@ exports.module = function(phantomas) {
 		phantomas.setMetric('globalVariables', globals.length);
 
 		if (globals.length > 0) {
-			phantomas.addNotice('JavaScript globals (' + globals.length + '): ' + globals.join(', '));
-			phantomas.addNotice();
+			phantomas.addOffender('globalVariables', globals.join(', '));
 		}
 	});
 };
