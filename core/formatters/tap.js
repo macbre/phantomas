@@ -28,7 +28,8 @@ module.exports = function(results) {
 			metrics.forEach(function(metric) {
 				var isOk = true,
 					msg = metric,
-					data = false;
+					data = false,
+					offenders;
 
 				// check asserts
 				if (results.hasAssertion(metric)) {
@@ -36,10 +37,9 @@ module.exports = function(results) {
 						isOk = false;
 						failedCnt++;
 
-						// TODO: add metric offenders and helpful message
 						data = {
 							expected: results.getAssertion(metric),
-							actual: results.getMetric(metric),
+							actual: results.getMetric(metric)
 						};
 					}
 				}
@@ -48,6 +48,18 @@ module.exports = function(results) {
 					msg += ' # SKIP';
 				}
 
+				// add offenders
+				offenders = results.getOffenders(metric);
+
+				if (offenders) {
+					if (data === false) {
+						data = {};
+					}
+
+					data.offenders = offenders;
+				}
+
+				// add a row to TAP
 				res.push([
 					isOk ? 'ok' : 'not ok',
 					testNo++,

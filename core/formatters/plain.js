@@ -38,6 +38,19 @@ module.exports = function(results) {
 			});
 			res.push('');
 
+			// offenders
+			var offenders = results.getAllOffenders();
+
+			Object.keys(offenders).forEach(function(metric) {
+				res.push(colors.brightGreen('Offenders for ' + metric + ' (' + results.getMetric(metric) + '):'));
+
+				results.getOffenders(metric).forEach(function(msg) {
+					res.push(' * ' + msg);
+				});
+
+				res.push('');
+			});
+
 			// notices
 			results.getNotices().forEach(function(msg) {
 				msg = msg.

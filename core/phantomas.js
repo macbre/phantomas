@@ -236,6 +236,9 @@ phantomas.prototype = {
 			incrMetric: this.incrMetric.bind(this),
 			getMetric: this.getMetric.bind(this),
 
+			// offenders
+			addOffender: this.addOffender.bind(this),
+
 			// debug
 			addNotice: this.addNotice.bind(this),
 			log: this.log.bind(this),
@@ -747,6 +750,10 @@ phantomas.prototype = {
 
 	getMetric: function(name) {
 		return this.results.getMetric(name);
+	},
+
+	addOffender: function(metricName, msg) {
+		this.results.addOffender(metricName, msg);
 	},
 
 	// adds a notice that will be emitted after results
