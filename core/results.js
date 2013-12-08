@@ -7,6 +7,7 @@ module.exports = function() {
 	var asserts = {},
 		generator = '',
 		metrics = {},
+		offenders = {},
 		notices = [],
 		url;
 
@@ -32,6 +33,23 @@ module.exports = function() {
 		},
 		getMetricsNames: function() {
 			return Object.keys(metrics);
+		},
+
+		// offenders
+		addOffender: function(metricName, msg) {
+			if (typeof offenders[metricName] === 'undefined') {
+				offenders[metricName] = [];
+			}
+
+			offenders[metricName].push(msg);
+		},
+
+		getOffenders: function(metricName) {
+			return offenders[metricName];
+		},
+
+		getAllOffenders: function() {
+			return offenders;
 		},
 
 		// set URL report was generated for

@@ -236,6 +236,9 @@ phantomas.prototype = {
 			incrMetric: this.incrMetric.bind(this),
 			getMetric: this.getMetric.bind(this),
 
+			// offenders
+			addOffender: this.addOffender.bind(this),
+
 			// debug
 			addNotice: this.addNotice.bind(this),
 			log: this.log.bind(this),
@@ -689,6 +692,10 @@ phantomas.prototype = {
 				this.setMarkerMetric(data.name);
 				break;
 
+			case 'addOffender':
+				this.addOffender(data.metricName, data.msg);
+				break;
+
 			default:
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
 				this.emit('message', msg);
@@ -747,6 +754,10 @@ phantomas.prototype = {
 
 	getMetric: function(name) {
 		return this.results.getMetric(name);
+	},
+
+	addOffender: function(metricName, msg) {
+		this.results.addOffender(metricName, msg);
 	},
 
 	// adds a notice that will be emitted after results

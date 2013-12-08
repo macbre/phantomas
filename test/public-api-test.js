@@ -59,6 +59,7 @@ vows.describe('phantomas public API').addBatch({
 				'getFromScope',
 				'incrMetric',
 				'getMetric',
+				'addOffender',
 				'addNotice',
 				'log',
 				'echo',

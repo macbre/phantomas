@@ -139,11 +139,16 @@
 			sendMsg('setMarkerMetric', {name: name});
 		}
 
+		function addOffender(metricName, msg) {
+			sendMsg('addOffender', {metricName: metricName, msg: msg});
+		}
+
 		// exports
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
 		phantomas.incrMetric = incrMetric;
 		phantomas.setMarkerMetric = setMarkerMetric;
+		phantomas.addOffender = addOffender;
 	})();
 
 	/**

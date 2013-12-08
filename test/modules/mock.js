@@ -108,6 +108,7 @@ phantomas.prototype = {
 
 	// noop mocks
 	addNotice: noop,
+	addOffender: noop,
 	log: noop,
 	echo: noop,
 	evaluate: noop,
