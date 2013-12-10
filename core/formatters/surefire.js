@@ -1,8 +1,3 @@
-/*TODO: Figure out how to parse from the results:
- *			- Test properties
- *			- Timings
- *			- Errors
- */
 /**
  * Results formatter for --format=surefire
  */
