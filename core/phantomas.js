@@ -70,6 +70,9 @@ var phantomas = function(params) {
 
 	// --format=[csv|json]
 	this.format = params.format || 'plain';
+	
+	// --formattedLog=[/path/to/file]
+	this.formattedLog = params['formattedLog'] || false;
 
 	// --viewport=1280x1024
 	this.viewport = params.viewport || '1280x1024';
@@ -528,6 +531,19 @@ phantomas.prototype = {
 		var Formatter = require('./formatter'),
 			renderer = new Formatter(this.results, this.format);
 
+		var formattedResults = renderer.render();	
+		
+		this.echo(formattedResults);
+		
+		if (this.formattedLog) {
+			formattedFile = fs.absolute(this.formattedLog);
+			var stream = fs.open(this.formattedLog, 'w');
+			if (stream) {
+				stream.writeLine(formattedResults);
+				stream.flush();
+			}
+		}
+		
 		this.echo(renderer.render());
 
 		// handle timeouts (issue #129)
