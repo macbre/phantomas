@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
   "main": "./phantomas.js",
@@ -30,6 +30,7 @@
     "phantomjs": ">=1.9",
     "slick": "1.0",
     "tap-eater": ">=0.0.1",
+    "xmlbuilder": ">=1.1.0",
     "yamlish": ">=0.0.5"
   },
   "devDependencies": {
