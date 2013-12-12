@@ -428,8 +428,8 @@ phantomas.prototype = {
 
 		if (parsedViewport.length === 2) {
 			this.page.viewportSize = {
-				height: parseInt(parsedViewport[0], 10) || 1280,
-				width: parseInt(parsedViewport[1], 10) || 1024
+				width: parseInt(parsedViewport[0], 10) || 1280,
+				height: parseInt(parsedViewport[1], 10) || 1024
 			};
 		}
 
@@ -447,7 +447,7 @@ phantomas.prototype = {
 		// print out debug messages
 		this.log('Opening <' + this.url + '>...');
 		this.log('Using ' + this.page.settings.userAgent + ' as user agent');
-		this.log('Viewport set to ' + this.page.viewportSize.height + 'x' + this.page.viewportSize.width);
+		this.log('Viewport set to ' + this.page.viewportSize.width + 'x' + this.page.viewportSize.height);
 
 		// bind basic events
 		this.page.onInitialized = this.proxy(this.onInitialized);
