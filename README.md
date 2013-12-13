@@ -155,6 +155,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 * otherSize: 0
 * cacheHits: 9
 * cacheMisses: 0
+* cachePasses: 0
 * cachingNotSpecified: 4
 * cachingTooShort: 3
 * cachingDisabled: 0
@@ -271,6 +272,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 * cacheHits: number of cache hits
 * cacheMisses: number of cache misses
+* cachePasses: number of cache passes
 
 ### Headers
 
