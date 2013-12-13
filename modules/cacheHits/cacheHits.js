@@ -20,12 +20,12 @@ exports.module = function(phantomas) {
 
 		if (re.test(header)) {
 		   isHit = header.toLowerCase().indexOf('hit') > -1;
-		   if(isHit) {
+		   if (isHit) {
 		        phantomas.incrMetric('cacheHits');
 		   }
 		   else {
 		        isPass = header.toLowerCase().indexOf('pass') > -1;
-		        if(isPass) {
+		        if (isPass) {
 		             phantomas.incrMetric('cachePasses');
 		             phantomas.log('Cache pass: on <' + entry.url + '> (X-Cache: ' + header + ')');
 		        }
