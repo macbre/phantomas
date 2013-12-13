@@ -56,8 +56,8 @@ exports.module = function(phantomas) {
 	phantomas.on('report', function() {
 		Object.keys(assetsReqCounter).forEach(function(asset) {
 			if (assetsReqCounter[asset] > 1) {
-				phantomas.addNotice('<' + asset + '> requested multiple times');
 				phantomas.incrMetric('multipleRequests');
+				phantomas.addOffender('multipleRequests', asset);
 			}
 		});
 	});

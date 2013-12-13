@@ -8,8 +8,7 @@ exports.module = function(phantomas) {
 	var HTTP_STATUS_CODES = phantomas.require('http').STATUS_CODES,
 		parseUrl = phantomas.require('url').parse;
 
-	var requests = [],
-		notices = [];
+	var requests = [];
 
 	// register metric
 	phantomas.setMetric('requests');
@@ -119,7 +118,7 @@ exports.module = function(phantomas) {
 				entry.timeToFirstByte = res.time - entry.sendTime;
 
 				// FIXME: buggy
-				// @see http://code.google.com/p/phantomjs/issues/detail?id=169
+				// @see https://github.com/ariya/phantomjs/issues/10169
 				entry.bodySize += res.bodySize || 0;
 				break;
 
@@ -134,6 +133,7 @@ exports.module = function(phantomas) {
 				switch(entry.method) {
 					case 'POST':
 						phantomas.incrMetric('postRequests');
+						phantomas.addOffender('postRequests', entry.url);
 						break;
 				}
 
@@ -147,7 +147,7 @@ exports.module = function(phantomas) {
 
 					switch (header.name.toLowerCase()) {
 						// TODO: why it's not gzipped?
-						// because: http://code.google.com/p/phantomjs/issues/detail?id=156
+						// because: https://github.com/ariya/phantomjs/issues/10156
 						// should equal bodySize
 						case 'content-length':
 							entry.contentLength = parseInt(header.value, 10);
@@ -226,14 +226,13 @@ exports.module = function(phantomas) {
 					case 302: // Found
 						entry.isRedirect = true;
 						phantomas.incrMetric('redirects');
-
-						notices.push('Redirect: <' + entry.url + '> is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') ' +
-							'to <' + (res.redirectURL || (res.url.replace(/\/$/, '') + entry.headers.Location)) + '>');
+						phantomas.addOffender('redirects', entry.url + ' is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') ' +
+							'to ' + (res.redirectURL || (res.url.replace(/\/$/, '') + entry.headers.Location)));
 						break;
 
 					case 404: // Not Found
 						phantomas.incrMetric('notFound');
-						notices.push('Not found: <' + entry.url + '> returned HTTP 404');
+						phantomas.addOffender('notFound', entry.url);
 						break;
 				}
 
@@ -251,6 +250,7 @@ exports.module = function(phantomas) {
 
 				if (entry.isSSL) {
 					phantomas.incrMetric('httpsRequests');
+					phantomas.addOffender('httpsRequests', entry.url);
 				}
 
 				// emit an event for other modules
@@ -276,16 +276,5 @@ exports.module = function(phantomas) {
 
 		// completion of the last HTTP request
 		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - loadStartedTime);
-	});
-
-	phantomas.on('report', function() {
-		if (notices.length === 0) {
-			return;
-		}
-
-		notices.forEach(function(msg) {
-			phantomas.addNotice(msg);
-		});
-		phantomas.addNotice();
 	});
 };

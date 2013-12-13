@@ -24,7 +24,8 @@ exports.module = function(phantomas) {
 
 	phantomas.on('recv', function(entry, res) {
 		var type = entry.type,
-			time = 0;
+			time = 0,
+			metricName = '';
 
 		// report only the first asset of supported type
 		if ( (types.indexOf(type) === -1) || (hasReceived[type] === true) ) {
@@ -34,8 +35,10 @@ exports.module = function(phantomas) {
 		// calculate relative timestamp
 		time = Date.now() - timestampStart;
 
-		phantomas.setMetric('timeToFirst' + capitalize(type), time);
-		phantomas.addNotice('First ' + type + ' received in ' + time + ' ms: <' + entry.url + '>');
+		metricName = 'timeToFirst' + capitalize(type);
+
+		phantomas.setMetric(metricName, time);
+		phantomas.addOffender(metricName, entry.url + ' received in ' + time + ' ms');
 
 		// set the flag
 		hasReceived[type] = true;
