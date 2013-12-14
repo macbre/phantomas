@@ -228,6 +228,10 @@
 			else if (typeof node.className === 'string' && node.className !== '') {
 				entry += '.' + node.className.trim().replace(/ +/g, '.');
 			}
+			// div[0] <- index of child node
+			else if (node.parentNode instanceof Node) {
+				entry += '[' + Array.prototype.indexOf.call(node.parentNode.childNodes, node) + ']';
+			}
 
 			path.push(entry);
 

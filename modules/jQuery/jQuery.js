@@ -42,7 +42,7 @@ exports.module = function(phantomas) {
 					// Sizzle calls - jQuery.find
 					// works for jQuery 1.3+ (released Jan 13 2009)
 					phantomas.spy(val, 'find', function(selector, context) {
-						phantomas.log('Sizzle called: ' + selector + ' (context: ' + phantomas.getDOMPath(context) + ')');
+						phantomas.log('Sizzle called: ' + selector + ' (context: ' + (phantomas.getDOMPath(context) || 'unknown') + ')');
 						phantomas.incrMetric('jQuerySizzleCalls');
 					}) || phantomas.log('jQuery: can not measure jQuerySizzleCalls (jQuery used on the page is too old)!');
 				});
