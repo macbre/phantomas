@@ -14,7 +14,7 @@ exports.module = function(phantomas) {
 	// X-Cache:HIT, HIT
 	// X-Cache:arsenic miss (0)
 	phantomas.on('recv', function(entry,res) {
-		var header = entry.headers['X-Cache'].toLowerCase() || '',
+		var header = (entry.headers['X-Cache'] || '').toLowerCase(),
 			isHit,
 			isPass;
 
