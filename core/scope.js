@@ -208,13 +208,9 @@
 	 */
 	function getDOMPath(node) {
 		var path = [],
-			entry;
+			entry = '';
 
-		if (!node instanceof Node) {
-			return false;
-		}
-
-		do {
+		while (node instanceof Node) {
 			// div
 			entry = node.nodeName.toLowerCase();
 
@@ -237,9 +233,9 @@
 
 			// go up the DOM
 			node = node && node.parentNode;
-		} while(node);
+		}
 
-		return path.reverse().join(' > ');
+		return (path.length > 0) ? path.reverse().join(' > ') : false;
 	}
 
 	// exports
