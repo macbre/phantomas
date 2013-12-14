@@ -114,7 +114,7 @@ This helper script requires NodeJS.
 
 ## Metrics
 
-_Current number of metrics: 95_
+_Current number of metrics: 96_
 
 Units:
 
