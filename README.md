@@ -57,6 +57,7 @@ npm install --global phantomas
 * [sjhcockrell](https://github.com/sjhcockrell)
 * [cphoover](https://github.com/cphoover)
 * [LaurentGoderre](https://github.com/LaurentGoderre)
+* [kennydee](https://github.com/kennydee)
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
