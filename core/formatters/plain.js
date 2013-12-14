@@ -2,6 +2,7 @@
  * Results formatter for --format=plain
  */
 var colors = require('ansicolors'),
+	fold = require('travis-fold'),
 	rpad = require('../pads').rpad,
 	OK = '✓',
 	ERR = '✗';
@@ -17,6 +18,8 @@ module.exports = function(results) {
 			res.push('');
 
 			// metrics
+			fold.pushStart(res, 'metrics');
+
 			results.getMetricsNames().forEach(function(metric) {
 				var line = ' ' + metric + ': ' + results.getMetric(metric);
 
@@ -36,10 +39,13 @@ module.exports = function(results) {
 
 				res.push(line);
 			});
+
+			fold.pushEnd(res, 'metrics');
 			res.push('');
 
 			// offenders
 			var offenders = results.getAllOffenders();
+			fold.pushStart(res, 'offenders');
 
 			Object.keys(offenders).forEach(function(metric) {
 				res.push(colors.brightGreen('Offenders for ' + metric + ' (' + results.getMetric(metric) + '):'));
@@ -51,7 +57,11 @@ module.exports = function(results) {
 				res.push('');
 			});
 
+			fold.pushEnd(res, 'offenders');
+
 			// notices
+			fold.pushStart(res, 'notices');
+
 			results.getNotices().forEach(function(msg) {
 				msg = msg.
 					// color labels
@@ -62,8 +72,12 @@ module.exports = function(results) {
 				// add a notice
 				res.push(msg);
 			});
+			fold.pushEnd(res, 'notices');
 
-			return res.join('\n').trim();
+			return fold.wrap(
+				results.getUrl(),
+				res.join('\n').trim()
+			);
 		}
 	};
 };
