@@ -30,6 +30,7 @@
     "phantomjs": ">=1.9",
     "slick": "1.0",
     "tap-eater": ">=0.0.1",
+    "travis-fold": ">=0.1.2",
     "yamlish": ">=0.0.5"
   },
   "devDependencies": {
