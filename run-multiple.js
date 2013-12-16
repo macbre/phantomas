@@ -40,8 +40,7 @@ var url = params.url,
 function runPhantomas(params, callback) {
 	var timeMs = Date.now(),
 		cmd = [
-			phantomjs.path,
-			'phantomas.js',
+			__dirname + '/phantomas.js',
 			'--format json',
 			'--url "' + params.url + '"'
 		];
