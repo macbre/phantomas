@@ -1,32 +1,13 @@
 #!/usr/bin/env node
-var phantomas = require('./index'),
-	child;
+var path = require('path'),
+	spawn = require('child_process').spawn,
+	phantomjs = require('phantomjs');
 
-var url = 'http://example.com';
+var phantomas = spawn(phantomjs.path, [path.resolve(__dirname, 'phantomjs/phantomas.js')].concat(process.argv.slice(2)));
 
-child = phantomas(url, {verbose: true}, function(err, res) {
-	if (err) {
-		console.log('err #' + err);
-		process.exit(err);
-	}
+phantomas.stdout.pipe(process.stdout);
+phantomas.stderr.pipe(process.stderr);
 
-	console.log(res);
-});
-
-// emit --verbose messages
-child.stderr.pipe(process.stderr);
-
-child.on('results', function (res) {
-	console.log(res);
-});
-
-/**
-child.on('data', function (data) {
-	console.log(data);
-});
-
-child.on('error', function (code) {
-	console.log(code);
+phantomas.on('close', function (code) {
 	process.exit(code);
 });
-/**/
