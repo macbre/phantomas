@@ -3,7 +3,7 @@
   "version": "0.10.1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
-  "main": "./phantomas.js",
+  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/macbre/phantomas.git"
@@ -26,6 +26,7 @@
     "ansistyles": "0.1",
     "commander": "2.0",
     "css-parse": "1.5",
+    "debug": "0.7.x",
     "fast-stats": ">=0.0.2",
     "phantomjs": ">=1.9",
     "slick": "1.0",
