@@ -11,7 +11,7 @@ function phantomas(url, options, callback) {
 	var args = [],
 		events = new emitter(),
 		path = '',
-		process,
+		proc,
 		results = '';
 
 	// options can be omitted
@@ -20,13 +20,16 @@ function phantomas(url, options, callback) {
 		options = {};
 	}
 
+	debug('nodejs %s', process.version);
+	debug('PhantomJS v%s installed in %s', phantomjs.version, phantomjs.path);
+	debug('phantomas v%s installed in %s', VERSION, __dirname);
 	debug('URL: <%s>', url);
 	debug('Options: %s', JSON.stringify(options));
 
 	// options handling
 	options = options || {};
 
-	options.url = url;
+	options.url = options.url || url || false;
 	options.format = options.format || 'json';
 
 	// build path to PhantomJS
@@ -51,42 +54,41 @@ function phantomas(url, options, callback) {
 	debug('Running %s %s', path, args.join(' '));
 
 	// spawn the process
-	process = spawn(path, args);
+	proc = spawn(path, args);
 
-	debug('Spawned with pid #%d', process.pid);
+	debug('Spawned with pid #%d', proc.pid);
 
-	process.on('error', function(err) {
+	proc.on('error', function(err) {
 		debug('Error: %s', err);
 	});
 
 	// gather data from stdout
-	process.stdout.on('data', function(buf) {
+	proc.stdout.on('data', function(buf) {
 		results += buf;
 	});
 
 	// process results
-	process.on('close', function(code) {
+	proc.on('close', function(code) {
 		var json = false;
 
 		debug('Process returned code #%d', code);
 		debug('%s', results);
 
-		if (code === 0) {
-			// emit RAW data (in format requested as --format)
-			events.emit('results', results);
+		// emit RAW data (in format requested as --format)
+		events.emit('results', results);
 
-			// (try to) parse to JSON
-			if (options.format === 'json') {
-				try {
-					json = JSON.parse(results);
-					events.emit('data', json);
-				}
-				catch(ex) {
-					debug('Error when parsing JSON (%s): %s', ex, results);
-				};
+		// (try to) parse to JSON
+		if (options.format === 'json') {
+			try {
+				json = JSON.parse(results);
+				events.emit('data', json);
 			}
+			catch(ex) {
+				debug('Error when parsing JSON (%s): %s', ex, results);
+			};
 		}
-		else {
+
+		if (code > 0) {
 			if (events.listeners('error').length > 0) {
 				events.emit('error', code);
 			}
@@ -98,9 +100,9 @@ function phantomas(url, options, callback) {
 	});
 
 	return {
-		pid: process.pid,
-		stdout: process.stdout,
-		stderr: process.stderr,
+		pid: proc.pid,
+		stdout: proc.stdout,
+		stderr: proc.stderr,
 		on: events.on.bind(events)
 	};
 }
