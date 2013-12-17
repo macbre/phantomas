@@ -1,7 +1,8 @@
 /**
  * phantomas CommonJS module
  */
-var emitter = require('events').EventEmitter,
+var debug = require('debug')('phantomas'),
+	emitter = require('events').EventEmitter,
 	spawn = require('child_process').spawn,
 	phantomjs = require('phantomjs'),
 	VERSION = require('./package').version;
@@ -44,13 +45,15 @@ function phantomas(url, options, callback) {
 		}
 	});
 
-	console.log([path].concat(args).join(' '));
+	debug('Running %s %s', path, args.join(' '));
 
 	// spawn the process
 	process = spawn(path, args);
 
+	debug('Spawned with pid #%d', process.pid);
+
 	process.on('error', function(err) {
-		console.log(err);
+		debug('Error: %s', err);
 	});
 
 	// gather data from stdout
@@ -62,6 +65,9 @@ function phantomas(url, options, callback) {
 	process.on('close', function(code) {
 		var json = false;
 
+		debug('Process returned code #%d', code);
+		debug('%s', results);
+
 		if (code === 0) {
 			// emit RAW data (in format requested as --format)
 			events.emit('results', results);
@@ -72,7 +78,9 @@ function phantomas(url, options, callback) {
 					json = JSON.parse(results);
 					events.emit('data', json);
 				}
-				catch(ex) {};
+				catch(ex) {
+					debug('Error when parsing JSON (%s): %s', ex, results);
+				};
 			}
 		}
 		else {
