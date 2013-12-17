@@ -20,13 +20,16 @@ function phantomas(url, options, callback) {
 		options = {};
 	}
 
+	debug('URL: <%s>', url);
+	debug('Options: %s', JSON.stringify(options));
+
 	// options handling
 	options = options || {};
 
 	options.url = url;
 	options.format = options.format || 'json';
 
-	// build path to PhantomJs
+	// build path to PhantomJS
 	path = phantomjs.path;
 	args.push(__dirname + '/phantomjs/phantomas.js');
 
