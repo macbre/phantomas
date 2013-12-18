@@ -26,8 +26,7 @@ var EXIT_SUCCESS = 0,
 	EXIT_ERROR = 255;
 
 // get phantomas version from package.json file
-var VERSION = require('../package').version,
-	fs = require('fs');
+var VERSION = require('../package').version;
 
 var getDefaultUserAgent = function() {
 	var version = phantom.version,
@@ -63,8 +62,6 @@ var phantomas = function(params) {
 	// parse script CLI parameters
 	this.params = params;
 
-	this.cookieJar = params['cookie-jar'] || false;
-
 	// --url=http://example.com
 	this.url = this.params.url;
 
@@ -95,20 +92,6 @@ var phantomas = function(params) {
 	// disable JavaScript on the page that will be loaded
 	this.disableJs = params['disable-js'] === true;
 
-	this.util = this.require('util');
-
-	// setup logger
-	var Logger = require('./logger'),
-		logFile = params.log || '';
-
-	this.logger = new Logger(logFile, {
-		beVerbose: this.verboseMode,
-		beSilent: this.silentMode
-	});
-
-	//use cookie jar if specified
-	this.initCookieJar();
-
 	// setup cookies handling
 	this.initCookies();
 
@@ -116,6 +99,7 @@ var phantomas = function(params) {
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
 
+	this.util = this.require('util');
 
 	this.page = require('webpage').create();
 
@@ -128,6 +112,14 @@ var phantomas = function(params) {
 		this.responseEndTime = Date.now();
 	}));
 
+	// setup logger
+	var Logger = require('./logger'),
+		logFile = params.log || '';
+
+	this.logger = new Logger(logFile, {
+		beVerbose: this.verboseMode,
+		beSilent: this.silentMode
+	});
 
 	// report version and installation directory
 	if (typeof module.dirname !== 'undefined') {
@@ -309,22 +301,6 @@ phantomas.prototype = {
 		return modules;
 	},
 
-	//use cookie jar if specified
-	initCookieJar: function(){
-		if (this.cookieJar) {
-			phantom.cookies = [];
-			if (fs.isReadable(this.cookieJar)) {
-				try {
-					phantom.cookies = JSON.parse(fs.read(this.cookieJar));
-				} catch (e) {
-					this.log('Error: A problem occurred attempting to parse cookie jar.');
-				}
-			} else {
-				this.log('Cookies could not be read from cookie jar.');
-			}
-		}
-	},
-
 	// setup cookies handling
 	initCookies: function() {
 		// cookie handling via command line and config.json
@@ -366,18 +342,6 @@ phantomas.prototype = {
 
 			// see phantomas.run for validation.
 			this.cookies.push(cookie);
-		}
-	},
-
-	// saves cookies to cookie jar if specified
-	saveCookieJar: function(){
-		if(this.cookieJar){
-			try{
-				this.log('Writing Cookies to cookie jar');
-				fs.write(this.cookieJar,JSON.stringify(phantom.cookies, null, 4),'w');
-			} catch(e){
-				this.log('Error: Could not write to cookie jar');
-			}
 		}
 	},
 
@@ -599,9 +563,6 @@ phantomas.prototype = {
 		}
 		this.onLoadFinishedEmitted = true;
 
-		// saves cookies to cookie jar if specified
-		this.saveCookieJar();
-
 		// we're done
 		this.log('Page loading finished ("' + status + '")');
 
@@ -800,7 +761,7 @@ phantomas.prototype = {
 		// @see https://github.com/ariya/phantomjs/blob/master/examples/child_process-examples.js
 		args = [
 			'node',
-			this.dir + script
+			this.dir + script,
 		].concat(
 			Array.isArray(args) ? args : []
 		);
