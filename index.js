@@ -107,6 +107,7 @@ function phantomas(url, options, callback) {
 	};
 }
 
+phantomas.path = __dirname;
 phantomas.version = VERSION;
 
 module.exports = phantomas;
