@@ -9,6 +9,7 @@ var debug = require('debug')('phantomas'),
 
 function phantomas(url, options, callback) {
 	var args = [],
+		phantomJsArgs = [],
 		events = new emitter(),
 		path = '',
 		proc,
@@ -38,18 +39,35 @@ function phantomas(url, options, callback) {
 
 	// build args
 	Object.keys(options).forEach(function(key) {
-		var val = options[key];
+		var val = options[key],
+			nativeOptions = [
+				'cookies-file',
+				'ignore-ssl-errors',
+				'proxy',
+				'proxy-auth',
+				'proxy-type'
+			];
 
 		if (val === false) {
 			return;
 		}
 
-		args.push('--' + key);
+		// handle native PhantomJS options (#163)
+		// @see http://phantomjs.org/api/command-line.html
+		if (nativeOptions.indexOf(key) > -1) {
+			phantomJsArgs.push('--' + key + '=' + val);
+		}
+		else {
+			args.push('--' + key);
 
-		if (val !== true) {
-			args.push(val);
+			if (val !== true) {
+				args.push(val);
+			}
 		}
 	});
+
+	// add native PhantomJS options
+	args = phantomJsArgs.concat(args);
 
 	debug('Running %s %s', path, args.join(' '));
 
