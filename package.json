@@ -28,6 +28,7 @@
     "css-parse": "1.5",
     "debug": "0.7.x",
     "fast-stats": ">=0.0.2",
+    "optimist": "0.6.x",
     "phantomjs": ">=1.9",
     "slick": "1.0",
     "tap-eater": ">=0.0.1",
@@ -44,7 +45,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ phantomjs/ test/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
+    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js phantomas.js analyze-css.js run-multiple.js"
   },
   "jshintConfig": {
     "node": true,
