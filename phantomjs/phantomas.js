@@ -1,31 +1,7 @@
-#!/usr/bin/env phantomjs
 /**
- * PhantomJS-based web performance metrics collector
+ * phantomas script executed by PhantomJS
  *
- * @see https://github.com/macbre/phantomas
- *
- * Usage:
- *  ./phantomas.js
- *    --url=<page to check>
- *    [--format=json|csv|tap|plain]
- *    [--timeout=5]
- *    ]--viewport=<width>x<height>]
- *    [--verbose]
- *    [--silent]
- *    [--log=<log file>]
- *    [--modules=moduleOne,moduleTwo]
- *    [--skip-modules=moduleOne,moduleTwo]
- *    [--user-agent='Custom user agent']
- *    [--config='JSON config file']
- *    [--cookie='bar=foo;domain=url']
- *    [--cookie-jar='cookies JAR file']
- *    [--no-externals]
- *    [--allow-domain='domain,domain']
- *    [--block-domain='domain,domain']
- *    [--disable-js]
- *    [--analyze-css]
- *    [--film-strip]
- *    [--screenshot='file name']
+ * Don't run it directly. Use phantomas.js nodejs script instead!
  */
 var args = require('system').args,
         // parse script arguments

@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+/**
+ * PhantomJS-based web performance metrics collector
+ *
+ * Run "node phantomas.js" to get help
+ *
+ * @see https://github.com/macbre/phantomas
+ */
 var phantomas = require('./index'),
 	program = require('optimist'),
 	child,
