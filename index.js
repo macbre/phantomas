@@ -34,7 +34,7 @@ function phantomas(url, options, callback) {
 
 	// build path to PhantomJS
 	path = phantomjs.path;
-	args.push(__dirname + '/phantomjs/phantomas.js');
+	args.push(__dirname + '/scripts/phantomas.js');
 
 	// build args
 	Object.keys(options).forEach(function(key) {
