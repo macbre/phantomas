@@ -29,7 +29,6 @@ program
 	.describe('block-domain', 'disallow requests to given domain(s) - aka blacklist [domain],[domain],...')
 	.describe('config', 'uses JSON-formatted config file to set parameters')
 	.describe('cookie', 'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")')
-	.describe('cookie-jar', 'persistent cookie JAR across requests')
 	.describe('cookies-file', 'specifies the file name to store the persistent Cookies')
 	.describe('disable-js', 'disable JavaScript on the page that will be loaded').boolean('disable-js')
 	.describe('format', 'output format').default('format', 'plain')
