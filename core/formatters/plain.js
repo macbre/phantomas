@@ -48,11 +48,20 @@ module.exports = function(results) {
 			fold.pushStart(res, 'offenders');
 
 			Object.keys(offenders).forEach(function(metric) {
+				var LIMIT = 50,
+					offenders = results.getOffenders(metric),
+					len = offenders.length;
+
 				res.push(colors.brightGreen('Offenders for ' + metric + ' (' + results.getMetric(metric) + '):'));
 
-				results.getOffenders(metric).forEach(function(msg) {
+				// limit the ammount of offenders emitted
+				offenders.slice(0, LIMIT).forEach(function(msg) {
 					res.push(' * ' + msg);
 				});
+
+				if (len > LIMIT) {
+					res.push(colors.brightBlack('(' + (len - LIMIT) + ' more)'));
+				}
 
 				res.push('');
 			});
