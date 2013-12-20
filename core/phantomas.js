@@ -754,18 +754,11 @@ phantomas.prototype = {
 			callback = args;
 		}
 
-		// format a command
-		// @see https://github.com/ariya/phantomjs/blob/master/examples/child_process-examples.js
-		args = [
-			'node',
-			this.dir + script,
-		].concat(
-			Array.isArray(args) ? args : []
-		);
-
-		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
 		// execFile(file, args, options, callback)
-		ctx = execFile('/usr/bin/env', args, null, function (err, stdout, stderr) {
+		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
+		script = this.dir + script;
+
+		ctx = execFile(script, args, null, function (err, stdout, stderr) {
 			var time = Date.now() - start;
 
 			if (err || stderr) {
@@ -780,13 +773,16 @@ phantomas.prototype = {
 				callback(null, JSON.parse(stdout));
 			}
 			catch(ex) {
+				self.log('runScript: JSON parsing failed!');
+				self.log(ex);
+
 				callback(stderr, stdout);
 			}
 		});
 
 		pid = ctx.pid;
 
-		this.log('runScript: %s (pid #%d)', args.join(' '), pid);
+		this.log('runScript: %s %s (pid #%d)', script, args.join(' '), pid);
 	}
 };
 

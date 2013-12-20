@@ -30,8 +30,8 @@ npm install --global phantomas
 * easy integration with Continous Integration tools via TAP format and assertions handling
 * metrics can be emitted from JavaScript code of the page phantomas is run against (thanks to [helper functions available in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope))
 * utilities:
+ * CSS analyzer via [analyze-css](https://github.com/macbre/analyze-css)
  * helper script to run phantomas multiple times
- * CSS analyzer
 
 ## Let's make Web a bit faster!
 
@@ -402,24 +402,7 @@ phantomas metrics for <https://github.com/macbre/phantomas>:
 
 > This is an experimental feature. Use `--analyze-css` option to enable it.
 
-* cssLength: total length of all analyzed CSS files (including comments and whitespaces)
-* cssSelectorsTotal: total number of selectors (`.foo, .bar` counts as two)
-* cssSelectorsPartsTotal: total number of selectors parts (`ul > .bar > a` counts as three)
-* cssDeclarationsTotal: total number of properties defined in CSS file
-* cssEmptyDeclarations: total number of selectors with no properties defined (`.foo { }`)
-* cssComplexSelectors: number of complex selectors (consisting of three or more parts)
-* cssQualifiedRules: number of selectors that are mix of either ID and tag name, ID and class or class and tag name
-* cssOldIEFixes: hacky fixes for old versions of Internet Explorer including:
- * number of properties that are prefixed with asterisk (hacky fix for IE7 and below)
- * number of selectors starting with `* html` (hacky fix for IE6 and below)
-* cssSelectorsByTag: number of selectors by tag name
-* cssSelectorsByWildcard: number of selectors matching all tags (`nav *`)
-* cssSelectorsByClass: number of selectors by class
-* cssSelectorsById: number of selectors by ID
-* cssSelectorsByPseudo: number of pseudo-selectors (`:hover`)
-* cssSelectorsByAttribute: number of selectors by attribute (`.foo[value=bar]`)
-* cssSelectorsByAttributeComplex: number of selectors by attribute's value with "regular expressions matching" (`img[src$=.jpg]`)
-* cssImportantsTotal: number of properties with value forced by `!important`
+Take a look at [analyze-css README](https://github.com/macbre/analyze-css) for the full list of metrics.
 
 ## Debug logs and notices
 
@@ -468,5 +451,4 @@ Time spent on backend / frontend: 14% / 86%
 
 ## Utilities
 
-* [CSS analyzer](https://github.com/macbre/phantomas/wiki/CSS-analyzer)
 * [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
