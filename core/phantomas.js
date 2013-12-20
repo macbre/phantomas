@@ -179,9 +179,6 @@ var phantomas = function(params) {
 phantomas.version = VERSION;
 
 phantomas.prototype = {
-	metrics: {},
-	notices: [],
-
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
 		scope = scope || this;
