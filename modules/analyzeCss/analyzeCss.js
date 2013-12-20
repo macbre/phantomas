@@ -1,9 +1,11 @@
 /**
- * Runs analyze-css helper script and adds CSS related metrics
+ * Adds CSS related metrics using analyze-css NPM module
+ *
+ * @see https://github.com/macbre/analyze-css
  *
  * Run phantomas with --analyze-css option to use this module
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
@@ -29,22 +31,31 @@ exports.module = function(phantomas) {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
 
-			phantomas.runScript('analyze-css.js', ['--url', entry.url, '--json'], function(err, results) {
+			// run analyze-css "binary" installed by npm
+			phantomas.runScript('node_modules/.bin/analyze-css', ['--url', entry.url, '--json'], function(err, results) {
 				if (err !== null) {
-					phantomas.log('CSS: parsing failed!');
+					phantomas.log('analyzeCss: sub-process failed!');
 					return;
 				}
 
+				phantomas.log('analyzeCss: using ' + results.generator);
+
 				var metrics = results.metrics || {},
-					messages = results.messages || [];
+					offenders = results.offenders || {};
 
-				// increase metrics
 				Object.keys(metrics).forEach(function(metric) {
-					phantomas.incrMetric('css' + ucfirst(metric), metrics[metric]);
-				});
+					var metricPrefixed = 'css' + ucfirst(metric);
 
-				// register CSS notices
-				cssMessages = cssMessages.concat(messages);
+					// increase metrics
+					phantomas.incrMetric(metricPrefixed, metrics[metric]);
+
+					// and add offenders
+					if (typeof offenders[metric] !== 'undefined') {
+						offenders[metric].forEach(function(msg) {
+							phantomas.addOffender(metricPrefixed, msg);
+						});
+					}
+				});
 			});
 		}
 	});
