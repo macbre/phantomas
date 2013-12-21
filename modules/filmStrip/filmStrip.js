@@ -14,7 +14,14 @@ exports.module = function(phantomas) {
 		return;
 	}
 
-	var zoomFactor = 0.5;
+    var filmStripOutputDir = 'filmstrip';
+    // grab output dir from args
+    if (phantomas.getParam('film-strip-dir')) {
+        filmStripOutputDir = phantomas.getParam('film-strip-dir').replace(/\/+$/,'');
+    }
+
+
+    var zoomFactor = 0.5;
 	phantomas.setZoom(zoomFactor);
 
 	var util = phantomas.require('util'),
@@ -40,7 +47,7 @@ exports.module = function(phantomas) {
 
 		// time offset excluding time it took to render screenshots
 		ts = now - start - timeTotal;
-		path = util.format('filmstrip/screenshot-%d-%d.png', start, ts);
+		path = util.format(filmStripOutputDir+'/screenshot-%d-%d.png', start, ts);
 
 		phantomas.render(path);
 		lastScreenshot = Date.now();
