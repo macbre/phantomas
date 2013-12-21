@@ -7,6 +7,7 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 
 [![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
 [![Build Status](https://api.travis-ci.org/macbre/phantomas.png)](http://travis-ci.org/macbre/phantomas)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/macbre/phantomas/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Requirements
 
