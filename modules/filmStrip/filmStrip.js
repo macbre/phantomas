@@ -14,14 +14,14 @@ exports.module = function(phantomas) {
 		return;
 	}
 
-    var filmStripOutputDir = 'filmstrip';
-    // grab output dir from args
-    if (phantomas.getParam('film-strip-dir')) {
-        filmStripOutputDir = phantomas.getParam('film-strip-dir').replace(/\/+$/,'');
-    }
+	var filmStripOutputDir = 'filmstrip';
+	// grab output dir from args
+	if (phantomas.getParam('film-strip-dir')) {
+		filmStripOutputDir = phantomas.getParam('film-strip-dir').replace(/\/+$/,'');
+	}
 
 
-    var zoomFactor = 0.5;
+	var zoomFactor = 0.5;
 	phantomas.setZoom(zoomFactor);
 
 	var util = phantomas.require('util'),
