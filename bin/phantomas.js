@@ -6,7 +6,7 @@
  *
  * @see https://github.com/macbre/phantomas
  */
-var phantomas = require('./index'),
+var phantomas = require('./../lib/index'),
 	program = require('optimist'),
 	child,
 	options = {},
