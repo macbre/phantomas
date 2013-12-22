@@ -94,7 +94,8 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--block-domain=[domain],[domain]` disallow requests to given domain(s) - aka blacklist
 * `--disable-js` disable JavaScript on the page that will be loaded
 * `--analyze-css` emit in-depth CSS metrics **experimental**
-* `--film-strip` register film strip when page is loading (PNG files will be saved in ``./filmstrip`` directory) **experimental**
+* `--film-strip` register film strip when page is loading **experimental**
+* `--film-strip-dir=[dir path]` folder path to output film strip (default is ``./filmstrip`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value
 * `--screenshot=[file name]` render fully loaded page to a given file
 
