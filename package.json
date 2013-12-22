@@ -3,7 +3,7 @@
   "version": "0.10.1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
-  "main": "./index.js",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/macbre/phantomas.git"
@@ -39,7 +39,7 @@
     "vows": ">=0.7"
   },
   "optionalDependencies": {},
-  "bin": "./phantomas.js",
+  "bin": "./bin/phantomas.js",
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
