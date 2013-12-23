@@ -22,7 +22,7 @@
     "node": ">=0.6"
   },
   "dependencies": {
-    "analyze-css": "0.1.x",
+    "analyze-css": "0.2.x",
     "ansicolors": "0.2",
     "ansistyles": "0.1",
     "debug": "0.7.x",
