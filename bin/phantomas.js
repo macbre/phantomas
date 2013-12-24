@@ -49,7 +49,8 @@ program
 
 	// experimental features
 	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
-	.describe('film-strip', 'register film strip when page is loading (PNG files will be saved in ./filmstrip directory) - EXPERIMENTAL').boolean('film-strip');
+	.describe('film-strip', 'register film strip when page is loading - EXPERIMENTAL').boolean('film-strip')
+	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory) - EXPERIMENTAL');
 
 // parse it
 options = program.parse(process.argv);
