@@ -103,9 +103,6 @@ var phantomas = function(params) {
 
 	this.page = require('webpage').create();
 
-	// current HTTP requests counter
-	this.currentRequests = 0;
-
 	// store the timestamp of responseEnd event
 	// should be bound before modules
 	this.on('responseEnd', this.proxy(function() {
@@ -136,6 +133,10 @@ var phantomas = function(params) {
 		this.tearDown(EXIT_CONFIG_FAILED);
 		return;
 	}
+
+	// queue of jobs that needs to be done before report can be generated
+	var Queue = require('../lib/simple-queue');
+	this.reportQueue = new Queue();
 
 	// set up results wrapper
 	var Results = require('./results');
@@ -215,6 +216,9 @@ phantomas.prototype = {
 			on: this.on.bind(this),
 			once: this.once.bind(this),
 			emit: this.emit.bind(this),
+
+			// reports
+			reportQueuePush: this.reportQueue.push.bind(this.reportQueue),
 
 			// metrics
 			setMetric: this.setMetric.bind(this),
@@ -426,18 +430,34 @@ phantomas.prototype = {
 		this.page.onError = this.proxy(this.onError);
 
 		// observe HTTP requests
-		// finish when the last request is completed
+		// finish when the last request is completed + one second timeout
+		var self = this;
 
-		// update HTTP requests counter
-		this.on('send', this.proxy(function(entry) {
-			this.currentRequests++;
-		}));
+		this.reportQueue.push(function(done) {
+			var currentRequests = 0,
+				timeoutId;
 
-		this.on('recv', this.proxy(function(entry) {
-			this.currentRequests--;
+			// update HTTP requests counter
+			self.on('send', function(entry) {
+				clearTimeout(timeoutId);
+				currentRequests++;
+			});
 
-			this.enqueueReport();
-		}));
+			self.on('recv', function(entry) {
+				currentRequests--;
+
+				if (currentRequests < 1) {
+					timeoutId = setTimeout(done, 1000);
+				}
+			});
+		});
+
+		this.reportQueue.push(function(done) {
+			self.on('loadFinished', done);
+		});
+
+		// generate a report when all jobs are done
+		this.reportQueue.done(this.report, this);
 
 		// last time changes?
 		this.emit('pageBeforeOpen', this.page);
@@ -455,19 +475,6 @@ phantomas.prototype = {
 
 			this.report();
 		}.bind(this), this.timeout * 1000);
-	},
-
-	/**
-	 * Wait a second before finishing the monitoring (i.e. report generation)
-	 *
-	 * This one is called when response is received. Previously scheduled reporting is removed and the new is created.
-	 */
-	enqueueReport: function() {
-		clearTimeout(this.lastRequestTimeout);
-
-		if (this.currentRequests < 1) {
-			this.lastRequestTimeout = setTimeout(this.report.bind(this), 1000);
-		}
 	},
 
 	// called when all HTTP requests are completed
@@ -566,7 +573,6 @@ phantomas.prototype = {
 		switch(status) {
 			case 'success':
 				this.emit('loadFinished', status);
-				this.enqueueReport();
 				break;
 
 			default:

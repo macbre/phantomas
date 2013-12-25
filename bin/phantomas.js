@@ -46,6 +46,7 @@ program
 	.describe('user-agent', 'provide a custom user agent')
 	.describe('verbose', 'writes debug messages to the console').boolean('verbose').alias('verbose', 'v')
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height]').default('viewport', '1280x1024')
+	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 
 	// experimental features
 	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
