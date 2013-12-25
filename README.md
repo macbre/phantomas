@@ -29,6 +29,7 @@ npm install --global phantomas
 * in-depth metrics such as: number of events bound via jQuery, calls to ``window.write``or [complex and duplicated CSS selectors (via analyze-css)](https://github.com/macbre/analyze-css)
 * JSON and CSV as available output formats for easy integration with automated reporting / monitoring tools
 * easy integration with Continous Integration tools via TAP format and assertions handling
+* easy integration with other nodejs projects via CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module))
 * metrics can be emitted from JavaScript code of the page phantomas is run against (thanks to [helper functions available in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope))
 
 ## Contributors
@@ -45,6 +46,8 @@ npm install --global phantomas
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
+
+> phantomas comes as both command line tool and CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module)) that you can use in your nodejs projects.
 
 ### Single run
 
