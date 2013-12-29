@@ -36,6 +36,7 @@ program
 	.describe('log', 'log to a given file')
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
 	.describe('no-externals', 'block requests to 3rd party domains').boolean('no-externals')
+	.describe('post-load-delay', 'wait X seconds before generating a report')
 	.describe('proxy', 'specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)')
 	.describe('proxy-auth', 'specifies the authentication information for the proxy (e.g. --proxy-auth=username:password)')
 	.describe('proxy-type', 'specifies the type of the proxy server [http|socks5|none]')
