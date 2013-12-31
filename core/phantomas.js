@@ -762,6 +762,7 @@ phantomas.prototype = {
 
 		// execFile(file, args, options, callback)
 		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
+		args = args || [];
 		script = this.dir + script;
 
 		ctx = execFile(script, args, null, function (err, stdout, stderr) {
@@ -769,6 +770,10 @@ phantomas.prototype = {
 
 			if (err || stderr) {
 				self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+			}
+			else if (!pid) {
+				self.log('runScript: failed running %s %s!', script, args.join(' '));
+				return;
 			}
 			else {
 				self.log('runScript: pid #%d done (took %d ms)', pid, time);
@@ -780,15 +785,15 @@ phantomas.prototype = {
 			}
 			catch(ex) {
 				self.log('runScript: JSON parsing failed!');
-				self.log(ex);
-
 				callback(stderr, stdout);
 			}
 		});
 
 		pid = ctx.pid;
 
-		this.log('runScript: %s %s (pid #%d)', script, args.join(' '), pid);
+		if (pid) {
+			this.log('runScript: %s %s (pid #%d)', script, args.join(' '), pid);
+		}
 	}
 };
 
