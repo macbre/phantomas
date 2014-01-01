@@ -5,7 +5,7 @@
  *
  * Run phantomas with --analyze-css option to use this module
  */
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
@@ -25,14 +25,16 @@ exports.module = function(phantomas) {
 		return f + str.substr(1);
 	}
 
-	var cssMessages = [];
+	var cssMessages = [],
+		isWindows = (require('system').os.name === 'windows'),
+		binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
 
 	phantomas.on('recv', function(entry, res) {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
 
 			// run analyze-css "binary" installed by npm
-			phantomas.runScript('node_modules/.bin/analyze-css', ['--url', entry.url, '--json'], function(err, results) {
+			phantomas.runScript('node_modules/.bin/' + binary, ['--url', entry.url, '--json'], function(err, results) {
 				if (err !== null) {
 					phantomas.log('analyzeCss: sub-process failed!');
 					return;
