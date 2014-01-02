@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "analyze-css": "0.2.x",
-    "ansicolors": "0.2",
-    "ansistyles": "0.1",
+    "ansicolors": "~0.3.2",
+    "ansistyles": "~0.1.0",
     "debug": "0.7.x",
     "fast-stats": ">=0.0.2",
     "optimist": "0.6.x",
