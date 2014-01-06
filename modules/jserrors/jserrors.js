@@ -1,12 +1,10 @@
 /**
- * Meters the number of page errors, and provides traces after notices.
+ * Meters the number of page errors, and provides traces as offenders for "jsErrors" metric
  */
-
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
-	var jsErrors = [];
-	phantomas.setMetric('jsErrors', 0);
+	phantomas.setMetric('jsErrors');
 	
 	function formatTrace(trace) {
 		var ret = [];
@@ -23,33 +21,10 @@ exports.module = function(phantomas) {
 	phantomas.on('jserror', function(msg, trace) {
 		trace = formatTrace(trace);
 
-		// register errors and show them in post-report notices section
-		jsErrors.push({
-			msg: msg,
-			trace: trace
-		});
-
 		phantomas.log(msg);
 		phantomas.log('Backtrace: ' + trace.join(' / '));
 
 		phantomas.incrMetric('jsErrors');
-	});
-
-	phantomas.on('report', function() {
-		if (jsErrors.length === 0) {
-			return;
-		}
-
-		phantomas.addNotice('JS errors (' + jsErrors.length + '):');
-
-		jsErrors.forEach(function(error) {
-			phantomas.addNotice(' ' + error.msg);
-
-			error.trace.forEach(function(t) {
-				phantomas.addNotice('  ' + t);
-			});
-		});
-
-		phantomas.addNotice();
+		phantomas.addOffender('jsErrors', msg + ' - ' + trace.join(' / '));
 	});
 };

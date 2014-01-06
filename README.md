@@ -280,6 +280,8 @@ Units:
 
 ### JavaScript errors
 
+> Error message and backtrace will be emitted as offenders
+
 * jsErrors: number of JavaScript errors
 
 ### JavaScript console and alert
