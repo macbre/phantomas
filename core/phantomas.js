@@ -233,7 +233,6 @@ phantomas.prototype = {
 			addOffender: this.addOffender.bind(this),
 
 			// debug
-			addNotice: this.addNotice.bind(this),
 			log: this.log.bind(this),
 			echo: this.echo.bind(this),
 
@@ -722,12 +721,6 @@ phantomas.prototype = {
 
 	addOffender: function(metricName, msg) {
 		this.results.addOffender(metricName, msg);
-	},
-
-	// adds a notice that will be emitted after results
-	// supports phantomas.addNotice('foo: <%s>', url);
-	addNotice: function() {
-		this.results.addNotice(this.util.format.apply(this, arguments));
 	},
 
 	// add log message
