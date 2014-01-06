@@ -42,21 +42,6 @@ vows.describe('Results wrapper').addBatch({
 			assert.equal('undefined', typeof results.getOffenders('metric3'));
 		}
 	},
-	'Notices': {
-		topic: topic,
-		'should be registered': function(results) {
-			results.addNotice('foo');
-			assert.deepEqual(results.getNotices(), ['foo']);
-		},
-		'should be kept in order': function(results) {
-			results.addNotice('bar');
-			assert.deepEqual(results.getNotices(), ['foo', 'bar']);
-		},
-		'should allow an empty entry': function(results) {
-			results.addNotice('');
-			assert.deepEqual(results.getNotices(), ['foo', 'bar', '']);
-		}
-	},
 	'Asserts': {
 		topic: topic,
 		'should be correctly registered': function(results) {
