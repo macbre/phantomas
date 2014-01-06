@@ -25,8 +25,7 @@ exports.module = function(phantomas) {
 		return f + str.substr(1);
 	}
 
-	var cssMessages = [],
-		isWindows = (require('system').os.name === 'windows'),
+	var isWindows = (require('system').os.name === 'windows'),
 		binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
 
 	phantomas.on('recv', function(entry, res) {
@@ -59,29 +58,6 @@ exports.module = function(phantomas) {
 					}
 				});
 			});
-		}
-	});
-
-	phantomas.on('report', function() {
-		// limit number of messages
-		var limit = 50,
-			len = cssMessages.length;
-
-		phantomas.setMetric('cssNotices', len);
-
-		if (len > 0) {
-			cssMessages = cssMessages.slice(0, limit);
-
-			phantomas.addNotice('CSS notices (%s):', len);
-			cssMessages.forEach(function(msg) {
-				phantomas.addNotice(' ' + msg);
-			});
-
-			if (len > limit) {
-				phantomas.addNotice(' (%d more...)', len - limit);
-			}
-
-			phantomas.addNotice();
 		}
 	});
 };
