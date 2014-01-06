@@ -287,6 +287,10 @@ Units:
 * windowPrompts: number of calls to ``prompt``
 * consoleMessages: number of calls to ``console.*`` functions
 
+### Blocked requests
+
+* blockedRequests: number of requests blocked due to domain filtering (emitted only when in `--no-externals` / `--block-domain` mode)
+
 ### CSS metrics
 
 > This is an experimental feature. Use `--analyze-css` option to enable it.
