@@ -87,7 +87,7 @@ exports.module = function(phantomas) {
 	});
 
 	/**
-	 * Emit a notice with backend vs frontend time
+	 * Emit metrics with backend vs frontend time
 	 *
 	 * Performance Golden Rule:
 	 * "80-90% of the end-user response time is spent on the frontend. Start there."
