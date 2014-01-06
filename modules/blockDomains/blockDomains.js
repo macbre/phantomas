@@ -15,11 +15,7 @@ exports.module = function(phantomas) {
 		allowedDomainsRegExp,
 		// --block-domain google-analytics.com
 		blockedDomains = phantomas.getParam('block-domain'),
-		blockedDomainsRegExp,
-
-		// stats
-		blockedRequests = 0,
-		blockedRequestsByDomains = {};
+		blockedDomainsRegExp;
 
 	function checkBlock(domain) {
 		var blocked = false;
@@ -72,15 +68,8 @@ exports.module = function(phantomas) {
 			entry.block();
 
 			// stats
-			blockedRequests++;
-			blockedRequestsByDomains[entry.domain] = 1;
-		}
-	});
-
-	// debug information
-	phantomas.on('report', function() {
-		if (blockedRequests > 0) {
-			phantomas.addNotice('Blocked requests: ' + blockedRequests + ' (from ' + Object.keys(blockedRequestsByDomains).join(', ') + ')');
+			phantomas.incrMetric('blockedRequests');
+			phantomas.addOffender('blockedRequests', entry.url);
 		}
 	});
 };

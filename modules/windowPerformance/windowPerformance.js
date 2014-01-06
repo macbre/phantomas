@@ -12,6 +12,10 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('windowOnLoadTime');     // i.e. Navigation Timing - loadEventStart
 	phantomas.setMetric('windowOnLoadTimeEnd');  // i.e. Navigation Timing - loadEventEnd
 
+	// backend vs frontend time
+	phantomas.setMetric('timeBackend');
+	phantomas.setMetric('timeFrontend');
+
 	// measure onDOMReadyTime and windowOnLoadTime from the moment HTML response was fully received
 	phantomas.once('responseEnd', function() {
 		var responseEndTime = Date.now();
@@ -83,7 +87,7 @@ exports.module = function(phantomas) {
 	});
 
 	/**
-	 * Emit a notice with backend vs frontend time
+	 * Emit metrics with backend vs frontend time
 	 *
 	 * Performance Golden Rule:
 	 * "80-90% of the end-user response time is spent on the frontend. Start there."
@@ -103,6 +107,8 @@ exports.module = function(phantomas) {
 		}
 
 		backendTimePercentage = Math.round(backendTime / totalTime * 100);
-		phantomas.addNotice('Time spent on backend / frontend: ' + backendTimePercentage + '% / ' + (100 - backendTimePercentage) + '%');
+
+		phantomas.setMetric('timeBackend', backendTimePercentage);
+		phantomas.setMetric('timeFrontend', 100 - backendTimePercentage);
 	});
 };

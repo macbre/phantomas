@@ -8,19 +8,10 @@ module.exports = function() {
 		generator = '',
 		metrics = {},
 		offenders = {},
-		notices = [],
 		url;
 
 	// public API
 	return {
-		// notices
-		addNotice: function(msg) {
-			notices.push(msg);
-		},
-		getNotices: function() {
-			return notices;
-		},
-
 		// metrics
 		setMetric: function(name, value) {
 			metrics[name] = value;

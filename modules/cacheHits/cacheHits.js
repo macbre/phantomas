@@ -1,7 +1,7 @@
 /**
  * Analyzes X-Cache headers from caching servers like Squid or Varnish
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('cacheHits');
@@ -28,11 +28,10 @@ exports.module = function(phantomas) {
 				if (isPass) {
 					phantomas.incrMetric('cachePasses');
 					phantomas.addOffender('cachePasses', entry.url);
-					phantomas.log('Cache pass: on <' + entry.url + '> (X-Cache: ' + header + ')');
 				}
 				else {
 					phantomas.incrMetric('cacheMisses');
-					phantomas.log('Cache miss: on <' + entry.url + '> (X-Cache: ' + header + ')');
+					phantomas.addOffender('cacheMisses', entry.url);
 				}
 			}
 		}

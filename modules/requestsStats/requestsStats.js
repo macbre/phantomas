@@ -1,7 +1,7 @@
 /**
  * Analyzes HTTP requests and generates stats metrics
  */
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
 	var stack = {};
@@ -72,40 +72,40 @@ exports.module = function(phantomas) {
 			return;
 		}
 
-		// TODO: iterate here...
-		var smallestResponse = getFromStack('smallestResponse'),
-			biggestResponse = getFromStack('biggestResponse'),
-			fastestResponse = getFromStack('fastestResponse'),
-			slowestResponse = getFromStack('slowestResponse'),
-			smallestLatency = getFromStack('smallestLatency'),
-			biggestLatency = getFromStack('biggestLatency');
+		// set metrics and provide offenders with URLs
+		[
+			'smallestResponse',
+			'biggestResponse',
+			'fastestResponse',
+			'slowestResponse',
+			'smallestLatency',
+			'biggestLatency'
+		].forEach(function(metric) {
+			var entry = getFromStack(metric),
+				details = '';
 
-		phantomas.setMetric('smallestResponse', smallestResponse.bodySize);
-		phantomas.setMetric('biggestResponse', biggestResponse.bodySize);
+			switch (metric) {
+				case 'smallestResponse':
+				case 'biggestResponse':
+					phantomas.setMetric(metric, entry.bodySize);
+					details = (entry.bodySize/1024).toFixed(2) + ' kB';
+					break;
 
-		// TODO: use offenders (#140)
-		phantomas.addNotice('The smallest response (' + (smallestResponse.bodySize/1024).toFixed(2) + ' kB): <' + smallestResponse.url + '>');
-		phantomas.addNotice('The biggest response (' + (biggestResponse.bodySize/1024).toFixed(2) + ' kB): <' + biggestResponse.url + '>');
+				case 'fastestResponse':
+				case 'slowestResponse':
+					phantomas.setMetric(metric, entry.timeToLastByte);
+					details = entry.timeToLastByte + ' ms';
+					break;
 
-		phantomas.addNotice();
+				case 'smallestLatency':
+				case 'biggestLatency':
+					phantomas.setMetric(metric, entry.timeToFirstByte);
+					details = entry.timeToFirstByte + ' ms';
+					break;
+			}
 
-		phantomas.setMetric('fastestResponse', fastestResponse.timeToLastByte);
-		phantomas.setMetric('slowestResponse', slowestResponse.timeToLastByte);
-
-		// TODO: use offenders (#140)
-		phantomas.addNotice('The fastest response (' + fastestResponse.timeToLastByte + ' ms): <' + fastestResponse.url + '>');
-		phantomas.addNotice('The slowest response (' + slowestResponse.timeToLastByte + ' ms): <' + slowestResponse.url + '>');
-
-		phantomas.addNotice();
-
-		phantomas.setMetric('smallestLatency', smallestLatency.timeToFirstByte);
-		phantomas.setMetric('biggestLatency', biggestLatency.timeToFirstByte);
-
-		// TODO: use offenders (#140)
-		phantomas.addNotice('The smallest latency (' + smallestLatency.timeToFirstByte + ' ms): <' + smallestLatency.url + '>');
-		phantomas.addNotice('The biggest latency (' + biggestLatency.timeToFirstByte + ' ms): <' + biggestLatency.url + '>');
-
-		phantomas.addNotice();
+			phantomas.addOffender(metric, entry.url + ' (' + details + ')');
+		});
 
 		phantomas.setMetric('medianResponse', responseTimes.median());
 		phantomas.setMetric('medianLatency', latencyTimes.median());

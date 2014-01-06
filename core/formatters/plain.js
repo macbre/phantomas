@@ -68,21 +68,6 @@ module.exports = function(results) {
 
 			fold.pushEnd(res, 'offenders');
 
-			// notices
-			fold.pushStart(res, 'notices');
-
-			results.getNotices().forEach(function(msg) {
-				msg = msg.
-					// color labels
-					replace(/^[^ <][^:<]+:/, colors.brightGreen).
-					// color URLs
-					replace(/<[^>]+>/g, colors.brightBlue);
-
-				// add a notice
-				res.push(msg);
-			});
-			fold.pushEnd(res, 'notices');
-
 			return fold.wrap(
 				results.getUrl(),
 				res.join('\n').trim()

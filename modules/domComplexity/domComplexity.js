@@ -14,7 +14,8 @@ exports.module = function(phantomas) {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
 				var runner = new phantomas.nodeRunner(),
-					whitespacesRegExp = /^\s+$/;
+					whitespacesRegExp = /^\s+$/,
+					size = 0;
 
 				// include all nodes
 				runner.isSkipped = function(node) {
@@ -24,7 +25,13 @@ exports.module = function(phantomas) {
 				runner.walk(document.body, function(node, depth) {
 					switch (node.nodeType) {
 						case Node.COMMENT_NODE:
-							phantomas.incr('commentsSize', node.textContent.length + 7); // '<!--' + '-->'.length
+							size = node.textContent.length + 7; // '<!--' + '-->'.length
+							phantomas.incr('commentsSize', size);
+
+							// log HTML comments bigger than 64 characters
+							if (size > 64) {
+								phantomas.addOffender('commentsSize', phantomas.getDOMPath(node) + ' (' + size + ' characters)');
+							}
 							break;
 
 						case Node.ELEMENT_NODE:
@@ -37,8 +44,7 @@ exports.module = function(phantomas) {
 							}
 
 							// @see https://developer.mozilla.org/en/DOM%3awindow.getComputedStyle
-							var styles = window.getComputedStyle(node),
-								size = 0;
+							var styles = window.getComputedStyle(node);
 
 							if (styles && styles.getPropertyValue('display') === 'none') {
 								if (typeof node.innerHTML === 'string') {
@@ -47,7 +53,7 @@ exports.module = function(phantomas) {
 
 									// log hidden containers bigger than 1 kB
 									if (size > 1024) {
-										phantomas.addOffender('hiddenContentSize', phantomas.getDOMPath(node) + ' (' + size + ' bytes)');
+										phantomas.addOffender('hiddenContentSize', phantomas.getDOMPath(node) + ' (' + size + ' characters)');
 									}
 								}
 
@@ -58,6 +64,7 @@ exports.module = function(phantomas) {
 							// count nodes with inline CSS
 							if (node.hasAttribute('style')) {
 								phantomas.incr('nodesWithInlineCSS');
+								phantomas.addOffender('nodesWithInlineCSS', phantomas.getDOMPath(node) + ' (' + node.getAttribute('style')  + ')');
 							}
 
 							break;
@@ -84,7 +91,7 @@ exports.module = function(phantomas) {
 					for (var i=0, len=imgNodes.length; i<len; i++) {
 						node = imgNodes[i];
 						if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
-							phantomas.log('Image without dimensions: ' + phantomas.getDOMPath(node));
+							phantomas.addOffender('imagesWithoutDimensions', phantomas.getDOMPath(node));
 							imagesWithoutDimensions++;
 						}
 					}

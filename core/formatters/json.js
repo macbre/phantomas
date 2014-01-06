@@ -10,8 +10,7 @@ module.exports = function(results) {
 				url: results.getUrl(),
 				metrics: results.getMetrics(),
 				offenders: results.getAllOffenders(),
-				asserts: false,
-				notices: results.getNotices()
+				asserts: false
 			};
 
 			// add asserts

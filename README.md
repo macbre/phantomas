@@ -107,7 +107,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 
 ## Metrics
 
-_Current number of metrics: 96_
+_Current number of metrics: 98_
 
 Units:
 
@@ -223,6 +223,8 @@ Units:
 * onDOMReadyTimeEnd: time it took to finish processing onDOMready event **experimental**
 * windowOnLoadTime: time it took to fire window.load event
 * windowOnLoadTimeEnd: time it took to finish processing window.load event **experimental**
+* timeBackend: time to the first byte compared to the total loading time (in %)
+* timeFrontend: time to window on load compared to the total loading time (in %)
 
 ### Requests statistics
 
@@ -278,6 +280,8 @@ Units:
 
 ### JavaScript errors
 
+> Error message and backtrace will be emitted as offenders
+
 * jsErrors: number of JavaScript errors
 
 ### JavaScript console and alert
@@ -286,6 +290,12 @@ Units:
 * windowConfirms: number of calls to ``confirm``
 * windowPrompts: number of calls to ``prompt``
 * consoleMessages: number of calls to ``console.*`` functions
+
+### Optional metrics
+
+> The following metrics are emitted only when certain options are passed to phantomas
+
+* blockedRequests: number of requests blocked due to domain filtering (emitted only when in `--no-externals` / `--block-domain` mode)
 
 ### CSS metrics
 
