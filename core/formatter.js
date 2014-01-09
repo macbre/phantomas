@@ -11,17 +11,10 @@ module.exports = function(results) {
 	};
 
 	// add asserts
-	var asserts = results.getAsserts(),
-		failedAsserts;
+	var asserts = results.getAsserts();
 
 	if (Object.keys(asserts).length > 0) {
-		failedAsserts = results.getFailedAsserts();
-
-		res.asserts = {
-			rules: asserts,
-			failedCount: failedAsserts.length,
-			failedAsserts: failedAsserts,
-		};
+		res.asserts = asserts;
 	}
 
 	return JSON.stringify(res);

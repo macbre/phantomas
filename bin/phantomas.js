@@ -91,17 +91,19 @@ child = phantomas(url, options, function(err, res) {
 	var results,
 		reporter;
 
+	if (res !== false) {
+		// process JSON results by reporters
+		results = new (require('../core/results'))(res);
+		reporter = require('../core/reporter')(results, options);
+
+		// emit them
+		console.log(reporter.render());
+	}
+
 	// pass error code from PhantomJS process
 	if (err !== null) {
 		process.exit(err);
 	}
-
-	// process JSON results by reporters
-	results = new (require('../core/results'))(res);
-	reporter = require('../core/reporter')(results, options);
-
-	// emit them
-	console.log(reporter.render());
 });
 
 // pipe --verbose messages to stderr
