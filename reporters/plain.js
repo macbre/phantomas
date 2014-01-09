@@ -3,7 +3,7 @@
  */
 var colors = require('ansicolors'),
 	fold = require('travis-fold'),
-	rpad = require('../pads').rpad,
+	rpad = require('../core/pads').rpad,
 	OK = '✓',
 	ERR = '✗';
 

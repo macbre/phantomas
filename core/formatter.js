@@ -1,21 +1,28 @@
 /**
- * Results formatter
+ * Generic JSON results formatter
  */
-module.exports = function(results, format) {
-	var formatterPath = './formatters/' + format,
-		formatter;
+module.exports = function(results) {
+	var res = {
+		generator: results.getGenerator(),
+		url: results.getUrl(),
+		metrics: results.getMetrics(),
+		offenders: results.getAllOffenders(),
+		asserts: false
+	};
 
-	try {
-		formatter = new (require(formatterPath))(results);
-	}
-	catch(ex) {
-		throw 'formatter: format "' + format + '" is not supported!';
+	// add asserts
+	var asserts = results.getAsserts(),
+		failedAsserts;
+
+	if (Object.keys(asserts).length > 0) {
+		failedAsserts = results.getFailedAsserts();
+
+		res.asserts = {
+			rules: asserts,
+			failedCount: failedAsserts.length,
+			failedAsserts: failedAsserts,
+		};
 	}
 
-	function render() {
-		return formatter.render();
-	}
-
-	// public interface
-	this.render = render;
+	return JSON.stringify(res);
 };
