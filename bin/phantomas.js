@@ -88,7 +88,8 @@ delete options.externals;
 
 // spawn phantomas process
 child = phantomas(url, options, function(err, res) {
-	var results,
+	var debug = require('debug')('phantomas:bin'),
+		results,
 		reporter;
 
 	if (res !== false) {
@@ -96,12 +97,13 @@ child = phantomas(url, options, function(err, res) {
 		results = new (require('../core/results'))(res);
 		reporter = require('../core/reporter')(results, options);
 
-		// emit them
+		debug('Emitting results...');
 		console.log(reporter.render());
 	}
 
 	// pass error code from PhantomJS process
 	if (err !== null) {
+		debug('Exiting with code #%d', err);
 		process.exit(err);
 	}
 });
