@@ -3,12 +3,22 @@
  *
  * Will be passed via events and to formatters
  */
-module.exports = function() {
+'use strict';
+
+module.exports = function(data) {
 	var asserts = {},
 		generator = '',
 		metrics = {},
 		offenders = {},
 		url;
+
+	if (data) {
+		asserts = data.asserts || {};
+		generator = data.generator;
+		metrics = data.metrics;
+		offenders = data.offenders;
+		url = data.url;
+	}
 
 	// public API
 	return {

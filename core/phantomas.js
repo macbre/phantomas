@@ -489,13 +489,13 @@ phantomas.prototype = {
 		// count all metrics
 		var metricsCount = this.results.getMetricsNames().length;
 
-		this.log('Formatting results (' + this.format + ') with ' + metricsCount+ ' metric(s)...');
+		this.log('Returning results with ' + metricsCount+ ' metric(s)...');
 
-		// render results
+		// emit results in JSON
 		var Formatter = require('./formatter'),
-			renderer = new Formatter(this.results, this.format);
+			stdout = require('system').stdout;
 
-		this.echo(renderer.render());
+		stdout.write(Formatter(this.results));
 
 		// handle timeouts (issue #129)
 		if (this.timedOut) {
