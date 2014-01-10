@@ -1,6 +1,10 @@
 /**
  * Results formatter for --format=csv
+ *
+ * @see https://github.com/touv/node-csv-string
  */
+var CSV = require('csv-string');
+
 module.exports = function(results) {
 	// public API
 	return {
@@ -13,10 +17,10 @@ module.exports = function(results) {
 				var value = results.getMetric(metric);
 
 				keys.push(metric);
-				values.push( (typeof value === 'number') ? value : '"' + value + '"' );
+				values.push(value);
 			});
 
-			return keys.join(',') + "\n" + values.join(',');
+			return CSV.stringify([keys, values]).trim();
 		}
 	};
 };
