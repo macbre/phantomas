@@ -20,7 +20,7 @@ module.exports = function(results) {
 				values.push(value);
 			});
 
-			return CSV.stringify([keys, values]).trim();
+			return CSV.stringify([keys, values]);
 		}
 	};
 };

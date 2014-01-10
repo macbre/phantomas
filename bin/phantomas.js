@@ -98,7 +98,7 @@ child = phantomas(url, options, function(err, res) {
 		reporter = require('../core/reporter')(results, options);
 
 		debug('Emitting results...');
-		console.log(reporter.render());
+		process.stdout.write(reporter.render());
 	}
 
 	// pass error code from PhantomJS process

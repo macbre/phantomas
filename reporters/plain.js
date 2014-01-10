@@ -71,7 +71,7 @@ module.exports = function(results) {
 			return fold.wrap(
 				results.getUrl(),
 				res.join('\n').trim()
-			);
+			) + '\n';
 		}
 	};
 };
