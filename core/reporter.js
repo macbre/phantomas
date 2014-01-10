@@ -1,21 +1,25 @@
 /**
  * Reporters factory
+ *
+ * All reporters are defined in /reporters directory
+ * and are provided with run results and command line options
  */
 'use strict';
 
 module.exports = function(results, options) {
 	var debug = require('debug')('phantomas:reporter'),
-		format = options.format,
-		formatterPath = '../reporters/' + format,
-		formatter;
+		name = options.reporter,
+		reporterPath = '../reporters/' + name,
+		reporter;
 
-	debug('Setting up %s reporter...', format);
+	debug('Setting up %s reporter...', name);
 
 	try {
-		formatter = new (require(formatterPath))(results, options);
+		reporter = new (require(reporterPath))(results, options);
 	}
 	catch(ex) {
-		throw new Error('Reporter "' + format + '" is not supported!');
+		debug('Failed: %s', ex);
+		throw new Error('Reporter "' + name + '" is not supported!');
 	}
 
 	debug('Done');
@@ -23,7 +27,7 @@ module.exports = function(results, options) {
 	// public interface
 	return {
 		render: function() {
-			return formatter.render();
+			return reporter.render();
 		}
 	};
 };

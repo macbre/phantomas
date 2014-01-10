@@ -64,7 +64,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 #### Parameters
 
 * `--url` URL of the page to generate metrics for (required)
-* `--format=[json|csv|tap|plain]` output format (``plain`` is the default one)
+* `--reporter=[json|csv|tap|plain]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
