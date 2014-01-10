@@ -29,9 +29,9 @@
     "fast-stats": ">=0.0.2",
     "optimist": "0.6.x",
     "phantomjs": ">=1.9",
+    "tap": "~0.4.8",
     "tap-eater": ">=0.0.1",
-    "travis-fold": ">=0.1.2",
-    "yamlish": ">=0.0.5"
+    "travis-fold": ">=0.1.2"
   },
   "devDependencies": {
     "jshint": ">=2.1.11",
