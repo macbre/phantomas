@@ -36,8 +36,8 @@ function recvReq(url, req, ev) {
 	};
 }
 
-function recvContentType(contentType) {
-	return recvReq(undefined, {
+function recvContentType(contentType, url) {
+	return recvReq(url, {
 		headers: [{
 			name: 'Content-Type',
 			value: contentType
@@ -47,7 +47,7 @@ function recvContentType(contentType) {
 
 function assertField(name, value) {
 	return function(entry) {
-		assert.equal(entry[name], value);
+		assert.strictEqual(entry[name], value);
 	};
 }
 
@@ -133,6 +133,14 @@ vows.describe('requestMonitor').addBatch({
 	'SVG image is properly detected': {
 		topic: recvContentType('image/svg+xml'),
 		'isImage is set': assertField('isImage', true)
+	},
+	'Web font is properly detected (via MIME)': {
+		topic: recvContentType('application/font-woff'),
+		'isWebFont is set': assertField('isWebFont', true)
+	},
+	'Web font is properly detected (via URL)': {
+		topic: recvContentType('application/octet-stream', 'http://foo.bar/font.otf'),
+		'isWebFont is set': assertField('isWebFont', true)
 	}
 }).addBatch({
 	'POST requests are detected': {

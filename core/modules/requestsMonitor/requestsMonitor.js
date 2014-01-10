@@ -201,6 +201,18 @@ exports.module = function(phantomas) {
 									entry.isWebFont = true;
 									break;
 
+								case 'application/octet-stream':
+									var ext = (entry.url || '').split('.').pop();
+
+									switch(ext) {
+										// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts#comment-8077637
+										case 'otf':
+											entry.type = 'webfont';
+											entry.isWebFont = true;
+											break;
+									}
+									break;
+
 								default:
 									phantomas.log('Unknown content type found: ' + value + ' for <' + entry.url + '>');
 							}
