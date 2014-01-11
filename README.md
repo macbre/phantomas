@@ -303,6 +303,24 @@ Units:
 
 Take a look at [analyze-css README](https://github.com/macbre/analyze-css) for the full list of metrics.
 
+### Reporters
+
+phantomas provides a number of reporters that can format the run results and send them to various tools. Use ``--reporter`` (or ``-R`` shortcut) option to use one.
+
+#### Formatters
+
+Results can be emitted as TAP, CSV and JSON. ``plain`` format is most useful for human beings :)
+
+#### StatsD integration
+
+Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:
+
+```
+$ phantomas --url http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
+```
+
+will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
+
 ## For developers
 
 * [Project's wiki](https://github.com/macbre/phantomas/wiki)
