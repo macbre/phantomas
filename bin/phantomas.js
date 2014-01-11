@@ -89,16 +89,22 @@ delete options.externals;
 // spawn phantomas process
 child = phantomas(url, options, function(err, res) {
 	var debug = require('debug')('phantomas:bin'),
+		doneFn,
 		results,
 		reporter;
 
 	if (res !== false) {
+		// this function is passed to the asynchronous reporter
+		doneFn = function() {
+			process.exit(err);
+		}
+
 		// process JSON results by reporters
 		results = new (require('../core/results'))(res);
 		reporter = require('../core/reporter')(results, options);
 
 		debug('Emitting results...');
-		process.stdout.write(reporter.render());
+		process.stdout.write(reporter.render(doneFn) || '');
 	}
 
 	// pass error code from PhantomJS process

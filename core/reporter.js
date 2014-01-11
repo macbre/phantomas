@@ -26,8 +26,8 @@ module.exports = function(results, options) {
 
 	// public interface
 	return {
-		render: function() {
-			return reporter.render();
+		render: function(doneFn) {
+			return reporter.render(doneFn);
 		}
 	};
 };
