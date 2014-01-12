@@ -131,10 +131,8 @@ function initModule(name, isCore) {
 }
 
 function assertMetric(name, value) {
-	value = value || 1;
-
 	return function(phantomas) {
-		assert.strictEqual(value, phantomas.getMetric(name));
+		assert.strictEqual(phantomas.getMetric(name), value);
 	};
 }
 

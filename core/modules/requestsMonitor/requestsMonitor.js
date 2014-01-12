@@ -15,7 +15,6 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('gzipRequests');
 	phantomas.setMetric('postRequests');
 	phantomas.setMetric('httpsRequests');
-	phantomas.setMetric('redirects');
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
 	phantomas.setMetric('timeToLastByte');
@@ -237,9 +236,6 @@ exports.module = function(phantomas) {
 					case 301: // Moved Permanently
 					case 302: // Found
 						entry.isRedirect = true;
-						phantomas.incrMetric('redirects');
-						phantomas.addOffender('redirects', entry.url + ' is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') ' +
-							'to ' + (res.redirectURL || (res.url.replace(/\/$/, '') + entry.headers.Location)));
 						break;
 
 					case 404: // Not Found
