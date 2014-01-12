@@ -107,7 +107,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 
 ## Metrics
 
-_Current number of metrics: 98_
+_Current number of metrics: 99_
 
 Units:
 
@@ -122,7 +122,6 @@ Units:
 * gzipRequests: number of gzipped HTTP responses
 * postRequests: number of POST requests
 * httpsRequests: number of HTTPS requests
-* redirects: number of HTTP redirects (either 301 or 302)
 * notFound: number of HTTP 404 responses
 * timeToFirstByte: time it took to receive the first byte of the first response (that was not a redirect)
 * timeToLastByte: time it took to receive the last byte of the first response (that was not a redirect)
@@ -272,6 +271,11 @@ Units:
 * timeToFirstCss: time it took to receive the last byte of the first CSS
 * timeToFirstJs: time it took to receive the last byte of the first JS
 * timeToFirstImage: time it took to receive the last byte of the first image
+
+### Redirects
+
+* redirects: number of HTTP redirects (either 301 or 302)
+* redirectsTime: time it took to send and receive redirects
 
 ### JavaScript bottlenecks
 

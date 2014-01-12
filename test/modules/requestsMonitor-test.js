@@ -143,21 +143,26 @@ vows.describe('requestMonitor').addBatch({
 		'isWebFont is set': assertField('isWebFont', true)
 	}
 }).addBatch({
-	'POST requests are detected': {
-		topic: mock.initCoreModule('requestsMonitor').recvRequest({method: 'POST'}),
-		'postRequests metric is set': mock.assertMetric('postRequests')
-	},
 	'redirects are detected (HTTP 301)': {
-		topic: mock.initCoreModule('requestsMonitor').recvRequest({status: 301}),
-		'redirects metric is set': mock.assertMetric('redirects')
+		topic: recvReq('', {status: 301}),
+		'isRedirect field is set': assertField('isRedirect', true)
 	},
 	'redirects are detected (HTTP 302)': {
-		topic: mock.initCoreModule('requestsMonitor').recvRequest({status: 302}),
-		'redirects metric is set': mock.assertMetric('redirects')
+		topic: recvReq('', {status: 302}),
+		'isRedirect field is set': assertField('isRedirect', true)
+	},
+	'redirects are detected (HTTP 200)': {
+		topic: recvReq('', {status: 200}),
+		'isRedirect field is not set': assertField('isRedirect', undefined)
+	}
+}).addBatch({
+	'POST requests are detected': {
+		topic: mock.initCoreModule('requestsMonitor').recvRequest({method: 'POST'}),
+		'postRequests metric is set': mock.assertMetric('postRequests', 1)
 	},
 	'not found responses are detected (HTTP 404)': {
 		topic: mock.initCoreModule('requestsMonitor').recvRequest({status: 404}),
-		'notFound metric is set': mock.assertMetric('notFound')
+		'notFound metric is set': mock.assertMetric('notFound', 1)
 	},
 	'GZIP responses are detected': {
 		topic: recvReq(undefined, {headers: [{name: 'Content-Encoding', value: 'gzip'}]}),
