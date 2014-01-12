@@ -93,24 +93,33 @@ child = phantomas(url, options, function(err, res) {
 		results,
 		reporter;
 
-	if (res !== false) {
-		// this function is passed to the asynchronous reporter
-		doneFn = function() {
-			process.exit(err);
-		}
+	doneFn = function() {
+		// pass error code from PhantomJS process
+		debug('Exiting with code #%d', err);
+		process.exit(err);
+	}
 
+	if (res !== false) {
 		// process JSON results by reporters
 		results = new (require('../core/results'))(res);
 		reporter = require('../core/reporter')(results, options);
 
-		debug('Emitting results...');
-		process.stdout.write(reporter.render(doneFn) || '');
-	}
+		debug('Calling a reporter...');
 
-	// pass error code from PhantomJS process
-	if (err !== null) {
-		debug('Exiting with code #%d', err);
-		process.exit(err);
+		// pass a function that reporter should call once done
+		var res = reporter.render(doneFn);
+
+		// reporter returned results, otherwise wait for doneFn to be called by reporter
+		if (typeof res !== 'undefined') {
+			process.stdout.write(res);
+			doneFn();
+		}
+		else {
+			debug('Waiting for the results...');
+		}
+	}
+	else {
+		doneFn();
 	}
 });
 
