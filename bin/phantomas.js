@@ -17,7 +17,7 @@ var phantomas = require('..'),
 
 // parse options
 program
-	.usage('phantomas --url <url> [options]')
+	.usage('PhantomJS-based web performance metrics collector\n\nphantomas --url <url> [options]')
 
 	// mandatory
 	.describe('url', 'Set URL to work with').string('url')
