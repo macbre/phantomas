@@ -39,6 +39,11 @@ module.exports = function(results) {
 				// add offenders
 				var offenders = results.getOffenders(metric);
 				if (offenders) {
+					// properly encode YAML to make it work in Jenkins
+					offenders = offenders.map(function(entry) {
+						return '"' + entry.replace(/"/g, '') + '"';
+					});
+
 					entry.offenders = offenders;
 				}
 
