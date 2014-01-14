@@ -30,10 +30,14 @@ module.exports = function(results) {
 						entry.expected = results.getAssertion(metric);
 						entry.actual = results.getMetric(metric);
 					}
+					else {
+						entry.value = results.getMetric(metric);
+					}
 				}
 				else {
 					// mark metrics with no assertions as skipped
 					entry.skip = true;
+					entry.value = results.getMetric(metric);
 				}
 
 				// add offenders
