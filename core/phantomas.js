@@ -434,6 +434,15 @@ phantomas.prototype = {
 
 		this.reportQueue.push(function(done) {
 			var currentRequests = 0,
+				onFinished = function(entry) {
+					currentRequests--;
+
+					if (currentRequests < 1) {
+						timeoutId = setTimeout( function() {
+							done();
+						}, 1000);
+					}
+				},
 				timeoutId;
 
 			// update HTTP requests counter
@@ -442,13 +451,8 @@ phantomas.prototype = {
 				currentRequests++;
 			});
 
-			self.on('recv', function(entry) {
-				currentRequests--;
-
-				if (currentRequests < 1) {
-					timeoutId = setTimeout(done, 1000);
-				}
-			});
+			self.on('recv', onFinished );
+			self.on('abort', onFinished );
 		});
 
 		this.reportQueue.push(function(done) {
