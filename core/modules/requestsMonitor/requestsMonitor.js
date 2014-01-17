@@ -114,9 +114,6 @@ exports.module = function(phantomas) {
 			}
 		}
 
-		// current request data
-		var entry = requests[res.id] || {};
-
 		switch(res.stage) {
 			// the beginning of response
 			case 'start':
