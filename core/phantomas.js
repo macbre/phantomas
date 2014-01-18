@@ -68,9 +68,6 @@ var phantomas = function(params) {
 	// --format=[csv|json]
 	this.format = params.format || 'plain';
 
-	// --viewport=1280x1024
-	this.viewport = params.viewport || '1280x1024';
-
 	// --verbose
 	this.verboseMode = params.verbose === true;
 
@@ -85,9 +82,6 @@ var phantomas = function(params) {
 
 	// --skip-modules=jQuery,domQueries
 	this.skipModules = (typeof params['skip-modules'] === 'string') ? params['skip-modules'].split(',') : [];
-
-	// --user-agent=custom-agent
-	this.userAgent = params['user-agent'] || getDefaultUserAgent();
 
 	// disable JavaScript on the page that will be loaded
 	this.disableJs = params['disable-js'] === true;
@@ -203,14 +197,21 @@ phantomas.prototype = {
 		this.emitter.once(ev, fn);
 	},
 
-	// returns "wrapped" version of phantomas object with public methods / fields only
-	getPublicWrapper: function() {
-		function getParam(key, defValue) {
-			return this.params[key] || defValue;
+	getParam: function(key, defValue, typeCheck) {
+		var value = this.params[key];
+
+		// strict type check
+		if (typeof typeCheck === 'string' && typeof value !== typeCheck) {
+			value = undefined;
 		}
 
+		return value || defValue;
+	},
+
+	// returns "wrapped" version of phantomas object with public methods / fields only
+	getPublicWrapper: function() {
 		function setParam(key, value) {
-			this.log('Parameter: %s set to %j', key, value);
+			this.log('setParam: %s set to %j', key, value);
 			this.params[key] = value;
 		}
 
@@ -221,7 +222,7 @@ phantomas.prototype = {
 		// modules API
 		return {
 			url: this.params.url,
-			getParam: getParam.bind(this),
+			getParam: this.getParam.bind(this),
 			setParam: setParam.bind(this),
 
 			// events
@@ -397,8 +398,8 @@ phantomas.prototype = {
 
 		this.start = Date.now();
 
-		// setup viewport
-		var parsedViewport = this.viewport.split('x');
+		// setup viewport / --viewport=1280x1024
+		var parsedViewport = this.getParam('viewport', '1280x1024', 'string').split('x');
 
 		if (parsedViewport.length === 2) {
 			this.page.viewportSize = {
@@ -407,10 +408,8 @@ phantomas.prototype = {
 			};
 		}
 
-		// setup user agent
-		if (this.userAgent) {
-			this.page.settings.userAgent = this.userAgent;
-		}
+		// setup user agent /  --user-agent=custom-agent
+		this.page.settings.userAgent = this.getParam('user-agent', getDefaultUserAgent(), 'string');
 
 		// disable JavaScript on the page that will be loaded
 		if (this.disableJs) {
@@ -419,9 +418,9 @@ phantomas.prototype = {
 		}
 
 		// print out debug messages
-		this.log('Opening <' + this.url + '>...');
-		this.log('Using ' + this.page.settings.userAgent + ' as user agent');
-		this.log('Viewport set to ' + this.page.viewportSize.width + 'x' + this.page.viewportSize.height);
+		this.log('Opening <%s>...', this.url);
+		this.log('Using %s as user agent', this.page.settings.userAgent);
+		this.log('Viewport set to %d x %d', this.page.viewportSize.width, this.page.viewportSize.height);
 
 		// bind basic events
 		this.page.onInitialized = this.proxy(this.onInitialized);

@@ -164,6 +164,10 @@ vows.describe('phantomas public API').addBatch({
 			assert.strictEqual(api.getParam('test', 123), 123);
 			assert.strictEqual(api.getParam('test'), undefined);
 		},
+		'getParam() handles strict type check': function(api) {
+			assert.strictEqual(api.getParam('foo', 'default', 'number'), 123);
+			assert.strictEqual(api.getParam('foo', 'default', 'string'), 'default');
+		},
 		'parameters can be altered': function(api) {
 			api.setParam('foo', 124);
 			api.setParam('test', true);

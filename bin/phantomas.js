@@ -48,7 +48,7 @@ program
 	.describe('timeout', 'timeout for phantomas run').default('timeout', 15)
 	.describe('user-agent', 'provide a custom user agent')
 	.describe('verbose', 'writes debug messages to the console').boolean('verbose').alias('verbose', 'v')
-	.describe('viewport', 'phantomJS viewport dimensions [width]x[height]').default('viewport', '1280x1024')
+	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 
 	// experimental features
