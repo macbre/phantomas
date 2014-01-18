@@ -49,6 +49,7 @@ vows.describe('phantomas public API').addBatch({
 		'methods are accessible': function(api) {
 			var methods = [
 				'getParam',
+				'setParam',
 				'on',
 				'once',
 				'emit',
@@ -156,8 +157,19 @@ vows.describe('phantomas public API').addBatch({
 			});
 		},
 		'params are accessible': function(api) {
-			assert.equal(api.getParam('foo'), 123);
-			assert.equal(api.getParam('bar'), 'abc');
+			assert.strictEqual(api.getParam('foo'), 123);
+			assert.strictEqual(api.getParam('bar'), 'abc');
+		},
+		'getParam() handles the default value': function(api) {
+			assert.strictEqual(api.getParam('test', 123), 123);
+			assert.strictEqual(api.getParam('test'), undefined);
+		},
+		'parameters can be altered': function(api) {
+			api.setParam('foo', 124);
+			api.setParam('test', true);
+
+			assert.strictEqual(api.getParam('foo'), 124);
+			assert.strictEqual(api.getParam('test'), true);
 		},
 	}
 }).export(module);

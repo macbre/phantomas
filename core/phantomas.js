@@ -205,12 +205,24 @@ phantomas.prototype = {
 
 	// returns "wrapped" version of phantomas object with public methods / fields only
 	getPublicWrapper: function() {
+		function getParam(key, defValue) {
+			return this.params[key] || defValue;
+		}
+
+		function setParam(key, value) {
+			this.log('Parameter: %s set to %j', key, value);
+			this.params[key] = value;
+		}
+
+		function setZoom(zoomFactor) {
+			this.page.zoomFactor = zoomFactor;
+		}
+
 		// modules API
 		return {
 			url: this.params.url,
-			getParam: (function(key) {
-				return this.params[key];
-			}).bind(this),
+			getParam: getParam.bind(this),
+			setParam: setParam.bind(this),
 
 			// events
 			on: this.on.bind(this),
@@ -241,9 +253,7 @@ phantomas.prototype = {
 			injectJs: this.page.injectJs.bind(this.page),
 			require: this.require.bind(this),
 			render: this.page.render.bind(this.page),
-			setZoom: (function(zoomFactor) {
-				this.page.zoomFactor = zoomFactor;
-			}).bind(this),
+			setZoom: setZoom.bind(this),
 
 			// utils
 			runScript: this.runScript.bind(this)
