@@ -102,13 +102,18 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
-		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
-		if (res.status === null) {
-			return;
-		}
-
 		// current request data
 		var entry = requests[res.id] || {};
+
+		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
+		if (res.status === null ) {
+			if (entry.isBlocked) {
+				return;
+			} else {
+				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
+				phantomas.emit('abort', entry, res);
+			}
+		}
 
 		switch(res.stage) {
 			// the beginning of response
