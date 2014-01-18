@@ -110,6 +110,7 @@ exports.module = function(phantomas) {
 			if (entry.isBlocked) {
 				return;
 			} else {
+				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
 				phantomas.emit('abort', entry, res);
 			}
 		}
