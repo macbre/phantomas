@@ -438,7 +438,7 @@ phantomas.prototype = {
 					currentRequests--;
 
 					if (currentRequests < 1) {
-						timeoutId = setTimeout( function() {
+						timeoutId = setTimeout(function() {
 							done();
 						}, 1000);
 					}
@@ -451,8 +451,8 @@ phantomas.prototype = {
 				currentRequests++;
 			});
 
-			self.on('recv', onFinished );
-			self.on('abort', onFinished );
+			self.on('recv', onFinished);
+			self.on('abort', onFinished);
 		});
 
 		this.reportQueue.push(function(done) {
