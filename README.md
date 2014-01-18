@@ -91,6 +91,8 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--proxy=[host:port]` specifies the proxy server to use
 * `--proxy-auth=[username:password]` specifies the authentication information for the proxy
 * `--proxy-type=[http|socks5|none]` specifies the type of the proxy server (default is http)
+* `--phone` force viewport and user agent of a mobile phone
+* `--tablet` force viewport and user agent of a tablet
 
 ### Multiple runs
 
