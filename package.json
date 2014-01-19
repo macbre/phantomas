@@ -19,7 +19,7 @@
   ],
   "license": "BSD",
   "engines": {
-    "node": ">=0.6"
+    "node": ">=0.10"
   },
   "dependencies": {
     "analyze-css": "0.2.x",
