@@ -109,7 +109,7 @@ exports.module = function(phantomas) {
 		if (res.status === null ) {
 			if (entry.isBlocked) {
 				return;
-			} else {
+			} else if (!entry.isBase64) {
 				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
 				phantomas.emit('abort', entry, res);
 			}
