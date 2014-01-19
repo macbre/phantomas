@@ -443,8 +443,10 @@ phantomas.prototype = {
 
 		this.reportQueue.push(function(done) {
 			var currentRequests = 0,
+				requestsUrls = {},
 				onFinished = function(entry) {
 					currentRequests--;
+					delete requestsUrls[entry.url];
 
 					if (currentRequests < 1) {
 						timeoutId = setTimeout(function() {
@@ -457,11 +459,18 @@ phantomas.prototype = {
 			// update HTTP requests counter
 			self.on('send', function(entry) {
 				clearTimeout(timeoutId);
+
 				currentRequests++;
+				requestsUrls[entry.url] = true;
 			});
 
 			self.on('recv', onFinished);
 			self.on('abort', onFinished);
+
+			// add debug info about pending responses (issue #216)
+			self.on('timeout', function() {
+				self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, Object.keys(requestsUrls).join('>, <'));
+			});
 		});
 
 		this.reportQueue.push(function(done) {
@@ -480,9 +489,11 @@ phantomas.prototype = {
 		this.emit('pageOpen');
 
 		// fallback - always timeout after TIMEOUT seconds
-		this.log('Run timeout set to ' + this.timeout + ' s');
+		this.log('Timeout set to %d sec', this.timeout);
 		setTimeout(function() {
-			this.log('Timeout of ' + this.timeout + ' s was reached!');
+			this.log('Timeout of %d sec was reached!', this.timeout);
+
+			this.emit('timeout');
 			this.timedOut = true;
 
 			this.report();
