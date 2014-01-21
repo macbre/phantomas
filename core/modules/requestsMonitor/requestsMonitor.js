@@ -285,6 +285,7 @@ exports.module = function(phantomas) {
 
 			ttfbMeasured = true;
 
+			phantomas.log('Time to first byte: set to %d ms for <%s> (HTTP %d)', entry.timeToFirstByte, entry.url, entry.status);
 			phantomas.emit('responseEnd', entry, res);
 		}
 
