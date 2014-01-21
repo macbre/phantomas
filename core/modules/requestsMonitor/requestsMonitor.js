@@ -240,6 +240,7 @@ exports.module = function(phantomas) {
 				switch(entry.status) {
 					case 301: // Moved Permanently
 					case 302: // Found
+					case 303: // See Other
 						entry.isRedirect = true;
 						break;
 
@@ -284,6 +285,7 @@ exports.module = function(phantomas) {
 
 			ttfbMeasured = true;
 
+			phantomas.log('Time to first byte: set to %d ms for <%s> (HTTP %d)', entry.timeToFirstByte, entry.url, entry.status);
 			phantomas.emit('responseEnd', entry, res);
 		}
 

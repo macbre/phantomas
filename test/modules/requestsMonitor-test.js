@@ -151,6 +151,10 @@ vows.describe('requestMonitor').addBatch({
 		topic: recvReq('', {status: 302}),
 		'isRedirect field is set': assertField('isRedirect', true)
 	},
+	'redirects are detected (HTTP 303)': {
+		topic: recvReq('', {status: 303}),
+		'isRedirect field is set': assertField('isRedirect', true)
+	},
 	'redirects are detected (HTTP 200)': {
 		topic: recvReq('', {status: 200}),
 		'isRedirect field is not set': assertField('isRedirect', undefined)
