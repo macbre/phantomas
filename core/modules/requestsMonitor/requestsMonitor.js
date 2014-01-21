@@ -240,6 +240,7 @@ exports.module = function(phantomas) {
 				switch(entry.status) {
 					case 301: // Moved Permanently
 					case 302: // Found
+					case 303: // See Other
 						entry.isRedirect = true;
 						break;
 
