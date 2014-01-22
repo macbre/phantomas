@@ -352,4 +352,7 @@ will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them wi
 
 ## Utilities
 
+Use [grunt](http://gruntjs.com/) to automate daily dev tasks, including your's application web performance, via these great tools:
+
 * [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
+* [juve](https://github.com/jared-stilwell/juve)
