@@ -89,10 +89,9 @@ options['no-externals'] = options.externals === false;
 delete options.externals;
 
 // spawn phantomas process
-child = phantomas(url, options, function(err, res) {
+child = phantomas(url, options, function(err, data, results) {
 	var debug = require('debug')('phantomas:bin'),
 		doneFn,
-		results,
 		reporter;
 
 	doneFn = function() {
@@ -101,9 +100,8 @@ child = phantomas(url, options, function(err, res) {
 		process.exit(err);
 	}
 
-	if (res !== false) {
+	if (results !== false) {
 		// process JSON results by reporters
-		results = new (require('../core/results'))(res);
 		reporter = require('../core/reporter')(results, options);
 
 		debug('Calling a reporter...');
