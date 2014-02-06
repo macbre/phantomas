@@ -49,8 +49,8 @@ exports.module = function(phantomas) {
 
 		phantomas.setMetric('globalVariables', globals.length);
 
-		if (globals.length > 0) {
-			phantomas.addOffender('globalVariables', globals.join(', '));
-		}
+		globals.forEach(function(varName) {
+			phantomas.addOffender('globalVariables', varName);
+		});
 	});
 };
