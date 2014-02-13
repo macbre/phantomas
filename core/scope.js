@@ -108,7 +108,12 @@
 		console.log = function() {
 			// pass all arguments as an array, let phantomas format them
 			// @see https://developer.mozilla.org/en-US/docs/Web/API/console
-			origConsoleLog.call(console, 'log:' + stringify(Array.prototype.slice.call(arguments)));
+
+			// avoid 'TypeError: JSON.stringify cannot serialize cyclic structures.'
+			try {
+				origConsoleLog.call(console, 'log:' + stringify(Array.prototype.slice.call(arguments)));
+			}
+			catch (e) {}
 		};
 
 		function sendMsg(type, data) {
