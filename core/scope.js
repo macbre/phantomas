@@ -116,6 +116,10 @@
 			catch (e) {}
 		};
 
+		// now "freeze" the console object (issue #230)
+		// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+		Object.freeze(console);
+
 		function sendMsg(type, data) {
 			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
 			// Stability: EXPERIMENTAL - see issue #62
@@ -125,7 +129,12 @@
 			}
 			**/
 
-			origConsoleLog.call(console, 'msg:' + stringify({type: type || false, data: data || false}));
+			try {
+				origConsoleLog.call(console, 'msg:' + stringify({type: type || false, data: data || false}));
+			}
+			catch(e) {
+				throw new Error('phantomas: calling native console.log() failed ("' + e + '")!');
+			}
 		}
 
 		function log(msg) {
