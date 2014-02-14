@@ -108,8 +108,17 @@
 		console.log = function() {
 			// pass all arguments as an array, let phantomas format them
 			// @see https://developer.mozilla.org/en-US/docs/Web/API/console
-			origConsoleLog.call(console, 'log:' + stringify(Array.prototype.slice.call(arguments)));
+
+			// avoid 'TypeError: JSON.stringify cannot serialize cyclic structures.'
+			try {
+				origConsoleLog.call(console, 'log:' + stringify(Array.prototype.slice.call(arguments)));
+			}
+			catch (e) {}
 		};
+
+		// now "freeze" the console object (issue #230)
+		// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
+		Object.freeze(console);
 
 		function sendMsg(type, data) {
 			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
@@ -120,7 +129,12 @@
 			}
 			**/
 
-			origConsoleLog.call(console, 'msg:' + stringify({type: type || false, data: data || false}));
+			try {
+				origConsoleLog.call(console, 'msg:' + stringify({type: type || false, data: data || false}));
+			}
+			catch(e) {
+				throw new Error('phantomas: calling native console.log() failed ("' + e + '")!');
+			}
 		}
 
 		function log(msg) {

@@ -11,7 +11,7 @@ exports.module = function(phantomas) {
 
 		if(Array.isArray(trace)) {
 			trace.forEach(function(entry) {
-				ret.push((entry.function ? entry.function + '(): ' : 'unknown fn: ') + entry.sourceURL + ' @ ' + entry.line);
+				ret.push((entry.function ? entry.function + '(): ' : 'unknown fn: ') + (entry.sourceURL || entry.file) + ' @ ' + entry.line);
 			});
 		}
 
