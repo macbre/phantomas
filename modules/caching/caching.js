@@ -3,12 +3,12 @@
  *
  * @see https://developers.google.com/speed/docs/best-practices/caching
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
 	var cacheControlRegExp = /max-age=(\d+)/;
 
-	function getCachingTime(headers) {
+	function getCachingTime(url, headers) {
 		// false means "no caching"
 		var ttl = false,
 			headerName;
@@ -29,8 +29,14 @@ exports.module = function(phantomas) {
 					}
 					break;
 
-				// TODO: parse date
+				// catch Expires and Pragma headers
 				case 'expires':
+				case 'pragma':
+				// and Varnish specific headers
+				case 'x-pass-expires':
+				case 'x-pass-cache-control':
+					phantomas.incrMetric('oldCachingHeaders');
+					phantomas.addOffender('oldCachingHeaders', url + ' - ' + headerName + ': ' + value);
 					break;
 			}
 		}
@@ -43,23 +49,25 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('cachingNotSpecified');
 	phantomas.setMetric('cachingTooShort');
 	phantomas.setMetric('cachingDisabled');
+
+	phantomas.setMetric('oldCachingHeaders');
 	
 	phantomas.on('recv', function(entry, res) {
-		var ttl = getCachingTime(entry.headers);
+		var ttl = getCachingTime(entry.url, entry.headers);
 
 		// static assets
 		if (entry.isImage || entry.isJS || entry.isCSS) {
 			if (ttl === false) {
-				phantomas.log("Caching: no caching specified for <" + entry.url + ">");
 				phantomas.incrMetric('cachingNotSpecified');
+				phantomas.addOffender('cachingNotSpecified', entry.url);
 			}
 			else if (ttl === 0) {
-				phantomas.log("Caching: disabled for <" + entry.url + ">");
 				phantomas.incrMetric('cachingDisabled');
+				phantomas.addOffender('cachingDisabled', entry.url);
 			}
 			else if (ttl < 7 * 86400) {
-				phantomas.log("Caching: caching period is less than a week for <" + entry.url + "> (set to " + ttl + " s)");
 				phantomas.incrMetric('cachingTooShort');
+				phantomas.addOffender('cachingTooShort', entry.url + ' cached for ' + ttl + ' s');
 			}
 		}
 	});
