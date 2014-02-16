@@ -110,7 +110,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 
 ## Metrics
 
-_Current number of metrics: 99_
+_Current number of metrics: 100_
 
 Units:
 
@@ -268,6 +268,7 @@ Units:
 * cachingNotSpecified: responses with no caching header sent (either `Cache-Control` or `Expires`)
 * cachingTooShort: responses with too short (less than a week) caching time
 * cachingDisabled: responses with caching disabled (`max-age=0`)
+* oldCachingHeaders: responses with old, HTTP 1.0 caching headers (``Expires`` and ``Pragma``)
 
 ### Time to first asset
 
