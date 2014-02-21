@@ -2,7 +2,7 @@
 	"url": "http://phantomjs.org",
 	"verbose": true,
 	"log": "log/phantomjs.log",
-	"block-domain": "google-analytics.com",
+	"block-domain": "google-analytics.com, amazonaws.com",
 	"cookies": [
 		{
 			"name": "mobile",
