@@ -39,8 +39,16 @@ exports.module = function(phantomas) {
 	}
 
 	// parse settings
-	allowedDomains = (typeof allowedDomains === 'string') ? allowedDomains.split(',') : false;
-	blockedDomains = (typeof blockedDomains === 'string') ? blockedDomains.split(',') : false;
+	function parseParameter(value) {
+		return value.
+			split(',').
+			map(function(item) {
+				return item.trim();
+			});
+	}
+
+	allowedDomains = (typeof allowedDomains === 'string') ? parseParameter(allowedDomains) : false;
+	blockedDomains = (typeof blockedDomains === 'string') ? parseParameter(blockedDomains) : false;
 
 	if (noExternalsMode) {
 		phantomas.log('Block domains: working in --no-externals mode');
