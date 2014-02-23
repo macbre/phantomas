@@ -68,9 +68,6 @@ var phantomas = function(params) {
 	// --format=[csv|json]
 	this.format = params.format || 'plain';
 
-	// --viewport=1280x1024
-	this.viewport = params.viewport || '1280x1024';
-
 	// --verbose
 	this.verboseMode = params.verbose === true;
 
@@ -85,9 +82,6 @@ var phantomas = function(params) {
 
 	// --skip-modules=jQuery,domQueries
 	this.skipModules = (typeof params['skip-modules'] === 'string') ? params['skip-modules'].split(',') : [];
-
-	// --user-agent=custom-agent
-	this.userAgent = params['user-agent'] || getDefaultUserAgent();
 
 	// disable JavaScript on the page that will be loaded
 	this.disableJs = params['disable-js'] === true;
@@ -203,14 +197,33 @@ phantomas.prototype = {
 		this.emitter.once(ev, fn);
 	},
 
+	getParam: function(key, defValue, typeCheck) {
+		var value = this.params[key];
+
+		// strict type check
+		if (typeof typeCheck === 'string' && typeof value !== typeCheck) {
+			value = undefined;
+		}
+
+		return value || defValue;
+	},
+
 	// returns "wrapped" version of phantomas object with public methods / fields only
 	getPublicWrapper: function() {
+		function setParam(key, value) {
+			this.log('setParam: %s set to %j', key, value);
+			this.params[key] = value;
+		}
+
+		function setZoom(zoomFactor) {
+			this.page.zoomFactor = zoomFactor;
+		}
+
 		// modules API
 		return {
 			url: this.params.url,
-			getParam: (function(key) {
-				return this.params[key];
-			}).bind(this),
+			getParam: this.getParam.bind(this),
+			setParam: setParam.bind(this),
 
 			// events
 			on: this.on.bind(this),
@@ -241,9 +254,7 @@ phantomas.prototype = {
 			injectJs: this.page.injectJs.bind(this.page),
 			require: this.require.bind(this),
 			render: this.page.render.bind(this.page),
-			setZoom: (function(zoomFactor) {
-				this.page.zoomFactor = zoomFactor;
-			}).bind(this),
+			setZoom: setZoom.bind(this),
 
 			// utils
 			runScript: this.runScript.bind(this)
@@ -387,8 +398,8 @@ phantomas.prototype = {
 
 		this.start = Date.now();
 
-		// setup viewport
-		var parsedViewport = this.viewport.split('x');
+		// setup viewport / --viewport=1280x1024
+		var parsedViewport = this.getParam('viewport', '1280x1024', 'string').split('x');
 
 		if (parsedViewport.length === 2) {
 			this.page.viewportSize = {
@@ -397,10 +408,8 @@ phantomas.prototype = {
 			};
 		}
 
-		// setup user agent
-		if (this.userAgent) {
-			this.page.settings.userAgent = this.userAgent;
-		}
+		// setup user agent /  --user-agent=custom-agent
+		this.page.settings.userAgent = this.getParam('user-agent', getDefaultUserAgent(), 'string');
 
 		// disable JavaScript on the page that will be loaded
 		if (this.disableJs) {
@@ -409,9 +418,9 @@ phantomas.prototype = {
 		}
 
 		// print out debug messages
-		this.log('Opening <' + this.url + '>...');
-		this.log('Using ' + this.page.settings.userAgent + ' as user agent');
-		this.log('Viewport set to ' + this.page.viewportSize.width + 'x' + this.page.viewportSize.height);
+		this.log('Opening <%s>...', this.url);
+		this.log('Using %s as user agent', this.page.settings.userAgent);
+		this.log('Viewport set to %d x %d', this.page.viewportSize.width, this.page.viewportSize.height);
 
 		// bind basic events
 		this.page.onInitialized = this.proxy(this.onInitialized);
@@ -434,20 +443,33 @@ phantomas.prototype = {
 
 		this.reportQueue.push(function(done) {
 			var currentRequests = 0,
+				requestsUrls = {},
+				onFinished = function(entry) {
+					currentRequests--;
+					delete requestsUrls[entry.url];
+
+					if (currentRequests < 1) {
+						timeoutId = setTimeout(function() {
+							done();
+						}, 1000);
+					}
+				},
 				timeoutId;
 
 			// update HTTP requests counter
 			self.on('send', function(entry) {
 				clearTimeout(timeoutId);
+
 				currentRequests++;
+				requestsUrls[entry.url] = true;
 			});
 
-			self.on('recv', function(entry) {
-				currentRequests--;
+			self.on('recv', onFinished);
+			self.on('abort', onFinished);
 
-				if (currentRequests < 1) {
-					timeoutId = setTimeout(done, 1000);
-				}
+			// add debug info about pending responses (issue #216)
+			self.on('timeout', function() {
+				self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, Object.keys(requestsUrls).join('>, <'));
 			});
 		});
 
@@ -467,9 +489,11 @@ phantomas.prototype = {
 		this.emit('pageOpen');
 
 		// fallback - always timeout after TIMEOUT seconds
-		this.log('Run timeout set to ' + this.timeout + ' s');
+		this.log('Timeout set to %d sec', this.timeout);
 		setTimeout(function() {
-			this.log('Timeout of ' + this.timeout + ' s was reached!');
+			this.log('Timeout of %d sec was reached!', this.timeout);
+
+			this.emit('timeout');
 			this.timedOut = true;
 
 			this.report();

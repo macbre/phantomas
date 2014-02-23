@@ -43,6 +43,7 @@ npm install --global phantomas
 * [LaurentGoderre](https://github.com/LaurentGoderre)
 * [kennydee](https://github.com/kennydee)
 * [iNem0o](https://github.com/iNem0o)
+* [stefanjudis](https://github.com/stefanjudis)
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
@@ -91,6 +92,8 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--proxy=[host:port]` specifies the proxy server to use
 * `--proxy-auth=[username:password]` specifies the authentication information for the proxy
 * `--proxy-type=[http|socks5|none]` specifies the type of the proxy server (default is http)
+* `--phone` force viewport and user agent of a mobile phone
+* `--tablet` force viewport and user agent of a tablet
 
 ### Multiple runs
 
@@ -107,7 +110,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 
 ## Metrics
 
-_Current number of metrics: 98_
+_Current number of metrics: 100_
 
 Units:
 
@@ -122,7 +125,6 @@ Units:
 * gzipRequests: number of gzipped HTTP responses
 * postRequests: number of POST requests
 * httpsRequests: number of HTTPS requests
-* redirects: number of HTTP redirects (either 301 or 302)
 * notFound: number of HTTP 404 responses
 * timeToFirstByte: time it took to receive the first byte of the first response (that was not a redirect)
 * timeToLastByte: time it took to receive the last byte of the first response (that was not a redirect)
@@ -266,12 +268,18 @@ Units:
 * cachingNotSpecified: responses with no caching header sent (either `Cache-Control` or `Expires`)
 * cachingTooShort: responses with too short (less than a week) caching time
 * cachingDisabled: responses with caching disabled (`max-age=0`)
+* oldCachingHeaders: responses with old, HTTP 1.0 caching headers (``Expires`` and ``Pragma``)
 
 ### Time to first asset
 
 * timeToFirstCss: time it took to receive the last byte of the first CSS
 * timeToFirstJs: time it took to receive the last byte of the first JS
 * timeToFirstImage: time it took to receive the last byte of the first image
+
+### Redirects
+
+* redirects: number of HTTP redirects (either 301 or 302)
+* redirectsTime: time it took to send and receive redirects
 
 ### JavaScript bottlenecks
 
@@ -345,4 +353,7 @@ will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them wi
 
 ## Utilities
 
+Use [grunt](http://gruntjs.com/) to automate daily dev tasks, including your's application web performance, via these great tools:
+
 * [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
+* [juve](https://github.com/jared-stilwell/juve)

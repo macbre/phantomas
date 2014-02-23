@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "0.11.1",
+  "version": "0.12.1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
   "main": "./lib/index.js",
@@ -19,10 +19,10 @@
   ],
   "license": "BSD",
   "engines": {
-    "node": ">=0.6"
+    "node": ">=0.10"
   },
   "dependencies": {
-    "analyze-css": "0.2.x",
+    "analyze-css": "0.3.x",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "csv-string": "~2.1.1",

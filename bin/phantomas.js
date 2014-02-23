@@ -36,6 +36,7 @@ program
 	.describe('ignore-ssl-errors', 'ignores SSL errors, such as expired or self-signed certificate errors')
 	.describe('log', 'log to a given file')
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
+	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('no-externals', 'block requests to 3rd party domains').boolean('no-externals')
 	.describe('post-load-delay', 'wait X seconds before generating a report')
 	.describe('proxy', 'specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)')
@@ -45,10 +46,11 @@ program
 	.describe('screenshot', 'render fully loaded page to a given file')
 	.describe('silent', 'don\'t write anything to the console').boolean('silent')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
+	.describe('tablet', 'force viewport and user agent of a tablet')
 	.describe('timeout', 'timeout for phantomas run').default('timeout', 15)
 	.describe('user-agent', 'provide a custom user agent')
 	.describe('verbose', 'writes debug messages to the console').boolean('verbose').alias('verbose', 'v')
-	.describe('viewport', 'phantomJS viewport dimensions [width]x[height]').default('viewport', '1280x1024')
+	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 
 	// experimental features
@@ -87,10 +89,9 @@ options['no-externals'] = options.externals === false;
 delete options.externals;
 
 // spawn phantomas process
-child = phantomas(url, options, function(err, res) {
+child = phantomas(url, options, function(err, data, results) {
 	var debug = require('debug')('phantomas:bin'),
 		doneFn,
-		results,
 		reporter;
 
 	doneFn = function() {
@@ -99,9 +100,8 @@ child = phantomas(url, options, function(err, res) {
 		process.exit(err);
 	}
 
-	if (res !== false) {
+	if (results !== false) {
 		// process JSON results by reporters
-		results = new (require('../core/results'))(res);
 		reporter = require('../core/reporter')(results, options);
 
 		debug('Calling a reporter...');

@@ -17,11 +17,12 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('timeFrontend');
 
 	// measure onDOMReadyTime and windowOnLoadTime from the moment HTML response was fully received
-	phantomas.once('responseEnd', function() {
-		var responseEndTime = Date.now();
+	var responseEndTime = Date.now();
+
+	phantomas.on('responseEnd', function() {
+		responseEndTime = Date.now();
 		phantomas.log('Performance timing: responseEnd');
 
-		// extend window.performance
 		phantomas.evaluate(function(responseEndTime) {
 			window.performance = window.performance || {timing: {}};
 			window.performance.timing.responseEnd = responseEndTime;
@@ -29,9 +30,17 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('init', function() {
-		phantomas.evaluate(function() {
+		phantomas.evaluate(function(responseEndTime) {
 			(function(phantomas) {
 				phantomas.spyEnabled(false, 'installing window.performance metrics');
+
+				// extend window.performance
+				// "init" event is sometimes fired twice, pass a value set by "responseEnd" event handler (fixes #192)
+				window.performance = window.performance || {
+					timing: {
+						responseEnd: responseEndTime
+					}
+				};
 
 				// emulate Navigation Timing
 				document.addEventListener('readystatechange', function() {
@@ -71,7 +80,7 @@ exports.module = function(phantomas) {
 
 				phantomas.spyEnabled(true);
 			})(window.__phantomas);
-		});
+		}, responseEndTime);
 	});
 
 	// fallback for --disable-js mode

@@ -15,7 +15,6 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('gzipRequests');
 	phantomas.setMetric('postRequests');
 	phantomas.setMetric('httpsRequests');
-	phantomas.setMetric('redirects');
 	phantomas.setMetric('notFound');
 	phantomas.setMetric('timeToFirstByte');
 	phantomas.setMetric('timeToLastByte');
@@ -103,13 +102,18 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
-		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
-		if (res.status === null) {
-			return;
-		}
-
 		// current request data
 		var entry = requests[res.id] || {};
+
+		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
+		if (res.status === null ) {
+			if (entry.isBlocked) {
+				return;
+			} else if (!entry.isBase64) {
+				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
+				phantomas.emit('abort', entry, res);
+			}
+		}
 
 		switch(res.stage) {
 			// the beginning of response
@@ -236,10 +240,8 @@ exports.module = function(phantomas) {
 				switch(entry.status) {
 					case 301: // Moved Permanently
 					case 302: // Found
+					case 303: // See Other
 						entry.isRedirect = true;
-						phantomas.incrMetric('redirects');
-						phantomas.addOffender('redirects', entry.url + ' is a redirect (HTTP ' + entry.status + ' ' + entry.statusText + ') ' +
-							'to ' + (res.redirectURL || (res.url.replace(/\/$/, '') + entry.headers.Location)));
 						break;
 
 					case 404: // Not Found
@@ -283,6 +285,7 @@ exports.module = function(phantomas) {
 
 			ttfbMeasured = true;
 
+			phantomas.log('Time to first byte: set to %d ms for <%s> (HTTP %d)', entry.timeToFirstByte, entry.url, entry.status);
 			phantomas.emit('responseEnd', entry, res);
 		}
 
