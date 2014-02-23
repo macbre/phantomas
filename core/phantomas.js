@@ -386,6 +386,24 @@ phantomas.prototype = {
 		}
 	},
 
+	// setup polling for loading progress (issue #204)
+	initLoadingProgress: function() {
+		var currentProgress = false;
+
+		function pollFn() {
+			if (currentProgress === this.page.loadingProgress) {
+				return;
+			}
+
+			currentProgress = this.page.loadingProgress;
+
+			this.log('Loading progress: %d%', currentProgress);
+			this.emit('progress', currentProgress);
+		}
+
+		setInterval(pollFn.bind(this), 100);
+	},
+
 	// runs phantomas
 	run: function() {
 		// check required params
@@ -436,6 +454,8 @@ phantomas.prototype = {
 		this.page.onConsoleMessage = this.proxy(this.onConsoleMessage);
 		this.page.onCallback = this.proxy(this.onCallback);
 		this.page.onError = this.proxy(this.onError);
+
+		this.initLoadingProgress();
 
 		// observe HTTP requests
 		// finish when the last request is completed + one second timeout
