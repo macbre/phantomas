@@ -50,7 +50,10 @@ module.exports = function(logFile, params) {
 			}
 
 			if (!beSilent) {
-				stderr.writeLine(ts + ' ' + consoleMsg);
+				stderr.writeLine(JSON.stringify({
+					type: 'log',
+					data: ts + ' ' + consoleMsg
+				}));
 			}
 		}
 
