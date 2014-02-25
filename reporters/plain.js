@@ -1,7 +1,7 @@
 /**
  * Results formatter for --format=plain
  */
-var colors = require('ansicolors'),
+var colors = require('../lib/ansicolors'),
 	fold = require('travis-fold'),
 	rpad = require('../core/pads').rpad,
 	OK = '✓',
