@@ -2,7 +2,7 @@
  * Simple logger (using both file and console)
  */
 module.exports = function(logFile, params) {
-	var colors = require('ansicolors'),
+	var colors = require('../lib/ansicolors'),
 		styles = require('ansistyles'),
 		fs = require('fs'),
 		ipc = new (require('./ipc'))('log'),
