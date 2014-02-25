@@ -403,9 +403,8 @@ phantomas.prototype = {
 			this.emit('progress', currentProgress);
 
 			stderr.writeLine(JSON.stringify({
-				type: 'event',
 				event: 'progress',
-				param: currentProgress
+				data: currentProgress
 			}));
 		}
 
