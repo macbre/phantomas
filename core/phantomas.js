@@ -387,8 +387,10 @@ phantomas.prototype = {
 	},
 
 	// setup polling for loading progress (issue #204)
+	// pipe JSON messages over stderr
 	initLoadingProgress: function() {
-		var currentProgress = false;
+		var currentProgress = false,
+			stderr = require('system').stderr;
 
 		function pollFn() {
 			if (currentProgress === this.page.loadingProgress) {
@@ -399,6 +401,12 @@ phantomas.prototype = {
 
 			this.log('Loading progress: %d%', currentProgress);
 			this.emit('progress', currentProgress);
+
+			stderr.writeLine(JSON.stringify({
+				type: 'event',
+				event: 'progress',
+				param: currentProgress
+			}));
 		}
 
 		setInterval(pollFn.bind(this), 100);
