@@ -5,7 +5,7 @@ module.exports = function(logFile, params) {
 	var colors = require('ansicolors'),
 		styles = require('ansistyles'),
 		fs = require('fs'),
-		stderr = require('system').stderr,
+		ipc = new (require('./ipc'))('log'),
 		beVerbose = params.beVerbose === true,
 		beSilent = params.beSilent === true,
 		stream;
@@ -50,7 +50,7 @@ module.exports = function(logFile, params) {
 			}
 
 			if (!beSilent) {
-				stderr.writeLine(ts + ' ' + consoleMsg);
+				ipc.push(ts + ' ' + consoleMsg);
 			}
 		}
 
