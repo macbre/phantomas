@@ -692,7 +692,7 @@ phantomas.prototype = {
 				break;
 
 			case 'setMetric':
-				this.setMetric(data.name, data.value);
+				this.setMetric(data.name, data.value, data.isFinal);
 				break;
 
 			case 'incrMetric':
@@ -718,13 +718,20 @@ phantomas.prototype = {
 	},
 
 	// metrics reporting
-	setMetric: function(name, value) {
+	setMetric: function(name, value, isFinal) {
+		var ipc = new (require('./ipc'))('metric');
+
 		value = typeof value === 'string' ? value : (value || 0); // set to zero if undefined / null is provided
 		this.results.setMetric(name, value);
+
+		// trigger an event when the metric value is said to be final (isse #240)
+		if (isFinal === true) {
+			ipc.push(name, value);
+		}
 	},
 
 	setMetricEvaluate: function(name, fn) {
-		this.setMetric(name, this.page.evaluate(fn));
+		this.setMetric(name, this.page.evaluate(fn), true /* isFinal */);
 	},
 
 	setMarkerMetric: function(name) {
@@ -735,7 +742,7 @@ phantomas.prototype = {
 			throw 'setMarkerMetric() called before responseEnd event!';
 		}
 
-		this.results.setMetric(name, value);
+		this.setMetric(name, value, true /* isFinal */);
 		return value;
 	},
 
@@ -746,7 +753,7 @@ phantomas.prototype = {
 		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
 		this.setMetric(name, this.page.evaluate(function(key) {
 			return window.__phantomas.get(key) || 0;
-		}, key));
+		}, key), true /* isFinal */);
 	},
 
 	// get a value set using window.__phantomas browser scope
