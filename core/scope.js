@@ -141,8 +141,8 @@
 			sendMsg('log', msg);
 		}
 
-		function setMetric(name, value) {
-			sendMsg('setMetric', {name: name, value: (typeof value !== 'undefined') ? value : 0});
+		function setMetric(name, value, isFinal) {
+			sendMsg('setMetric', {name: name, value: (typeof value !== 'undefined') ? value : 0, isFinal: isFinal === true});
 		}
 
 		function incrMetric(name, incr /* =1 */) {

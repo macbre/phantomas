@@ -1,7 +1,7 @@
 /**
  * Simple HTTP requests monitor and analyzer
  */
-exports.version = '1.1';
+exports.version = '1.2';
 
 exports.module = function(phantomas) {
 	// imports
@@ -280,8 +280,8 @@ exports.module = function(phantomas) {
 	phantomas.on('recv', function(entry, res) {
 		// check the first response which is not a redirect (issue #74)
 		if (!ttfbMeasured && !entry.isRedirect) {
-			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte);
-			phantomas.setMetric('timeToLastByte', entry.timeToLastByte);
+			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte, true);
+			phantomas.setMetric('timeToLastByte', entry.timeToLastByte, true);
 
 			ttfbMeasured = true;
 

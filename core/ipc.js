@@ -9,10 +9,10 @@ function ipc(event) {
 	this.event = event;
 }
 
-ipc.prototype.push = function(data) {
+ipc.prototype.push = function() {
 	stderr.writeLine(JSON.stringify({
 		event: this.event,
-		data: data
+		data: Array.prototype.slice.apply(arguments)
 	}));
 };
 
