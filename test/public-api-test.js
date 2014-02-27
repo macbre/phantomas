@@ -14,7 +14,10 @@ mockery.registerMock('fs', {
 	list: function() {}
 });
 mockery.registerMock('system', {
-	os: {}
+	os: {},
+	stderr: {
+		writeLine: function() {}
+	}
 });
 mockery.registerMock('webpage', {
 	create: function() {
