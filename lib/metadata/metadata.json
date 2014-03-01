@@ -1,0 +1,242 @@
+/**
+ * This file was automatically generated at 2014-03-01T19:54:17.791Z
+ **/
+module.exports = {
+  "metrics": {
+    "requests": {
+      "desc": "total number of HTTP requests made",
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "gzipRequests": {
+      "desc": "number of gzipped HTTP responses",
+      "unreliable": true,
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "postRequests": {
+      "desc": "number of POST requests",
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "httpsRequests": {
+      "desc": "number of HTTPS requests",
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "notFound": {
+      "desc": "number of HTTP 404 responses",
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "timeToFirstByte": {
+      "desc": "time it took to receive the first byte of the first response (that was not a redirect)",
+      "unit": "ms",
+      "module": "requestsMonitor"
+    },
+    "timeToLastByte": {
+      "desc": "time it took to receive the last byte of the first response (that was not a redirect)",
+      "unit": "ms",
+      "module": "requestsMonitor"
+    },
+    "bodySize": {
+      "desc": "size of the uncompressed content of all responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "requestsMonitor"
+    },
+    "contentLength": {
+      "desc": "size of the content of all responses (based on Content-Length header)",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "requestsMonitor"
+    },
+    "httpTrafficCompleted": {
+      "desc": "time it took to receive the last byte of the last HTTP response",
+      "unit": "ms",
+      "module": "requestsMonitor"
+    },
+    "ajaxRequests": {
+      "module": "ajaxRequests"
+    },
+    "windowAlerts": {
+      "module": "alerts"
+    },
+    "windowConfirms": {
+      "module": "alerts"
+    },
+    "windowPrompts": {
+      "module": "alerts"
+    },
+    "cacheHits": {
+      "module": "cacheHits"
+    },
+    "cacheMisses": {
+      "module": "cacheHits"
+    },
+    "cachePasses": {
+      "module": "cacheHits"
+    },
+    "cachingNotSpecified": {
+      "module": "caching"
+    },
+    "cachingTooShort": {
+      "module": "caching"
+    },
+    "cachingDisabled": {
+      "module": "caching"
+    },
+    "oldCachingHeaders": {
+      "module": "caching"
+    },
+    "consoleMessages": {
+      "module": "console"
+    },
+    "cookiesSent": {
+      "module": "cookies"
+    },
+    "cookiesRecv": {
+      "module": "cookies"
+    },
+    "domainsWithCookies": {
+      "module": "cookies"
+    },
+    "iframesCount": {
+      "module": "domComplexity"
+    },
+    "imagesWithoutDimensions": {
+      "module": "domComplexity"
+    },
+    "DOMqueries": {
+      "module": "domQueries"
+    },
+    "DOMqueriesById": {
+      "module": "domQueries"
+    },
+    "DOMqueriesByClassName": {
+      "module": "domQueries"
+    },
+    "DOMqueriesByTagName": {
+      "module": "domQueries"
+    },
+    "DOMqueriesByQuerySelectorAll": {
+      "module": "domQueries"
+    },
+    "DOMinserts": {
+      "module": "domQueries"
+    },
+    "DOMqueriesDuplicated": {
+      "module": "domQueries"
+    },
+    "domains": {
+      "module": "domains"
+    },
+    "maxRequestsPerDomain": {
+      "module": "domains"
+    },
+    "medianRequestsPerDomain": {
+      "module": "domains"
+    },
+    "eventsBound": {
+      "module": "eventListeners"
+    },
+    "globalVariables": {
+      "module": "globalVariables"
+    },
+    "headersCount": {
+      "module": "headers"
+    },
+    "headersSentCount": {
+      "module": "headers"
+    },
+    "headersRecvCount": {
+      "module": "headers"
+    },
+    "headersSize": {
+      "module": "headers"
+    },
+    "headersSentSize": {
+      "module": "headers"
+    },
+    "headersRecvSize": {
+      "module": "headers"
+    },
+    "jQueryVersion": {
+      "module": "jQuery"
+    },
+    "jQueryOnDOMReadyFunctions": {
+      "module": "jQuery"
+    },
+    "jQuerySizzleCalls": {
+      "module": "jQuery"
+    },
+    "documentWriteCalls": {
+      "module": "javaScriptBottlenecks"
+    },
+    "evalCalls": {
+      "module": "javaScriptBottlenecks"
+    },
+    "jsErrors": {
+      "module": "jserrors"
+    },
+    "localStorageEntries": {
+      "module": "localStorage"
+    },
+    "redirects": {
+      "module": "redirects"
+    },
+    "redirectsTime": {
+      "module": "redirects"
+    },
+    "medianResponse": {
+      "module": "requestsStats"
+    },
+    "medianLatency": {
+      "module": "requestsStats"
+    },
+    "assetsNotGzipped": {
+      "module": "staticAssets"
+    },
+    "assetsWithQueryString": {
+      "module": "staticAssets"
+    },
+    "smallImages": {
+      "module": "staticAssets"
+    },
+    "multipleRequests": {
+      "module": "staticAssets"
+    },
+    "onDOMReadyTime": {
+      "desc": "time it took to fire onDOMready event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "onDOMReadyTimeEnd": {
+      "desc": "time it took to finish processing onDOMready event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "windowOnLoadTime": {
+      "desc": "time it took to fire window.load event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "windowOnLoadTimeEnd": {
+      "desc": "time it took to finish processing window.load event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "timeBackend": {
+      "desc": "time to the first byte compared to the total loading time",
+      "unit": "%",
+      "module": "windowPerformance"
+    },
+    "timeFrontend": {
+      "desc": "time to window.load compared to the total loading time",
+      "unit": "%",
+      "module": "windowPerformance"
+    }
+  },
+  "count": 66,
+  "version": "0.12.1"
+};

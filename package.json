@@ -36,6 +36,7 @@
     "travis-fold": ">=0.1.2"
   },
   "devDependencies": {
+    "glob": "~3.2.9",
     "jshint": ">=2.1.11",
     "mockery": ">=1.4",
     "vows": ">=0.7"
@@ -45,7 +46,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js reporters/ run-multiple.js"
+    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/ run-multiple.js"
   },
   "jshintConfig": {
     "node": true,
