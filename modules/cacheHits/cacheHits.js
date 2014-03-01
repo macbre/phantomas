@@ -4,9 +4,9 @@
 exports.version = '0.2';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('cacheHits');
-	phantomas.setMetric('cacheMisses');
-	phantomas.setMetric('cachePasses');
+	phantomas.setMetric('cacheHits'); // @desc number of cache hits
+	phantomas.setMetric('cacheMisses'); // @desc number of cache misses
+	phantomas.setMetric('cachePasses'); // @desc number of cache passes
 
 	var re = /miss|hit|pass/i;
 	

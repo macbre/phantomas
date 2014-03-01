@@ -23,8 +23,8 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('report', function() {
-		phantomas.setMetric('windowAlerts', alerts.length);
-		phantomas.setMetric('windowConfirms', confirms.length);
-		phantomas.setMetric('windowPrompts', prompts.length);
+		phantomas.setMetric('windowAlerts', alerts.length); // @desc number of calls to window.alert
+		phantomas.setMetric('windowConfirms', confirms.length); // @desc number of calls to window.confirm
+		phantomas.setMetric('windowPrompts', prompts.length); // @desc number of calls to window.prompt
 	});
 };

@@ -35,7 +35,7 @@ exports.module = function(phantomas) {
 				// and Varnish specific headers
 				case 'x-pass-expires':
 				case 'x-pass-cache-control':
-					phantomas.incrMetric('oldCachingHeaders');
+					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
 					phantomas.addOffender('oldCachingHeaders', url + ' - ' + headerName + ': ' + value);
 					break;
 			}
@@ -46,12 +46,12 @@ exports.module = function(phantomas) {
 		return ttl;
 	}
 
-	phantomas.setMetric('cachingNotSpecified');
-	phantomas.setMetric('cachingTooShort');
-	phantomas.setMetric('cachingDisabled');
+	phantomas.setMetric('cachingNotSpecified'); // @desc number of responses with no caching header sent (no Cache-Control header)
+	phantomas.setMetric('cachingTooShort'); // @desc number of responses with too short (less than a week) caching time
+	phantomas.setMetric('cachingDisabled'); // @desc number of responses with caching disabled (max-age=0)
 
 	phantomas.setMetric('oldCachingHeaders');
-	
+
 	phantomas.on('recv', function(entry, res) {
 		var ttl = getCachingTime(entry.url, entry.headers);
 

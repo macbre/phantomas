@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T21:14:27.007Z
+ * This file was automatically generated at 2014-03-01T21:25:35.215Z
  **/
 module.exports = {
   "metrics": {
@@ -57,15 +57,23 @@ module.exports = {
       "module": "requestsMonitor"
     },
     "ajaxRequests": {
+      "desc": "number of AJAX requests",
+      "unit": "number",
       "module": "ajaxRequests"
     },
     "windowAlerts": {
+      "desc": "number of calls to window.alert",
+      "unit": "number",
       "module": "alerts"
     },
     "windowConfirms": {
+      "desc": "number of calls to window.confirm",
+      "unit": "number",
       "module": "alerts"
     },
     "windowPrompts": {
+      "desc": "number of calls to window.prompt",
+      "unit": "number",
       "module": "alerts"
     },
     "htmlCount": {
@@ -163,24 +171,38 @@ module.exports = {
       "module": "blockDomains"
     },
     "cacheHits": {
+      "desc": "number of cache hits",
+      "unit": "number",
       "module": "cacheHits"
     },
     "cacheMisses": {
+      "desc": "number of cache misses",
+      "unit": "number",
       "module": "cacheHits"
     },
     "cachePasses": {
+      "desc": "number of cache passes",
+      "unit": "number",
       "module": "cacheHits"
     },
     "oldCachingHeaders": {
+      "desc": "number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)",
+      "unit": "number",
       "module": "caching"
     },
     "cachingNotSpecified": {
+      "desc": "number of responses with no caching header sent (no Cache-Control header)",
+      "unit": "number",
       "module": "caching"
     },
     "cachingTooShort": {
+      "desc": "number of responses with too short (less than a week) caching time",
+      "unit": "number",
       "module": "caching"
     },
     "cachingDisabled": {
+      "desc": "number of responses with caching disabled (max-age=0)",
+      "unit": "number",
       "module": "caching"
     },
     "consoleMessages": {
