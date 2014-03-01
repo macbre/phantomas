@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T21:06:09.039Z
+ * This file was automatically generated at 2014-03-01T21:14:27.007Z
  **/
 module.exports = {
   "metrics": {
@@ -156,6 +156,12 @@ module.exports = {
       "unit": "bytes",
       "module": "assetsTypes"
     },
+    "blockedRequests": {
+      "desc": "number of requests blocked due to domain filtering",
+      "optional": true,
+      "unit": "number",
+      "module": "blockDomains"
+    },
     "cacheHits": {
       "module": "cacheHits"
     },
@@ -165,6 +171,9 @@ module.exports = {
     "cachePasses": {
       "module": "cacheHits"
     },
+    "oldCachingHeaders": {
+      "module": "caching"
+    },
     "cachingNotSpecified": {
       "module": "caching"
     },
@@ -172,9 +181,6 @@ module.exports = {
       "module": "caching"
     },
     "cachingDisabled": {
-      "module": "caching"
-    },
-    "oldCachingHeaders": {
       "module": "caching"
     },
     "consoleMessages": {
@@ -340,6 +346,6 @@ module.exports = {
       "module": "windowPerformance"
     }
   },
-  "count": 85,
+  "count": 86,
   "version": "0.12.1"
 };
