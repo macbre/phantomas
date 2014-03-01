@@ -11,15 +11,16 @@ exports.module = function(phantomas) {
 	var requests = [];
 
 	// register metric
-	phantomas.setMetric('requests');
-	phantomas.setMetric('gzipRequests');
-	phantomas.setMetric('postRequests');
-	phantomas.setMetric('httpsRequests');
-	phantomas.setMetric('notFound');
-	phantomas.setMetric('timeToFirstByte');
-	phantomas.setMetric('timeToLastByte');
-	phantomas.setMetric('bodySize'); // content only
-	phantomas.setMetric('contentLength'); // content only
+	phantomas.setMetric('requests');              // @desc total number of HTTP requests made
+	phantomas.setMetric('gzipRequests');          // @desc number of gzipped HTTP responses @unreliable
+	phantomas.setMetric('postRequests');          // @desc number of POST requests
+	phantomas.setMetric('httpsRequests');         // @desc number of HTTPS requests
+	phantomas.setMetric('notFound');              // @desc number of HTTP 404 responses
+	phantomas.setMetric('timeToFirstByte');       // @desc time it took to receive the first byte of the first response (that was not a redirect)
+	phantomas.setMetric('timeToLastByte');        // @desc time it took to receive the last byte of the first response (that was not a redirect)
+	phantomas.setMetric('bodySize');              // @desc size of the uncompressed content of all responses @unreliable
+	phantomas.setMetric('contentLength');         // @desc size of the content of all responses (based on Content-Length header) @unreliable
+	phantomas.setMetric('httpTrafficCompleted');  // @desc time it took to receive the last byte of the last HTTP response
 
 	// parse given URL to get protocol and domain
 	function parseEntryUrl(entry) {
@@ -89,7 +90,7 @@ exports.module = function(phantomas) {
 
 		// give modules a chance to block requests using entry.block()
 		// @see https://github.com/ariya/phantomjs/issues/10230
-		phantomas.emit('beforeSend', entry, res);
+		phantomas.emit('beforeSend', entry, res); // @desc allows the request to be blocked
 
 		if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
 			phantomas.log('Blocked request: <' + entry.url + '>');
@@ -98,7 +99,7 @@ exports.module = function(phantomas) {
 		}
 
 		// proceed
-		phantomas.emit('send', entry, res);
+		phantomas.emit('send', entry, res); // @desc request has been sent
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
@@ -111,7 +112,7 @@ exports.module = function(phantomas) {
 				return;
 			} else if (!entry.isBase64) {
 				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
-				phantomas.emit('abort', entry, res);
+				phantomas.emit('abort', entry, res); // @desc request has been blocked
 			}
 		}
 
@@ -152,7 +153,6 @@ exports.module = function(phantomas) {
 					switch (header.name.toLowerCase()) {
 						// TODO: why it's not gzipped?
 						// because: https://github.com/ariya/phantomjs/issues/10156
-						// should equal bodySize
 						case 'content-length':
 							entry.contentLength = parseInt(header.value, 10);
 							break;
@@ -267,9 +267,12 @@ exports.module = function(phantomas) {
 					phantomas.addOffender('httpsRequests', entry.url);
 				}
 
-				// emit an event for other modules
-				phantomas.emit(entry.isBase64 ? 'base64recv' : 'recv' , entry, res);
-				//phantomas.log(entry);
+				if (entry.isBase64) {
+					phantomas.emit('base64recv', entry, res); // @desc base64-encoded "response" has been received
+				}
+				else {
+					phantomas.emit('recv' , entry, res); // @desc response has been received
+				}
 				break;
 		}
 	});
@@ -286,7 +289,7 @@ exports.module = function(phantomas) {
 			ttfbMeasured = true;
 
 			phantomas.log('Time to first byte: set to %d ms for <%s> (HTTP %d)', entry.timeToFirstByte, entry.url, entry.status);
-			phantomas.emit('responseEnd', entry, res);
+			phantomas.emit('responseEnd', entry, res); // @desc the first response (that was not a redirect) fully received
 		}
 
 		// completion of the last HTTP request
