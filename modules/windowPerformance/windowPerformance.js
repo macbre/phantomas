@@ -1,20 +1,25 @@
 /**
- * Measure when document state reaches certain states
+ * Measure when the page reaches certain states
  *
  * @see http://w3c-test.org/webperf/specs/NavigationTiming/#dom-performancetiming-domloading
+ *
+ * onDOMReadyTime       Navigation Timing - domContentLoadedEventStart and domComplete
+ * onDOMReadyTimeEnd    Navigation Timing - domContentLoadedEventEnd
+ * windowOnLoadTime     Navigation Timing - loadEventStart
+ * windowOnLoadTimeEnd  Navigation Timing - loadEventEnd
  */
 exports.version = '0.5';
 
 exports.module = function(phantomas) {
 	// times below are calculated relative to performance.timing.responseEnd (#117)
-	phantomas.setMetric('onDOMReadyTime');       // i.e. Navigation Timing - domContentLoadedEventStart and domComplete
-	phantomas.setMetric('onDOMReadyTimeEnd');    // i.e. Navigation Timing - domContentLoadedEventEnd
-	phantomas.setMetric('windowOnLoadTime');     // i.e. Navigation Timing - loadEventStart
-	phantomas.setMetric('windowOnLoadTimeEnd');  // i.e. Navigation Timing - loadEventEnd
+	phantomas.setMetric('onDOMReadyTime');       // @desc time it took to fire onDOMready event
+	phantomas.setMetric('onDOMReadyTimeEnd');    // @desc time it took to finish processing onDOMready event
+	phantomas.setMetric('windowOnLoadTime');     // @desc time it took to fire window.load event
+	phantomas.setMetric('windowOnLoadTimeEnd');  // @desc time it took to finish processing window.load event
 
 	// backend vs frontend time
-	phantomas.setMetric('timeBackend');
-	phantomas.setMetric('timeFrontend');
+	phantomas.setMetric('timeBackend');  // @desc time to the first byte compared to the total loading time [%]
+	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
 
 	// measure onDOMReadyTime and windowOnLoadTime from the moment HTML response was fully received
 	var responseEndTime = Date.now();
