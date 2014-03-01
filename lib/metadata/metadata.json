@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T22:06:39.371Z
+ * This file was automatically generated at 2014-03-01T22:09:15.348Z
  **/
 module.exports = {
   "metrics": {
@@ -464,12 +464,18 @@ module.exports = {
       "module": "javaScriptBottlenecks"
     },
     "evalCalls": {
+      "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
+      "unit": "number",
       "module": "javaScriptBottlenecks"
     },
     "jsErrors": {
+      "desc": "number of JavaScript errors",
+      "unit": "number",
       "module": "jserrors"
     },
     "localStorageEntries": {
+      "desc": "number of entries in local storage",
+      "unit": "number",
       "module": "localStorage"
     },
     "redirects": {
