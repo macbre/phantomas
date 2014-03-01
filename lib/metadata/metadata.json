@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T19:54:17.791Z
+ * This file was automatically generated at 2014-03-01T21:06:09.039Z
  **/
 module.exports = {
   "metrics": {
@@ -67,6 +67,94 @@ module.exports = {
     },
     "windowPrompts": {
       "module": "alerts"
+    },
+    "htmlCount": {
+      "desc": "number of HTML responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "htmlSize": {
+      "desc": "size of HTML responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "cssCount": {
+      "desc": "number of CSS responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "cssSize": {
+      "desc": "size of CSS responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "jsCount": {
+      "desc": "number of JS responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "jsSize": {
+      "desc": "size of JS responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "jsonCount": {
+      "desc": "number of JSON responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "jsonSize": {
+      "desc": "size of JSON responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "imageCount": {
+      "desc": "number of image responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "imageSize": {
+      "desc": "size of image responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "webfontCount": {
+      "desc": "number of web font responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "webfontSize": {
+      "desc": "size of web font responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "base64Count": {
+      "desc": "number of base64 encoded \"responses\" (no HTTP request was actually made)",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "base64Size": {
+      "desc": "size of base64 encoded responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "otherCount": {
+      "desc": "number of other responses",
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "otherSize": {
+      "desc": "size of other responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
     },
     "cacheHits": {
       "module": "cacheHits"
@@ -206,6 +294,21 @@ module.exports = {
     "multipleRequests": {
       "module": "staticAssets"
     },
+    "timeToFirstCss": {
+      "desc": "time it took to receive the last byte of the first CSS",
+      "unit": "ms",
+      "module": "timeToFirst"
+    },
+    "timeToFirstJs": {
+      "desc": "time it took to receive the last byte of the first JS",
+      "unit": "ms",
+      "module": "timeToFirst"
+    },
+    "timeToFirstImage": {
+      "desc": "time it took to receive the last byte of the first image",
+      "unit": "ms",
+      "module": "timeToFirst"
+    },
     "onDOMReadyTime": {
       "desc": "time it took to fire onDOMready event",
       "unit": "ms",
@@ -237,6 +340,6 @@ module.exports = {
       "module": "windowPerformance"
     }
   },
-  "count": 66,
+  "count": 85,
   "version": "0.12.1"
 };
