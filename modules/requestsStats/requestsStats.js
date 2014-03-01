@@ -1,14 +1,14 @@
 /**
  * Analyzes HTTP requests and generates stats metrics
  *
- * setMetric('smallestResponse') @desc the size of the smallest response
- * setMetric('biggestResponse') @desc the size of the biggest response
- * setMetric('fastestResponse') @desc the time to the last byte of the fastest response
- * setMetric('slowestResponse') @desc the time to the last byte of the slowest response
- * setMetric('smallestLatency') @desc the time to the first byte of the fastest response
- * setMetric('biggestLatency') @desc the time to the first byte of the slowest response
- * setMetric('medianResponse') @desc median value of time to the last byte for all responses
- * setMetric('medianLatency') @desc median value of time to the first byte for all responses
+ * setMetric('smallestResponse') @desc the size of the smallest response @offenders
+ * setMetric('biggestResponse') @desc the size of the biggest response @offenders
+ * setMetric('fastestResponse') @desc the time to the last byte of the fastest response @offenders
+ * setMetric('slowestResponse') @desc the time to the last byte of the slowest response @offenders
+ * setMetric('smallestLatency') @desc the time to the first byte of the fastest response @offenders
+ * setMetric('biggestLatency') @desc the time to the first byte of the slowest response @offenders
+ * setMetric('medianResponse') @desc median value of time to the last byte for all responses @offenders
+ * setMetric('medianLatency') @desc median value of time to the first byte for all responses @offenders
  */
 exports.version = '0.3';
 

@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T22:09:15.348Z
+ * This file was automatically generated at 2014-03-01T22:17:13.693Z
  **/
 module.exports = {
   "metrics": {
@@ -16,16 +16,19 @@ module.exports = {
     },
     "postRequests": {
       "desc": "number of POST requests",
+      "offenders": true,
       "unit": "number",
       "module": "requestsMonitor"
     },
     "httpsRequests": {
       "desc": "number of HTTPS requests",
+      "offenders": true,
       "unit": "number",
       "module": "requestsMonitor"
     },
     "notFound": {
       "desc": "number of HTTP 404 responses",
+      "offenders": true,
       "unit": "number",
       "module": "requestsMonitor"
     },
@@ -58,6 +61,7 @@ module.exports = {
     },
     "ajaxRequests": {
       "desc": "number of AJAX requests",
+      "offenders": true,
       "unit": "number",
       "module": "ajaxRequests"
     },
@@ -252,6 +256,7 @@ module.exports = {
     },
     "htmlCount": {
       "desc": "number of HTML responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -263,6 +268,7 @@ module.exports = {
     },
     "cssCount": {
       "desc": "number of CSS responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -274,6 +280,7 @@ module.exports = {
     },
     "jsCount": {
       "desc": "number of JS responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -285,6 +292,7 @@ module.exports = {
     },
     "jsonCount": {
       "desc": "number of JSON responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -296,6 +304,7 @@ module.exports = {
     },
     "imageCount": {
       "desc": "number of image responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -307,6 +316,7 @@ module.exports = {
     },
     "webfontCount": {
       "desc": "number of web font responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -318,6 +328,7 @@ module.exports = {
     },
     "base64Count": {
       "desc": "number of base64 encoded \"responses\" (no HTTP request was actually made)",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -329,6 +340,7 @@ module.exports = {
     },
     "otherCount": {
       "desc": "number of other responses",
+      "offenders": true,
       "unit": "number",
       "module": "assetsTypes"
     },
@@ -341,6 +353,7 @@ module.exports = {
     "blockedRequests": {
       "desc": "number of requests blocked due to domain filtering",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "blockDomains"
     },
@@ -351,31 +364,37 @@ module.exports = {
     },
     "cacheMisses": {
       "desc": "number of cache misses",
+      "offenders": true,
       "unit": "number",
       "module": "cacheHits"
     },
     "cachePasses": {
       "desc": "number of cache passes",
+      "offenders": true,
       "unit": "number",
       "module": "cacheHits"
     },
     "oldCachingHeaders": {
       "desc": "number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)",
+      "offenders": true,
       "unit": "number",
       "module": "caching"
     },
     "cachingNotSpecified": {
       "desc": "number of responses with no caching header sent (no Cache-Control header)",
+      "offenders": true,
       "unit": "number",
       "module": "caching"
     },
     "cachingTooShort": {
       "desc": "number of responses with too short (less than a week) caching time",
+      "offenders": true,
       "unit": "number",
       "module": "caching"
     },
     "cachingDisabled": {
       "desc": "number of responses with caching disabled (max-age=0)",
+      "offenders": true,
       "unit": "number",
       "module": "caching"
     },
@@ -470,16 +489,19 @@ module.exports = {
     },
     "jsErrors": {
       "desc": "number of JavaScript errors",
+      "offenders": true,
       "unit": "number",
       "module": "jserrors"
     },
     "localStorageEntries": {
       "desc": "number of entries in local storage",
+      "offenders": true,
       "unit": "number",
       "module": "localStorage"
     },
     "redirects": {
       "desc": "number of HTTP redirects (either 301, 302 or 303)",
+      "offenders": true,
       "unit": "number",
       "module": "redirects"
     },
@@ -490,41 +512,49 @@ module.exports = {
     },
     "smallestResponse": {
       "desc": "the size of the smallest response",
+      "offenders": true,
       "unit": "bytes",
       "module": "requestsStats"
     },
     "biggestResponse": {
       "desc": "the size of the biggest response",
+      "offenders": true,
       "unit": "bytes",
       "module": "requestsStats"
     },
     "fastestResponse": {
       "desc": "the time to the last byte of the fastest response",
+      "offenders": true,
       "unit": "ms",
       "module": "requestsStats"
     },
     "slowestResponse": {
       "desc": "the time to the last byte of the slowest response",
+      "offenders": true,
       "unit": "ms",
       "module": "requestsStats"
     },
     "smallestLatency": {
       "desc": "the time to the first byte of the fastest response",
+      "offenders": true,
       "unit": "ms",
       "module": "requestsStats"
     },
     "biggestLatency": {
       "desc": "the time to the first byte of the slowest response",
+      "offenders": true,
       "unit": "ms",
       "module": "requestsStats"
     },
     "medianResponse": {
       "desc": "median value of time to the last byte for all responses",
+      "offenders": true,
       "unit": "ms",
       "module": "requestsStats"
     },
     "medianLatency": {
       "desc": "median value of time to the first byte for all responses",
+      "offenders": true,
       "unit": "ms",
       "module": "requestsStats"
     },
@@ -547,21 +577,25 @@ module.exports = {
     },
     "multipleRequests": {
       "desc": "number of static assets that are requested more than once",
+      "offenders": true,
       "unit": "number",
       "module": "staticAssets"
     },
     "timeToFirstCss": {
       "desc": "time it took to receive the last byte of the first CSS",
+      "offenders": true,
       "unit": "ms",
       "module": "timeToFirst"
     },
     "timeToFirstJs": {
       "desc": "time it took to receive the last byte of the first JS",
+      "offenders": true,
       "unit": "ms",
       "module": "timeToFirst"
     },
     "timeToFirstImage": {
       "desc": "time it took to receive the last byte of the first image",
+      "offenders": true,
       "unit": "ms",
       "module": "timeToFirst"
     },
