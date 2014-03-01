@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T21:48:13.477Z
+ * This file was automatically generated at 2014-03-01T21:57:21.287Z
  **/
 module.exports = {
   "metrics": {
@@ -478,22 +478,66 @@ module.exports = {
     "redirectsTime": {
       "module": "redirects"
     },
+    "smallestResponse": {
+      "desc": "the size of the smallest response",
+      "unit": "bytes",
+      "module": "requestsStats"
+    },
+    "biggestResponse": {
+      "desc": "the size of the biggest response",
+      "unit": "bytes",
+      "module": "requestsStats"
+    },
+    "fastestResponse": {
+      "desc": "the time to the last byte of the fastest response",
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "slowestResponse": {
+      "desc": "the time to the last byte of the slowest response",
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "smallestLatency": {
+      "desc": "the time to the first byte of the fastest response",
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "biggestLatency": {
+      "desc": "the time to the first byte of the slowest response",
+      "unit": "ms",
+      "module": "requestsStats"
+    },
     "medianResponse": {
+      "desc": "median value of time to the last byte for all responses",
+      "unit": "ms",
       "module": "requestsStats"
     },
     "medianLatency": {
+      "desc": "median value of time to the first byte for all responses",
+      "unit": "ms",
       "module": "requestsStats"
     },
     "assetsNotGzipped": {
+      "desc": "number of static assets that were not gzipped",
+      "unreliable": true,
+      "unit": "number",
       "module": "staticAssets"
     },
     "assetsWithQueryString": {
+      "desc": "number of static assets requested with query string (e.g. ?foo) in URL",
+      "unit": "number",
       "module": "staticAssets"
     },
     "smallImages": {
+      "desc": "number of images smaller than 2 kB that can be base64 encoded",
+      "unreliable": true,
+      "unit": "number",
       "module": "staticAssets"
     },
     "multipleRequests": {
+      "desc": "number of static assets that are requested more than once",
+      "unit": "number",
       "module": "staticAssets"
     },
     "timeToFirstCss": {
@@ -542,6 +586,6 @@ module.exports = {
       "module": "windowPerformance"
     }
   },
-  "count": 115,
+  "count": 121,
   "version": "0.12.1"
 };
