@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T21:57:21.287Z
+ * This file was automatically generated at 2014-03-01T22:06:39.371Z
  **/
 module.exports = {
   "metrics": {
@@ -473,9 +473,13 @@ module.exports = {
       "module": "localStorage"
     },
     "redirects": {
+      "desc": "number of HTTP redirects (either 301, 302 or 303)",
+      "unit": "number",
       "module": "redirects"
     },
     "redirectsTime": {
+      "desc": "time it took to send and receive redirects",
+      "unit": "ms",
       "module": "redirects"
     },
     "smallestResponse": {
