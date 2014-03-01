@@ -1,5 +1,5 @@
 /**
- * This file was automatically generated at 2014-03-01T21:25:35.215Z
+ * This file was automatically generated at 2014-03-01T21:48:13.477Z
  **/
 module.exports = {
   "metrics": {
@@ -75,6 +75,180 @@ module.exports = {
       "desc": "number of calls to window.prompt",
       "unit": "number",
       "module": "alerts"
+    },
+    "cssBase64Length:": {
+      "desc": "total length of base64-encoded data in CSS source (will warn about base64-encoded data bigger than 4 kB)",
+      "optional": true,
+      "unit": "bytes",
+      "module": "analyzeCss"
+    },
+    "cssRedundantBodySelectors": {
+      "desc": "number of redundant body selectors (e.g. body .foo, section body h2, but not body > h1)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssComments": {
+      "desc": "number of comments in CSS source",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssCommentsLength": {
+      "desc": "length of comments content in CSS source",
+      "optional": true,
+      "unit": "bytes",
+      "module": "analyzeCss"
+    },
+    "cssComplexSelectors": {
+      "desc": "number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssDuplicatedSelectors": {
+      "desc": "number of CSS selectors defined more than once in CSS source",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssEmptyRules": {
+      "desc": "number of rules with no properties (e.g. .foo { })",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssExpressions": {
+      "desc": "number of rules with CSS expressions (e.g. expression( document.body.clientWidth > 600 ? \"600px\" : \"auto\" ))",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssOldIEFixes": {
+      "desc": "number of fixes for old versions of Internet Explorer (e.g. * html .foo {} and .foo { *zoom: 1 })",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssImportants": {
+      "desc": "number of properties with value forced by !important",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssMediaQueries": {
+      "desc": "number of media queries (e.g. @media screen and (min-width: 1370px))",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssOldPropertyPrefixes": {
+      "desc": "number of properties with no longer needed vendor prefix, powered by data provided by autoprefixer (e.g. --moz-border-radius)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssQualifiedSelectors": {
+      "desc": "number of qualified selectors (e.g. header#nav, .foo#bar, h1.title)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityIdAvg": {
+      "desc": "average specificity for ID",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityIdTotal": {
+      "desc": "total specificity for ID",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityClassAvg": {
+      "desc": "average specificity for class, pseudo-class or attribute",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityClassTotal": {
+      "desc": "total specificity for class, pseudo-class or attribute",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityTagAvg": {
+      "desc": "average specificity for element",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityTagTotal": {
+      "desc": "total specificity for element",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByAttribute": {
+      "desc": "number of selectors by attribute (e.g. .foo)",
+      "optional": true,
+      "unit": "value=bar",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByClass": {
+      "desc": "number of selectors by class",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsById": {
+      "desc": "number of selectors by ID",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByPseudo": {
+      "desc": "number of pseudo-selectors (e,g. :hover)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByTag": {
+      "desc": "number of selectors by tag name",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssUniversalSelectors": {
+      "desc": "number of selectors trying to match every element (e.g. .foo > *)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssLength": {
+      "desc": "length of CSS source (in bytes)",
+      "optional": true,
+      "unit": "bytes",
+      "module": "analyzeCss"
+    },
+    "cssRules": {
+      "desc": "number of rules (e.g. .foo, .bar { color: red } is counted as one rule)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectors": {
+      "desc": "number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssDeclarations": {
+      "desc": "number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
     },
     "htmlCount": {
       "desc": "number of HTML responses",
@@ -368,6 +542,6 @@ module.exports = {
       "module": "windowPerformance"
     }
   },
-  "count": 86,
+  "count": 115,
   "version": "0.12.1"
 };
