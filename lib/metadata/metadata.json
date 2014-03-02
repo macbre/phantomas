@@ -1,7 +1,4 @@
-/**
- * This file was automatically generated at 2014-03-01T22:17:13.693Z
- **/
-module.exports = {
+{
   "metrics": {
     "requests": {
       "desc": "total number of HTTP requests made",
@@ -80,21 +77,24 @@ module.exports = {
       "unit": "number",
       "module": "alerts"
     },
-    "cssBase64Length:": {
+    "cssBase64Length": {
       "desc": "total length of base64-encoded data in CSS source (will warn about base64-encoded data bigger than 4 kB)",
       "optional": true,
+      "offenders": true,
       "unit": "bytes",
       "module": "analyzeCss"
     },
     "cssRedundantBodySelectors": {
       "desc": "number of redundant body selectors (e.g. body .foo, section body h2, but not body > h1)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssComments": {
       "desc": "number of comments in CSS source",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -107,54 +107,63 @@ module.exports = {
     "cssComplexSelectors": {
       "desc": "number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssDuplicatedSelectors": {
       "desc": "number of CSS selectors defined more than once in CSS source",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssEmptyRules": {
       "desc": "number of rules with no properties (e.g. .foo { })",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssExpressions": {
       "desc": "number of rules with CSS expressions (e.g. expression( document.body.clientWidth > 600 ? \"600px\" : \"auto\" ))",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssOldIEFixes": {
       "desc": "number of fixes for old versions of Internet Explorer (e.g. * html .foo {} and .foo { *zoom: 1 })",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssImportants": {
       "desc": "number of properties with value forced by !important",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssMediaQueries": {
       "desc": "number of media queries (e.g. @media screen and (min-width: 1370px))",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssOldPropertyPrefixes": {
       "desc": "number of properties with no longer needed vendor prefix, powered by data provided by autoprefixer (e.g. --moz-border-radius)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssQualifiedSelectors": {
       "desc": "number of qualified selectors (e.g. header#nav, .foo#bar, h1.title)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -227,6 +236,7 @@ module.exports = {
     "cssUniversalSelectors": {
       "desc": "number of selectors trying to match every element (e.g. .foo > *)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -399,87 +409,162 @@ module.exports = {
       "module": "caching"
     },
     "consoleMessages": {
+      "desc": "number of calls to console.* functions",
+      "unit": "number",
       "module": "console"
     },
     "cookiesSent": {
+      "desc": "length of cookies sent in HTTP requests",
+      "unit": "bytes",
       "module": "cookies"
     },
     "cookiesRecv": {
+      "desc": "length of cookies received in HTTP responses",
+      "unit": "bytes",
       "module": "cookies"
     },
     "domainsWithCookies": {
+      "desc": "number of domains with cookies set",
+      "unit": "number",
       "module": "cookies"
     },
+    "documentCookiesLength": {
+      "desc": "length of document.cookie",
+      "unit": "bytes",
+      "module": "cookies"
+    },
+    "documentCookiesCount": {
+      "desc": "number of cookies in document.cookie",
+      "unit": "number",
+      "module": "cookies"
+    },
+    "bodyHTMLSize": {
+      "desc": "the size of body tag content (document.body.innerHTML.length)",
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
     "iframesCount": {
+      "desc": "number of iframe nodes",
+      "unit": "number",
       "module": "domComplexity"
     },
     "imagesWithoutDimensions": {
+      "desc": "number of <img> nodes without both width and height attribute",
+      "offenders": true,
+      "unit": "number",
       "module": "domComplexity"
     },
     "DOMqueries": {
+      "desc": "number of all DOM queries",
+      "offenders": true,
+      "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesById": {
+      "desc": "number of document.getElementById calls",
+      "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesByClassName": {
+      "desc": "number of document.getElementsByClassName calls",
+      "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesByTagName": {
+      "desc": "number of document.getElementsByTagName calls",
+      "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesByQuerySelectorAll": {
+      "desc": "number of document.querySelectorAll calls",
+      "unit": "number",
       "module": "domQueries"
     },
     "DOMinserts": {
+      "desc": "number of DOM nodes inserts",
+      "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesDuplicated": {
+      "desc": "number of duplicated DOM queries",
+      "unit": "number",
       "module": "domQueries"
     },
     "domains": {
+      "desc": "number of domains used to fetch the page",
+      "offenders": true,
+      "unit": "number",
       "module": "domains"
     },
     "maxRequestsPerDomain": {
+      "desc": "maximum number of requests fetched from a single domain",
+      "unit": "number",
       "module": "domains"
     },
     "medianRequestsPerDomain": {
+      "desc": "median of number of requests fetched from each domain",
+      "unit": "number",
       "module": "domains"
     },
     "eventsBound": {
+      "desc": "number of EventTarget.addEventListener calls",
+      "unit": "number",
       "module": "eventListeners"
     },
     "globalVariables": {
+      "desc": "number of JS globals variables",
+      "offenders": true,
+      "unit": "number",
       "module": "globalVariables"
     },
     "headersCount": {
+      "desc": "number of requests and responses headers",
+      "unit": "number",
       "module": "headers"
     },
     "headersSentCount": {
+      "desc": "number of headers sent in requests",
+      "unit": "number",
       "module": "headers"
     },
     "headersRecvCount": {
+      "desc": "number of headers received in responses",
+      "unit": "number",
       "module": "headers"
     },
     "headersSize": {
+      "desc": "size of all headers",
+      "unit": "bytes",
       "module": "headers"
     },
     "headersSentSize": {
+      "desc": "size of sent headers",
+      "unit": "bytes",
       "module": "headers"
     },
     "headersRecvSize": {
+      "desc": "size of received headers",
+      "unit": "bytes",
       "module": "headers"
     },
     "jQueryVersion": {
+      "desc": "version of jQuery framework (if loaded)",
+      "unit": "string",
       "module": "jQuery"
     },
     "jQueryOnDOMReadyFunctions": {
+      "desc": "number of functions bound to onDOMReady event",
+      "unit": "number",
       "module": "jQuery"
     },
     "jQuerySizzleCalls": {
+      "desc": "number of calls to Sizzle (including those that will be resolved using querySelectorAll)",
+      "unit": "number",
       "module": "jQuery"
     },
     "documentWriteCalls": {
+      "desc": "number of calls to either document.write or document.writeln",
+      "unit": "number",
       "module": "javaScriptBottlenecks"
     },
     "evalCalls": {
@@ -630,6 +715,6 @@ module.exports = {
       "module": "windowPerformance"
     }
   },
-  "count": 121,
+  "count": 124,
   "version": "0.12.1"
-};
+}
