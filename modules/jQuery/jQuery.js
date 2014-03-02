@@ -7,9 +7,9 @@
 exports.version = '0.2';
 
 exports.module = function(phantomas) {
-        phantomas.setMetric('jQueryVersion', '');
-        phantomas.setMetric('jQueryOnDOMReadyFunctions');
-        phantomas.setMetric('jQuerySizzleCalls');
+        phantomas.setMetric('jQueryVersion', ''); // @desc version of jQuery framework (if loaded) [string]
+        phantomas.setMetric('jQueryOnDOMReadyFunctions'); // @desc number of functions bound to onDOMReady event
+        phantomas.setMetric('jQuerySizzleCalls'); // @desc number of calls to Sizzle (including those that will be resolved using querySelectorAll)
 
 	// spy calls to jQuery functions
 	phantomas.once('init', function() {

@@ -8,7 +8,7 @@
 exports.version = '0.1';
 
 exports.module = function(phantomas) {
-        phantomas.setMetric('documentWriteCalls'); //@des number of calls to either document.write or document.writeln
+        phantomas.setMetric('documentWriteCalls'); //@desc number of calls to either document.write or document.writeln
         phantomas.setMetric('evalCalls'); // @desc number of calls to eval (either direct or via setTimeout / setInterval)
 
 	phantomas.once('init', function() {
