@@ -15,6 +15,9 @@ run = phantomas('http://google.is', {
 
 console.log('Running phantomas: pid %d', run.pid);
 
+// metrics metadata
+console.log('Number of available metrics: %d', phantomas.metadata.metricsCount);
+
 // errors handling
 run.on('error', function(code) {
 	console.log('Exit code #%d', code);
