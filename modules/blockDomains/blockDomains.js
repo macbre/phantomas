@@ -76,7 +76,7 @@ exports.module = function(phantomas) {
 			entry.block();
 
 			// stats
-			phantomas.incrMetric('blockedRequests');
+			phantomas.incrMetric('blockedRequests'); // @desc number of requests blocked due to domain filtering @optional
 			phantomas.addOffender('blockedRequests', entry.url);
 		}
 	});

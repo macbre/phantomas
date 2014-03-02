@@ -4,7 +4,7 @@
 exports.version = '0.1';
 
 exports.module = function(phantomas) {
-        phantomas.setMetric('eventsBound');
+        phantomas.setMetric('eventsBound'); // @desc number of EventTarget.addEventListener calls
 
 	// spy calls to EventTarget.addEventListener
 	// @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener

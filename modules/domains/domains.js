@@ -5,9 +5,9 @@ exports.version = '0.2';
 
 exports.module = function(phantomas) {
 	var domains = {};
-	phantomas.setMetric('domains');
-	phantomas.setMetric('maxRequestsPerDomain');
-	phantomas.setMetric('medianRequestsPerDomain');
+	phantomas.setMetric('domains'); // @desc number of domains used to fetch the page @offenders
+	phantomas.setMetric('maxRequestsPerDomain'); // @desc maximum number of requests fetched from a single domain
+	phantomas.setMetric('medianRequestsPerDomain'); // @desc median of number of requests fetched from each domain
 
 	phantomas.on('recv', function(entry,res) {
 		var domain = entry.domain;

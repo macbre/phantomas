@@ -4,13 +4,13 @@
 exports.version = '0.1';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('headersCount');
-	phantomas.setMetric('headersSentCount');
-	phantomas.setMetric('headersRecvCount');
+	phantomas.setMetric('headersCount'); // @desc number of requests and responses headers
+	phantomas.setMetric('headersSentCount'); // @desc number of headers sent in requests
+	phantomas.setMetric('headersRecvCount'); // @desc number of headers received in responses
 
-	phantomas.setMetric('headersSize');
-	phantomas.setMetric('headersSentSize');
-	phantomas.setMetric('headersRecvSize');
+	phantomas.setMetric('headersSize'); // @desc size of all headers
+	phantomas.setMetric('headersSentSize'); // @desc size of sent headers
+	phantomas.setMetric('headersRecvSize'); // @desc size of received headers
 
 	function processHeaders(headers) {
 		var res = {

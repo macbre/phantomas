@@ -401,7 +401,7 @@ phantomas.prototype = {
 
 			this.log('Loading progress: %d%', currentProgress);
 
-			this.emit('progress', currentProgress);
+			this.emit('progress', currentProgress); // @desc loading progress has changed
 			ipc.push(currentProgress);
 		}
 
@@ -505,19 +505,19 @@ phantomas.prototype = {
 		this.reportQueue.done(this.report, this);
 
 		// last time changes?
-		this.emit('pageBeforeOpen', this.page);
+		this.emit('pageBeforeOpen', this.page); // @desc page.open is about to be called
 
 		// open the page
 		this.page.open(this.url);
 
-		this.emit('pageOpen');
+		this.emit('pageOpen'); // @desc page.open has been called
 
 		// fallback - always timeout after TIMEOUT seconds
 		this.log('Timeout set to %d sec', this.timeout);
 		setTimeout(function() {
 			this.log('Timeout of %d sec was reached!', this.timeout);
 
-			this.emit('timeout');
+			this.emit('timeout'); // @desc phantomas has timed out
 			this.timedOut = true;
 
 			this.report();
@@ -526,13 +526,13 @@ phantomas.prototype = {
 
 	// called when all HTTP requests are completed
 	report: function() {
-		this.emit('report');
+		this.emit('report'); // @desc the report is about to be generated
 
 		var time = Date.now() - this.start;
 		this.log('phantomas run for <%s> completed in %d ms', this.page.url, time);
 
 		this.results.setUrl(this.page.url);
-		this.emit('results', this.results);
+		this.emit('results', this.results); // @desc modify the results
 
 		// count all metrics
 		var metricsCount = this.results.getMetricsNames().length;
@@ -589,21 +589,21 @@ phantomas.prototype = {
 		}
 
 		this.log('Page object initialized');
-		this.emit('init');
+		this.emit('init'); // @desc page has been initialized, scripts can be injected
 	},
 
 	onLoadStarted: function() {
 		this.log('Page loading started');
-		this.emit('loadStarted');
+		this.emit('loadStarted'); // @desc page loading has started
 	},
 
 	onResourceRequested: function(res, request /* added in PhantomJS v1.9 */) {
-		this.emit('onResourceRequested', res, request);
+		this.emit('onResourceRequested', res, request); // @desc HTTP request has been sent
 		//this.log(JSON.stringify(res));
 	},
 
 	onResourceReceived: function(res) {
-		this.emit('onResourceReceived', res);
+		this.emit('onResourceReceived', res); // @desc HTTP response has been received
 		//this.log(JSON.stringify(res));
 	},
 
@@ -619,11 +619,11 @@ phantomas.prototype = {
 
 		switch(status) {
 			case 'success':
-				this.emit('loadFinished', status);
+				this.emit('loadFinished', status); // @desc page has been fully loaded
 				break;
 
 			default:
-				this.emit('loadFailed', status);
+				this.emit('loadFailed', status); // @desc page loading failed
 				this.tearDown(EXIT_LOAD_FAILED);
 				break;
 		}
@@ -632,17 +632,17 @@ phantomas.prototype = {
 	// debug
 	onAlert: function(msg) {
 		this.log('Alert: ' + msg);
-		this.emit('alert', msg);
+		this.emit('alert', msg); // @desc the page called window.alert
 	},
 
 	onConfirm: function(msg) {
 		this.log('Confirm: ' + msg);
-		this.emit('confirm', msg);
+		this.emit('confirm', msg); // @desc the page called window.confirm
 	},
 
 	onPrompt: function(msg) {
 		this.log('Prompt: ' + msg);
-		this.emit('prompt', msg);
+		this.emit('prompt', msg); // @desc the page called window.prompt
 	},
 
 	onConsoleMessage: function(msg) {
@@ -673,7 +673,7 @@ phantomas.prototype = {
 				msg = this.util.format.apply(this, data);
 
 				this.log('console.log: ' + msg);
-				this.emit('consoleLog', msg, data);
+				this.emit('consoleLog', msg, data); // @desc the page called console.log
 				break;
 
 			default:
@@ -709,12 +709,12 @@ phantomas.prototype = {
 
 			default:
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
-				this.emit('message', msg);
+				this.emit('message', msg); // @desc the scope script sent a message
 		}
 	},
 
 	onError: function(msg, trace) {
-		this.emit('jserror', msg, trace);
+		this.emit('jserror', msg, trace); // @desc JS error occured
 	},
 
 	// metrics reporting

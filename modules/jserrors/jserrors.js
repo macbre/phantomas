@@ -4,7 +4,7 @@
 exports.version = '0.3';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('jsErrors');
+	phantomas.setMetric('jsErrors'); // @desc number of JavaScript errors
 	
 	function formatTrace(trace) {
 		var ret = [];

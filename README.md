@@ -278,7 +278,7 @@ Units:
 
 ### Redirects
 
-* redirects: number of HTTP redirects (either 301 or 302)
+* redirects: number of HTTP redirects (either 301, 302 or 303)
 * redirectsTime: time it took to send and receive redirects
 
 ### JavaScript bottlenecks

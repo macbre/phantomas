@@ -47,7 +47,7 @@ exports.module = function(phantomas) {
 		})(window.__phantomas);
 		}) || [];
 
-		phantomas.setMetric('globalVariables', globals.length);
+		phantomas.setMetric('globalVariables', globals.length); // @desc number of JS globals variables @offenders
 
 		globals.forEach(function(varName) {
 			phantomas.addOffender('globalVariables', varName);
