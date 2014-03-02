@@ -715,6 +715,7 @@
       "module": "windowPerformance"
     }
   },
-  "count": 124,
+  "metricsCount": 124,
+  "modulesCount": 30,
   "version": "0.12.1"
 }
