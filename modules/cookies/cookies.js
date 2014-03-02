@@ -33,17 +33,17 @@ exports.module = function(phantomas) {
 
 	// domain cookies (accessible by the browser)
 	phantomas.on('report', function() {
-		phantomas.setMetric('cookiesSent', cookiesSent);
-		phantomas.setMetric('cookiesRecv', cookiesRecv);
+		phantomas.setMetric('cookiesSent', cookiesSent); // @desc length of cookies sent in HTTP requests
+		phantomas.setMetric('cookiesRecv', cookiesRecv); // @desc length of cookies received in HTTP responses
 
 		// domains with cookies
 		var domainsWithCookies = 0;
 		for (var domain in cookiesDomains) {
 			domainsWithCookies++;
 		}
-		phantomas.setMetric('domainsWithCookies', domainsWithCookies);
+		phantomas.setMetric('domainsWithCookies', domainsWithCookies); // @desc number of domains with cookies set
 
-		phantomas.setMetricEvaluate('documentCookiesLength', function() {
+		phantomas.setMetricEvaluate('documentCookiesLength', function() { // @desc length of document.cookie
 			try {
 				return document.cookie.length;
 			}
@@ -53,7 +53,7 @@ exports.module = function(phantomas) {
 			}
 		});
 
-		phantomas.setMetricEvaluate('documentCookiesCount', function() {
+		phantomas.setMetricEvaluate('documentCookiesCount', function() { //@desc number of cookies in document.cookie
 			try {
 				return document.cookie.split(';').length;
 			}
