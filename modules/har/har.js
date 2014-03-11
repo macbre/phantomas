@@ -149,6 +149,10 @@ exports.module = function(phantomas) {
         var address = page.url;
         var title = page.title;
 
+        // Warning page was not finished correctly
+        if (! endTime)
+            endTime = new Date();
+
         var har = createHAR(address, title, startTime, endTime, resources);
 
         phantomas.setMetric('har', har);
