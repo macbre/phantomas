@@ -202,6 +202,7 @@ exports.module = function(phantomas) {
 								case 'application/x-font-ttf':
 								case 'application/x-font-woff':
 								case 'font/ttf':
+								case 'font/woff':
 									entry.type = 'webfont';
 									entry.isWebFont = true;
 									break;
