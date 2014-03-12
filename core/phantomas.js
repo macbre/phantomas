@@ -798,7 +798,7 @@ phantomas.prototype = {
 	// runs a given helper script from phantomas main directory
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
-		var spawn = require("child_process").spawn,
+		var execFile = require("child_process").execFile,
 			start = Date.now(),
 			self = this,
 			pid,
@@ -813,7 +813,7 @@ phantomas.prototype = {
 		args = args || [];
 		script = this.dir + script;
 
-		ctx = spawn(script, args, function (err, stdout, stderr) {
+		ctx = execFile(script, args, null, function (err, stdout, stderr) {
 			var time = Date.now() - start;
 
 			if (err || stderr) {
