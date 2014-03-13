@@ -11,7 +11,6 @@
 var phantomas = require('..'),
 	debug = require('debug')('phantomas:cli'),
 	program = require('optimist'),
-	child,
 	options = {},
 	program,
 	url = '';
@@ -61,7 +60,7 @@ program
 
 // parse it
 options = program.parse(process.argv);
-debug('%j', options);
+debug('Command line options: %j', options);
 
 // show version number
 if (options.version === true) {
@@ -95,40 +94,53 @@ delete options.$0;
 options['no-externals'] = options.externals === false;
 delete options.externals;
 
-// spawn phantomas process
-child = phantomas(url, options, function(err, data, results) {
-	var debug = require('debug')('phantomas:bin'),
-		doneFn,
-		reporter;
+// prepare results
+var errCode = 0,
+	results = [];
 
-	doneFn = function() {
-		// pass error code from PhantomJS process
-		debug('Exiting with code #%d', err);
-		process.exit(err);
-	}
-
-	if (results !== false) {
-		// process JSON results by reporters
-		reporter = require('../core/reporter')(results, options);
-
-		debug('Calling a reporter...');
-
-		// pass a function that reporter should call once done
-		var res = reporter.render(doneFn);
-
-		// reporter returned results, otherwise wait for doneFn to be called by reporter
-		if (typeof res !== 'undefined') {
-			process.stdout.write(res);
-			doneFn();
+// perform a single run
+function run(callback) {
+	// spawn phantomas process
+	var child = phantomas(url, options, function(err, data, res) {
+		// push the results
+		if (res !== false) {
+			results.push(res);
 		}
-		else {
-			debug('Waiting for the results...');
-		}
-	}
-	else {
+
+		callback();
+	});
+
+	// pipe --verbose messages to stderr
+	child.stderr.pipe(process.stderr);
+}
+
+// this function is called when phantomas is done with all runs
+function doneFn() {
+	// pass error code from PhantomJS process
+	debug('Exiting with code #%d', errCode);
+	process.exit(errCode);
+}
+
+run(function() {
+	var reporter,
+		res;
+
+	// process JSON results by reporters
+	debug('%d run(s) completed...', results.length);
+
+	reporter = require('../core/reporter')(results, options);
+
+	debug('Calling a reporter...');
+
+	// pass a function that reporter should call once done
+	res = reporter.render(doneFn);
+
+	// reporter returned results, otherwise wait for doneFn to be called by reporter
+	if (typeof res !== 'undefined') {
+		process.stdout.write(res);
 		doneFn();
 	}
+	else {
+		debug('Waiting for the results...');
+	}
 });
-
-// pipe --verbose messages to stderr
-child.stderr.pipe(process.stderr);
