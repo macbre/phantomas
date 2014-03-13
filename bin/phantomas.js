@@ -9,6 +9,7 @@
 'use strict';
 
 var phantomas = require('..'),
+	debug = require('debug')('phantomas:cli'),
 	program = require('optimist'),
 	child,
 	options = {},
@@ -17,7 +18,7 @@ var phantomas = require('..'),
 
 // parse options
 program
-	.usage('PhantomJS-based web performance metrics collector\n\nphantomas --url <url> [options]')
+	.usage('PhantomJS-based web performance metrics collector\n\nphantomas <url> [options]')
 
 	// mandatory
 	.describe('url', 'Set URL to work with').string('url')
@@ -60,6 +61,7 @@ program
 
 // parse it
 options = program.parse(process.argv);
+debug('%j', options);
 
 // show version number
 if (options.version === true) {
@@ -71,6 +73,11 @@ if (options.version === true) {
 if (options.help === true) {
 	program.showHelp();
 	process.exit(0);
+}
+
+// handle URL passed without --url option (#249)
+if (typeof options._[2] === 'string') {
+	options.url = options._[2];
 }
 
 // --url is mandatory -> show help
