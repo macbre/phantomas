@@ -16,15 +16,19 @@ module.exports = function(results, options) {
 
 	// make the results "flat" - i.e. single run mode
 	if (Array.isArray(results)) {
-		debug('Single run mode');
-		results = results[0];
-	}
-	else {
-		debug('Multiple runs mode');
+		if (results.length === 1) {
+			debug('Single run mode');
+			results = results[0];
+		}
+		else {
+			debug('Multiple runs mode');
+		}
 	}
 
 	try {
 		reporter = new (require(reporterPath))(results, options);
+
+		// TODO: check handling of multiple runs results
 	}
 	catch(ex) {
 		debug('Failed: %s', ex);

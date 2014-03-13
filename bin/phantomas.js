@@ -9,6 +9,7 @@
 'use strict';
 
 var phantomas = require('..'),
+	async = require('async'),
 	debug = require('debug')('phantomas:cli'),
 	program = require('optimist'),
 	options = {},
@@ -43,6 +44,7 @@ program
 	.describe('proxy-auth', 'specifies the authentication information for the proxy (e.g. --proxy-auth=username:password)')
 	.describe('proxy-type', 'specifies the type of the proxy server [http|socks5|none]')
 	.describe('reporter', 'output format / reporter').default('reporter', 'plain').alias('reporter', 'R').alias('reporter', 'format')
+	.describe('runs', 'number of runs to perform')
 	.describe('screenshot', 'render fully loaded page to a given file')
 	.describe('silent', 'don\'t write anything to the console').boolean('silent')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
@@ -94,53 +96,66 @@ delete options.$0;
 options['no-externals'] = options.externals === false;
 delete options.externals;
 
-// prepare results
-var errCode = 0,
-	results = [];
-
 // perform a single run
-function run(callback) {
+function task(callback) {
 	// spawn phantomas process
-	var child = phantomas(url, options, function(err, data, res) {
-		// push the results
-		if (res !== false) {
-			results.push(res);
-		}
-
-		callback();
+	var child = phantomas(url, options, function(err, data, results) {
+		callback(err === 0 ? null : err, results);
 	});
 
 	// pipe --verbose messages to stderr
 	child.stderr.pipe(process.stderr);
 }
 
-// this function is called when phantomas is done with all runs
-function doneFn() {
-	// pass error code from PhantomJS process
-	debug('Exiting with code #%d', errCode);
-	process.exit(errCode);
+// @see https://github.com/caolan/async#seriestasks-callback
+var runs = parseInt(options.runs) || 1,
+	series = [];
+
+debug('Preparing %d run(s)...', runs);
+
+for (var r=0; r<runs; r++) {
+	series.push(task);
 }
 
-run(function() {
-	var reporter,
-		res;
+async.series(
+	series,
+	function(err, results) {
+		var debug = require('debug')('phantomas:runs'),
+			reporter,
+			res;
 
-	// process JSON results by reporters
-	debug('%d run(s) completed...', results.length);
+		debug('err: %j', err);
+		debug('results: %j', results);
 
-	reporter = require('../core/reporter')(results, options);
+		// this function is called when phantomas is done with all runs
+		function doneFn() {
+			// pass error code from PhantomJS process
+			debug('Exiting with code #%d', err);
+			process.exit(err);
+		}
 
-	debug('Calling a reporter...');
+		if (results[0] !== false) {
+			// process JSON results by reporters
+			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err);
 
-	// pass a function that reporter should call once done
-	res = reporter.render(doneFn);
+			reporter = require('../core/reporter')(results, options);
 
-	// reporter returned results, otherwise wait for doneFn to be called by reporter
-	if (typeof res !== 'undefined') {
-		process.stdout.write(res);
-		doneFn();
+			debug('Calling a reporter...');
+
+			// pass a function that reporter should call once done
+			res = reporter.render(doneFn);
+
+			// reporter returned results, otherwise wait for doneFn to be called by reporter
+			if (typeof res !== 'undefined') {
+				process.stdout.write(res);
+				doneFn();
+			}
+			else {
+				debug('Waiting for the results...');
+			}
+		}
+		else {
+			doneFn();
+		}
 	}
-	else {
-		debug('Waiting for the results...');
-	}
-});
+);
