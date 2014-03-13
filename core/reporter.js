@@ -14,6 +14,15 @@ module.exports = function(results, options) {
 
 	debug('Setting up %s reporter...', name);
 
+	// make the results "flat" - i.e. single run mode
+	if (Array.isArray(results)) {
+		debug('Single run mode');
+		results = results[0];
+	}
+	else {
+		debug('Multiple runs mode');
+	}
+
 	try {
 		reporter = new (require(reporterPath))(results, options);
 	}
