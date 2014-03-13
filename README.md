@@ -53,18 +53,17 @@ npm install --global phantomas
 ### Single run
 
 ``` bash
-phantomas --url https://github.com/macbre/phantomas --verbose
+phantomas https://github.com/macbre/phantomas --verbose
 ```
 
 You can measure the performance of your site without requests to 3rd party domains (but allowing CDN that serves your static assets):
 
 ```bash
-phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --allow-domain .fastly.net
+phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-domain .fastly.net
 ```
 
 #### Parameters
 
-* `--url` URL of the page to generate metrics for (required)
 * `--reporter=[json|csv|tap|plain]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
@@ -324,7 +323,7 @@ Results can be emitted as TAP, CSV and JSON. ``plain`` format is most useful for
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:
 
 ```
-$ phantomas --url http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
+$ phantomas http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
 ```
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
