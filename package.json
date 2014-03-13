@@ -25,6 +25,7 @@
     "analyze-css": "0.3.x",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
+    "async": "~0.2.10",
     "csv-string": "~2.1.1",
     "debug": "0.7.x",
     "fast-stats": ">=0.0.2",
