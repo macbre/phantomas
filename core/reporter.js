@@ -27,12 +27,15 @@ module.exports = function(results, options) {
 
 	try {
 		reporter = new (require(reporterPath))(results, options);
-
-		// TODO: check handling of multiple runs results
 	}
 	catch(ex) {
 		debug('Failed: %s', ex);
 		throw new Error('Reporter "' + name + '" is not supported!');
+	}
+
+	// check handling of multiple runs results
+	if (reporter.handlesMultiple !== true) {
+		throw 'Reporter "' + name + '" does not handle multiple runs!';
 	}
 
 	debug('Done');
