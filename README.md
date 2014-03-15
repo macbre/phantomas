@@ -7,7 +7,6 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 
 [![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
 [![Build Status](https://api.travis-ci.org/macbre/phantomas.png)](http://travis-ci.org/macbre/phantomas)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/macbre/phantomas/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Requirements
 
@@ -103,13 +102,6 @@ phantomas https://github.com/macbre/phantomas --verbose --runs 5
 ```
 
 Only ``plain`` (the default one) and ``json`` reporters are currently supported in multiple runs mode.
-
-#### Parameters
-
-* `--url` URL of the page to generate metrics for (required)
-* `--runs` number of runs to perform (defaults to 3)
-* `--modules=[moduleOne],[moduleTwo]` run only selected modules
-* `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
 
 ## Metrics
 
