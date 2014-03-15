@@ -12,8 +12,10 @@ var phantomas = require('..'),
 	async = require('async'),
 	debug = require('debug')('phantomas:cli'),
 	program = require('optimist'),
+	ProgressBar = require('progress'),
 	options = {},
 	program,
+	runs,
 	url = '';
 
 // parse options
@@ -40,6 +42,7 @@ program
 	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('no-externals', 'block requests to 3rd party domains').boolean('no-externals')
 	.describe('post-load-delay', 'wait X seconds before generating a report')
+	.describe('progress', 'shows page loading progress bar (disables verbose mode)').boolean('progress')
 	.describe('proxy', 'specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)')
 	.describe('proxy-auth', 'specifies the authentication information for the proxy (e.g. --proxy-auth=username:password)')
 	.describe('proxy-type', 'specifies the type of the proxy server [http|socks5|none]')
@@ -88,6 +91,8 @@ if (typeof options.url !== 'string' && typeof options.config === 'undefined') {
 }
 
 url = options.url;
+runs = parseInt(options.runs) || 1;
+
 delete options.url;
 delete options._;
 delete options.$0;
@@ -96,6 +101,18 @@ delete options.$0;
 options['no-externals'] = options.externals === false;
 delete options.externals;
 
+// handle --progress option
+var bar;
+
+if (options.progress === true) {
+	options.verbose = false;
+
+	bar = new ProgressBar('[:bar] :percent :etas', {
+		total: 100 * runs,
+		width: 50
+	});
+}
+
 // perform a single run
 function task(callback) {
 	// spawn phantomas process
@@ -103,13 +120,18 @@ function task(callback) {
 		callback(err === 0 ? null : err, results);
 	});
 
+	child.on('progress', function(progress, inc) {
+		if (bar) {
+			bar.tick(inc);
+		}
+	});
+
 	// pipe --verbose messages to stderr
 	child.stderr.pipe(process.stderr);
 }
 
 // @see https://github.com/caolan/async#seriestasks-callback
-var runs = parseInt(options.runs) || 1,
-	series = [];
+var series = [];
 
 debug('Preparing %d run(s)...', runs);
 
