@@ -10,7 +10,8 @@ module.exports = function(results, options) {
 	var debug = require('debug')('phantomas:reporter'),
 		name = options.reporter,
 		reporterPath = '../reporters/' + name,
-		reporter;
+		reporter,
+		inMultipleMode = false;
 
 	debug('Setting up %s reporter...', name);
 
@@ -22,6 +23,7 @@ module.exports = function(results, options) {
 		}
 		else {
 			debug('Multiple runs mode');
+			inMultipleMode = true;
 		}
 	}
 
@@ -34,7 +36,7 @@ module.exports = function(results, options) {
 	}
 
 	// check handling of multiple runs results
-	if (reporter.handlesMultiple !== true) {
+	if (inMultipleMode && reporter.handlesMultiple !== true) {
 		throw 'Reporter "' + name + '" does not handle multiple runs!';
 	}
 
