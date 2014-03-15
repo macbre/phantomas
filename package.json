@@ -33,6 +33,7 @@
     "node-statsd": "0.0.7",
     "optimist": "0.6.x",
     "phantomjs": ">=1.9",
+    "progress": "~1.1.4",
     "tap": "~0.4.8",
     "tap-eater": ">=0.0.1",
     "travis-fold": ">=0.1.2"

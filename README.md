@@ -68,6 +68,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
+* `--progress` shows page loading progress bar (disables verbose mode)
 * `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
 * `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
