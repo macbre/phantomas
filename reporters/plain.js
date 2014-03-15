@@ -79,25 +79,44 @@ module.exports = function(results) {
 			format = require('util').format,
 			stats = require('fast-stats').Stats,
 			runs = results.length,
-			table;
+			fields, table;
 
+		// stats to be calculated
+		// @see https://github.com/bluesmoon/node-faststats
+		fields = {
+			Min: function(values) {
+				return values.range()[0];
+			},
+			Max: function(values) {
+				return values.range()[1];
+			},
+			Average: function(values) {
+				return values.amean().toFixed(2);
+			},
+			Median: function(values) {
+				return values.median().toFixed(2);
+			},
+			'Std Dev': function(values) {
+				return values.stddev().toFixed(2);
+			}
+		};
+
+		// calculate stats for each metric
 		function getMetricStats(metricName) {
 			var i,
-				res,
+				res = [],
 				values = new stats();
 
 			for (i=0; i<runs; i++) {
 				values.push(results[i].getMetric(metricName));
 			}
 
-			// @see https://github.com/bluesmoon/node-faststats
-			res = {
-				metric: metricName,
-				min: values.range()[0],
-				max: values.range()[1],
-				avg: values.amean().toFixed(2),
-				med: values.median().toFixed(2)
-			};
+			res.push(metricName);
+
+			// apply stats functions
+			Object.keys(fields).forEach(function(fnName) {
+				res.push(fields[fnName](values));
+			});
 
 			return res;
 		}
@@ -107,24 +126,18 @@ module.exports = function(results) {
 		table.setTitle(format('Report from %d run(s) for <%s> using %s', runs, results[0].getUrl(), results[0].getGenerator()));
 		table.setTitleAlignLeft();
 
-		table.setHeading(
-			AsciiTable.alignCenter('Metric', 30),
-			AsciiTable.alignCenter('Min', 12),
-			AsciiTable.alignCenter('Max', 12),
-			AsciiTable.alignCenter('Average', 12),
-			AsciiTable.alignCenter('Median', 12)
-		);
+		var heading = [];
+		heading.push(AsciiTable.alignCenter('Metric', 30));
+
+		Object.keys(fields).forEach(function(name) {
+			heading.push(AsciiTable.alignCenter(name, 12));
+		});
+
+		table.setHeading(heading);
 
 		// metrics stats
 		results[0].getMetricsNames().forEach(function(metricName) {
-			var cols,
-				stats = getMetricStats(metricName);
-
-			cols = Object.keys(stats).map(function(key) {
-				return stats[key];
-			});
-
-			table.addRow(cols);
+			table.addRow(getMetricStats(metricName));
 		});
 
 		return table.toString() + "\n";
