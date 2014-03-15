@@ -395,7 +395,7 @@ phantomas.prototype = {
 		function pollFn() {
 			var inc;
 
-			if (currentProgress === this.page.loadingProgress) {
+			if (currentProgress >= this.page.loadingProgress) {
 				return;
 			}
 
