@@ -96,9 +96,13 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 
 ### Multiple runs
 
+Simply provide ``--runs`` option:
+
 ``` bash
-./run-multiple.js --url=https://github.com/macbre/phantomas  --runs=5
+phantomas https://github.com/macbre/phantomas --verbose --runs 5
 ```
+
+Only ``plain`` (the default one) and ``json`` reporters are currently supported in multiple runs mode.
 
 #### Parameters
 
