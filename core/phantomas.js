@@ -393,16 +393,20 @@ phantomas.prototype = {
 			ipc = new (require('./ipc'))('progress');
 
 		function pollFn() {
+			var inc;
+
 			if (currentProgress === this.page.loadingProgress) {
 				return;
 			}
 
+			// store the change and update the current progress
+			inc = this.page.loadingProgress - currentProgress;
 			currentProgress = this.page.loadingProgress;
 
 			this.log('Loading progress: %d%', currentProgress);
 
-			this.emit('progress', currentProgress); // @desc loading progress has changed
-			ipc.push(currentProgress);
+			this.emit('progress', currentProgress, inc); // @desc loading progress has changed
+			ipc.push(currentProgress, inc);
 		}
 
 		setInterval(pollFn.bind(this), 100);
