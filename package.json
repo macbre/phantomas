@@ -48,7 +48,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/ run-multiple.js"
+    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/"
   },
   "jshintConfig": {
     "node": true,
