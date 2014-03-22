@@ -63,7 +63,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 
 #### Parameters
 
-* `--reporter=[json|csv|tap|plain]` results reporter aka format (``plain`` is the default one)
+* `--reporter=[json|csv|tap|plain|statsd|elasticsearch]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
@@ -324,6 +324,19 @@ $ phantomas http://app.net/start -R statsd --statsd-host stats.app.net --statsd-
 ```
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
+
+#### Save metrics to ElasticSearch
+
+Metrics from phantomas run can be outputted directly in ElasticSearch :
+
+##### Parameters
+
+* `--elasticsearch-host=[ip]` ElasticSearch instance ip (default : 127.0.0.1)
+* `--elasticsearch-port=[port]` ElasticSearch instance port (default : 9200)
+* `--elasticsearch-index=[index_name]` Name of the index to use
+* `--elasticsearch-type=[type_name]` Name of the document type to use
+
+
 
 ## For developers
 
