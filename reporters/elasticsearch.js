@@ -14,7 +14,7 @@ module.exports = function (results, options) {
 		params = {
 			host: (options['elasticsearch-host'] || 'localhost') + ':' + (options['elasticsearch-port'] || 9200),
 			type: (options['elasticsearch-type'] || 'phantomas-report'),
-			index: (typeof options['elasticsearch-index'] === 'undefined') ? 'phantomas_results' : options['elasticsearch-index']
+			index: (options['elasticsearch-index'] || 'phantomas_results')
 		};
 
 	debug('Parameters: %j', params);
