@@ -36,7 +36,8 @@
     "progress": "~1.1.4",
     "tap": "~0.4.8",
     "tap-eater": ">=0.0.1",
-    "travis-fold": ">=0.1.2"
+    "travis-fold": ">=0.1.2",
+    "elasticsearch": "~1.5.14"
   },
   "devDependencies": {
     "glob": "~3.2.9",
