@@ -70,7 +70,7 @@ function createHAR(address, title, startTime, endTime, resources)
                 bodySize: startReply.bodySize,
                 content: {
                     size: startReply.bodySize,
-                    mimeType: endReply.contentType
+                    mimeType: endReply.contentType == null ? "" : endReply.contentType
                 }
             },
             cache: {},
