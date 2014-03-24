@@ -106,7 +106,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 100_
+_Current number of metrics: 101_
 
 Units:
 
@@ -189,6 +189,7 @@ Units:
 > Metrics listed below are generated after the full page load
 
 * globalVariables: number of JS globals variables
+* globalVariablesFalsy: number of JS global variables that cast to false
 * bodyHTMLSize: the size of body tag content (``document.body.innerHTML.length``)
 * commentsSize: the size of HTML comments on the page
 * hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
