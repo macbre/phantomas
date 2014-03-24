@@ -517,6 +517,12 @@
       "unit": "number",
       "module": "globalVariables"
     },
+    "globalVariablesFalsy": {
+      "desc": "number of JS globals variables with falsy value",
+      "offenders": true,
+      "unit": "number",
+      "module": "globalVariables"
+    },
     "headersCount": {
       "desc": "number of requests and responses headers",
       "unit": "number",
@@ -715,7 +721,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 124,
+  "metricsCount": 125,
   "modulesCount": 30,
   "version": "0.12.1"
 }
