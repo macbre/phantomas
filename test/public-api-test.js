@@ -49,8 +49,12 @@ vows.describe('phantomas public API').addBatch({
 		'url field is set correctly': function(api) {
 			assert.equal(api.url, 'http://example.com');
 		},
+		'version is exposed via getVersion': function(api) {
+			assert.equal(api.getVersion(), require(__dirname + '/../package').version);
+		},
 		'methods are accessible': function(api) {
 			var methods = [
+				'getVersion',
 				'getParam',
 				'setParam',
 				'on',
