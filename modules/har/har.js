@@ -4,9 +4,6 @@
 * @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
 */
 
-var VERSION = '0.1';
-exports.version = VERSION;
-
 var fs = require('fs');
 
 /**
@@ -15,7 +12,7 @@ var fs = require('fs');
  * @see: https://github.com/ariya/phantomjs/blob/master/examples/netsniff.js
  */
 
-function createHAR(address, title, startTime, endTime, resources)
+function createHAR(address, title, startTime, endTime, resources, creator)
 {
     var entries = [];
 
@@ -78,10 +75,7 @@ function createHAR(address, title, startTime, endTime, resources)
     return {
         log: {
             version: '1.2',
-            creator: {
-                name: "Phantomas - HAR",
-                version: VERSION
-            },
+            creator: creator,
             pages: [{
                 startedDateTime: startTime.toISOString(),
                 id: address,
@@ -100,6 +94,11 @@ exports.module = function(phantomas) {
 
     var param = phantomas.getParam('har'),
         path = '';
+
+    var creator = {
+        name: "Phantomas - har",
+        version: phantomas.getVersion()
+    };
 
     if (typeof param === 'undefined') {
         phantomas.log('No HAR path specified, use --har <path>');
@@ -161,7 +160,7 @@ exports.module = function(phantomas) {
             endTime = new Date();
 
         phantomas.log('Create HAR');
-        var har = createHAR(address, title, startTime, endTime, resources);
+        var har = createHAR(address, title, startTime, endTime, resources, creator);
 
         phantomas.log('Convert HAR to JSON');
         var dump = JSON.stringify(har);
