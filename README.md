@@ -85,6 +85,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--film-strip-dir=[dir path]` folder path to output film strip (default is ``./filmstrip`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value
 * `--screenshot=[file name]` render fully loaded page to a given file
+* `--har=[file name]` save HAR to a given file
 * `--wait-for-selector=[CSS selector]` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
 * `--post-load-delay=[seconds]` wait X seconds before generating a report, timeout setting still applies
 * `--ignore-ssl-errors` ignores SSL errors, such as expired or self-signed certificate errors
