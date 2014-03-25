@@ -17,7 +17,7 @@ exports.module = function(phantomas) {
 		});
 
 		if (entries) {
-			phantomas.setMetric('localStorageEntries', entries.length);
+			phantomas.setMetric('localStorageEntries', entries.length);// @desc number of entries in local storage
 
 			if (entries.length > 0) {
 				phantomas.addOffender('localStorageEntries', entries.join(', '));

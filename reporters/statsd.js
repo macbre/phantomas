@@ -45,7 +45,7 @@ module.exports = function(results, options) {
 
 					client.timing(metric, value, 1 /* sampling rate */, function(err, bytes) {
 						if (err) {
-							debug('Error: %s', error);
+							debug('Error: %s', err);
 						}
 						else {
 							bytesSent += bytes;

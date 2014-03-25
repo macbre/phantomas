@@ -386,6 +386,32 @@ phantomas.prototype = {
 		}
 	},
 
+	// setup polling for loading progress (issue #204)
+	// pipe JSON messages over stderr
+	initLoadingProgress: function() {
+		var currentProgress = false,
+			ipc = new (require('./ipc'))('progress');
+
+		function pollFn() {
+			var inc;
+
+			if (currentProgress >= this.page.loadingProgress) {
+				return;
+			}
+
+			// store the change and update the current progress
+			inc = this.page.loadingProgress - currentProgress;
+			currentProgress = this.page.loadingProgress;
+
+			this.log('Loading progress: %d%', currentProgress);
+
+			this.emit('progress', currentProgress, inc); // @desc loading progress has changed
+			ipc.push(currentProgress, inc);
+		}
+
+		setInterval(pollFn.bind(this), 100);
+	},
+
 	// runs phantomas
 	run: function() {
 		// check required params
@@ -437,6 +463,8 @@ phantomas.prototype = {
 		this.page.onCallback = this.proxy(this.onCallback);
 		this.page.onError = this.proxy(this.onError);
 
+		this.initLoadingProgress();
+
 		// observe HTTP requests
 		// finish when the last request is completed + one second timeout
 		var self = this;
@@ -481,19 +509,19 @@ phantomas.prototype = {
 		this.reportQueue.done(this.report, this);
 
 		// last time changes?
-		this.emit('pageBeforeOpen', this.page);
+		this.emit('pageBeforeOpen', this.page); // @desc page.open is about to be called
 
 		// open the page
 		this.page.open(this.url);
 
-		this.emit('pageOpen');
+		this.emit('pageOpen'); // @desc page.open has been called
 
 		// fallback - always timeout after TIMEOUT seconds
 		this.log('Timeout set to %d sec', this.timeout);
 		setTimeout(function() {
 			this.log('Timeout of %d sec was reached!', this.timeout);
 
-			this.emit('timeout');
+			this.emit('timeout'); // @desc phantomas has timed out
 			this.timedOut = true;
 
 			this.report();
@@ -502,13 +530,13 @@ phantomas.prototype = {
 
 	// called when all HTTP requests are completed
 	report: function() {
-		this.emit('report');
+		this.emit('report'); // @desc the report is about to be generated
 
 		var time = Date.now() - this.start;
 		this.log('phantomas run for <%s> completed in %d ms', this.page.url, time);
 
 		this.results.setUrl(this.page.url);
-		this.emit('results', this.results);
+		this.emit('results', this.results); // @desc modify the results
 
 		// count all metrics
 		var metricsCount = this.results.getMetricsNames().length;
@@ -565,21 +593,21 @@ phantomas.prototype = {
 		}
 
 		this.log('Page object initialized');
-		this.emit('init');
+		this.emit('init'); // @desc page has been initialized, scripts can be injected
 	},
 
 	onLoadStarted: function() {
 		this.log('Page loading started');
-		this.emit('loadStarted');
+		this.emit('loadStarted'); // @desc page loading has started
 	},
 
 	onResourceRequested: function(res, request /* added in PhantomJS v1.9 */) {
-		this.emit('onResourceRequested', res, request);
+		this.emit('onResourceRequested', res, request); // @desc HTTP request has been sent
 		//this.log(JSON.stringify(res));
 	},
 
 	onResourceReceived: function(res) {
-		this.emit('onResourceReceived', res);
+		this.emit('onResourceReceived', res); // @desc HTTP response has been received
 		//this.log(JSON.stringify(res));
 	},
 
@@ -595,11 +623,11 @@ phantomas.prototype = {
 
 		switch(status) {
 			case 'success':
-				this.emit('loadFinished', status);
+				this.emit('loadFinished', status); // @desc page has been fully loaded
 				break;
 
 			default:
-				this.emit('loadFailed', status);
+				this.emit('loadFailed', status); // @desc page loading failed
 				this.tearDown(EXIT_LOAD_FAILED);
 				break;
 		}
@@ -608,17 +636,17 @@ phantomas.prototype = {
 	// debug
 	onAlert: function(msg) {
 		this.log('Alert: ' + msg);
-		this.emit('alert', msg);
+		this.emit('alert', msg); // @desc the page called window.alert
 	},
 
 	onConfirm: function(msg) {
 		this.log('Confirm: ' + msg);
-		this.emit('confirm', msg);
+		this.emit('confirm', msg); // @desc the page called window.confirm
 	},
 
 	onPrompt: function(msg) {
 		this.log('Prompt: ' + msg);
-		this.emit('prompt', msg);
+		this.emit('prompt', msg); // @desc the page called window.prompt
 	},
 
 	onConsoleMessage: function(msg) {
@@ -649,7 +677,7 @@ phantomas.prototype = {
 				msg = this.util.format.apply(this, data);
 
 				this.log('console.log: ' + msg);
-				this.emit('consoleLog', msg, data);
+				this.emit('consoleLog', msg, data); // @desc the page called console.log
 				break;
 
 			default:
@@ -668,7 +696,7 @@ phantomas.prototype = {
 				break;
 
 			case 'setMetric':
-				this.setMetric(data.name, data.value);
+				this.setMetric(data.name, data.value, data.isFinal);
 				break;
 
 			case 'incrMetric':
@@ -685,22 +713,29 @@ phantomas.prototype = {
 
 			default:
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
-				this.emit('message', msg);
+				this.emit('message', msg); // @desc the scope script sent a message
 		}
 	},
 
 	onError: function(msg, trace) {
-		this.emit('jserror', msg, trace);
+		this.emit('jserror', msg, trace); // @desc JS error occured
 	},
 
 	// metrics reporting
-	setMetric: function(name, value) {
+	setMetric: function(name, value, isFinal) {
+		var ipc = new (require('./ipc'))('metric');
+
 		value = typeof value === 'string' ? value : (value || 0); // set to zero if undefined / null is provided
 		this.results.setMetric(name, value);
+
+		// trigger an event when the metric value is said to be final (isse #240)
+		if (isFinal === true) {
+			ipc.push(name, value);
+		}
 	},
 
 	setMetricEvaluate: function(name, fn) {
-		this.setMetric(name, this.page.evaluate(fn));
+		this.setMetric(name, this.page.evaluate(fn), true /* isFinal */);
 	},
 
 	setMarkerMetric: function(name) {
@@ -711,7 +746,7 @@ phantomas.prototype = {
 			throw 'setMarkerMetric() called before responseEnd event!';
 		}
 
-		this.results.setMetric(name, value);
+		this.setMetric(name, value, true /* isFinal */);
 		return value;
 	},
 
@@ -722,7 +757,7 @@ phantomas.prototype = {
 		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
 		this.setMetric(name, this.page.evaluate(function(key) {
 			return window.__phantomas.get(key) || 0;
-		}, key));
+		}, key), true /* isFinal */);
 	},
 
 	// get a value set using window.__phantomas browser scope

@@ -9,10 +9,10 @@ exports.module = function(phantomas) {
 	// count requests for each asset
 	var assetsReqCounter = {};
 
-	phantomas.setMetric('assetsNotGzipped');
-	phantomas.setMetric('assetsWithQueryString');
-	phantomas.setMetric('smallImages');
-	phantomas.setMetric('multipleRequests');
+	phantomas.setMetric('assetsNotGzipped'); // @desc number of static assets that were not gzipped @unreliable
+	phantomas.setMetric('assetsWithQueryString'); // @desc number of static assets requested with query string (e.g. ?foo) in URL
+	phantomas.setMetric('smallImages'); // @desc number of images smaller than 2 kB that can be base64 encoded @unreliable
+	phantomas.setMetric('multipleRequests'); // @desc number of static assets that are requested more than once
 
 	phantomas.on('recv', function(entry, res) {
 		// console.log(JSON.stringify(entry));

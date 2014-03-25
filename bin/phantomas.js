@@ -9,15 +9,18 @@
 'use strict';
 
 var phantomas = require('..'),
+	async = require('async'),
+	debug = require('debug')('phantomas:cli'),
 	program = require('optimist'),
-	child,
+	ProgressBar = require('progress'),
 	options = {},
 	program,
+	runs,
 	url = '';
 
 // parse options
 program
-	.usage('PhantomJS-based web performance metrics collector\n\nphantomas --url <url> [options]')
+	.usage('PhantomJS-based web performance metrics collector\n\nphantomas <url> [options]')
 
 	// mandatory
 	.describe('url', 'Set URL to work with').string('url')
@@ -39,10 +42,12 @@ program
 	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('no-externals', 'block requests to 3rd party domains').boolean('no-externals')
 	.describe('post-load-delay', 'wait X seconds before generating a report')
+	.describe('progress', 'shows page loading progress bar (disables verbose mode)').boolean('progress')
 	.describe('proxy', 'specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)')
 	.describe('proxy-auth', 'specifies the authentication information for the proxy (e.g. --proxy-auth=username:password)')
 	.describe('proxy-type', 'specifies the type of the proxy server [http|socks5|none]')
 	.describe('reporter', 'output format / reporter').default('reporter', 'plain').alias('reporter', 'R').alias('reporter', 'format')
+	.describe('runs', 'number of runs to perform')
 	.describe('screenshot', 'render fully loaded page to a given file')
 	.describe('silent', 'don\'t write anything to the console').boolean('silent')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
@@ -60,6 +65,7 @@ program
 
 // parse it
 options = program.parse(process.argv);
+debug('Command line options: %j', options);
 
 // show version number
 if (options.version === true) {
@@ -73,6 +79,11 @@ if (options.help === true) {
 	process.exit(0);
 }
 
+// handle URL passed without --url option (#249)
+if (typeof options._[2] === 'string') {
+	options.url = options._[2];
+}
+
 // --url is mandatory -> show help
 if (typeof options.url !== 'string' && typeof options.config === 'undefined') {
 	program.showHelp();
@@ -80,6 +91,8 @@ if (typeof options.url !== 'string' && typeof options.config === 'undefined') {
 }
 
 url = options.url;
+runs = parseInt(options.runs) || 1;
+
 delete options.url;
 delete options._;
 delete options.$0;
@@ -88,40 +101,83 @@ delete options.$0;
 options['no-externals'] = options.externals === false;
 delete options.externals;
 
-// spawn phantomas process
-child = phantomas(url, options, function(err, data, results) {
-	var debug = require('debug')('phantomas:bin'),
-		doneFn,
-		reporter;
+// handle --progress option
+var bar;
 
-	doneFn = function() {
-		// pass error code from PhantomJS process
-		debug('Exiting with code #%d', err);
-		process.exit(err);
-	}
+if (options.progress === true) {
+	options.verbose = false;
 
-	if (results !== false) {
-		// process JSON results by reporters
-		reporter = require('../core/reporter')(results, options);
+	bar = new ProgressBar('[:bar] :percent :etas', {
+		total: 100 * runs,
+		width: 50
+	});
+}
 
-		debug('Calling a reporter...');
+// perform a single run
+function task(callback) {
+	// spawn phantomas process
+	var child = phantomas(url, options, function(err, data, results) {
+		callback(err === 0 ? null : err, results);
+	});
 
-		// pass a function that reporter should call once done
-		var res = reporter.render(doneFn);
+	child.on('progress', function(progress, inc) {
+		if (bar) {
+			bar.tick(inc);
+		}
+	});
 
-		// reporter returned results, otherwise wait for doneFn to be called by reporter
-		if (typeof res !== 'undefined') {
-			process.stdout.write(res);
-			doneFn();
+	// pipe --verbose messages to stderr
+	child.stderr.pipe(process.stderr);
+}
+
+// @see https://github.com/caolan/async#seriestasks-callback
+var series = [];
+
+debug('Preparing %d run(s)...', runs);
+
+for (var r=0; r<runs; r++) {
+	series.push(task);
+}
+
+async.series(
+	series,
+	function(err, results) {
+		var debug = require('debug')('phantomas:runs'),
+			reporter,
+			res;
+
+		debug('err: %j', err);
+		debug('results: %j', results);
+
+		// this function is called when phantomas is done with all runs
+		function doneFn() {
+			// pass error code from PhantomJS process
+			debug('Exiting with code #%d', err);
+			process.exit(err);
+		}
+
+		if (results[0] !== false) {
+			// process JSON results by reporters
+			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err);
+
+			reporter = require('../core/reporter')(results, options);
+
+			debug('Calling a reporter...');
+
+			// pass a function that reporter should call once done
+			res = reporter.render(doneFn);
+
+			// reporter returned results, otherwise wait for doneFn to be called by reporter
+			if (typeof res !== 'undefined') {
+				process.stdout.write(res);
+				doneFn();
+			}
+			else {
+				debug('Waiting for the results...');
+			}
 		}
 		else {
-			debug('Waiting for the results...');
+			doneFn();
 		}
 	}
-	else {
-		doneFn();
-	}
-});
-
-// pipe --verbose messages to stderr
-child.stderr.pipe(process.stderr);
+);

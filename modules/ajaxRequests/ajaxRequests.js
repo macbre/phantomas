@@ -4,7 +4,7 @@
 exports.version = '0.2';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('ajaxRequests');
+	phantomas.setMetric('ajaxRequests'); // @desc number of AJAX requests
 
 	phantomas.on('send', function(entry, res) {
 		if (entry.isAjax) {

@@ -4,13 +4,13 @@
 exports.version = '0.5';
 
 exports.module = function(phantomas) {
-        phantomas.setMetric('DOMqueries');
-        phantomas.setMetric('DOMqueriesById');
-        phantomas.setMetric('DOMqueriesByClassName');
-        phantomas.setMetric('DOMqueriesByTagName');
-        phantomas.setMetric('DOMqueriesByQuerySelectorAll');
-        phantomas.setMetric('DOMinserts');
-        phantomas.setMetric('DOMqueriesDuplicated');
+        phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
+        phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
+        phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
+        phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
+        phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelectorAll calls
+        phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
+        phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of duplicated DOM queries
 
 	// fake native DOM functions
 	phantomas.once('init', function() {

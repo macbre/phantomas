@@ -7,7 +7,6 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 
 [![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
 [![Build Status](https://api.travis-ci.org/macbre/phantomas.png)](http://travis-ci.org/macbre/phantomas)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/macbre/phantomas/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Requirements
 
@@ -28,7 +27,7 @@ npm install --global phantomas
 * phantomas "core" acts as an [events emitter](https://github.com/macbre/phantomas/wiki/Events) that each module can hook into
 * in-depth metrics such as: number of events bound via jQuery, calls to ``window.write``or [complex and duplicated CSS selectors (via analyze-css)](https://github.com/macbre/analyze-css)
 * JSON and CSV as available output formats for easy integration with automated reporting / monitoring tools
-* easy integration with Continous Integration tools via TAP format and assertions handling
+* easy integration with Continuous Integration tools via TAP format and assertions handling
 * easy integration with other nodejs projects via CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module))
 * metrics can be emitted from JavaScript code of the page phantomas is run against (thanks to [helper functions available in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope))
 
@@ -53,23 +52,23 @@ npm install --global phantomas
 ### Single run
 
 ``` bash
-phantomas --url https://github.com/macbre/phantomas --verbose
+phantomas https://github.com/macbre/phantomas --verbose
 ```
 
 You can measure the performance of your site without requests to 3rd party domains (but allowing CDN that serves your static assets):
 
 ```bash
-phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --allow-domain .fastly.net
+phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-domain .fastly.net
 ```
 
 #### Parameters
 
-* `--url` URL of the page to generate metrics for (required)
-* `--reporter=[json|csv|tap|plain]` results reporter aka format (``plain`` is the default one)
+* `--reporter=[json|csv|tap|plain|statsd|elasticsearch]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--silent` don't write anything to the console
+* `--progress` shows page loading progress bar (disables verbose mode)
 * `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
 * `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
@@ -86,7 +85,7 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 * `--film-strip-dir=[dir path]` folder path to output film strip (default is ``./filmstrip`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value
 * `--screenshot=[file name]` render fully loaded page to a given file
-* `--wait-for-selector=[CSS selector` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
+* `--wait-for-selector=[CSS selector]` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
 * `--post-load-delay=[seconds]` wait X seconds before generating a report, timeout setting still applies
 * `--ignore-ssl-errors` ignores SSL errors, such as expired or self-signed certificate errors
 * `--proxy=[host:port]` specifies the proxy server to use
@@ -97,20 +96,17 @@ phantomas --url https://github.com/macbre/phantomas --verbose --no-externals --a
 
 ### Multiple runs
 
+Simply provide ``--runs`` option:
+
 ``` bash
-./run-multiple.js --url=https://github.com/macbre/phantomas  --runs=5
+phantomas https://github.com/macbre/phantomas --verbose --runs 5
 ```
 
-#### Parameters
-
-* `--url` URL of the page to generate metrics for (required)
-* `--runs` number of runs to perform (defaults to 3)
-* `--modules=[moduleOne],[moduleTwo]` run only selected modules
-* `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
+Only ``plain`` (the default one) and ``json`` reporters are currently supported in multiple runs mode.
 
 ## Metrics
 
-_Current number of metrics: 100_
+_Current number of metrics: 101_
 
 Units:
 
@@ -193,6 +189,7 @@ Units:
 > Metrics listed below are generated after the full page load
 
 * globalVariables: number of JS globals variables
+* globalVariablesFalsy: number of JS global variables that cast to false
 * bodyHTMLSize: the size of body tag content (``document.body.innerHTML.length``)
 * commentsSize: the size of HTML comments on the page
 * hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
@@ -278,7 +275,7 @@ Units:
 
 ### Redirects
 
-* redirects: number of HTTP redirects (either 301 or 302)
+* redirects: number of HTTP redirects (either 301, 302 or 303)
 * redirectsTime: time it took to send and receive redirects
 
 ### JavaScript bottlenecks
@@ -324,10 +321,23 @@ Results can be emitted as TAP, CSV and JSON. ``plain`` format is most useful for
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:
 
 ```
-$ phantomas --url http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
+$ phantomas http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
 ```
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
+
+#### Save metrics to ElasticSearch
+
+Metrics from phantomas run can be outputted directly in ElasticSearch :
+
+##### Parameters
+
+* `--elasticsearch-host=[ip]` ElasticSearch instance ip (default : 127.0.0.1)
+* `--elasticsearch-port=[port]` ElasticSearch instance port (default : 9200)
+* `--elasticsearch-index=[index_name]` Name of the index to use
+* `--elasticsearch-type=[type_name]` Name of the document type to use
+
+
 
 ## For developers
 

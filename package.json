@@ -25,17 +25,22 @@
     "analyze-css": "0.3.x",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
+    "ascii-table": "0.0.4",
+    "async": "~0.2.10",
     "csv-string": "~2.1.1",
     "debug": "0.7.x",
+    "elasticsearch": "~1.5.14",
     "fast-stats": ">=0.0.2",
     "node-statsd": "0.0.7",
     "optimist": "0.6.x",
-    "phantomjs": ">=1.9",
+    "phantomjs": "~1.9.0",
+    "progress": "~1.1.4",
     "tap": "~0.4.8",
     "tap-eater": ">=0.0.1",
     "travis-fold": ">=0.1.2"
   },
   "devDependencies": {
+    "glob": "~3.2.9",
     "jshint": ">=2.1.11",
     "mockery": ">=1.4",
     "vows": ">=0.7"
@@ -45,7 +50,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js reporters/ run-multiple.js"
+    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/"
   },
   "jshintConfig": {
     "node": true,

@@ -1,0 +1,727 @@
+{
+  "metrics": {
+    "requests": {
+      "desc": "total number of HTTP requests made",
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "gzipRequests": {
+      "desc": "number of gzipped HTTP responses",
+      "unreliable": true,
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "postRequests": {
+      "desc": "number of POST requests",
+      "offenders": true,
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "httpsRequests": {
+      "desc": "number of HTTPS requests",
+      "offenders": true,
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "notFound": {
+      "desc": "number of HTTP 404 responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "requestsMonitor"
+    },
+    "timeToFirstByte": {
+      "desc": "time it took to receive the first byte of the first response (that was not a redirect)",
+      "unit": "ms",
+      "module": "requestsMonitor"
+    },
+    "timeToLastByte": {
+      "desc": "time it took to receive the last byte of the first response (that was not a redirect)",
+      "unit": "ms",
+      "module": "requestsMonitor"
+    },
+    "bodySize": {
+      "desc": "size of the uncompressed content of all responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "requestsMonitor"
+    },
+    "contentLength": {
+      "desc": "size of the content of all responses (based on Content-Length header)",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "requestsMonitor"
+    },
+    "httpTrafficCompleted": {
+      "desc": "time it took to receive the last byte of the last HTTP response",
+      "unit": "ms",
+      "module": "requestsMonitor"
+    },
+    "ajaxRequests": {
+      "desc": "number of AJAX requests",
+      "offenders": true,
+      "unit": "number",
+      "module": "ajaxRequests"
+    },
+    "windowAlerts": {
+      "desc": "number of calls to window.alert",
+      "unit": "number",
+      "module": "alerts"
+    },
+    "windowConfirms": {
+      "desc": "number of calls to window.confirm",
+      "unit": "number",
+      "module": "alerts"
+    },
+    "windowPrompts": {
+      "desc": "number of calls to window.prompt",
+      "unit": "number",
+      "module": "alerts"
+    },
+    "cssBase64Length": {
+      "desc": "total length of base64-encoded data in CSS source (will warn about base64-encoded data bigger than 4 kB)",
+      "optional": true,
+      "offenders": true,
+      "unit": "bytes",
+      "module": "analyzeCss"
+    },
+    "cssRedundantBodySelectors": {
+      "desc": "number of redundant body selectors (e.g. body .foo, section body h2, but not body > h1)",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssComments": {
+      "desc": "number of comments in CSS source",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssCommentsLength": {
+      "desc": "length of comments content in CSS source",
+      "optional": true,
+      "unit": "bytes",
+      "module": "analyzeCss"
+    },
+    "cssComplexSelectors": {
+      "desc": "number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo)",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssDuplicatedSelectors": {
+      "desc": "number of CSS selectors defined more than once in CSS source",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssEmptyRules": {
+      "desc": "number of rules with no properties (e.g. .foo { })",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssExpressions": {
+      "desc": "number of rules with CSS expressions (e.g. expression( document.body.clientWidth > 600 ? \"600px\" : \"auto\" ))",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssOldIEFixes": {
+      "desc": "number of fixes for old versions of Internet Explorer (e.g. * html .foo {} and .foo { *zoom: 1 })",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssImportants": {
+      "desc": "number of properties with value forced by !important",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssMediaQueries": {
+      "desc": "number of media queries (e.g. @media screen and (min-width: 1370px))",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssOldPropertyPrefixes": {
+      "desc": "number of properties with no longer needed vendor prefix, powered by data provided by autoprefixer (e.g. --moz-border-radius)",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssQualifiedSelectors": {
+      "desc": "number of qualified selectors (e.g. header#nav, .foo#bar, h1.title)",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityIdAvg": {
+      "desc": "average specificity for ID",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityIdTotal": {
+      "desc": "total specificity for ID",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityClassAvg": {
+      "desc": "average specificity for class, pseudo-class or attribute",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityClassTotal": {
+      "desc": "total specificity for class, pseudo-class or attribute",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityTagAvg": {
+      "desc": "average specificity for element",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSpecificityTagTotal": {
+      "desc": "total specificity for element",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByAttribute": {
+      "desc": "number of selectors by attribute (e.g. .foo)",
+      "optional": true,
+      "unit": "value=bar",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByClass": {
+      "desc": "number of selectors by class",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsById": {
+      "desc": "number of selectors by ID",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByPseudo": {
+      "desc": "number of pseudo-selectors (e,g. :hover)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorsByTag": {
+      "desc": "number of selectors by tag name",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssUniversalSelectors": {
+      "desc": "number of selectors trying to match every element (e.g. .foo > *)",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssLength": {
+      "desc": "length of CSS source (in bytes)",
+      "optional": true,
+      "unit": "bytes",
+      "module": "analyzeCss"
+    },
+    "cssRules": {
+      "desc": "number of rules (e.g. .foo, .bar { color: red } is counted as one rule)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectors": {
+      "desc": "number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssDeclarations": {
+      "desc": "number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red)",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "htmlCount": {
+      "desc": "number of HTML responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "htmlSize": {
+      "desc": "size of HTML responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "cssCount": {
+      "desc": "number of CSS responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "cssSize": {
+      "desc": "size of CSS responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "jsCount": {
+      "desc": "number of JS responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "jsSize": {
+      "desc": "size of JS responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "jsonCount": {
+      "desc": "number of JSON responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "jsonSize": {
+      "desc": "size of JSON responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "imageCount": {
+      "desc": "number of image responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "imageSize": {
+      "desc": "size of image responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "webfontCount": {
+      "desc": "number of web font responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "webfontSize": {
+      "desc": "size of web font responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "base64Count": {
+      "desc": "number of base64 encoded \"responses\" (no HTTP request was actually made)",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "base64Size": {
+      "desc": "size of base64 encoded responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "otherCount": {
+      "desc": "number of other responses",
+      "offenders": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "otherSize": {
+      "desc": "size of other responses",
+      "unreliable": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
+    "blockedRequests": {
+      "desc": "number of requests blocked due to domain filtering",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "blockDomains"
+    },
+    "cacheHits": {
+      "desc": "number of cache hits",
+      "unit": "number",
+      "module": "cacheHits"
+    },
+    "cacheMisses": {
+      "desc": "number of cache misses",
+      "offenders": true,
+      "unit": "number",
+      "module": "cacheHits"
+    },
+    "cachePasses": {
+      "desc": "number of cache passes",
+      "offenders": true,
+      "unit": "number",
+      "module": "cacheHits"
+    },
+    "oldCachingHeaders": {
+      "desc": "number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)",
+      "offenders": true,
+      "unit": "number",
+      "module": "caching"
+    },
+    "cachingNotSpecified": {
+      "desc": "number of responses with no caching header sent (no Cache-Control header)",
+      "offenders": true,
+      "unit": "number",
+      "module": "caching"
+    },
+    "cachingTooShort": {
+      "desc": "number of responses with too short (less than a week) caching time",
+      "offenders": true,
+      "unit": "number",
+      "module": "caching"
+    },
+    "cachingDisabled": {
+      "desc": "number of responses with caching disabled (max-age=0)",
+      "offenders": true,
+      "unit": "number",
+      "module": "caching"
+    },
+    "consoleMessages": {
+      "desc": "number of calls to console.* functions",
+      "unit": "number",
+      "module": "console"
+    },
+    "cookiesSent": {
+      "desc": "length of cookies sent in HTTP requests",
+      "unit": "bytes",
+      "module": "cookies"
+    },
+    "cookiesRecv": {
+      "desc": "length of cookies received in HTTP responses",
+      "unit": "bytes",
+      "module": "cookies"
+    },
+    "domainsWithCookies": {
+      "desc": "number of domains with cookies set",
+      "unit": "number",
+      "module": "cookies"
+    },
+    "documentCookiesLength": {
+      "desc": "length of document.cookie",
+      "unit": "bytes",
+      "module": "cookies"
+    },
+    "documentCookiesCount": {
+      "desc": "number of cookies in document.cookie",
+      "unit": "number",
+      "module": "cookies"
+    },
+    "bodyHTMLSize": {
+      "desc": "the size of body tag content (document.body.innerHTML.length)",
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
+    "iframesCount": {
+      "desc": "number of iframe nodes",
+      "unit": "number",
+      "module": "domComplexity"
+    },
+    "imagesWithoutDimensions": {
+      "desc": "number of <img> nodes without both width and height attribute",
+      "offenders": true,
+      "unit": "number",
+      "module": "domComplexity"
+    },
+    "DOMqueries": {
+      "desc": "number of all DOM queries",
+      "offenders": true,
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMqueriesById": {
+      "desc": "number of document.getElementById calls",
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMqueriesByClassName": {
+      "desc": "number of document.getElementsByClassName calls",
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMqueriesByTagName": {
+      "desc": "number of document.getElementsByTagName calls",
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMqueriesByQuerySelectorAll": {
+      "desc": "number of document.querySelectorAll calls",
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMinserts": {
+      "desc": "number of DOM nodes inserts",
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMqueriesDuplicated": {
+      "desc": "number of duplicated DOM queries",
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "domains": {
+      "desc": "number of domains used to fetch the page",
+      "offenders": true,
+      "unit": "number",
+      "module": "domains"
+    },
+    "maxRequestsPerDomain": {
+      "desc": "maximum number of requests fetched from a single domain",
+      "unit": "number",
+      "module": "domains"
+    },
+    "medianRequestsPerDomain": {
+      "desc": "median of number of requests fetched from each domain",
+      "unit": "number",
+      "module": "domains"
+    },
+    "eventsBound": {
+      "desc": "number of EventTarget.addEventListener calls",
+      "unit": "number",
+      "module": "eventListeners"
+    },
+    "globalVariables": {
+      "desc": "number of JS globals variables",
+      "offenders": true,
+      "unit": "number",
+      "module": "globalVariables"
+    },
+    "globalVariablesFalsy": {
+      "desc": "number of JS globals variables with falsy value",
+      "offenders": true,
+      "unit": "number",
+      "module": "globalVariables"
+    },
+    "headersCount": {
+      "desc": "number of requests and responses headers",
+      "unit": "number",
+      "module": "headers"
+    },
+    "headersSentCount": {
+      "desc": "number of headers sent in requests",
+      "unit": "number",
+      "module": "headers"
+    },
+    "headersRecvCount": {
+      "desc": "number of headers received in responses",
+      "unit": "number",
+      "module": "headers"
+    },
+    "headersSize": {
+      "desc": "size of all headers",
+      "unit": "bytes",
+      "module": "headers"
+    },
+    "headersSentSize": {
+      "desc": "size of sent headers",
+      "unit": "bytes",
+      "module": "headers"
+    },
+    "headersRecvSize": {
+      "desc": "size of received headers",
+      "unit": "bytes",
+      "module": "headers"
+    },
+    "jQueryVersion": {
+      "desc": "version of jQuery framework (if loaded)",
+      "unit": "string",
+      "module": "jQuery"
+    },
+    "jQueryOnDOMReadyFunctions": {
+      "desc": "number of functions bound to onDOMReady event",
+      "unit": "number",
+      "module": "jQuery"
+    },
+    "jQuerySizzleCalls": {
+      "desc": "number of calls to Sizzle (including those that will be resolved using querySelectorAll)",
+      "unit": "number",
+      "module": "jQuery"
+    },
+    "documentWriteCalls": {
+      "desc": "number of calls to either document.write or document.writeln",
+      "unit": "number",
+      "module": "javaScriptBottlenecks"
+    },
+    "evalCalls": {
+      "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
+      "unit": "number",
+      "module": "javaScriptBottlenecks"
+    },
+    "jsErrors": {
+      "desc": "number of JavaScript errors",
+      "offenders": true,
+      "unit": "number",
+      "module": "jserrors"
+    },
+    "localStorageEntries": {
+      "desc": "number of entries in local storage",
+      "offenders": true,
+      "unit": "number",
+      "module": "localStorage"
+    },
+    "redirects": {
+      "desc": "number of HTTP redirects (either 301, 302 or 303)",
+      "offenders": true,
+      "unit": "number",
+      "module": "redirects"
+    },
+    "redirectsTime": {
+      "desc": "time it took to send and receive redirects",
+      "unit": "ms",
+      "module": "redirects"
+    },
+    "smallestResponse": {
+      "desc": "the size of the smallest response",
+      "offenders": true,
+      "unit": "bytes",
+      "module": "requestsStats"
+    },
+    "biggestResponse": {
+      "desc": "the size of the biggest response",
+      "offenders": true,
+      "unit": "bytes",
+      "module": "requestsStats"
+    },
+    "fastestResponse": {
+      "desc": "the time to the last byte of the fastest response",
+      "offenders": true,
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "slowestResponse": {
+      "desc": "the time to the last byte of the slowest response",
+      "offenders": true,
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "smallestLatency": {
+      "desc": "the time to the first byte of the fastest response",
+      "offenders": true,
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "biggestLatency": {
+      "desc": "the time to the first byte of the slowest response",
+      "offenders": true,
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "medianResponse": {
+      "desc": "median value of time to the last byte for all responses",
+      "offenders": true,
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "medianLatency": {
+      "desc": "median value of time to the first byte for all responses",
+      "offenders": true,
+      "unit": "ms",
+      "module": "requestsStats"
+    },
+    "assetsNotGzipped": {
+      "desc": "number of static assets that were not gzipped",
+      "unreliable": true,
+      "unit": "number",
+      "module": "staticAssets"
+    },
+    "assetsWithQueryString": {
+      "desc": "number of static assets requested with query string (e.g. ?foo) in URL",
+      "unit": "number",
+      "module": "staticAssets"
+    },
+    "smallImages": {
+      "desc": "number of images smaller than 2 kB that can be base64 encoded",
+      "unreliable": true,
+      "unit": "number",
+      "module": "staticAssets"
+    },
+    "multipleRequests": {
+      "desc": "number of static assets that are requested more than once",
+      "offenders": true,
+      "unit": "number",
+      "module": "staticAssets"
+    },
+    "timeToFirstCss": {
+      "desc": "time it took to receive the last byte of the first CSS",
+      "offenders": true,
+      "unit": "ms",
+      "module": "timeToFirst"
+    },
+    "timeToFirstJs": {
+      "desc": "time it took to receive the last byte of the first JS",
+      "offenders": true,
+      "unit": "ms",
+      "module": "timeToFirst"
+    },
+    "timeToFirstImage": {
+      "desc": "time it took to receive the last byte of the first image",
+      "offenders": true,
+      "unit": "ms",
+      "module": "timeToFirst"
+    },
+    "onDOMReadyTime": {
+      "desc": "time it took to fire onDOMready event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "onDOMReadyTimeEnd": {
+      "desc": "time it took to finish processing onDOMready event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "windowOnLoadTime": {
+      "desc": "time it took to fire window.load event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "windowOnLoadTimeEnd": {
+      "desc": "time it took to finish processing window.load event",
+      "unit": "ms",
+      "module": "windowPerformance"
+    },
+    "timeBackend": {
+      "desc": "time to the first byte compared to the total loading time",
+      "unit": "%",
+      "module": "windowPerformance"
+    },
+    "timeFrontend": {
+      "desc": "time to window.load compared to the total loading time",
+      "unit": "%",
+      "module": "windowPerformance"
+    }
+  },
+  "metricsCount": 125,
+  "modulesCount": 30,
+  "version": "0.12.1"
+}

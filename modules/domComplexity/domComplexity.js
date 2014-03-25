@@ -7,7 +7,7 @@ exports.module = function(phantomas) {
 
 	// HTML size
 	phantomas.on('report', function() {
-		phantomas.setMetricEvaluate('bodyHTMLSize', function() {
+		phantomas.setMetricEvaluate('bodyHTMLSize', function() { // @desc the size of body tag content (document.body.innerHTML.length)
 			return document.body && document.body.innerHTML.length || 0;
 		});
 
@@ -80,10 +80,10 @@ exports.module = function(phantomas) {
 				phantomas.spyEnabled(false, 'counting iframes and images');
 
 				// count <iframe> tags
-				phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length);
+				phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length); // @desc number of iframe nodes
 
 				// <img> nodes without dimensions (one of width / height missing)
-				phantomas.setMetric('imagesWithoutDimensions', (function() {
+				phantomas.setMetric('imagesWithoutDimensions', (function() { // @desc number of <img> nodes without both width and height attribute @offenders
 					var imgNodes = document.body && document.body.querySelectorAll('img') || [],
 						node,
 						imagesWithoutDimensions = 0;
@@ -104,19 +104,19 @@ exports.module = function(phantomas) {
 		});
 
 		// total length of HTML comments (including <!-- --> brackets)
-		phantomas.setMetricFromScope('commentsSize');
+		phantomas.setMetricFromScope('commentsSize'); // @desc the size of HTML comments on the page @offenders
 
 		// total length of HTML of hidden elements (i.e. display: none)
-		phantomas.setMetricFromScope('hiddenContentSize');
+		phantomas.setMetricFromScope('hiddenContentSize'); // @desc the size of content of hidden elements on the page (with CSS display: none) @offenders
 
 		// total length of text nodes with whitespaces only (i.e. pretty formatting of HTML)
-		phantomas.setMetricFromScope('whiteSpacesSize');
+		phantomas.setMetricFromScope('whiteSpacesSize'); // @desc the size of text nodes with whitespaces only
 
 		// count all tags
-		phantomas.setMetricFromScope('DOMelementsCount');
-		phantomas.setMetricFromScope('DOMelementMaxDepth');
+		phantomas.setMetricFromScope('DOMelementsCount'); // @desc total number of HTML element nodes
+		phantomas.setMetricFromScope('DOMelementMaxDepth'); // @desc maximum level on nesting of HTML element node
 
 		// nodes with inlines CSS (style attribute)
-		phantomas.setMetricFromScope('nodesWithInlineCSS');
+		phantomas.setMetricFromScope('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
 	});
 };

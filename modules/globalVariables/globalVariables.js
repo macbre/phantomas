@@ -1,13 +1,14 @@
 /**
  * Counts global JavaScript variables
  */
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
+	phantomas.setMetric('globalVariables'); // @desc number of JS globals variables @offenders
+	phantomas.setMetric('globalVariablesFalsy'); // @desc number of JS globals variables with falsy value @offenders
 
 	phantomas.on('report', function() {
-		var globals = phantomas.evaluate(function() {
-		return (function(phantomas) {
+		phantomas.evaluate(function() {(function(phantomas) {
 			var globals = [],
 				allowed = ['Components','XPCNativeWrapper','XPCSafeJSObjectWrapper','getInterface','netscape','GetWeakReference', '_phantom', 'callPhantom', '__phantomas', 'performance'],
 				varName,
@@ -40,17 +41,14 @@ exports.module = function(phantomas) {
 					continue;
 				}
 
-				globals.push(varName);
+				phantomas.incrMetric('globalVariables');
+				phantomas.addOffender('globalVariables', varName);
+
+				if ([false, null].indexOf(window[varName]) > -1) {
+					phantomas.incrMetric('globalVariablesFalsy');
+					phantomas.addOffender('globalVariablesFalsy', varName + ' = ' + JSON.stringify(window[varName]));
+				}
 			}
-
-			return globals.sort();
-		})(window.__phantomas);
-		}) || [];
-
-		phantomas.setMetric('globalVariables', globals.length);
-
-		globals.forEach(function(varName) {
-			phantomas.addOffender('globalVariables', varName);
-		});
+		})(window.__phantomas);});
 	});
 };
