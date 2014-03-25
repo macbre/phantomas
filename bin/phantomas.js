@@ -49,6 +49,7 @@ program
 	.describe('reporter', 'output format / reporter').default('reporter', 'plain').alias('reporter', 'R').alias('reporter', 'format')
 	.describe('runs', 'number of runs to perform')
 	.describe('screenshot', 'render fully loaded page to a given file')
+	.describe('har', 'save HAR to a given file')
 	.describe('silent', 'don\'t write anything to the console').boolean('silent')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
 	.describe('tablet', 'force viewport and user agent of a tablet')
