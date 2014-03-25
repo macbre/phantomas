@@ -9,8 +9,10 @@ exports.module = function(phantomas) {
 		parseUrl = phantomas.require('url').parse;
 
 	var requests = [];
+	var mainRequestUrl = '';
 
 	// register metric
+	phantomas.setMetric('mainRequestStatusCodes', new Array(), true);       // @desc the HTTP status code of the main request (after following all redirects, etc)
 	phantomas.setMetric('requests');              // @desc total number of HTTP requests made
 	phantomas.setMetric('gzipRequests');          // @desc number of gzipped HTTP responses @unreliable
 	phantomas.setMetric('postRequests');          // @desc number of POST requests
@@ -63,6 +65,11 @@ exports.module = function(phantomas) {
 			bodySize: 0,
 			isBlocked: false
 		};
+
+		// The first id is always for the first/initial request
+		if (res.id === 1) {
+			mainRequestUrl = res.url;
+		}
 
 		// allow modules to block requests
 		entry.block = function() {
@@ -283,6 +290,17 @@ exports.module = function(phantomas) {
 	var ttfbMeasured = false;
 
 	phantomas.on('recv', function(entry, res) {
+		// Sometimes these URLs differ (for example, trailing slash) so accounting for it here
+		if (res.url.indexOf(mainRequestUrl) == 0 || mainRequestUrl.indexOf(res.url) == 0) {
+			phantomas.getMetric('mainRequestStatusCodes').push(res.status);
+			if (entry.isRedirect === true) {
+				mainRequestUrl = res.redirectURL;
+			}
+			else {
+				mainRequestUrl = '__dummy__value__';
+			}
+		}
+
 		// check the first response which is not a redirect (issue #74)
 		if (!ttfbMeasured && !entry.isRedirect) {
 			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte, true);
