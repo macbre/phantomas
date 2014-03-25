@@ -7,8 +7,10 @@
 var VERSION = '0.1';
 exports.version = VERSION;
 
+var fs = require('fs');
+
 /**
- * From netsniff.js with small workaround
+ * From netsniff.js with small workarounds
  * 
  * @see: https://github.com/ariya/phantomjs/blob/master/examples/netsniff.js
  */
@@ -109,7 +111,26 @@ function createHAR(address, title, startTime, endTime, resources)
 /** End **/
 
 exports.module = function(phantomas) {
-    phantomas.setMetric('har');
+
+    var param = phantomas.getParam('har'),
+        path = '';
+
+    if (typeof param === 'undefined') {
+        phantomas.log('No HAR path specified, use --har <path>');
+        return;
+    }
+
+    // --har
+    if (param === true) {
+        // defaults to "2013-12-07T20:15:01.521Z.har"
+        path = (new Date()).toJSON() + '.har';
+    }
+    // --har [file name]
+    else {
+        path = param;
+    }
+
+    phantomas.log('HAR path: %s', path);
 
     var resources = [];
     var startTime;
@@ -153,8 +174,15 @@ exports.module = function(phantomas) {
         if (! endTime)
             endTime = new Date();
 
+        phantomas.log('Create HAR');
         var har = createHAR(address, title, startTime, endTime, resources);
 
-        phantomas.setMetric('har', har);
+        phantomas.log('Convert HAR to JSON');
+        var dump = JSON.stringify(har);
+
+        phantomas.log('Write HAR in \'%s\'', path);
+        fs.write(path, dump);
+
+        phantomas.log('HAR Done !');
     });
 };
