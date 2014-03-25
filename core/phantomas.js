@@ -115,7 +115,7 @@ var phantomas = function(params) {
 	// report version and installation directory
 	if (typeof module.dirname !== 'undefined') {
 		this.dir = module.dirname.replace(/core$/, '');
-		this.log('phantomas v' + VERSION + ' installed in ' + this.dir);
+		this.log('phantomas v' + this.getVersion() + ' installed in ' + this.dir);
 	}
 
 	// report config file being used
@@ -136,7 +136,7 @@ var phantomas = function(params) {
 	var Results = require('./results');
 	this.results = new Results();
 
-	this.results.setGenerator('phantomas v' + VERSION);
+	this.results.setGenerator('phantomas v' + this.getVersion());
 	this.results.setUrl(this.url);
 	this.results.setAsserts(this.params.asserts);
 
@@ -197,6 +197,10 @@ phantomas.prototype = {
 		this.emitter.once(ev, fn);
 	},
 
+	getVersion: function() {
+		return VERSION;
+	},
+
 	getParam: function(key, defValue, typeCheck) {
 		var value = this.params[key];
 
@@ -222,6 +226,7 @@ phantomas.prototype = {
 		// modules API
 		return {
 			url: this.params.url,
+			getVersion: this.getVersion.bind(this),
 			getParam: this.getParam.bind(this),
 			setParam: setParam.bind(this),
 
