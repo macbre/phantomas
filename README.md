@@ -27,7 +27,7 @@ npm install --global phantomas
 * phantomas "core" acts as an [events emitter](https://github.com/macbre/phantomas/wiki/Events) that each module can hook into
 * in-depth metrics such as: number of events bound via jQuery, calls to ``window.write``or [complex and duplicated CSS selectors (via analyze-css)](https://github.com/macbre/analyze-css)
 * JSON and CSV as available output formats for easy integration with automated reporting / monitoring tools
-* easy integration with Continous Integration tools via TAP format and assertions handling
+* easy integration with Continuous Integration tools via TAP format and assertions handling
 * easy integration with other nodejs projects via CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module))
 * metrics can be emitted from JavaScript code of the page phantomas is run against (thanks to [helper functions available in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope))
 
@@ -85,7 +85,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--film-strip-dir=[dir path]` folder path to output film strip (default is ``./filmstrip`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value
 * `--screenshot=[file name]` render fully loaded page to a given file
-* `--wait-for-selector=[CSS selector` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
+* `--wait-for-selector=[CSS selector]` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
 * `--post-load-delay=[seconds]` wait X seconds before generating a report, timeout setting still applies
 * `--ignore-ssl-errors` ignores SSL errors, such as expired or self-signed certificate errors
 * `--proxy=[host:port]` specifies the proxy server to use
