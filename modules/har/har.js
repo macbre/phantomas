@@ -7,58 +7,156 @@
 var fs = require('fs');
 
 /**
- * From netsniff.js with small workarounds
- * 
- * @see: https://github.com/ariya/phantomjs/blob/master/examples/netsniff.js
+ * From phantomHAR
+ * @author: Christopher Van (@cvan)
+ * @homepage: https://github.com/cvan/phantomHAR
+ * @original: https://github.com/cvan/phantomHAR/blob/master/phantomhar.js
  */
 
-function createHAR(address, title, startTime, endTime, resources, creator)
-{
+function getErrorString(error) {
+    // According to http://qt-project.org/doc/qt-4.8/qnetworkreply.html
+    switch (error.errorCode) {
+        case 1:
+            return '(refused)';
+        case 2:
+            return '(closed)';
+        case 3:
+            return '(host not found)';
+        case 4:
+            return '(timeout)';
+        case 5:
+            return '(canceled)';
+        case 6:
+            return '(ssl failure)';
+        case 7:
+            return '(net failure)';
+        default:
+            return '(unknown error)';
+    }
+}
+
+function getType(ct, url) {
+    ct = ct.toLowerCase();
+    if (ct.substr(0, 8) === 'text/css') {
+        return 'css';
+    }
+    if (/javascript/.test(ct)) {
+        return 'js';
+    }
+    if (/\/json/.test(ct)) {
+        return 'json';
+    }
+    if (/flash/.test(ct)) {
+        return 'flash';
+    }
+    if (ct.substr(0, 6) === 'image/') {
+        return 'cssimage';
+    }
+    if (ct.substr(0, 6) === 'audio/') {
+        return 'audio';
+    }
+    if (ct.substr(0, 6) === 'video/') {
+        return 'video';
+    }
+    if (/(\/|-)font-/.test(ct) || /\/font/.test(ct) ||
+        ct.substr(0, 5) === 'font/' ||
+        /\.((eot)|(otf)|(ttf)|(woff))($|\?)/i.test(url)) {
+        return 'font';
+    }
+    if (/\.((gif)|(png)|(jpe)|(jpeg)|(jpg)|(tiff))($|\?)/i.test(url)) {
+        return 'cssimage';
+    }
+    if (/\.((flac)|(ogg)|(opus)|(mp3)|(wav)|(weba))($|\?)/i.test(url)) {
+        return 'audio';
+    }
+    if (/\.((mp4)|(webm))($|\?)/i.test(url)) {
+        return 'video';
+    }
+    if (ct.substr(0, 9) === 'text/html' ||
+        ct.substr(0, 10) === 'text/plain') {
+        return 'doc';
+    }
+    return null;
+}
+
+function createHAR(page, creator) {
+    var address = page.address;
+    var title = page.title;
+    var startTime = page.startTime;
+    var resources = page.resources;
+    var types = page.types;
+
     var entries = [];
 
-    resources.forEach(function (resource) {
-        var request = resource.request,
-            startReply = resource.startReply,
-            endReply = resource.endReply;
+    resources.forEach(function(resource) {
+        var request = resource.request;
+        var startReply = resource.startReply;
+        var endReply = resource.endReply;
+        var error = resource.error;
 
         if (!request || !startReply || !endReply) {
             return;
         }
 
-        // Exclude Data URI from HAR file because
-        // they aren't included in specification
-        if (request.url.match(/(^data:image\/.*)/i)) {
+        // Exclude data URIs from the HAR because they aren't
+        // included in the spec.
+        if (request.url.substring(0, 5).toLowerCase() === 'data:') {
             return;
-    }
+        }
+
+        var type = types[request.url];
+        if (!type && endReply.contentType &&
+            typeof endReply.contentType === 'string') {
+            type = getType(endReply.contentType, request.url);
+        }
+
+        if (error) {
+            startReply.bodySize = 0;
+            startReply.time = 0;
+            endReply.time = 0;
+            endReply.content = {};
+            endReply.contentType = null;
+            endReply.headers = [];
+            endReply.statusText = getErrorString(error);
+            endReply.status = null;
+            type = null;
+        }
 
         entries.push({
-            startedDateTime: request.time.toISOString(),
-            time: endReply.time - request.time,
+            cache: {},
+            pageref: address,
             request: {
-                method: request.method,
-                url: request.url,
-                httpVersion: "HTTP/1.1",
+                // Accurate bodySize blocked on https://github.com/ariya/phantomjs/pull/11484
+                // bodySize: -1,
+                bodySize: startReply.bodySize,
                 cookies: [],
                 headers: request.headers,
+                // Accurate headersSize blocked on https://github.com/ariya/phantomjs/pull/11484
+                // headersSize: -1,
+                headersSize: 0,
+                httpVersion: 'HTTP/1.1',
+                method: request.method,
                 queryString: [],
-                headersSize: -1,
-                bodySize: -1
+                url: request.url,
             },
             response: {
-                status: endReply.status,
-                statusText: endReply.statusText,
-                httpVersion: "HTTP/1.1",
+                bodySize: startReply.bodySize,
                 cookies: [],
                 headers: endReply.headers,
-                redirectURL: "",
                 headersSize: -1,
-                bodySize: startReply.bodySize,
+                httpVersion: 'HTTP/1.1',
+                redirectURL: '',
+                status: endReply.status,
+                statusText: endReply.statusText,
                 content: {
+                    _type: type,
+                    mimeType: endReply.contentType,
                     size: startReply.bodySize,
-                    mimeType: endReply.contentType === null ? "" : endReply.contentType
+                    text: startReply.content || ''
                 }
             },
-            cache: {},
+            startedDateTime: request.time.toISOString(),
+            time: endReply.time - request.time,
             timings: {
                 blocked: 0,
                 dns: -1,
@@ -67,24 +165,25 @@ function createHAR(address, title, startTime, endTime, resources, creator)
                 wait: startReply.time - request.time,
                 receive: endReply.time - startReply.time,
                 ssl: -1
-            },
-            pageref: address
+            }
         });
     });
 
     return {
         log: {
-            version: '1.2',
             creator: creator,
-            pages: [{
-                startedDateTime: startTime.toISOString(),
-                id: address,
-                title: title,
-                pageTimings: {
-                    onLoad: endTime.getTime() - startTime.getTime()
+            entries: entries,
+            pages: [
+                {
+                    startedDateTime: startTime.toISOString(),
+                    id: address,
+                    title: title,
+                    pageTimings: {
+                        onLoad: page.endTime.getTime() - page.startTime.getTime()
+                    }
                 }
-            }],
-            entries: entries
+            ],
+            version: '1.2',
         }
     };
 }
@@ -93,10 +192,11 @@ function createHAR(address, title, startTime, endTime, resources, creator)
 exports.module = function(phantomas) {
 
     var param = phantomas.getParam('har'),
-        path = '';
+        path = '',
+        page;
 
     var creator = {
-        name: "Phantomas - har",
+        name: "Phantomas - (using phantomHAR)",
         version: phantomas.getVersion()
     };
 
@@ -117,25 +217,30 @@ exports.module = function(phantomas) {
 
     phantomas.log('HAR path: %s', path);
 
-    var resources = [];
-    var startTime;
-    var endTime;
-    var page;
-
     phantomas.on('pageBeforeOpen', function(p) {
         page = p;
+        page.resources = [];
+        page.types = {};
+        page.address = page.url;
+
+        // Clear browser cache/cookies/localStorage.
+        //fs.removeTree(page.offlineStoragePath);
+        page.clearCookies();
+        page.evaluate(function() {
+            localStorage.clear();
+        }, {});
     });
 
     phantomas.on('pageOpen', function() {
-        startTime = new Date(); 
+         page.startTime = new Date(); 
     });
 
     phantomas.on('loadFinished', function() {
-        endTime = new Date();
+         page.endTime = new Date();
     });
 
     phantomas.on('onResourceRequested', function(res, req) {
-        resources[res.id] = {
+        page.resources[res.id] = {
             request: res,
             startReply: null,
             endReply: null
@@ -144,29 +249,48 @@ exports.module = function(phantomas) {
     });
 
     phantomas.on('onResourceReceived', function(res) {
-        if (res.stage === 'start')
-            resources[res.id].startReply = res;
-
-        if (res.stage === 'end')
-            resources[res.id].endReply = res;
+        switch (res.stage) {
+            case 'start':
+                page.resources[res.id].startReply = res;
+                break;
+            case 'end':
+                page.resources[res.id].endReply = res;
+                break;
+        }
     });
 
     phantomas.on('report', function() {
-        var address = page.url;
-        var title = page.title;
-
-        // Warning page was not finished correctly
-        if (! endTime)
-            endTime = new Date();
+        // Set endTime if page was not finished correctly
+        if (! page.endTime)
+            page.endTime = new Date();
 
         phantomas.log('Create HAR');
-        var har = createHAR(address, title, startTime, endTime, resources, creator);
 
+        var har,
+            dump;
+
+        try {
+            har = createHAR(page, creator);
+        } catch (e) {
+            phantomas.log('Impossible to build HAR: %s', e);
+            return;
+        }
+    
         phantomas.log('Convert HAR to JSON');
-        var dump = JSON.stringify(har);
+        try {
+            dump = JSON.stringify(har);
+        } catch (e) {
+            phantomas.log('Impossible stringify HAR on JSON format: %s', e);
+            return;
+        }
 
-        phantomas.log('Write HAR in \'%s\'', path);
-        fs.write(path, dump);
+        phantomas.log("Write HAR in '%s'", path);
+        try {
+            fs.write(path, dump);
+        } catch (e) {
+            phantomas.log('Impossible write HAR file: %s', e);
+            return;
+        }
 
         phantomas.log('HAR Done !');
     });
