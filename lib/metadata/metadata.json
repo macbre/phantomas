@@ -590,6 +590,11 @@
       "unit": "number",
       "module": "localStorage"
     },
+    "statusCodesTrail": {
+      "desc": "comma-separated list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one)",
+      "unit": "string",
+      "module": "mainRequest"
+    },
     "redirects": {
       "desc": "number of HTTP redirects (either 301, 302 or 303)",
       "offenders": true,
@@ -721,7 +726,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 125,
-  "modulesCount": 30,
+  "metricsCount": 126,
+  "modulesCount": 31,
   "version": "0.12.1"
 }
