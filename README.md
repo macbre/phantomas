@@ -43,6 +43,7 @@ npm install --global phantomas
 * [kennydee](https://github.com/kennydee)
 * [iNem0o](https://github.com/iNem0o)
 * [stefanjudis](https://github.com/stefanjudis)
+* [vgangan](https://github.com/vgangan)
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
@@ -106,7 +107,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 101_
+_Current number of metrics: 102_
 
 Units:
 
