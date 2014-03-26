@@ -6,7 +6,7 @@ exports.version = '0.1';
 exports.module = function (phantomas) {
     var isMainRequest = true;
 
-    phantomas.setMetric('statusCodesTrail', []); // @desc list of HTTP status codes that main request followed through
+    phantomas.setMetric('statusCodesTrail', []); // @desc list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one)
 
     phantomas.on('recv', function (entry, res) {
         if (isMainRequest) {
