@@ -5,21 +5,22 @@ exports.version = '0.1';
 
 exports.module = function (phantomas) {
     var isMainRequest = true;
-
-    phantomas.setMetric('statusCodesTrail', []); // @desc list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one)
+    var statusCodes = [];
 
     phantomas.on('recv', function (entry, res) {
         if (isMainRequest) {
-            captureStatusCode(res.status);
+            captureStatusCode(statusCodes, res.status);
         }
     });
 
     phantomas.on('responseEnd', function (entry, res) {
         isMainRequest = false;
-        captureStatusCode(res.status);
+        captureStatusCode(statusCodes, res.status);
+
+        phantomas.setMetric('statusCodesTrail', statusCodes.join(','), true); // @desc comma-separated list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one) [string]
     });
 
-    function captureStatusCode(code) {
-        phantomas.getMetric('statusCodesTrail').push(code);
+    function captureStatusCode(codes, code) {
+        codes.push(code);
     }
 };
