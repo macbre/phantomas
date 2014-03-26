@@ -102,11 +102,11 @@ phantomas.prototype = {
 		return this.emit('recv', entry || {}, res || {});
 	},
 
-    responseEnd: function(entry, res) {
-        return this.emit('responseEnd', entry || {}, res || {});
-    },
+	responseEnd: function(entry, res) {
+		return this.emit('responseEnd', entry || {}, res || {});
+	},
 
-    report: function() {
+	report: function() {
 		return this.emit('report');
 	},
 
