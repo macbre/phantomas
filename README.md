@@ -296,6 +296,12 @@ Units:
 * windowPrompts: number of calls to ``prompt``
 * consoleMessages: number of calls to ``console.*`` functions
 
+### Main request
+
+> Analyzes bits of data pertaining to the main request only
+
+* statusCodesTrail: comma-separated list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one)
+
 ### Optional metrics
 
 > The following metrics are emitted only when certain options are passed to phantomas
