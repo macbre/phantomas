@@ -225,10 +225,6 @@ exports.module = function(phantomas) {
 
         // Clear browser cache/cookies/localStorage.
         //fs.removeTree(page.offlineStoragePath);
-        page.clearCookies();
-        page.evaluate(function() {
-            localStorage.clear();
-        }, {});
     });
 
     phantomas.on('pageOpen', function() {
