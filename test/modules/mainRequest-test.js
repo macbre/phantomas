@@ -16,7 +16,7 @@ vows.describe('mainRequest').
             },
             'contains all status codes in the trail': function (topic) {
                 var metric = topic.getMetric('statusCodesTrail');
-                assert.deepEqual(metric, [301, 200])
+                assert.deepEqual(metric, [301, 200]);
             }
         },
         'long redirect request': {
@@ -29,7 +29,7 @@ vows.describe('mainRequest').
             },
             'contains all status codes in the trail': function (topic) {
                 var metric = topic.getMetric('statusCodesTrail');
-                assert.deepEqual(metric, [301, 302, 404])
+                assert.deepEqual(metric, [301, 302, 404]);
             }
         },
         'non-redirect (e.g. terminal) first request': {
@@ -40,7 +40,7 @@ vows.describe('mainRequest').
             },
             'contains only its status code in the trail': function (topic) {
                 var metric = topic.getMetric('statusCodesTrail');
-                assert.deepEqual(metric, [200])
+                assert.deepEqual(metric, [200]);
             }
         },
         'multiple requests': {
@@ -52,7 +52,7 @@ vows.describe('mainRequest').
             },
             'capture only the first request in the trail': function (topic) {
                 var metric = topic.getMetric('statusCodesTrail');
-                assert.deepEqual(metric, [200])
+                assert.deepEqual(metric, [200]);
             }
         }
     }).
