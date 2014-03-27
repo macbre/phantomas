@@ -35,56 +35,11 @@ function getErrorString(error) {
     }
 }
 
-function getType(ct, url) {
-    ct = ct.toLowerCase();
-    if (ct.substr(0, 8) === 'text/css') {
-        return 'css';
-    }
-    if (/javascript/.test(ct)) {
-        return 'js';
-    }
-    if (/\/json/.test(ct)) {
-        return 'json';
-    }
-    if (/flash/.test(ct)) {
-        return 'flash';
-    }
-    if (ct.substr(0, 6) === 'image/') {
-        return 'cssimage';
-    }
-    if (ct.substr(0, 6) === 'audio/') {
-        return 'audio';
-    }
-    if (ct.substr(0, 6) === 'video/') {
-        return 'video';
-    }
-    if (/(\/|-)font-/.test(ct) || /\/font/.test(ct) ||
-        ct.substr(0, 5) === 'font/' ||
-        /\.((eot)|(otf)|(ttf)|(woff))($|\?)/i.test(url)) {
-        return 'font';
-    }
-    if (/\.((gif)|(png)|(jpe)|(jpeg)|(jpg)|(tiff))($|\?)/i.test(url)) {
-        return 'cssimage';
-    }
-    if (/\.((flac)|(ogg)|(opus)|(mp3)|(wav)|(weba))($|\?)/i.test(url)) {
-        return 'audio';
-    }
-    if (/\.((mp4)|(webm))($|\?)/i.test(url)) {
-        return 'video';
-    }
-    if (ct.substr(0, 9) === 'text/html' ||
-        ct.substr(0, 10) === 'text/plain') {
-        return 'doc';
-    }
-    return null;
-}
-
 function createHAR(page, creator) {
     var address = page.address;
     var title = page.title;
     var startTime = page.startTime;
     var resources = page.resources;
-    var types = page.types;
 
     var entries = [];
 
@@ -104,12 +59,6 @@ function createHAR(page, creator) {
             return;
         }
 
-        var type = types[request.url];
-        if (!type && endReply.contentType &&
-            typeof endReply.contentType === 'string') {
-            type = getType(endReply.contentType, request.url);
-        }
-
         if (error) {
             startReply.bodySize = 0;
             startReply.time = 0;
@@ -119,7 +68,6 @@ function createHAR(page, creator) {
             endReply.headers = [];
             endReply.statusText = getErrorString(error);
             endReply.status = null;
-            type = null;
         }
 
         entries.push({
@@ -149,8 +97,7 @@ function createHAR(page, creator) {
                 status: endReply.status,
                 statusText: endReply.statusText,
                 content: {
-                    _type: type,
-                    mimeType: endReply.contentType,
+                    mimeType: endReply.contentType || '',
                     size: startReply.bodySize,
                     text: startReply.content || ''
                 }
@@ -220,7 +167,6 @@ exports.module = function(phantomas) {
     phantomas.on('pageBeforeOpen', function(p) {
         page = p;
         page.resources = [];
-        page.types = {};
         page.address = page.url;
 
         // Clear browser cache/cookies/localStorage.
