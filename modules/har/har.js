@@ -139,8 +139,15 @@ function createHAR(page, creator) {
 exports.module = function(phantomas) {
 
     var param = phantomas.getParam('har'),
-        path = '',
-        page;
+        path = '';
+
+    var page = {
+        resources: [],
+        title: undefined,
+        address: undefined,
+        startTime: undefined,
+        endTime: undefined
+    };
 
     var creator = {
         name: "Phantomas - (using phantomHAR)",
@@ -165,12 +172,8 @@ exports.module = function(phantomas) {
     phantomas.log('HAR path: %s', path);
 
     phantomas.on('pageBeforeOpen', function(p) {
-        page = p;
-        page.resources = [];
-        page.address = page.url;
-
-        // Clear browser cache/cookies/localStorage.
-        //fs.removeTree(page.offlineStoragePath);
+        page.address = p.url;
+        page.title = p.title;
     });
 
     phantomas.on('pageOpen', function() {
