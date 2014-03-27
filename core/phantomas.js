@@ -735,6 +735,7 @@ phantomas.prototype = {
 
 		// trigger an event when the metric value is said to be final (isse #240)
 		if (isFinal === true) {
+			this.emit('metric', name, value); // @desc the metric is given the final value
 			ipc.push(name, value);
 		}
 	},
