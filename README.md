@@ -44,6 +44,8 @@ npm install --global phantomas
 * [iNem0o](https://github.com/iNem0o)
 * [stefanjudis](https://github.com/stefanjudis)
 * [vgangan](https://github.com/vgangan)
+* [william-p](https://github.com/william-p)
+* [cvan](https://github.com/cvan)
 * All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
 
 ## Usage
