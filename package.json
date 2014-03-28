@@ -50,7 +50,8 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/"
+    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/",
+    "metadata": "DEBUG=* node lib/metadata/generate.js"
   },
   "jshintConfig": {
     "node": true,
