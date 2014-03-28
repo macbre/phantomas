@@ -369,6 +369,7 @@
     },
     "cacheHits": {
       "desc": "number of cache hits",
+      "offenders": true,
       "unit": "number",
       "module": "cacheHits"
     },
@@ -727,6 +728,6 @@
     }
   },
   "metricsCount": 126,
-  "modulesCount": 31,
+  "modulesCount": 32,
   "version": "0.12.1"
 }
