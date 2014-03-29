@@ -28,6 +28,7 @@ npm install --global phantomas
 * in-depth metrics such as: number of events bound via jQuery, calls to ``window.write``or [complex and duplicated CSS selectors (via analyze-css)](https://github.com/macbre/analyze-css)
 * JSON and CSV as available output formats for easy integration with automated reporting / monitoring tools
 * easy integration with Continuous Integration tools via TAP format and assertions handling
+* metrics can be sent via StatsD or stored in elasticsearch
 * easy integration with other nodejs projects via CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module))
 * metrics can be emitted from JavaScript code of the page phantomas is run against (thanks to [helper functions available in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope))
 
@@ -159,7 +160,7 @@ Units:
 
 ### Cache Hits
 
-> Metrics are calculated based on ``X-Cache`` header added by Varnish  / Squid servers
+> Metrics are calculated based on ``Age`` and ``X-Cache`` headers added by Varnish  / Squid servers
 
 * cacheHits: number of cache hits
 * cacheMisses: number of cache misses
