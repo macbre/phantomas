@@ -4,6 +4,8 @@
  * Code below is executed in page's "scope" (injected by onInitialized() in core/phantomas.js)
  */
 (function(scope) {
+	'use strict';
+
 	// create a scope
 	var phantomas = (scope.__phantomas = scope.__phantomas || {});
 

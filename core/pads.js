@@ -1,6 +1,8 @@
 /**
  * Helper functions for string formatting
  */
+'use strict';
+
 function lpad(str, len) {
 	var fill;
 	str = typeof str !== 'undefined' ? str : '-';

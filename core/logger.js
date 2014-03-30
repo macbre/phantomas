@@ -1,6 +1,8 @@
 /**
  * Simple logger (using both file and console)
  */
+'use strict';
+
 module.exports = function(logFile, params) {
 	var colors = require('../lib/ansicolors'),
 		styles = require('ansistyles'),

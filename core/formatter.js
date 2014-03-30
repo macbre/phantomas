@@ -1,6 +1,8 @@
 /**
  * Generic JSON results formatter
  */
+'use strict';
+
 module.exports = function(results) {
 	var res = {
 		generator: results.getGenerator(),

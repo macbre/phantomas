@@ -1,6 +1,8 @@
 /**
  * phantomas main file
  */
+/* global phantom: true, window: true */
+'use strict';
 
 /**
  * Environment such PhantomJS 1.8.* does not provides the bind method on Function prototype.
@@ -215,11 +217,13 @@ phantomas.prototype = {
 	// returns "wrapped" version of phantomas object with public methods / fields only
 	getPublicWrapper: function() {
 		function setParam(key, value) {
+			/* jshint validthis: true */
 			this.log('setParam: %s set to %j', key, value);
 			this.params[key] = value;
 		}
 
 		function setZoom(zoomFactor) {
+			/* jshint validthis: true */
 			this.page.zoomFactor = zoomFactor;
 		}
 
@@ -335,7 +339,7 @@ phantomas.prototype = {
 			//  addition to phantomjs in `phantomas.run`
 			// Full JS cookie syntax is supported.
 
-			var cookieComponents = params.cookie.split(';'),
+			var cookieComponents = this.params.cookie.split(';'),
 				cookie = {};
 
 			for (var i = 0, len = cookieComponents.length; i < len; i++) {
@@ -375,7 +379,7 @@ phantomas.prototype = {
 				}
 
 				if (!cookie.domain) {
-					var parsed = parseUrl(params.url),
+					var parsed = parseUrl(this.params.url),
 						root = parsed.hostname.replace(/^www/, ''); // strip www
 
 					cookie.domain = root;
@@ -398,6 +402,7 @@ phantomas.prototype = {
 			ipc = new (require('./ipc'))('progress');
 
 		function pollFn() {
+			/* jshint validthis: true */
 			var inc;
 
 			if (currentProgress >= this.page.loadingProgress) {
@@ -549,10 +554,10 @@ phantomas.prototype = {
 		this.log('Returning results with ' + metricsCount+ ' metric(s)...');
 
 		// emit results in JSON
-		var Formatter = require('./formatter'),
+		var formatter = require('./formatter'),
 			stdout = require('system').stdout;
 
-		stdout.write(Formatter(this.results));
+		stdout.write(formatter(this.results));
 
 		// handle timeouts (issue #129)
 		if (this.timedOut) {

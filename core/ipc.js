@@ -3,9 +3,12 @@
  *
  * Implements producer of the data (for PhantomJS environment)
  */
+'use strict';
+
 var stderr = require('system').stderr;
 
 function ipc(event) {
+	/* jshint validthis: true */
 	this.event = event;
 }
 
