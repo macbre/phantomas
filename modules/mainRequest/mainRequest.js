@@ -1,6 +1,8 @@
 /**
  * Analyzes bits of data pertaining to the main request only
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function (phantomas) {

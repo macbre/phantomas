@@ -2,6 +2,7 @@
  * Meters number of invocations of window.alert, window.confirm, and
  * window.prompt.
  */
+'use strict';
 
 exports.version = '0.1';
 

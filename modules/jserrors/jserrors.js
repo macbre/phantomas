@@ -1,6 +1,8 @@
 /**
  * Meters the number of page errors, and provides traces as offenders for "jsErrors" metric
  */
+'use strict';
+
 exports.version = '0.3';
 
 exports.module = function(phantomas) {

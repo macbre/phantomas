@@ -1,6 +1,8 @@
 /**
  * Analyzes events bound to DOM elements
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

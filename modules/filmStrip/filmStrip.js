@@ -6,6 +6,8 @@
  *
  * Run phantomas with --film-strip option to use this module
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

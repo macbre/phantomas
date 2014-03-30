@@ -1,6 +1,8 @@
 /**
  * cookies metrics
  */
+'use strict';
+
 exports.version = '0.2';
 
 exports.module = function(phantomas) {

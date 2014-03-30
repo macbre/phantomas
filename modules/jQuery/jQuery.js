@@ -4,6 +4,8 @@
  * @see http://code.jquery.com/jquery-1.10.2.js
  * @see http://code.jquery.com/jquery-2.0.3.js
  */
+'use strict';
+
 exports.version = '0.2';
 
 exports.module = function(phantomas) {

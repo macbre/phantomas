@@ -1,6 +1,8 @@
 /**
  * Analyzes DOM queries done via native DOM methods
  */
+'use strict';
+
 exports.version = '0.5';
 
 exports.module = function(phantomas) {

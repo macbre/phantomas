@@ -1,6 +1,8 @@
 /**
  * localStorage metrics
  */
+'use strict';
+
 exports.version = '0.3';
 
 exports.module = function(phantomas) {

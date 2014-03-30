@@ -1,6 +1,8 @@
 /**
  * Analyzes Age and X-Cache headers from caching servers like Squid or Varnish
  */
+'use strict';
+
 exports.version = '0.3';
 
 exports.module = function(phantomas) {
