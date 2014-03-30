@@ -4,6 +4,8 @@
  * @see http://podwiki.hexten.net/TAP/TAP.html?page=TAP
  * @see https://github.com/isaacs/node-tap
  */
+'use strict';
+
 var Producer = require('tap').Producer;
 
 module.exports = function(results) {

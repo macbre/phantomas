@@ -1,6 +1,8 @@
 /**
  * Results formatter for --format=json
  */
+'use strict';
+
 module.exports = function(results) {
 	var isMultiple = Array.isArray(results);
 

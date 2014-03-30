@@ -8,6 +8,8 @@
  *
  * @see https://github.com/sivy/node-statsd
  */
+'use strict';
+
 var StatsD = require('node-statsd').StatsD;
 
 module.exports = function(results, options) {

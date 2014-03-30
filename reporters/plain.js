@@ -1,6 +1,8 @@
 /**
  * Results formatter for --format=plain
  */
+'use strict';
+
 var colors = require('../lib/ansicolors'),
 	fold = require('travis-fold'),
 	rpad = require('../core/pads').rpad,
@@ -77,7 +79,7 @@ module.exports = function(results) {
 	function formatMultipleRunResults(results) {
 		var AsciiTable = require('ascii-table'),
 			format = require('util').format,
-			stats = require('fast-stats').Stats,
+			Stats = require('fast-stats').Stats,
 			runs = results.length,
 			fields, table;
 
@@ -105,7 +107,7 @@ module.exports = function(results) {
 		function getMetricStats(metricName) {
 			var i,
 				res = [],
-				values = new stats();
+				values = new Stats();
 
 			for (i=0; i<runs; i++) {
 				values.push(results[i].getMetric(metricName));
