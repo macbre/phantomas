@@ -3,6 +3,8 @@
  *
  * @see https://github.com/touv/node-csv-string
  */
+'use strict';
+
 var CSV = require('csv-string');
 
 module.exports = function(results) {

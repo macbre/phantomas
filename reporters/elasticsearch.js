@@ -8,6 +8,7 @@
  * --elasticsearch-type "phantomas-report"
  *
  */
+'use strict';
 
 module.exports = function (results, options) {
 	var debug = require('debug')('phantomas:reporter:elasticsearch'),
