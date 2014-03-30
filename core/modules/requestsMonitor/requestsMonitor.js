@@ -1,6 +1,8 @@
 /**
  * Simple HTTP requests monitor and analyzer
  */
+'use strict';
+
 exports.version = '1.2';
 
 exports.module = function(phantomas) {

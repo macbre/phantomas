@@ -3,6 +3,8 @@
  *
  * @see https://github.com/macbre/phantomas/issues/213
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

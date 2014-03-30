@@ -1,6 +1,8 @@
 /**
  * Analyzes HTTP headers in both requests and responses
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

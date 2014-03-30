@@ -10,6 +10,8 @@
  * setMetric('medianResponse') @desc median value of time to the last byte for all responses @offenders
  * setMetric('medianLatency') @desc median value of time to the first byte for all responses @offenders
  */
+'use strict';
+
 exports.version = '0.3';
 
 exports.module = function(phantomas) {

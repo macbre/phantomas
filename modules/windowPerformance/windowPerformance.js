@@ -8,6 +8,9 @@
  * windowOnLoadTime     Navigation Timing - loadEventStart
  * windowOnLoadTimeEnd  Navigation Timing - loadEventEnd
  */
+/* global document: true, window: true */
+'use strict';
+
 exports.version = '0.5';
 
 exports.module = function(phantomas) {

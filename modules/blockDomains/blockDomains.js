@@ -3,6 +3,8 @@
  *
  * Does not emit any metrics
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

@@ -1,6 +1,9 @@
 /**
  * Delays report generation until given CSS selector can be resolved (i.e. given element exists)
  */
+/* global document: true */
+'use strict';
+
 exports.version = '0.1';
 
 function checkSelector(phantomas, selector) {

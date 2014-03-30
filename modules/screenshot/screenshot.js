@@ -3,6 +3,8 @@
  *
  * @see http://phantomjs.org/api/webpage/method/render.html
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

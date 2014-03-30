@@ -3,6 +3,9 @@
 * 
 * @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
 */
+'use strict';
+
+exports.version = '0.1';
 
 var fs = require('fs');
 

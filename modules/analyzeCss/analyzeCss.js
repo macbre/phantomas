@@ -35,6 +35,8 @@
  * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional
  * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional
  */
+'use strict';
+
 exports.version = '0.3';
 
 exports.module = function(phantomas) {

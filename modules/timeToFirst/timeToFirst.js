@@ -5,6 +5,8 @@
  * setMetric('timeToFirstJs')    @desc time it took to receive the last byte of the first JS @offenders
  * setMetric('timeToFirstImage') @desc time it took to receive the last byte of the first image @offenders
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

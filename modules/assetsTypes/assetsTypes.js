@@ -18,6 +18,8 @@
  * setMetric('otherCount') @desc number of other responses @offenders
  * setMetric('otherSize')  @desc size of other responses @unreliable
  */
+'use strict';
+
 exports.version = '0.1';
 
 exports.module = function(phantomas) {

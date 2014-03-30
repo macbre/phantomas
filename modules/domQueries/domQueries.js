@@ -1,6 +1,9 @@
 /**
  * Analyzes DOM queries done via native DOM methods
  */
+/* global Element: true, Document: true, Node: true, window: true */
+'use strict';
+
 exports.version = '0.5';
 
 exports.module = function(phantomas) {
@@ -60,6 +63,7 @@ exports.module = function(phantomas) {
 
 				// count DOM inserts
 				function appendSpy(child) {
+					/* jshint validthis: true */
 					var hasParent = typeof this.parentNode !== 'undefined';
 
 					// ignore appending to the node that's not yet added to DOM tree

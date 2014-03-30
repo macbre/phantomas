@@ -1,6 +1,8 @@
 /**
  * Analyzes static assets (CSS, JS and images)
  */
+'use strict';
+
 exports.version = '0.2';
 
 exports.module = function(phantomas) {
