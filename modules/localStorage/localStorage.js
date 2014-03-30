@@ -1,6 +1,7 @@
 /**
  * localStorage metrics
  */
+/* global window: true */
 'use strict';
 
 exports.version = '0.3';

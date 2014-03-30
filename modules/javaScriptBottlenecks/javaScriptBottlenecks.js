@@ -5,6 +5,7 @@
  * @see http://www.quirksmode.org/blog/archives/2005/06/three_javascrip_1.html
  * @see http://www.stevesouders.com/blog/2012/04/10/dont-docwrite-scripts/
  */
+/* global document: true, window: true */
 'use strict';
 
 exports.version = '0.1';

@@ -8,7 +8,7 @@ exports.version = '0.2';
 exports.module = function(phantomas) {
 	// monitor cookies in HTTP headers
 	var cookiesSent = 0,
-		cookiesRecv = 0;
+		cookiesRecv = 0,
 		cookiesDomains = {};
 
 	phantomas.on('send', function(entry, res) {
@@ -35,6 +35,7 @@ exports.module = function(phantomas) {
 
 	// domain cookies (accessible by the browser)
 	phantomas.on('report', function() {
+		/* global document: true, window: true */
 		phantomas.setMetric('cookiesSent', cookiesSent); // @desc length of cookies sent in HTTP requests
 		phantomas.setMetric('cookiesRecv', cookiesRecv); // @desc length of cookies received in HTTP responses
 

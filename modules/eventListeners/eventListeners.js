@@ -1,6 +1,7 @@
 /**
  * Analyzes events bound to DOM elements
  */
+/* global Document: true, Element: true, window: true */
 'use strict';
 
 exports.version = '0.1';
@@ -14,6 +15,7 @@ exports.module = function(phantomas) {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
 				function eventSpy(eventType) {
+					/* jshint validthis: true */
 					phantomas.log('DOM event: "' + eventType + '" bound to "' + phantomas.getDOMPath(this) + '"');
 					phantomas.incr('eventsBound');
 				}
