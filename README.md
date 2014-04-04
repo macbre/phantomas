@@ -111,7 +111,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 102_
+_Current number of metrics: 103_
 
 Units:
 
@@ -174,6 +174,7 @@ Units:
 * headersSize: size of all headers
 * headersSentSize: size of sent headers
 * headersRecvSize: size of received headers
+* headersBiggerThanContent: number of responses with headers part bigger than the response body
 
 ### Domains
 
