@@ -45,11 +45,11 @@ exports.module = function(phantomas) {
 
 		// size
 		pushToStack('smallestResponse', entry, function(stack, entry) {
-			return stack.bodySize > entry.bodySize;
+			return stack.contentLength > entry.contentLength;
 		});
 
 		pushToStack('biggestResponse', entry, function(stack, entry) {
-			return stack.bodySize < entry.bodySize;
+			return stack.contentLength < entry.contentLength;
 		});
 
 		// time (from sent to last byte)
@@ -98,8 +98,8 @@ exports.module = function(phantomas) {
 			switch (metric) {
 				case 'smallestResponse':
 				case 'biggestResponse':
-					phantomas.setMetric(metric, entry.bodySize);
-					details = (entry.bodySize/1024).toFixed(2) + ' kB';
+					phantomas.setMetric(metric, entry.contentLength);
+					details = (entry.contentLength/1024).toFixed(2) + ' kB';
 					break;
 
 				case 'fastestResponse':
