@@ -45,9 +45,9 @@ exports.module = function(phantomas) {
 
 		// check small images that can be base64 encoded
 		if (entry.isImage) {
-			if (entry.bodySize < BASE64_SIZE_THRESHOLD) {
+			if (entry.contentLength < BASE64_SIZE_THRESHOLD) {
 				phantomas.incrMetric('smallImages');
-				phantomas.addOffender('smallImages', entry.url + ' (' + (entry.bodySize/1024).toFixed(2) + ' kB)');
+				phantomas.addOffender('smallImages', entry.url + ' (' + (entry.contentLength/1024).toFixed(2) + ' kB)');
 			}
 		}
 

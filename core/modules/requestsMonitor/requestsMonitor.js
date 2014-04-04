@@ -126,7 +126,7 @@ exports.module = function(phantomas) {
 
 				// FIXME: buggy
 				// @see https://github.com/ariya/phantomjs/issues/10169
-				entry.bodySize += res.bodySize || 0;
+				entry.bodySize = res.bodySize || 0;
 				break;
 
 			// the end of response
@@ -157,6 +157,12 @@ exports.module = function(phantomas) {
 						// because: https://github.com/ariya/phantomjs/issues/10156
 						case 'content-length':
 							entry.contentLength = parseInt(header.value, 10);
+
+							/**
+							if (entry.bodySize !== entry.contentLength) {
+								phantomas.log('%s: %j', 'bodySize vs contentLength', {url: entry.url, bodySize: entry.bodySize, contentLength: entry.contentLength});
+							}
+							**/
 							break;
 
 						// detect content type
@@ -254,12 +260,19 @@ exports.module = function(phantomas) {
 						break;
 				}
 
+				// default value (if Content-Length header is not present in the response or it's base64-encoded)
+				// see issue #137
+				if (typeof entry.contentLength === 'undefined') {
+					entry.contentLength = entry.bodySize;
+					phantomas.log('%s: %j', 'contentLength missing', {url: entry.url, bodySize: entry.bodySize});
+				}
+
 				// requests stats
 				if (!entry.isBase64) {
 					phantomas.incrMetric('requests');
 
-					phantomas.incrMetric('bodySize', entry.bodySize); // content only
-					phantomas.incrMetric('contentLength', entry.contentLength || entry.bodySize); // content only
+					phantomas.incrMetric('bodySize', entry.bodySize);
+					phantomas.incrMetric('contentLength', entry.contentLength);
 				}
 
 				if (entry.gzip) {

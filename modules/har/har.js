@@ -79,7 +79,7 @@ function createHAR(page, creator) {
             request: {
                 // Accurate bodySize blocked on https://github.com/ariya/phantomjs/pull/11484
                 // bodySize: -1,
-                bodySize: startReply.bodySize,
+                bodySize: startReply.contentLength,
                 cookies: [],
                 headers: request.headers,
                 // Accurate headersSize blocked on https://github.com/ariya/phantomjs/pull/11484
@@ -91,7 +91,7 @@ function createHAR(page, creator) {
                 url: request.url,
             },
             response: {
-                bodySize: startReply.bodySize,
+                bodySize: startReply.contentLength,
                 cookies: [],
                 headers: endReply.headers,
                 headersSize: -1,
@@ -101,7 +101,7 @@ function createHAR(page, creator) {
                 statusText: endReply.statusText,
                 content: {
                     mimeType: endReply.contentType || '',
-                    size: startReply.bodySize,
+                    size: startReply.bodySize, // uncompressed
                     text: startReply.content || ''
                 }
             },

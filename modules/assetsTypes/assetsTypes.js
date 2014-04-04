@@ -29,14 +29,16 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('recv', function(entry, res) {
-		phantomas.incrMetric(entry.type + 'Count');
-		phantomas.incrMetric(entry.type + 'Size', entry.bodySize);
+		var size = entry.contentLength;
 
-		phantomas.addOffender(entry.type + 'Count', entry.url + ' (' + (entry.bodySize / 1024).toFixed(2)  + ' kB)');
+		phantomas.incrMetric(entry.type + 'Count');
+		phantomas.incrMetric(entry.type + 'Size', size);
+
+		phantomas.addOffender(entry.type + 'Count', entry.url + ' (' + (size / 1024).toFixed(2)  + ' kB)');
 	});
 
 	phantomas.on('base64recv', function(entry, res) {
 		phantomas.incrMetric('base64Count');
-		phantomas.incrMetric('base64Size', entry.bodySize);
+		phantomas.incrMetric('base64Size', entry.contentLength);
 	});
 };
