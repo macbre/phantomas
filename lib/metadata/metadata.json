@@ -658,17 +658,20 @@
     "assetsNotGzipped": {
       "desc": "number of static assets that were not gzipped",
       "unreliable": true,
+      "offenders": true,
       "unit": "number",
       "module": "staticAssets"
     },
     "assetsWithQueryString": {
       "desc": "number of static assets requested with query string (e.g. ?foo) in URL",
+      "offenders": true,
       "unit": "number",
       "module": "staticAssets"
     },
     "smallImages": {
       "desc": "number of images smaller than 2 kB that can be base64 encoded",
       "unreliable": true,
+      "offenders": true,
       "unit": "number",
       "module": "staticAssets"
     },
@@ -729,5 +732,5 @@
   },
   "metricsCount": 126,
   "modulesCount": 32,
-  "version": "0.12.1"
+  "version": "1.0.0"
 }
