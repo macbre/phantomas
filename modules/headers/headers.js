@@ -14,6 +14,8 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('headersSentSize'); // @desc size of sent headers
 	phantomas.setMetric('headersRecvSize'); // @desc size of received headers
 
+	phantomas.setMetric('headersBiggerThanContent'); // @desc number of responses with headers part bigger than the response body
+
 	function processHeaders(headers) {
 		var res = {
 			count: 0,
@@ -31,22 +33,28 @@ exports.module = function(phantomas) {
 	}
 
 	phantomas.on('send', function(entry, res) {
-		var data = processHeaders(res.headers);
+		var headers = processHeaders(res.headers);
 
-		phantomas.incrMetric('headersCount', data.count);
-		phantomas.incrMetric('headersSize', data.size);
+		phantomas.incrMetric('headersCount', headers.count);
+		phantomas.incrMetric('headersSize', headers.size);
 
-		phantomas.incrMetric('headersSentCount', data.count);
-		phantomas.incrMetric('headersSentSize', data.size);
+		phantomas.incrMetric('headersSentCount', headers.count);
+		phantomas.incrMetric('headersSentSize', headers.size);
 	});
 		
 	phantomas.on('recv', function(entry, res) {
-		var data = processHeaders(res.headers);
+		var headers = processHeaders(res.headers);
 
-		phantomas.incrMetric('headersCount', data.count);
-		phantomas.incrMetric('headersSize', data.size);
+		phantomas.incrMetric('headersCount', headers.count);
+		phantomas.incrMetric('headersSize', headers.size);
 
-		phantomas.incrMetric('headersRecvCount', data.count);
-		phantomas.incrMetric('headersRecvSize', data.size);
+		phantomas.incrMetric('headersRecvCount', headers.count);
+		phantomas.incrMetric('headersRecvSize', headers.size);
+
+		// skip HTTP 204 No Content responses
+		if ((entry.status !== 204) && (headers.size > entry.contentLength)) {
+			phantomas.incrMetric('headersBiggerThanContent');
+			phantomas.addOffender('headersBiggerThanContent', '%s (body: %s kB / headers: %s kB)', entry.url, (entry.contentLength / 1024).toFixed(2), (headers.size / 1024).toFixed(2));
+		}
 	});
 };

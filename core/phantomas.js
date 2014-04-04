@@ -789,8 +789,11 @@ phantomas.prototype = {
 		return this.results.getMetric(name);
 	},
 
-	addOffender: function(metricName, msg) {
-		this.results.addOffender(metricName, msg);
+	addOffender: function(/**metricName, msg, ... */) {
+		var args = Array.prototype.slice.call(arguments),
+			metricName = args.shift();
+
+		this.results.addOffender(metricName, this.util.format.apply(this, args));
 	},
 
 	// add log message
