@@ -9,7 +9,9 @@ exports.module = function(phantomas) {
 	var BASE64_SIZE_THRESHOLD = 2 * 1024;
 
 	// count requests for each asset
-	var assetsReqCounter = {};
+	var assetsReqCounter = {},
+		// TODO: use 3pc database with tracking services
+		trackingUrls = /google-analytics.com\/__utm.gif|pixel.quantserve.com\/pixel/;
 
 	phantomas.setMetric('assetsNotGzipped'); // @desc number of static assets that were not gzipped @unreliable
 	phantomas.setMetric('assetsWithQueryString'); // @desc number of static assets requested with query string (e.g. ?foo) in URL
@@ -21,8 +23,7 @@ exports.module = function(phantomas) {
 		var isContent = entry.status === 200;
 
 		// skip tracking requests
-		// TODO: use 3pc database with tracking services
-		if (/google-analytics.com\/__utm.gif|pixel.quantserve.com\/pixel/.test(entry.url)) {
+		if (trackingUrls.test(entry.url)) {
 			return;
 		}
 
