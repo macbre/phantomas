@@ -126,7 +126,8 @@ function createHAR(page, creator) {
                     id: address,
                     title: title,
                     pageTimings: {
-                        onLoad: page.endTime.getTime() - page.startTime.getTime()
+                        onLoad: page.windowOnLoadTime || -1,
+                        onContentLoad: page.onDOMReadyTime || -1
                     }
                 }
             ],
@@ -146,7 +147,9 @@ exports.module = function(phantomas) {
         title: undefined,
         address: undefined,
         startTime: undefined,
-        endTime: undefined
+        endTime: undefined,
+        onDOMReadyTime: undefined,
+        windowOnLoadTime: undefined
     };
 
     var creator = {
@@ -204,10 +207,25 @@ exports.module = function(phantomas) {
         }
     });
 
+    phantomas.on('metric', function(name, value) {
+        switch (name) {
+            case 'onDOMReadyTime':
+                page.onDOMReadyTime = value;
+                break;
+            case 'windowOnLoadTime':
+                page.windowOnLoadTime = value;
+                break;
+        }
+    });
+
     phantomas.on('report', function() {
         // Set endTime if page was not finished correctly
         if (! page.endTime)
             page.endTime = new Date();
+
+        // If metric 'windowOnLoadTime' hasn't been fired, compute it
+        if (! page.windowOnLoadTime)
+            page.windowOnLoadTime = page.endTime.getTime() - page.startTime.getTime();
 
         phantomas.log('Create HAR');
 
