@@ -183,11 +183,11 @@ exports.module = function(phantomas) {
     });
 
     phantomas.on('pageOpen', function() {
-         page.startTime = new Date(); 
+        page.startTime = new Date(); 
     });
 
     phantomas.on('loadFinished', function() {
-         page.endTime = new Date();
+        page.endTime = new Date();
     });
 
     phantomas.on('onResourceRequested', function(res, req) {
