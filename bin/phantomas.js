@@ -31,6 +31,8 @@ program
 
 	// optional params
 	.describe('allow-domain', 'allow requests to given domain(s) - aka whitelist [domain],[domain],...')
+	.describe('auth-user', 'sets the user name used for HTTP authentication')
+	.describe('auth-pass', 'sets the password used for HTTP authentication')
 	.describe('block-domain', 'disallow requests to given domain(s) - aka blacklist [domain],[domain],...')
 	.describe('config', 'uses JSON-formatted config file to set parameters')
 	.describe('cookie', 'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")')
