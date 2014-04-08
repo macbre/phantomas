@@ -83,6 +83,8 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--no-externals` block requests to 3rd party domains
 * `--allow-domain=[domain],[domain]` allow requests to given domain(s) - aka whitelist
 * `--block-domain=[domain],[domain]` disallow requests to given domain(s) - aka blacklist
+* `--auth-user` sets the user name used for HTTP authentication
+* `--auth-pass` sets the password used for HTTP authentication
 * `--disable-js` disable JavaScript on the page that will be loaded
 * `--analyze-css` emit in-depth CSS metrics **experimental**
 * `--film-strip` register film strip when page is loading **experimental**
