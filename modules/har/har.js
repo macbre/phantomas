@@ -146,6 +146,7 @@ exports.module = function(phantomas) {
         path = '';
 
     var page = {
+        origin: undefined,
         resources: [],
         title: undefined,
         address: undefined,
@@ -178,12 +179,11 @@ exports.module = function(phantomas) {
     phantomas.log('HAR path: %s', path);
 
     phantomas.on('pageBeforeOpen', function(p) {
-        page.address = p.url;
-        page.title = p.title;
+        page.origin = p;
     });
 
     phantomas.on('pageOpen', function() {
-        page.startTime = new Date(); 
+        page.startTime = new Date();
     });
 
     phantomas.on('loadFinished', function() {
@@ -196,7 +196,6 @@ exports.module = function(phantomas) {
             startReply: null,
             endReply: null
         };
-
     });
 
     phantomas.on('onResourceReceived', function(res) {
@@ -230,7 +229,10 @@ exports.module = function(phantomas) {
         if (! page.windowOnLoadTime)
             page.windowOnLoadTime = page.endTime.getTime() - page.startTime.getTime();
 
-        phantomas.log('Create HAR');
+        page.address = page.origin.url;
+        page.title = page.origin.title;
+
+        phantomas.log('Create HAR:', page.address, page.title);
 
         var har,
             dump;
