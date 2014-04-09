@@ -232,7 +232,7 @@ exports.module = function(phantomas) {
         page.address = page.origin.url;
         page.title = page.origin.title;
 
-        phantomas.log('Create HAR:', page.address, page.title);
+        phantomas.log('Create HAR: %s ("%s")', page.address, page.title);
 
         var har,
             dump;
