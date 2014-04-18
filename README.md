@@ -381,3 +381,4 @@ Use [grunt](http://gruntjs.com/) to automate daily dev tasks, including your's a
 
 * [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
 * [juve](https://github.com/jared-stilwell/juve)
+* [grunt-devperf](https://github.com/gmetais/grunt-devperf)
