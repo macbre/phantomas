@@ -455,6 +455,39 @@
       "unit": "number",
       "module": "domComplexity"
     },
+    "commentsSize": {
+      "desc": "the size of HTML comments on the page",
+      "offenders": true,
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
+    "hiddenContentSize": {
+      "desc": "the size of content of hidden elements on the page (with CSS display: none)",
+      "offenders": true,
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
+    "whiteSpacesSize": {
+      "desc": "the size of text nodes with whitespaces only",
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
+    "DOMelementsCount": {
+      "desc": "total number of HTML element nodes",
+      "unit": "number",
+      "module": "domComplexity"
+    },
+    "DOMelementMaxDepth": {
+      "desc": "maximum level on nesting of HTML element node",
+      "unit": "number",
+      "module": "domComplexity"
+    },
+    "nodesWithInlineCSS": {
+      "desc": "number of nodes with inline CSS styling (with style attribute)",
+      "offenders": true,
+      "unit": "number",
+      "module": "domComplexity"
+    },
     "DOMqueries": {
       "desc": "number of all DOM queries",
       "offenders": true,
@@ -736,7 +769,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 127,
-  "modulesCount": 32,
-  "version": "1.0.0"
+  "metricsCount": 133,
+  "modulesCount": 33,
+  "version": "1.1.0"
 }
