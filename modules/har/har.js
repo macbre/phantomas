@@ -78,20 +78,18 @@ function createHAR(page, creator) {
             pageref: address,
             request: {
                 // Accurate bodySize blocked on https://github.com/ariya/phantomjs/pull/11484
-                // bodySize: -1,
-                bodySize: startReply.contentLength,
+                bodySize: -1,
                 cookies: [],
                 headers: request.headers,
                 // Accurate headersSize blocked on https://github.com/ariya/phantomjs/pull/11484
-                // headersSize: -1,
-                headersSize: 0,
+                headersSize: -1,
                 httpVersion: 'HTTP/1.1',
                 method: request.method,
                 queryString: [],
                 url: request.url,
             },
             response: {
-                bodySize: startReply.contentLength,
+                bodySize: startReply.bodySize,
                 cookies: [],
                 headers: endReply.headers,
                 headersSize: -1,
