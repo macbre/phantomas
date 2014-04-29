@@ -129,8 +129,8 @@ function createHAR(page, creator) {
                     id: address,
                     title: title,
                     pageTimings: {
-                        onLoad: page.windowOnLoadTime || -1,
-                        onContentLoad: page.onDOMReadyTime || -1
+                        onLoad: page.onLoad || -1,
+                        onContentLoad: page.onContentLoad || -1
                     }
                 }
             ],
@@ -153,7 +153,10 @@ exports.module = function(phantomas) {
         startTime: undefined,
         endTime: undefined,
         onDOMReadyTime: undefined,
-        windowOnLoadTime: undefined
+        windowOnLoadTime: undefined,
+        timeToLastByte: undefined,
+        onLoad: undefined,
+        onContentLoad: undefined
     };
 
     var creator = {
@@ -217,6 +220,9 @@ exports.module = function(phantomas) {
             case 'windowOnLoadTime':
                 page.windowOnLoadTime = value;
                 break;
+            case 'timeToLastByte':
+                page.timeToLastByte = value;
+                break;
         }
     });
 
@@ -231,6 +237,11 @@ exports.module = function(phantomas) {
 
         page.address = page.origin.url;
         page.title = page.origin.title;
+
+        // Times (windowOnLoadTime, onDOMReadyTime) are relative to responseEnd entry
+        // in NavigationTiming (represented by timeToLastByte metric)
+        page.onLoad = page.timeToLastByte + page.windowOnLoadTime;
+        page.onContentLoad = page.timeToLastByte + page.onDOMReadyTime;
 
         phantomas.log('Create HAR: %s ("%s")', page.address, page.title);
 
