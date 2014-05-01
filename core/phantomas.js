@@ -265,6 +265,7 @@ phantomas.prototype = {
 			require: this.require.bind(this),
 			render: this.page.render.bind(this.page),
 			setZoom: setZoom.bind(this),
+			getSource: this.getSource.bind(this),
 
 			// utils
 			runScript: this.runScript.bind(this)
@@ -788,6 +789,10 @@ phantomas.prototype = {
 
 	getMetric: function(name) {
 		return this.results.getMetric(name);
+	},
+
+	getSource: function () {
+		return this.page.content;
 	},
 
 	addOffender: function(/**metricName, msg, ... */) {

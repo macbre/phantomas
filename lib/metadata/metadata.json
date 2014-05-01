@@ -635,6 +635,12 @@
       "unit": "string",
       "module": "mainRequest"
     },
+    "pageSource": {
+      "desc": "number of HTML source files saved",
+      "offenders": true,
+      "unit": "number",
+      "module": "pageSource"
+    },
     "redirects": {
       "desc": "number of HTTP redirects (either 301, 302 or 303)",
       "offenders": true,
@@ -769,7 +775,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 133,
-  "modulesCount": 33,
+  "metricsCount": 134,
+  "modulesCount": 34,
   "version": "1.1.0"
 }

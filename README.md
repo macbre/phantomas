@@ -89,6 +89,8 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--analyze-css` emit in-depth CSS metrics **experimental**
 * `--film-strip` register film strip when page is loading **experimental**
 * `--film-strip-dir=[dir path]` folder path to output film strip (default is ``./filmstrip`` directory) **experimental**
+* `--page-source` save page source to file **experimental**
+* `--page-source-dir=[dir path]` folder path to output page source (default is ``./html`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value
 * `--screenshot=[file name]` render fully loaded page to a given file
 * `--har=[file name]` save HAR to a given file
