@@ -75,6 +75,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--progress` shows page loading progress bar (disables verbose mode)
 * `--log=[log file]` log to a given file
 * `--modules=[moduleOne],[moduleTwo]` run only selected modules
+* `--include-dirs=[dirOne],[dirTwo]` load modules from specified directories
 * `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
 * `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.6.0 (PhantomJS/1.9.0; linux 64bit)``)
 * `--config=[JSON config file]` uses JSON-formatted config file to set parameters
