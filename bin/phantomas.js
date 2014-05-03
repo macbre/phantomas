@@ -41,6 +41,7 @@ program
 	.describe('ignore-ssl-errors', 'ignores SSL errors, such as expired or self-signed certificate errors')
 	.describe('log', 'log to a given file')
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
+	.describe('include-dirs', 'load modules from specified directories [dirOne],[dirTwo],...')
 	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('no-externals', 'block requests to 3rd party domains').boolean('no-externals')
 	.describe('post-load-delay', 'wait X seconds before generating a report')
