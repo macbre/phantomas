@@ -136,6 +136,12 @@ exports.module = function(phantomas) {
 				entry.timeToLastByte = res.time - entry.sendTime;
 				entry.receiveTime = entry.recvEndTime - entry.recvStartTime;
 
+				// issue #295
+				if (typeof entry.recvStartTime === 'undefined') {
+					phantomas.log('recv: "start" stage not registered for <%s>!', res.url);
+					entry.receiveTime = entry.recvEndTime - entry.sendTime;
+				}
+
 				// request method
 				switch(entry.method) {
 					case 'POST':
