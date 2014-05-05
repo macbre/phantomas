@@ -24,7 +24,8 @@ mockery.registerMock('webpage', {
 		return {
 			evaluate: function() {},
 			injectJs: function() {},
-			render: function() {}
+			render: function() {},
+			content: '<html></html>'
 		};
 	},
 });
@@ -72,7 +73,8 @@ vows.describe('phantomas public API').addBatch({
 				'echo',
 				'evaluate',
 				'injectJs',
-				'require'
+				'require',
+				'getSource'
 			];
 
 			methods.forEach(function(method) {
@@ -182,5 +184,11 @@ vows.describe('phantomas public API').addBatch({
 			assert.strictEqual(api.getParam('foo'), 124);
 			assert.strictEqual(api.getParam('test'), true);
 		},
+	},
+	'page source': {
+		topic: getPhantomasAPI,
+		'getSource() return the page source': function (api) {
+			assert.equal(api.getSource(), '<html></html>');
+		}
 	}
 }).export(module);
