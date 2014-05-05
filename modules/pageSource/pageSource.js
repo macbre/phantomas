@@ -1,8 +1,6 @@
 /**
  * Saves the souce of page being loaded to a file
  *
- * setMetric('pageSource') @desc number of HTML source files saved @offenders
- *
  * Please note that saving each file takes a few ms.
  * Consider increasing default timeout.
  *
@@ -37,8 +35,6 @@ exports.module = function(phantomas) {
 		// verify that the file was really written
 		if (fs.isReadable(path)) {
 			phantomas.log('Page source: saved to %s in %d ms', path, Date.now() - now);
-			phantomas.incrMetric('pageSource');
-			phantomas.addOffender('pageSource', path);
 		}
 		else {
 			phantomas.log('Page source: saved to %s failed!', path);
