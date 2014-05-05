@@ -82,6 +82,9 @@ var phantomas = function(params) {
 	// --modules=localStorage,cookies
 	this.modules = (typeof params.modules === 'string') ? params.modules.split(',') : [];
 
+	// --include-dirs=dirOne,dirTwo
+	this.includeDirs = (typeof params['include-dirs'] === 'string') ? params['include-dirs'].split(',') : [];
+
 	// --skip-modules=jQuery,domQueries
 	this.skipModules = (typeof params['skip-modules'] === 'string') ? params['skip-modules'].split(',') : [];
 
@@ -164,13 +167,17 @@ var phantomas = function(params) {
 	// load 3rd party modules
 	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
 
-	modules.forEach(function(moduleName) {
-		if (this.skipModules.indexOf(moduleName) > -1) {
-			this.log('Module ' + moduleName + ' skipped!');
-			return;
-		}
+	modules.forEach(this.addModule, this);
 
-		this.addModule(moduleName);
+	this.includeDirs.forEach(function(dirName) {
+		var fs = require('fs'),
+			dirPath = fs.absolute(dirName),
+			dirModules = this.listModulesInDir(dirPath);
+
+		dirModules.forEach(function(moduleName) {
+			this.addModuleInDir(dirPath, moduleName);
+		}, this);
+
 	}, this);
 };
 
@@ -284,12 +291,21 @@ phantomas.prototype = {
 
 	// initialize given phantomas module
 	addModule: function(name) {
+		return this.addModuleInDir('./../modules', name);
+	},
+
+	// initialize given phantomas module from dir
+	addModuleInDir: function(dir, name) {
 		var pkg;
+		if (this.skipModules.indexOf(name) > -1) {
+			this.log('Module ' + name + ' skipped!');
+			return;
+		}
 		try {
-			pkg = require('./../modules/' + name + '/' + name);
+			pkg = require(dir + '/' + name + '/' + name);
 		}
 		catch (e) {
-			this.log('Unable to load module "' + name + '"!');
+			this.log('Unable to load module "' + name + '" from ' + dir + '!');
 			return false;
 		}
 
@@ -307,10 +323,14 @@ phantomas.prototype = {
 
 	// returns list of 3rd party modules located in modules directory
 	listModules: function() {
-		this.log('Getting the list of all modules...');
+		return this.listModulesInDir(module.dirname + '/../modules');
+	},
+
+	// returns list of 3rd party modules located in modules directory
+	listModulesInDir: function(modulesDir) {
+		this.log('Getting the list of all modules in %s...', modulesDir);
 
 		var fs = require('fs'),
-			modulesDir = module.dirname + '/../modules',
 			ls = fs.list(modulesDir) || [],
 			modules = [];
 
