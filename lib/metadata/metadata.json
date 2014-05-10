@@ -29,16 +29,6 @@
       "unit": "number",
       "module": "requestsMonitor"
     },
-    "timeToFirstByte": {
-      "desc": "time it took to receive the first byte of the first response (that was not a redirect)",
-      "unit": "ms",
-      "module": "requestsMonitor"
-    },
-    "timeToLastByte": {
-      "desc": "time it took to receive the last byte of the first response (that was not a redirect)",
-      "unit": "ms",
-      "module": "requestsMonitor"
-    },
     "bodySize": {
       "desc": "size of the uncompressed content of all responses",
       "unreliable": true,
@@ -55,6 +45,16 @@
       "desc": "time it took to receive the last byte of the last HTTP response",
       "unit": "ms",
       "module": "requestsMonitor"
+    },
+    "timeToFirstByte": {
+      "desc": "time it took to receive the first byte of the first response (that was not a redirect)",
+      "unit": "ms",
+      "module": "timeToFirstByte"
+    },
+    "timeToLastByte": {
+      "desc": "time it took to receive the last byte of the first response (that was not a redirect)",
+      "unit": "ms",
+      "module": "timeToFirstByte"
     },
     "ajaxRequests": {
       "desc": "number of AJAX requests",
@@ -770,6 +770,6 @@
     }
   },
   "metricsCount": 133,
-  "modulesCount": 34,
+  "modulesCount": 35,
   "version": "1.1.0"
 }
