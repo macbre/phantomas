@@ -163,6 +163,7 @@ var phantomas = function(params) {
 	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
 	this.addCoreModule('httpAuth');
+	this.addCoreModule('timeToFirstByte');
 
 	// load 3rd party modules
 	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
