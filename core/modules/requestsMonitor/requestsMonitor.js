@@ -18,8 +18,6 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('postRequests');          // @desc number of POST requests
 	phantomas.setMetric('httpsRequests');         // @desc number of HTTPS requests
 	phantomas.setMetric('notFound');              // @desc number of HTTP 404 responses
-	phantomas.setMetric('timeToFirstByte');       // @desc time it took to receive the first byte of the first response (that was not a redirect)
-	phantomas.setMetric('timeToLastByte');        // @desc time it took to receive the last byte of the first response (that was not a redirect)
 	phantomas.setMetric('bodySize');              // @desc size of the uncompressed content of all responses @unreliable
 	phantomas.setMetric('contentLength');         // @desc size of the content of all responses (based on Content-Length header) @unreliable
 	phantomas.setMetric('httpTrafficCompleted');  // @desc time it took to receive the last byte of the last HTTP response
@@ -47,12 +45,6 @@ exports.module = function(phantomas) {
 			entry.isBase64 = true;
 		}
 	}
-
-	// when the monitoring started?
-	var loadStartedTime;
-	phantomas.on('loadStarted', function(res) {
-		loadStartedTime = Date.now();
-	});
 
 	phantomas.on('onResourceRequested', function(res, request) {
 		// store current request data
@@ -300,22 +292,14 @@ exports.module = function(phantomas) {
 		}
 	});
 
-	// TTFB / TTLB metrics
-	var ttfbMeasured = false;
+	// completion of the last HTTP request
+	var loadStartedTime;
+	phantomas.on('loadStarted', function(res) {
+		// when the monitoring started?
+		loadStartedTime = Date.now();
+	});
 
-	phantomas.on('recv', function(entry, res) {
-		// check the first response which is not a redirect (issue #74)
-		if (!ttfbMeasured && !entry.isRedirect) {
-			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte, true);
-			phantomas.setMetric('timeToLastByte', entry.timeToLastByte, true);
-
-			ttfbMeasured = true;
-
-			phantomas.log('Time to first byte: set to %d ms for <%s> (HTTP %d)', entry.timeToFirstByte, entry.url, entry.status);
-			phantomas.emit('responseEnd', entry, res); // @desc the first response (that was not a redirect) fully received
-		}
-
-		// completion of the last HTTP request
+        phantomas.on('recv', function(entry, res) {
 		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - loadStartedTime);
 	});
 };
