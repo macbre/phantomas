@@ -14,7 +14,6 @@ var phantomas = require('..'),
 	program = require('optimist'),
 	ProgressBar = require('progress'),
 	options = {},
-	program,
 	runs,
 	url = '';
 
