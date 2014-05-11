@@ -8,6 +8,10 @@
 			"name": "mobile",
 			"value": "on",
 			"domain": ".phantomjs.org"
+		},
+		{
+			"name": "foo",
+			"value": "bar"
 		}
 	],
 	"asserts": {
