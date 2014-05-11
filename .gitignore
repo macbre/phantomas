@@ -2,6 +2,7 @@ log
 *.log
 *.swp
 filmstrip
+html
 
 node_modules
 npm-debug.log
