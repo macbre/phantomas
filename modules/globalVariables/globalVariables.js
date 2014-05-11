@@ -4,7 +4,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('globalVariables'); // @desc number of JS globals variables @offenders
@@ -30,8 +30,6 @@ exports.module = function(phantomas) {
 			iframe.src = 'about:blank';
 			document.body.appendChild(iframe);
 
-			phantomas.spyEnabled(true);
-
 			cleanWindow = iframe.contentWindow;
 
 			for (varName in cleanWindow) {
@@ -52,6 +50,11 @@ exports.module = function(phantomas) {
 					phantomas.addOffender('globalVariablesFalsy', varName + ' = ' + JSON.stringify(window[varName]));
 				}
 			}
+
+			// cleanup (issue #297)
+			document.body.removeChild(iframe);
+
+			phantomas.spyEnabled(true);
 		})(window.__phantomas);});
 	});
 };
