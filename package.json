@@ -26,7 +26,7 @@
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.4",
-    "async": "~0.2.10",
+    "async": "~0.8.0",
     "csv-string": "~2.1.1",
     "debug": "0.7.x",
     "elasticsearch": "~1.5.14",
