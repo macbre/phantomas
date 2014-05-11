@@ -91,9 +91,6 @@ var phantomas = function(params) {
 	// disable JavaScript on the page that will be loaded
 	this.disableJs = params['disable-js'] === true;
 
-	// setup cookies handling
-	this.initCookies();
-
 	// setup the stuff
 	this.emitter = new (this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
@@ -162,6 +159,8 @@ var phantomas = function(params) {
 	// load core modules
 	this.log('Loading core modules...');
 	this.addCoreModule('requestsMonitor');
+
+	this.addCoreModule('cookies');
 	this.addCoreModule('httpAuth');
 	this.addCoreModule('timeToFirstByte');
 
@@ -344,80 +343,6 @@ phantomas.prototype = {
 		return modules;
 	},
 
-	// setup cookies handling
-	initCookies: function() {
-		// cookie handling via command line and config.json
-		phantom.cookiesEnabled = true;
-
-		// handles multiple cookies from config.json, and used for storing
-		// constructed cookies from command line.
-		this.cookies = this.params.cookies || [];
-
-		// --cookie='bar=foo;domain=url'
-		// for multiple cookies, please use config.json `cookies`.
-		if (typeof this.params.cookie === 'string') {
-
-			// Parse cookie. at minimum, need a key=value pair, and a domain.
-			// Domain attr, if unavailble, is created from `params.url` during
-			//  addition to phantomjs in `phantomas.run`
-			// Full JS cookie syntax is supported.
-
-			var cookieComponents = this.params.cookie.split(';'),
-				cookie = {};
-
-			for (var i = 0, len = cookieComponents.length; i < len; i++) {
-				var frag = cookieComponents[i].split('=');
-
-				// special case: key-value
-				if (i === 0) {
-					cookie.name = frag[0];
-					cookie.value = frag[1];
-
-				// special case: secure
-				} else if (frag[0] === 'secure') {
-					cookie.secure = true;
-
-				// everything else
-				} else {
-					cookie[frag[0]] = frag[1];
-				}
-			}
-
-			// see phantomas.run for validation.
-			this.cookies.push(cookie);
-		}
-	},
-
-	// add cookies, if any, providing a domain shim
-	injectCookies: function() {
-		if (this.cookies && this.cookies.length > 0) {
-			// @see http://nodejs.org/docs/latest/api/url.html
-			var parseUrl = this.require('url').parse;
-
-			this.cookies.forEach(function(cookie) {
-
-				// phantomjs required attrs: *name, *value, *domain
-				if (!cookie.name || !cookie.value) {
-					throw 'this cookie is missing a name or value property: ' + JSON.stringify(cookie);
-				}
-
-				if (!cookie.domain) {
-					var parsed = parseUrl(this.params.url),
-						root = parsed.hostname.replace(/^www/, ''); // strip www
-
-					cookie.domain = root;
-				}
-
-				if (!phantom.addCookie(cookie)) {
-					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
-				}
-
-				this.log('Cookie set: ' + JSON.stringify(cookie));
-
-			}, this /* scope */);
-		}
-	},
-
 	// setup polling for loading progress (issue #204)
 	// pipe JSON messages over stderr
 	initLoadingProgress: function() {
@@ -451,9 +376,6 @@ phantomas.prototype = {
 		if (!this.url) {
 			throw '--url argument must be provided!';
 		}
-
-		// add cookies, if any, providing a domain shim.
-		this.injectCookies();
 
 		this.start = Date.now();
 
