@@ -36,8 +36,8 @@ exports.module = function(phantomas) {
 	// domain cookies (accessible by the browser)
 	phantomas.on('report', function() {
 		/* global document: true, window: true */
-		phantomas.setMetric('cookiesSent', cookiesSent); // @desc length of cookies sent in HTTP requests
-		phantomas.setMetric('cookiesRecv', cookiesRecv); // @desc length of cookies received in HTTP responses
+		phantomas.setMetric('cookiesSent', cookiesSent); // @desc length of cookies sent in HTTP requests @unreliable
+		phantomas.setMetric('cookiesRecv', cookiesRecv); // @desc length of cookies received in HTTP responses @unreliable
 
 		// domains with cookies
 		var domainsWithCookies = 0;
