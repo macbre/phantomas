@@ -10,33 +10,11 @@ exports.version = '0.1';
 var fs = require('fs');
 
 /**
- * From phantomHAR
+ * Inspired by phantomHAR
  * @author: Christopher Van (@cvan)
  * @homepage: https://github.com/cvan/phantomHAR
  * @original: https://github.com/cvan/phantomHAR/blob/master/phantomhar.js
  */
-
-function getErrorString(error) {
-    // According to http://qt-project.org/doc/qt-4.8/qnetworkreply.html
-    switch (error.errorCode) {
-        case 1:
-            return '(refused)';
-        case 2:
-            return '(closed)';
-        case 3:
-            return '(host not found)';
-        case 4:
-            return '(timeout)';
-        case 5:
-            return '(canceled)';
-        case 6:
-            return '(ssl failure)';
-        case 7:
-            return '(net failure)';
-        default:
-            return '(unknown error)';
-    }
-}
 
 function createHAR(page, creator) {
     var address = page.address;
@@ -48,11 +26,11 @@ function createHAR(page, creator) {
 
     resources.forEach(function(resource) {
         var request = resource.request;
-        var startReply = resource.startReply;
-        var endReply = resource.endReply;
-        var error = resource.error;
+        var response = resource.response;
+        var entry = resource.entry;
+        var contentType = entry.headers['Content-Type'];
 
-        if (!request || !startReply || !endReply) {
+        if (!request || !response || !entry) {
             return;
         }
 
@@ -62,58 +40,45 @@ function createHAR(page, creator) {
             return;
         }
 
-        if (error) {
-            startReply.bodySize = 0;
-            startReply.time = 0;
-            endReply.time = 0;
-            endReply.content = {};
-            endReply.contentType = null;
-            endReply.headers = [];
-            endReply.statusText = getErrorString(error);
-            endReply.status = null;
-        }
-
         entries.push({
             cache: {},
             pageref: address,
             request: {
                 // Accurate bodySize blocked on https://github.com/ariya/phantomjs/pull/11484
-                // bodySize: -1,
-                bodySize: startReply.contentLength,
+                bodySize: -1,
                 cookies: [],
                 headers: request.headers,
                 // Accurate headersSize blocked on https://github.com/ariya/phantomjs/pull/11484
-                // headersSize: -1,
-                headersSize: 0,
+                headersSize: -1,
                 httpVersion: 'HTTP/1.1',
                 method: request.method,
                 queryString: [],
                 url: request.url,
             },
             response: {
-                bodySize: startReply.contentLength,
+                bodySize: entry.contentLength,
                 cookies: [],
-                headers: endReply.headers,
+                headers: response.headers,
                 headersSize: -1,
                 httpVersion: 'HTTP/1.1',
                 redirectURL: '',
-                status: endReply.status,
-                statusText: endReply.statusText,
+                status: entry.status,
+                statusText: entry.statusText,
                 content: {
-                    mimeType: endReply.contentType || '',
-                    size: startReply.bodySize, // uncompressed
-                    text: startReply.content || ''
+                    mimeType: contentType || '',
+                    size: entry.bodySize, // uncompressed
+                    text: entry.content || ''
                 }
             },
-            startedDateTime: request.time.toISOString(),
-            time: endReply.time - request.time,
+            startedDateTime: entry.sendTime.toISOString(),
+            time: entry.timeToLastByte,
             timings: {
                 blocked: 0,
                 dns: -1,
                 connect: -1,
                 send: 0,
-                wait: startReply.time - request.time,
-                receive: endReply.time - startReply.time,
+                wait: entry.timeToFirstByte || 0,
+                receive: entry.receiveTime,
                 ssl: -1
             }
         });
@@ -193,23 +158,17 @@ exports.module = function(phantomas) {
         page.endTime = new Date();
     });
 
-    phantomas.on('onResourceRequested', function(res, req) {
+    phantomas.on('send', function(entry, res) {
         page.resources[res.id] = {
             request: res,
-            startReply: null,
-            endReply: null
+            response: null,
+            entry: null
         };
     });
 
-    phantomas.on('onResourceReceived', function(res) {
-        switch (res.stage) {
-            case 'start':
-                page.resources[res.id].startReply = res;
-                break;
-            case 'end':
-                page.resources[res.id].endReply = res;
-                break;
-        }
+    phantomas.on('recv', function(entry, res) {
+        page.resources[res.id].response = res;
+        page.resources[res.id].entry = entry;
     });
 
     phantomas.on('metric', function(name, value) {
