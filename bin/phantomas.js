@@ -157,7 +157,7 @@ async.series(
 		// this function is called when phantomas is done with all runs
 		function doneFn() {
 			// pass error code from PhantomJS process
-			debug('Exiting with code #%d', err);
+			debug('Exiting with code #%d', err || 0);
 			process.exit(err);
 		}
 
