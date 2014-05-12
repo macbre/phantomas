@@ -28,7 +28,7 @@ function createHAR(page, creator) {
         var request = resource.request;
         var response = resource.response;
         var entry = resource.entry;
-        var contentType = entry.headers['content-type'];
+        var contentType = entry.headers['Content-Type'];
 
         if (!request || !response || !entry) {
             return;
