@@ -102,6 +102,10 @@ vows.describe('requestMonitor').addBatch({
 		'isBase64 is set': assertField('isBase64', true)
 	},
 }).addBatch({
+	'content type is properly passed': {
+		topic: recvContentType('text/html'),
+		'entry.contentType is set': assertField('contentType', 'text/html')
+	},
 	'HTML is properly detected': {
 		topic: recvContentType('text/html'),
 		'isHTML is set': assertField('isHTML', true)
@@ -132,6 +136,10 @@ vows.describe('requestMonitor').addBatch({
 	},
 	'SVG image is properly detected': {
 		topic: recvContentType('image/svg+xml'),
+		'isImage is set': assertField('isImage', true)
+	},
+	'WEBP image is properly detected': {
+		topic: recvContentType('image/webp'),
 		'isImage is set': assertField('isImage', true)
 	},
 	'Web font is properly detected (via MIME)': {
