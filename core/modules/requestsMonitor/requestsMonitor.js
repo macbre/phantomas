@@ -167,6 +167,7 @@ exports.module = function(phantomas) {
 						case 'content-type':
 							// parse header value
 							var value = header.value.split(';').shift().toLowerCase();
+							entry.contentType = value;
 
 							switch(value) {
 								case 'text/html':
@@ -195,6 +196,7 @@ exports.module = function(phantomas) {
 								case 'image/jpeg':
 								case 'image/gif':
 								case 'image/svg+xml':
+								case 'image/webp':
 									entry.type = 'image';
 									entry.isImage = true;
 									break;
