@@ -28,7 +28,6 @@ function createHAR(page, creator) {
         var request = resource.request;
         var response = resource.response;
         var entry = resource.entry;
-        var contentType = entry.headers['Content-Type'];
 
         if (!request || !response || !entry) {
             return;
@@ -65,7 +64,7 @@ function createHAR(page, creator) {
                 status: entry.status,
                 statusText: entry.statusText,
                 content: {
-                    mimeType: contentType || '',
+                    mimeType: entry.contentType || '',
                     size: entry.bodySize, // uncompressed
                     text: entry.content || ''
                 }
