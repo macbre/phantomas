@@ -380,6 +380,9 @@ Metrics from phantomas run can be outputted directly in ElasticSearch :
 * [Know Your Engines: How to Make Your JavaScript Fast](http://cdn.oreillystatic.com/en/assets/1/event/60/Know%20Your%20Engines_%20How%20to%20Make%20Your%20JavaScript%20Fast%20Presentation%201.pdf) (by David Mandelin from Mozilla)
 * [Velocity Conf 2013 Workshop: Avoiding Web Performance Regression](http://www.slideshare.net/marcelduran/velocity-conf-2013) (by Marcel Duran from Twitter)
 
+## Videos
+* [Sebastian Golasch: The Glitch in the Game (Front End Ops Conference 2014)](http://youtu.be/B_kwo5V6m_w?t=12m25s)
+
 ## Utilities
 
 Use [grunt](http://gruntjs.com/) to automate daily dev tasks, including your's application web performance, via these great tools:
