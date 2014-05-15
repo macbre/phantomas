@@ -42,11 +42,23 @@ module.exports = function(results) {
 				res = formatSingleRunResults(results);
 			}
 			else {
+				var stats = new (require('../lib/stats'))();
+
 				res = {
 					runs: results.map(function(run) {
 						return formatSingleRunResults(run);
-					})
+					}),
+					stats: {}
 				};
+
+				// generate metrics stats (issue #285)
+				for (var i=0, runs=results.length; i<runs; i++) {
+					stats.pushMetrics(results[i].getMetrics());
+				}
+
+				stats.getMetrics().forEach(function(metricName) {
+					res.stats[metricName] = stats.getMetricStats(metricName);
+				});
 			}
 
 			return JSON.stringify(res);

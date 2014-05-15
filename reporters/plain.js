@@ -79,49 +79,9 @@ module.exports = function(results) {
 	function formatMultipleRunResults(results) {
 		var AsciiTable = require('ascii-table'),
 			format = require('util').format,
-			Stats = require('fast-stats').Stats,
+			stats = new (require('../lib/stats'))(),
 			runs = results.length,
 			fields, table;
-
-		// stats to be calculated
-		// @see https://github.com/bluesmoon/node-faststats
-		fields = {
-			Min: function(values) {
-				return values.range()[0];
-			},
-			Max: function(values) {
-				return values.range()[1];
-			},
-			Average: function(values) {
-				return values.amean().toFixed(2);
-			},
-			Median: function(values) {
-				return values.median().toFixed(2);
-			},
-			'Std Dev': function(values) {
-				return values.stddev().toFixed(2);
-			}
-		};
-
-		// calculate stats for each metric
-		function getMetricStats(metricName) {
-			var i,
-				res = [],
-				values = new Stats();
-
-			for (i=0; i<runs; i++) {
-				values.push(results[i].getMetric(metricName));
-			}
-
-			res.push(metricName);
-
-			// apply stats functions
-			Object.keys(fields).forEach(function(fnName) {
-				res.push(fields[fnName](values));
-			});
-
-			return res;
-		}
 
 		// table title and heading
 		table = new AsciiTable();
@@ -131,15 +91,29 @@ module.exports = function(results) {
 		var heading = [];
 		heading.push(AsciiTable.alignCenter('Metric', 30));
 
-		Object.keys(fields).forEach(function(name) {
+		stats.getAvailableStats().forEach(function(name) {
 			heading.push(AsciiTable.alignCenter(name, 12));
 		});
 
 		table.setHeading(heading);
 
 		// metrics stats
-		results[0].getMetricsNames().forEach(function(metricName) {
-			table.addRow(getMetricStats(metricName));
+		for (var i=0; i<runs; i++) {
+			stats.pushMetrics(results[i].getMetrics());
+		}
+
+		// generate rows (one for each metric)
+		stats.getMetrics().forEach(function(metricName) {
+			var row = [],
+				metricStats = stats.getMetricStats(metricName);
+
+			row.push(metricName);
+
+			Object.keys(metricStats).forEach(function(stat) {
+				row.push(metricStats[stat]);
+			});
+
+			table.addRow(row);
 		});
 
 		return table.toString() + "\n";
