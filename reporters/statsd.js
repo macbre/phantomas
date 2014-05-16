@@ -12,7 +12,7 @@
 
 var StatsD = require('node-statsd').StatsD;
 
-module.exports = function(results, options) {
+module.exports = function(results, reporterOptions, options) {
 	var client,
 		debug = require('debug')('phantomas:reporter:statsd'),
 		params = {

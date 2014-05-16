@@ -10,7 +10,7 @@
  */
 'use strict';
 
-module.exports = function (results, options) {
+module.exports = function (results, reporterOptions, options) {
 	var debug = require('debug')('phantomas:reporter:elasticsearch'),
 		params = {
 			host: (options['elasticsearch-host'] || 'localhost') + ':' + (options['elasticsearch-port'] || 9200),
