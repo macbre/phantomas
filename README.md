@@ -334,6 +334,24 @@ phantomas provides a number of reporters that can format the run results and sen
 
 Results can be emitted as TAP, CSV and JSON. ``plain`` format is most useful for human beings :)
 
+#### Parameters
+
+Formatters can be provided with colon separated list of options:
+
+```
+$ phantomas http://foo.net -R csv:no-header:timestamp
+```
+
+This will omit CSV headers row and add current timestamp as the first column, so you can append the results line to a growing file.
+
+##### CSV
+* ``no-header`` - omit CSV header
+* ``timestamp`` - add the current timestamp as the first column
+* ``url`` - add the URL as the first column
+
+##### JSON
+* ``pretty`` - emits pretty printed JSON
+
 #### StatsD integration
 
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:

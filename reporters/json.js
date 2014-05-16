@@ -1,9 +1,12 @@
 /**
- * Results formatter for --format=json
+ * Results formatter for -R json
+ *
+ * Options:
+ *  pretty - pretty print the JSON
  */
 'use strict';
 
-module.exports = function(results) {
+module.exports = function(results, reporterOptions) {
 	var isMultiple = Array.isArray(results);
 
 	function formatSingleRunResults(results) {
@@ -61,7 +64,13 @@ module.exports = function(results) {
 				});
 			}
 
-			return JSON.stringify(res);
+			// -R json:pretty
+			if (reporterOptions.pretty === true) {
+				return JSON.stringify(res, null, 2);
+			}
+			else {
+				return JSON.stringify(res);
+			}
 		}
 	};
 };
