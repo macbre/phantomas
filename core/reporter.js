@@ -8,12 +8,25 @@
 
 module.exports = function(results, options) {
 	var debug = require('debug')('phantomas:reporter'),
-		name = options.reporter,
-		reporterPath = '../reporters/' + name,
+		reporterName,
+		reporterOptions,
+		reporterPath,
 		reporter,
 		inMultipleMode = false;
 
-	debug('Setting up %s reporter...', name);
+	// parse reporter options, examples:
+	// -R plain
+	// -R csv
+	// -R csv:no-header:url:timestamp
+	reporterOptions = (options.reporter + '').split(':');
+	reporterName = reporterOptions.shift();
+
+	// allow access to options via object.key
+	reporterOptions.forEach(function(option) {
+		reporterOptions[option] = true;
+	});
+
+	debug('Setting up %s reporter (options: %j)...', reporterName, reporterOptions);
 
 	// make the results "flat" - i.e. single run mode
 	if (Array.isArray(results)) {
@@ -27,17 +40,20 @@ module.exports = function(results, options) {
 		}
 	}
 
+	// load the reporter
+	reporterPath = '../reporters/' + reporterName;
+
 	try {
-		reporter = new (require(reporterPath))(results, options);
+		reporter = new (require(reporterPath))(results, reporterOptions, options);
 	}
 	catch(ex) {
 		debug('Failed: %s', ex);
-		throw new Error('Reporter "' + name + '" is not supported!');
+		throw new Error('Reporter "' + reporterName + '" is not supported!');
 	}
 
 	// check handling of multiple runs results
 	if (inMultipleMode && reporter.handlesMultiple !== true) {
-		throw 'Reporter "' + name + '" does not handle multiple runs!';
+		throw 'Reporter "' + reporterName + '" does not handle multiple runs!';
 	}
 
 	debug('Done');
