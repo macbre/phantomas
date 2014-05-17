@@ -35,6 +35,7 @@
     "optimist": "0.6.x",
     "phantomjs": "~1.9.0",
     "progress": "~1.1.4",
+    "q": "^1.0.1",
     "tap": "~0.4.8",
     "tap-eater": ">=0.0.1",
     "travis-fold": ">=0.1.2"
