@@ -4,9 +4,25 @@
 /* global document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
+
+	// total length of HTML comments (including <!-- --> brackets)
+	phantomas.setMetric('commentsSize'); // @desc the size of HTML comments on the page @offenders
+
+	// total length of HTML of hidden elements (i.e. display: none)
+	phantomas.setMetric('hiddenContentSize'); // @desc the size of content of hidden elements on the page (with CSS display: none) @offenders
+
+	// total length of text nodes with whitespaces only (i.e. pretty formatting of HTML)
+	phantomas.setMetric('whiteSpacesSize'); // @desc the size of text nodes with whitespaces only
+
+	// count all tags
+	phantomas.setMetric('DOMelementsCount'); // @desc total number of HTML element nodes
+	phantomas.setMetric('DOMelementMaxDepth'); // @desc maximum level on nesting of HTML element node
+
+	// nodes with inlines CSS (style attribute)
+	phantomas.setMetric('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
 
 	// HTML size
 	phantomas.on('report', function() {
@@ -18,6 +34,7 @@ exports.module = function(phantomas) {
 			(function(phantomas) {
 				var runner = new phantomas.nodeRunner(),
 					whitespacesRegExp = /^\s+$/,
+					DOMelementMaxDepth = 0,
 					size = 0;
 
 				// include all nodes
@@ -29,7 +46,7 @@ exports.module = function(phantomas) {
 					switch (node.nodeType) {
 						case Node.COMMENT_NODE:
 							size = node.textContent.length + 7; // '<!--' + '-->'.length
-							phantomas.incr('commentsSize', size);
+							phantomas.incrMetric('commentsSize', size);
 
 							// log HTML comments bigger than 64 characters
 							if (size > 64) {
@@ -38,8 +55,8 @@ exports.module = function(phantomas) {
 							break;
 
 						case Node.ELEMENT_NODE:
-							phantomas.incr('DOMelementsCount');
-							phantomas.set('DOMelementMaxDepth', Math.max(phantomas.get('DOMelementMaxDepth') || 0, depth));
+							phantomas.incrMetric('DOMelementsCount');
+							DOMelementMaxDepth = Math.max(DOMelementMaxDepth, depth);
 
 							// ignore inline <script> tags
 							if (node.nodeName === 'SCRIPT') {
@@ -52,7 +69,7 @@ exports.module = function(phantomas) {
 							if (styles && styles.getPropertyValue('display') === 'none') {
 								if (typeof node.innerHTML === 'string') {
 									size = node.innerHTML.length;
-									phantomas.incr('hiddenContentSize', size);
+									phantomas.incrMetric('hiddenContentSize', size);
 
 									// log hidden containers bigger than 1 kB
 									if (size > 1024) {
@@ -66,7 +83,7 @@ exports.module = function(phantomas) {
 
 							// count nodes with inline CSS
 							if (node.hasAttribute('style')) {
-								phantomas.incr('nodesWithInlineCSS');
+								phantomas.incrMetric('nodesWithInlineCSS');
 								phantomas.addOffender('nodesWithInlineCSS', phantomas.getDOMPath(node) + ' (' + node.getAttribute('style')  + ')');
 							}
 
@@ -74,11 +91,13 @@ exports.module = function(phantomas) {
 
 						case Node.TEXT_NODE:
 							if (whitespacesRegExp.test(node.textContent)) {
-								phantomas.incr('whiteSpacesSize', node.textContent.length);
+								phantomas.incrMetric('whiteSpacesSize', node.textContent.length);
 							}
 							break;
 					}
 				});
+
+				phantomas.setMetric('DOMelementMaxDepth', DOMelementMaxDepth);
 
 				phantomas.spyEnabled(false, 'counting iframes and images');
 
@@ -105,21 +124,5 @@ exports.module = function(phantomas) {
 				phantomas.spyEnabled(true);
 			}(window.__phantomas));
 		});
-
-		// total length of HTML comments (including <!-- --> brackets)
-		phantomas.setMetricFromScope('commentsSize'); // @desc the size of HTML comments on the page @offenders
-
-		// total length of HTML of hidden elements (i.e. display: none)
-		phantomas.setMetricFromScope('hiddenContentSize'); // @desc the size of content of hidden elements on the page (with CSS display: none) @offenders
-
-		// total length of text nodes with whitespaces only (i.e. pretty formatting of HTML)
-		phantomas.setMetricFromScope('whiteSpacesSize'); // @desc the size of text nodes with whitespaces only
-
-		// count all tags
-		phantomas.setMetricFromScope('DOMelementsCount'); // @desc total number of HTML element nodes
-		phantomas.setMetricFromScope('DOMelementMaxDepth'); // @desc maximum level on nesting of HTML element node
-
-		// nodes with inlines CSS (style attribute)
-		phantomas.setMetricFromScope('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
 	});
 };
