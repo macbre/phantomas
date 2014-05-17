@@ -159,12 +159,17 @@
 			sendMsg('addOffender', {metricName: metricName, msg: msg});
 		}
 
+		function emit(/* eventName, arg1, arg2, ... */) {
+			sendMsg('emit', Array.prototype.slice.apply(arguments));
+		}
+
 		// exports
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
 		phantomas.incrMetric = incrMetric;
 		phantomas.setMarkerMetric = setMarkerMetric;
 		phantomas.addOffender = addOffender;
+		phantomas.emit = emit;
 	})();
 
 	/**
