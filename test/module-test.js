@@ -38,5 +38,18 @@ vows.describe('CommonJS module').addBatch({
 			assert.equal(typeof stats.metrics, 'object');
 			assert.equal(typeof stats.offenders, 'object');
 		}
+	},
+	'promise': {
+		topic: function() {
+			phantomas('http://example.com/').then(function(res) {
+				this.callback(null, res);
+			}.bind(this));
+		},
+		'should be resolved': function(err, res) {
+			assert.equal(typeof res, 'object');
+			assert.equal(typeof res.code, 'number');
+			assert.equal(typeof res.results, 'object');
+			assert.equal(typeof res.json, 'object');
+		}
 	}
 }).export(module);
