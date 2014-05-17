@@ -17,16 +17,12 @@ exports.module = function(phantomas) {
 				function eventSpy(eventType) {
 					/* jshint validthis: true */
 					phantomas.log('DOM event: "' + eventType + '" bound to "' + phantomas.getDOMPath(this) + '"');
-					phantomas.incr('eventsBound');
+					phantomas.incrMetric('eventsBound');
 				}
 
 				phantomas.spy(Element.prototype, 'addEventListener', eventSpy);
 				phantomas.spy(Document.prototype, 'addEventListener', eventSpy);
 			})(window.__phantomas);
 		});
-	});
-
-	phantomas.on('report', function() {
-		phantomas.setMetricFromScope('eventsBound');
 	});
 };

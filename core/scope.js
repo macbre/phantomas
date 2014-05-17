@@ -79,28 +79,6 @@
 		phantomas.getCaller = getCaller;
 	})();
 
-	// setters / getters used to pass values to phantomas modules
-	(function() {
-		var storage = {};
-
-		function set(key, val) {
-			storage[key] = val;
-		}
-
-		function incr(key, incrBy /* =1 */) {
-			storage[key] = (storage[key] || 0) + (incrBy || 1);
-		}
-
-		function get(key) {
-			return storage[key];
-		}
-
-		// exports
-		phantomas.set = set;
-		phantomas.incr = incr;
-		phantomas.get = get;
-	})();
-
 	// communication with phantomas core
 	(function() {
 		var stringify = JSON.stringify,
@@ -159,12 +137,17 @@
 			sendMsg('addOffender', {metricName: metricName, msg: msg});
 		}
 
+		function emit(/* eventName, arg1, arg2, ... */) {
+			sendMsg('emit', Array.prototype.slice.apply(arguments));
+		}
+
 		// exports
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
 		phantomas.incrMetric = incrMetric;
 		phantomas.setMarkerMetric = setMarkerMetric;
 		phantomas.addOffender = addOffender;
+		phantomas.emit = emit;
 	})();
 
 	/**

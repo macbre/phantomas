@@ -253,9 +253,7 @@ phantomas.prototype = {
 			// metrics
 			setMetric: this.setMetric.bind(this),
 			setMetricEvaluate: this.setMetricEvaluate.bind(this),
-			setMetricFromScope: this.setMetricFromScope.bind(this),
 			setMarkerMetric: this.setMarkerMetric.bind(this),
-			getFromScope: this.getFromScope.bind(this),
 			incrMetric: this.incrMetric.bind(this),
 			getMetric: this.getMetric.bind(this),
 
@@ -666,6 +664,10 @@ phantomas.prototype = {
 				this.addOffender(data.metricName, data.msg);
 				break;
 
+			case 'emit':
+				this.emit.apply(this, data);
+				break;
+
 			default:
 				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
 				this.emit('message', msg); // @desc the scope script sent a message
@@ -704,23 +706,6 @@ phantomas.prototype = {
 
 		this.setMetric(name, value, true /* isFinal */);
 		return value;
-	},
-
-	// set metric from browser's scope that was set there using using window.__phantomas.set()
-	setMetricFromScope: function(name, key) {
-		key = key || name;
-
-		// @ee https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#evaluatefunction-arg1-arg2--object
-		this.setMetric(name, this.page.evaluate(function(key) {
-			return window.__phantomas.get(key) || 0;
-		}, key), true /* isFinal */);
-	},
-
-	// get a value set using window.__phantomas browser scope
-	getFromScope: function(key) {
-		return this.page.evaluate(function(key) {
-			return window.__phantomas.get(key);
-		}, key);
 	},
 
 	// increements given metric by given number (default is one)

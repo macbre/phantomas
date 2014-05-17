@@ -45,8 +45,6 @@ phantomas.prototype = {
 		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
 	},
 	setMetricEvaluate: noop,
-	setMetricFromScope: noop,
-	getFromScope: noop,
 	incrMetric: function(name, incr /* =1 */) {
 		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
 	},

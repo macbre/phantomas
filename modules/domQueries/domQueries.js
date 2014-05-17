@@ -4,7 +4,7 @@
 /* global Element: true, Document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '0.5';
+exports.version = '0.6';
 
 exports.module = function(phantomas) {
         phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
@@ -19,22 +19,8 @@ exports.module = function(phantomas) {
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-				// count DOM queries by either ID, tag name, class name and selector query
-				// @see https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-doctype
-				var DOMqueries = {};
-				phantomas.set('DOMqueries', DOMqueries);
-
 				function querySpy(type, query) {
-					phantomas.log('DOM query: by ' + type + ' "' + query + '"');
-					phantomas.incrMetric('DOMqueries');
-
-					// detect duplicates
-					var key = type + ' "' + query + '"';
-					if (typeof DOMqueries[key] === 'undefined')  {
-						DOMqueries[key] = 0;
-					}
-
-					DOMqueries[key]++;
+					phantomas.emit('domQuery', type, query); // @desc DOM query has been made
 				}
 
 				phantomas.spy(Document.prototype, 'getElementById', function(id) {
@@ -64,7 +50,7 @@ exports.module = function(phantomas) {
 				// count DOM inserts
 				function appendSpy(child) {
 					/* jshint validthis: true */
-					var hasParent = typeof this.parentNode !== 'undefined';
+					var hasParent = (typeof this.parentNode !== 'undefined');
 
 					// ignore appending to the node that's not yet added to DOM tree
 					if (!hasParent) {
@@ -81,9 +67,25 @@ exports.module = function(phantomas) {
 		});
 	});
 
+	// count DOM queries by either ID, tag name, class name and selector query
+	// @see https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-doctype
+	var DOMqueries = {};
+
+	phantomas.on('domQuery', function(type, query) {
+		var key = type + ' "' + query + '"';
+
+		phantomas.log('DOM query: by %s - "%s"', type, query);
+		phantomas.incrMetric('DOMqueries');
+
+		if (typeof DOMqueries[key] === 'undefined')  {
+			DOMqueries[key] = 0;
+		}
+
+		DOMqueries[key]++;
+	});
+
 	phantomas.on('report', function() {
-		var DOMqueries = phantomas.getFromScope('DOMqueries') || {},
-			queries = [];
+		var queries = [];
 
 		// TODO: implement phantomas.collection
 		Object.keys(DOMqueries).forEach(function(query) {
@@ -104,7 +106,7 @@ exports.module = function(phantomas) {
 
 		if (queries.length > 0) {
 			queries.forEach(function(query) {
-				phantomas.addOffender('DOMqueries', query.query + ': ' + query.cnt + ' queries');
+				phantomas.addOffender('DOMqueriesDuplicated', query.query + ': ' + query.cnt + ' queries');
 			});
 		}
 	});
