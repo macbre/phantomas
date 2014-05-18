@@ -5,26 +5,27 @@
  * several hundreds ms. Consider increasing default timeout.
  *
  * Run phantomas with --film-strip option to use this module
+ *
+ * --film-strip-dir folder path to output film strip (default is ./filmstrip directory)
+ * --film-strip-prefix film strip files name prefix (defaults to 'screenshot')
  */
 'use strict';
 
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('film-strip')) {
-		phantomas.log('To enable screenshots of page being loaded run phantomas with --film-strip option');
+		phantomas.log('filmStrip: to enable screenshots of page being loaded run phantomas with --film-strip option');
 		return;
 	}
 
-	var filmStripOutputDir = 'filmstrip';
-	// grab output dir from args
-	if (phantomas.getParam('film-strip-dir')) {
-		filmStripOutputDir = phantomas.getParam('film-strip-dir').replace(/\/+$/,'');
-	}
-
+	var filmStripOutputDir = phantomas.getParam('film-strip-dir', 'filmstrip', 'string').replace(/\/+$/,''),
+		filmStripPrefix = phantomas.getParam('film-strip-prefix', 'screenshot', 'string').replace(/[^a-z0-9\-]+/ig,'-');
 
 	var zoomFactor = 0.5;
 	phantomas.setZoom(zoomFactor);
+
+	phantomas.log('filmStrip: film strip will be stored as %s/%s-*.png files (zoom: %d)', filmStripOutputDir, filmStripPrefix, zoomFactor);
 
 	var util = phantomas.require('util'),
 		fs = require('fs'),
@@ -32,6 +33,7 @@ exports.module = function(phantomas) {
 		SCREENSHOTS_MIN_INTERVAL = 75,
 		lastScreenshot = 0,
 		start = Date.now(),
+		startFormatted = (new Date()).toJSON().substr(0,19), // 2014-05-18T13:08:13
 		// stats
 		timeTotal = 0,
 		screenshots = [];
@@ -49,7 +51,7 @@ exports.module = function(phantomas) {
 
 		// time offset excluding time it took to render screenshots
 		ts = now - start - timeTotal;
-		path = util.format(filmStripOutputDir+'/screenshot-%d-%d.png', start, ts);
+		path = util.format('%s/%s-%s-%d.png', filmStripOutputDir, filmStripPrefix, startFormatted, ts);
 
 		phantomas.render(path);
 		lastScreenshot = Date.now();
@@ -57,6 +59,7 @@ exports.module = function(phantomas) {
 		// verify that the screnshot was really taken
 		if (fs.isReadable(path)) {
 			phantomas.log('Film strip: rendered to %s in %d ms', path, Date.now() - now);
+			phantomas.emit('filmStrip', path, ts);
 
 			screenshots.push({
 				path: path,
