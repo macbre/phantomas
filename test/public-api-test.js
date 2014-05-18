@@ -61,6 +61,7 @@ vows.describe('phantomas public API').addBatch({
 				'on',
 				'once',
 				'emit',
+				'emitInternal',
 				'setMetric',
 				'setMetricEvaluate',
 				'setMarkerMetric',

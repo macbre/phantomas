@@ -29,6 +29,9 @@ phantomas.prototype = {
 		this.wasEmitted[arguments[0]] = true;
 		return this;
 	},
+	emitInternal: function() {
+		this.emit.apply(this, arguments);
+	},
 	on: function(ev, fn) { //console.log('on: ' + ev);
 		this.emitter.on(ev, fn);
 	},
