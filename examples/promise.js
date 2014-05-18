@@ -38,3 +38,8 @@ run.
 run.on('milestone', function(milestone, timing) {
 	console.log('%s at %d ms', milestone, timing);
 });
+
+// including the custom once emitted by phantomas modules
+run.on('domQuery', function(type, query) {
+	console.log('DOM query by %s - "%s"', type, query);
+});
