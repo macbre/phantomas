@@ -84,7 +84,7 @@ exports.module = function(phantomas) {
 
 		// give modules a chance to block requests using entry.block()
 		// @see https://github.com/ariya/phantomjs/issues/10230
-		phantomas.emit('beforeSend', entry, res); // @desc allows the request to be blocked
+		phantomas.emitInternal('beforeSend', entry, res); // @desc allows the request to be blocked
 
 		if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
 			phantomas.log('Blocked request: <' + entry.url + '>');
@@ -93,7 +93,7 @@ exports.module = function(phantomas) {
 		}
 
 		// proceed
-		phantomas.emit('send', entry, res); // @desc request has been sent
+		phantomas.emitInternal('send', entry, res); // @desc request has been sent
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
@@ -106,7 +106,7 @@ exports.module = function(phantomas) {
 				return;
 			} else if (!entry.isBase64) {
 				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
-				phantomas.emit('abort', entry, res); // @desc request has been blocked
+				phantomas.emitInternal('abort', entry, res); // @desc request has been blocked
 			}
 		}
 
@@ -285,10 +285,10 @@ exports.module = function(phantomas) {
 				}
 
 				if (entry.isBase64) {
-					phantomas.emit('base64recv', entry, res); // @desc base64-encoded "response" has been received
+					phantomas.emitInternal('base64recv', entry, res); // @desc base64-encoded "response" has been received
 				}
 				else {
-					phantomas.emit('recv' , entry, res); // @desc response has been received
+					phantomas.emitInternal('recv' , entry, res); // @desc response has been received
 				}
 				break;
 		}
