@@ -156,6 +156,20 @@ vows.describe('phantomas public API').addBatch({
 			// tearDown
 			Date.now = origDateNow;
 		},
+		'metric is correctly increased': function(results) {
+			results.setMetric('bar', 0);
+
+			// default value = 1
+			results.incrMetric('bar');
+			assert.strictEqual(results.getMetric('bar'), 1);
+
+			// no increase
+			results.incrMetric('bar', 0);
+			assert.strictEqual(results.getMetric('bar'), 1);
+
+			results.incrMetric('bar', 41);
+			assert.strictEqual(results.getMetric('bar'), 42);
+		},
 	},
 	'parameters': {
 		topic: function() {
