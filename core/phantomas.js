@@ -720,8 +720,7 @@ phantomas.prototype = {
 	// increements given metric by given number (default is one)
 	incrMetric: function(name, incr /* =1 */) {
 		var currVal = this.getMetric(name) || 0;
-
-		this.setMetric(name, currVal + (incr || 1));
+		this.setMetric(name, currVal + (typeof incr === 'number' ? incr : 1));
 	},
 
 	getMetric: function(name) {
