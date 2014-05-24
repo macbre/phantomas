@@ -133,8 +133,8 @@
 			sendMsg('setMarkerMetric', {name: name});
 		}
 
-		function addOffender(metricName, msg) {
-			sendMsg('addOffender', {metricName: metricName, msg: msg});
+		function addOffender(/*metricName, msg, ...*/) {
+			sendMsg('addOffender', Array.prototype.slice.apply(arguments));
 		}
 
 		function emit(/* eventName, arg1, arg2, ... */) {

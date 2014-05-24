@@ -16,8 +16,11 @@ exports.module = function(phantomas) {
 			(function(phantomas) {
 				function eventSpy(eventType) {
 					/* jshint validthis: true */
-					phantomas.log('DOM event: "' + eventType + '" bound to "' + phantomas.getDOMPath(this) + '"');
+					var path = phantomas.getDOMPath(this);
+					phantomas.log('DOM event: "' + eventType + '" bound to "' + path + '"');
+
 					phantomas.incrMetric('eventsBound');
+					phantomas.addOffender('eventsBound', '"%s" bound to "%s"', eventType, path);
 				}
 
 				phantomas.spy(Element.prototype, 'addEventListener', eventSpy);

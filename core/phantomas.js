@@ -673,7 +673,7 @@ phantomas.prototype = {
 				break;
 
 			case 'addOffender':
-				this.addOffender(data.metricName, data.msg);
+				this.addOffender.apply(this, data);
 				break;
 
 			case 'emit':

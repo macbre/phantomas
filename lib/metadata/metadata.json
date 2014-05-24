@@ -441,22 +441,6 @@
       "unit": "number",
       "module": "cookies"
     },
-    "bodyHTMLSize": {
-      "desc": "the size of body tag content (document.body.innerHTML.length)",
-      "unit": "bytes",
-      "module": "domComplexity"
-    },
-    "iframesCount": {
-      "desc": "number of iframe nodes",
-      "unit": "number",
-      "module": "domComplexity"
-    },
-    "imagesWithoutDimensions": {
-      "desc": "number of <img> nodes without both width and height attribute",
-      "offenders": true,
-      "unit": "number",
-      "module": "domComplexity"
-    },
     "commentsSize": {
       "desc": "the size of HTML comments on the page",
       "offenders": true,
@@ -490,6 +474,22 @@
       "unit": "number",
       "module": "domComplexity"
     },
+    "bodyHTMLSize": {
+      "desc": "the size of body tag content (document.body.innerHTML.length)",
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
+    "iframesCount": {
+      "desc": "number of iframe nodes",
+      "unit": "number",
+      "module": "domComplexity"
+    },
+    "imagesWithoutDimensions": {
+      "desc": "number of <img> nodes without both width and height attribute",
+      "offenders": true,
+      "unit": "number",
+      "module": "domComplexity"
+    },
     "DOMqueries": {
       "desc": "number of all DOM queries",
       "offenders": true,
@@ -513,6 +513,7 @@
     },
     "DOMqueriesByQuerySelectorAll": {
       "desc": "number of document.querySelectorAll calls",
+      "offenders": true,
       "unit": "number",
       "module": "domQueries"
     },
@@ -523,6 +524,7 @@
     },
     "DOMqueriesDuplicated": {
       "desc": "number of duplicated DOM queries",
+      "offenders": true,
       "unit": "number",
       "module": "domQueries"
     },
@@ -544,6 +546,7 @@
     },
     "eventsBound": {
       "desc": "number of EventTarget.addEventListener calls",
+      "offenders": true,
       "unit": "number",
       "module": "eventListeners"
     },
@@ -773,5 +776,5 @@
   },
   "metricsCount": 133,
   "modulesCount": 36,
-  "version": "1.1.0"
+  "version": "1.2.0"
 }
