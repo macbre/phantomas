@@ -41,6 +41,7 @@ exports.module = function(phantomas) {
 				// selector queries
 				function selectorQuerySpy(selector) {
 					phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
+					phantomas.addOffender('DOMqueriesByQuerySelectorAll', selector);
 					querySpy('selector', selector);
 				}
 
