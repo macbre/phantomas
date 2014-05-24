@@ -23,8 +23,13 @@ module.exports = function(data) {
 	// public API
 	return {
 		// metrics
-		setMetric: function(name, value) {
-			metrics[name] = value;
+		setMetric: function(metricName, value) {
+			metrics[metricName] = value;
+
+			// make the order of offenders match the order of metrics
+			if (typeof offenders[metricName] === 'undefined') {
+				offenders[metricName] = undefined;
+			}
 		},
 		getMetric: function(name) {
 			return metrics[name];
