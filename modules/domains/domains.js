@@ -3,10 +3,12 @@
  */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
-	var domains = {};
+	var Collection = require('../../lib/collection'),
+		domains = new Collection();
+
 	phantomas.setMetric('domains'); // @desc number of domains used to fetch the page @offenders
 	phantomas.setMetric('maxRequestsPerDomain'); // @desc maximum number of requests fetched from a single domain
 	phantomas.setMetric('medianRequestsPerDomain'); // @desc median of number of requests fetched from each domain
@@ -14,51 +16,26 @@ exports.module = function(phantomas) {
 	phantomas.on('recv', function(entry,res) {
 		var domain = entry.domain;
 
-		// base64?
-		if (!domain) {
-			return;
+		if (domain) {
+			domains.push(domain);
 		}
-
-		// init domain entry
-		if (!domains[domain]) {
-			domains[domain] = {
-				requests: []
-			};
-		}
-
-		domains[domain].requests.push(res.url);
 	});
 
 	// add metrics
 	phantomas.on('report', function() {
-		var domainsStats = [],
-			Stats = require('fast-stats').Stats,
+		var Stats = require('fast-stats').Stats,
 			domainsRequests = new Stats();
 
-		// TODO: implement phantomas.collection
-		Object.keys(domains).forEach(function(domain) {
-			var cnt = domains[domain].requests.length;
-
-			domainsStats.push({
-				name: domain,
-				cnt: cnt
-			});
+		domains.sort().forEach(function(name, cnt) {
+			phantomas.addOffender('domains', '%s: %d request(s)', name, cnt);
 
 			domainsRequests.push(cnt);
 		});
 
-		domainsStats.sort(function(a, b) {
-			return (a.cnt > b.cnt) ? -1 : 1;
-		});
-
-		if (domainsStats.length > 0) {
-			phantomas.setMetric('domains', domainsStats.length);
+		if (domains.getLength() > 0) {
+			phantomas.setMetric('domains', domains.getLength());
 			phantomas.setMetric('maxRequestsPerDomain', domainsRequests.range()[1]);
 			phantomas.setMetric('medianRequestsPerDomain', domainsRequests.median());
 		}
-
-		domainsStats.forEach(function(domain) {
-			phantomas.addOffender('domains', domain.name + ': ' + domain.cnt + ' request(s)');
-		});
 	});
 };

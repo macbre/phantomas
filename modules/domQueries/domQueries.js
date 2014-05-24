@@ -70,45 +70,22 @@ exports.module = function(phantomas) {
 
 	// count DOM queries by either ID, tag name, class name and selector query
 	// @see https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-doctype
-	var DOMqueries = {};
+	var Collection = require('../../lib/collection'),
+		DOMqueries = new Collection();
 
 	phantomas.on('domQuery', function(type, query) {
-		var key = type + ' "' + query + '"';
-
 		phantomas.log('DOM query: by %s - "%s"', type, query);
 		phantomas.incrMetric('DOMqueries');
 
-		if (typeof DOMqueries[key] === 'undefined')  {
-			DOMqueries[key] = 0;
-		}
-
-		DOMqueries[key]++;
+		DOMqueries.push(type + ' "' + query + '"');
 	});
 
 	phantomas.on('report', function() {
-		var queries = [];
-
-		// TODO: implement phantomas.collection
-		Object.keys(DOMqueries).forEach(function(query) {
-			var cnt = DOMqueries[query];
-
+		DOMqueries.sort().forEach(function(query, cnt) {
 			if (cnt > 1) {
 				phantomas.incrMetric('DOMqueriesDuplicated');
-				queries.push({
-					query: query,
-					cnt: cnt
-				});
+				phantomas.addOffender('DOMqueriesDuplicated', '%s: %d queries', query, cnt);
 			}
 		});
-
-		queries.sort(function(a, b) {
-			return (a.cnt > b.cnt) ? -1 : 1;
-		});
-
-		if (queries.length > 0) {
-			queries.forEach(function(query) {
-				phantomas.addOffender('DOMqueriesDuplicated', query.query + ': ' + query.cnt + ' queries');
-			});
-		}
 	});
 };
