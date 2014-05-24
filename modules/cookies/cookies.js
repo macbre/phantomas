@@ -3,20 +3,27 @@
  */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
 	// monitor cookies in HTTP headers
-	var cookiesSent = 0,
-		cookiesRecv = 0,
-		cookiesDomains = {};
+	var Collection = require('../../lib/collection'),
+		cookiesDomains = new Collection();
+
+	phantomas.setMetric('cookiesSent'); // @desc length of cookies sent in HTTP requests @unreliable
+	phantomas.setMetric('cookiesRecv'); // @desc length of cookies received in HTTP responses
+	phantomas.setMetric('domainsWithCookies'); // @desc number of domains with cookies set
+	phantomas.setMetric('documentCookiesLength'); // @desc length of document.cookie
+	phantomas.setMetric('documentCookiesCount'); //@desc number of cookies in document.cookie
 
 	phantomas.on('send', function(entry, res) {
 		res.headers.forEach(function(header) {
 			switch (header.name) {
 				case 'Cookie':
-					cookiesSent += header.value.length;
-					cookiesDomains[entry.domain] = true;
+					phantomas.incrMetric('cookiesSent', header.value.length);
+					cookiesDomains.push(entry.domain);
+
+					phantomas.log('Cookie: sent "%s" (for %s)', header.value, entry.domain);
 					break;
 			}
 		});
@@ -26,8 +33,14 @@ exports.module = function(phantomas) {
 		res.headers.forEach(function(header) {
 			switch (header.name) {
 				case 'Set-Cookie':
-					cookiesRecv += header.value.length;
-					cookiesDomains[entry.domain] = true;
+					var cookies = (header.value || '').split('\n');
+
+					cookies.forEach(function(cookie) {
+						phantomas.incrMetric('cookiesRecv', cookie.length);
+						cookiesDomains.push(entry.domain);
+
+						phantomas.log('Cookie: received "%s" (for %s)', cookie, entry.domain);
+					});
 					break;
 			}
 		});
@@ -36,17 +49,14 @@ exports.module = function(phantomas) {
 	// domain cookies (accessible by the browser)
 	phantomas.on('report', function() {
 		/* global document: true, window: true */
-		phantomas.setMetric('cookiesSent', cookiesSent); // @desc length of cookies sent in HTTP requests @unreliable
-		phantomas.setMetric('cookiesRecv', cookiesRecv); // @desc length of cookies received in HTTP responses @unreliable
 
 		// domains with cookies
-		var domainsWithCookies = 0;
-		for (var domain in cookiesDomains) {
-			domainsWithCookies++;
-		}
-		phantomas.setMetric('domainsWithCookies', domainsWithCookies); // @desc number of domains with cookies set
+		cookiesDomains.forEach(function(domain, cnt) {
+			phantomas.incrMetric('domainsWithCookies');
+			phantomas.addOffender('domainsWithCookies', '%s: %d cookie(s)', domain, cnt);
+		});
 
-		phantomas.setMetricEvaluate('documentCookiesLength', function() { // @desc length of document.cookie
+		phantomas.setMetricEvaluate('documentCookiesLength', function() {
 			try {
 				return document.cookie.length;
 			}
@@ -56,7 +66,7 @@ exports.module = function(phantomas) {
 			}
 		});
 
-		phantomas.setMetricEvaluate('documentCookiesCount', function() { //@desc number of cookies in document.cookie
+		phantomas.setMetricEvaluate('documentCookiesCount', function() {
 			try {
 				return document.cookie.split(';').length;
 			}
