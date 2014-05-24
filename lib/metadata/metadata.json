@@ -422,12 +422,12 @@
     },
     "cookiesRecv": {
       "desc": "length of cookies received in HTTP responses",
-      "unreliable": true,
       "unit": "bytes",
       "module": "cookies"
     },
     "domainsWithCookies": {
       "desc": "number of domains with cookies set",
+      "offenders": true,
       "unit": "number",
       "module": "cookies"
     },
