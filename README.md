@@ -72,6 +72,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
+* `--debug` run PhantomJS in debug mode
 * `--silent` don't write anything to the console
 * `--progress` shows page loading progress bar (disables verbose mode)
 * `--log=[log file]` log to a given file
