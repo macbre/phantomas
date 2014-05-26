@@ -119,7 +119,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 103_
+_Current number of metrics: 104_
 
 Units:
 
@@ -271,6 +271,7 @@ Units:
 
 * assetsNotGzipped: static assets that were not gzipped
 * assetsWithQueryString: static assets requested with query string (e.g. ?foo) in URL
+* assetsWithCookies: number of static assets requested from domains with cookie set
 * smallImages: images smaller than 2 kB that can be base64 encoded
 * multipleRequests: number of static assets that are requested more than once
 
