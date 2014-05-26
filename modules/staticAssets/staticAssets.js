@@ -3,22 +3,30 @@
  */
 'use strict';
 
-exports.version = '0.3';
+exports.version = '0.4';
 
 exports.module = function(phantomas) {
 	var BASE64_SIZE_THRESHOLD = 2 * 1024;
 
 	// count requests for each asset
-	var assetsReqCounter = {},
+	var Collection = require('../../lib/collection'),
+		assetsReqCounter = new Collection(),
+		cookieDomains = new Collection(),
 		// TODO: use 3pc database with tracking services
 		trackingUrls = /google-analytics.com\/__utm.gif|pixel.quantserve.com\/pixel/;
 
 	phantomas.setMetric('assetsNotGzipped'); // @desc number of static assets that were not gzipped @unreliable
 	phantomas.setMetric('assetsWithQueryString'); // @desc number of static assets requested with query string (e.g. ?foo) in URL
+	phantomas.setMetric('assetsWithCookies'); // @desc number of static assets requested from domains with cookie set
 	phantomas.setMetric('smallImages'); // @desc number of images smaller than 2 kB that can be base64 encoded @unreliable
 	phantomas.setMetric('multipleRequests'); // @desc number of static assets that are requested more than once
 
 	phantomas.on('recv', function(entry, res) {
+		// mark domains with cookie set
+		if (entry.hasCookies) {
+			cookieDomains.push(entry.domain);
+		}
+
 		//phantomas.log('entry: %j', entry);
 		var isContent = entry.status === 200;
 
@@ -51,20 +59,21 @@ exports.module = function(phantomas) {
 			}
 		}
 
-		// count number of requests to each asset
 		if (entry.isImage || entry.isJS || entry.isCSS) {
-			if (typeof assetsReqCounter[entry.url] === 'undefined') {
-				assetsReqCounter[entry.url] = 1;
-			}
-			else {
-				assetsReqCounter[entry.url]++;
+			// count number of requests to each asset
+			assetsReqCounter.push(entry.url);
+
+			// count static assets requested from domains with cookie set
+			if (cookieDomains.has(entry.domain)) {
+				phantomas.incrMetric('assetsWithCookies');
+				phantomas.addOffender('assetsWithCookies', '%s (%s)', entry.url, entry.type.toUpperCase());
 			}
 		}
 	});
 
 	phantomas.on('report', function() {
-		Object.keys(assetsReqCounter).forEach(function(asset) {
-			if (assetsReqCounter[asset] > 1) {
+		assetsReqCounter.forEach(function(asset, cnt) {
+			if (cnt > 1) {
 				phantomas.incrMetric('multipleRequests');
 				phantomas.addOffender('multipleRequests', asset);
 			}
