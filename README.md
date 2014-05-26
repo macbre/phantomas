@@ -31,6 +31,7 @@ npm install --global phantomas
 * metrics can be sent via StatsD or stored in elasticsearch
 * easy integration with other nodejs projects via CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module))
 * metrics can be emitted from JavaScript code of the page phantomas is run against (thanks to [helper functions available in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope))
+* device profiles allow phantomas to emulate mobile or tablet (by setting a proper user agent and viewport)
 
 ## Contributors
 
