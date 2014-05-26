@@ -30,20 +30,22 @@ exports.module = function(phantomas) {
 	});
 
 	phantomas.on('recv', function(entry, res) {
-		res.headers.forEach(function(header) {
-			switch (header.name) {
-				case 'Set-Cookie':
-					var cookies = (header.value || '').split('\n');
+		if (entry.hasCookies) {
+			res.headers.forEach(function(header) {
+				switch (header.name) {
+					case 'Set-Cookie':
+						var cookies = (header.value || '').split('\n');
 
-					cookies.forEach(function(cookie) {
-						phantomas.incrMetric('cookiesRecv', cookie.length);
-						cookiesDomains.push(entry.domain);
+						cookies.forEach(function(cookie) {
+							phantomas.incrMetric('cookiesRecv', cookie.length);
+							cookiesDomains.push(entry.domain);
 
-						phantomas.log('Cookie: received "%s" (for %s)', cookie, entry.domain);
-					});
-					break;
-			}
-		});
+							phantomas.log('Cookie: received "%s" (for %s)', cookie, entry.domain);
+						});
+						break;
+				}
+			});
+		}
 	});
 
 	// domain cookies (accessible by the browser)
@@ -68,6 +70,7 @@ exports.module = function(phantomas) {
 
 		phantomas.setMetricEvaluate('documentCookiesCount', function() {
 			try {
+				window.__phantomas.log('Cookies: document.cookie = "' + document.cookie + '"');
 				return document.cookie.split(';').length;
 			}
 			catch(ex) {

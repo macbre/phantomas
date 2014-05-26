@@ -238,6 +238,11 @@ exports.module = function(phantomas) {
 								entry.gzip = true;
 							}
 							break;
+
+						// detect cookies (issue #92)
+						case 'set-cookie':
+							entry.hasCookies = true;
+							break;
 					}
 				});
 
