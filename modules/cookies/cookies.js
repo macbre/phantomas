@@ -32,8 +32,8 @@ exports.module = function(phantomas) {
 	phantomas.on('recv', function(entry, res) {
 		if (entry.hasCookies) {
 			res.headers.forEach(function(header) {
-				switch (header.name) {
-					case 'Set-Cookie':
+				switch (header.name.toLowerCase()) {
+					case 'set-cookie':
 						var cookies = (header.value || '').split('\n');
 
 						cookies.forEach(function(cookie) {
