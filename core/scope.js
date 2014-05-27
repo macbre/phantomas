@@ -209,6 +209,10 @@
 		var path = [],
 			entry = '';
 
+		if (node === window) {
+			return 'window';
+		}
+
 		while (node instanceof Node) {
 			// div
 			entry = node.nodeName.toLowerCase();

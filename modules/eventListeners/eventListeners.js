@@ -25,6 +25,7 @@ exports.module = function(phantomas) {
 
 				phantomas.spy(Element.prototype, 'addEventListener', eventSpy);
 				phantomas.spy(Document.prototype, 'addEventListener', eventSpy);
+				phantomas.spy(window, 'addEventListener', eventSpy);
 			})(window.__phantomas);
 		});
 	});
