@@ -377,7 +377,7 @@ phantomas.prototype = {
 			this.emit('progress', currentProgress, inc); // @desc loading progress has changed
 		}
 
-		setInterval(pollFn.bind(this), 100);
+		setInterval(pollFn.bind(this), 50);
 	},
 
 	// runs phantomas
