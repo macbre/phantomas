@@ -4,7 +4,7 @@
 /* global Document: true, Element: true, window: true */
 'use strict';
 
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
         phantomas.setMetric('eventsBound'); // @desc number of EventTarget.addEventListener calls
@@ -25,6 +25,7 @@ exports.module = function(phantomas) {
 
 				phantomas.spy(Element.prototype, 'addEventListener', eventSpy);
 				phantomas.spy(Document.prototype, 'addEventListener', eventSpy);
+				phantomas.spy(window, 'addEventListener', eventSpy);
 			})(window.__phantomas);
 		});
 	});
