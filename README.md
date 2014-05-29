@@ -359,7 +359,7 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### Plain
 * ``no-color`` - disable ANSI colors
 
-#### StatsD
+##### StatsD
 * ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
 
 ##### TAP
@@ -371,6 +371,12 @@ Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.c
 
 ```
 $ phantomas http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
+```
+
+or
+
+```
+$ phantomas http://app.net/start -R statsd:stats.app.net:8125:myApp.mainPage.
 ```
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
