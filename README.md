@@ -359,6 +359,9 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### Plain
 * ``no-color`` - disable ANSI colors
 
+##### TAP
+* ``no-skip`` - don't print out metrics that were skipped
+
 #### StatsD integration
 
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:

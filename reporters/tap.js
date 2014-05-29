@@ -1,6 +1,9 @@
 /**
  * Results formatter for --format=tap
  *
+ * Options:
+ *  no-skip - don't print out metrics that were skipped
+ *
  * @see http://podwiki.hexten.net/TAP/TAP.html?page=TAP
  * @see https://github.com/isaacs/node-tap
  */
@@ -8,11 +11,12 @@
 
 var Producer = require('tap').Producer;
 
-module.exports = function(results) {
+module.exports = function(results, reporterOptions) {
 	// public API
 	return {
 		render: function() {
 			var metrics = results.getMetricsNames(),
+				noSkip = (reporterOptions['no-skip'] === true),
 				res = [];
 
 			res.push(results.getGenerator() + ' results for <' + results.getUrl() + '>');
@@ -51,6 +55,11 @@ module.exports = function(results) {
 					});
 
 					entry.offenders = offenders;
+				}
+
+				// -R tap:no-skip
+				if (noSkip && entry.skip) {
+					return;
 				}
 
 				res.push(entry);
