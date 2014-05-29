@@ -353,8 +353,20 @@ This will omit CSV headers row and add current timestamp as the first column, so
 * ``timestamp`` - add the current timestamp as the first column
 * ``url`` - add the URL as the first column
 
+##### Elasticsearch
+* ``<host>:<port>:<index>:<type>`` - shorthand for ``--elasticsearch-*`` options
+
 ##### JSON
 * ``pretty`` - emits pretty printed JSON
+
+##### Plain
+* ``no-color`` - disable ANSI colors
+
+##### StatsD
+* ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
+
+##### TAP
+* ``no-skip`` - don't print out metrics that were skipped
 
 #### StatsD integration
 
@@ -364,20 +376,32 @@ Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.c
 $ phantomas http://app.net/start -R statsd --statsd-host stats.app.net --statsd-port 8125 --statsd-prefix 'myApp.mainPage.'
 ```
 
+or
+
+```
+$ phantomas http://app.net/start -R statsd:stats.app.net:8125:myApp.mainPage.
+```
+
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
 
-#### Save metrics to ElasticSearch
+#### Save metrics to Elasticsearch
 
-Metrics from phantomas run can be outputted directly in ElasticSearch :
+Metrics from phantomas run can be outputted directly in Elasticsearch :
 
 ##### Parameters
 
-* `--elasticsearch-host=[ip]` ElasticSearch instance ip (default : 127.0.0.1)
-* `--elasticsearch-port=[port]` ElasticSearch instance port (default : 9200)
+* `--elasticsearch-host=[ip]` Elasticsearch instance ip (default : 127.0.0.1)
+* `--elasticsearch-port=[port]` Elasticsearch instance port (default : 9200)
 * `--elasticsearch-index=[index_name]` Name of the index to use
 * `--elasticsearch-type=[type_name]` Name of the document type to use
 
+Or by using reporter options (``<host>:<port>:<index>:<type>``):
 
+```
+$ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metrics
+```
+
+Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
 ## For developers
 

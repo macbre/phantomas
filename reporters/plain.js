@@ -1,5 +1,8 @@
 /**
  * Results formatter for --format=plain
+ *
+ * Options:
+ *  no-color - disable ANSI colors
  */
 'use strict';
 
@@ -9,11 +12,16 @@ var colors = require('../lib/ansicolors'),
 	OK = '✓',
 	ERR = '✗';
 
-module.exports = function(results) {
-	var isMultiple = Array.isArray(results);
+module.exports = function(results, reporterOptions) {
+	var isMultiple = Array.isArray(results),
+		noColor = (reporterOptions['no-color'] === true);
 
 	function formatSingleRunResults(results) {
 		var res = [];
+
+		if (noColor) {
+			colors.disable();
+		}
 
 		// header
 		res.push(results.getGenerator() + ' metrics for <' + results.getUrl() + '>:');

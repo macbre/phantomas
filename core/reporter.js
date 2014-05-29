@@ -21,9 +21,11 @@ module.exports = function(results, options) {
 	reporterOptions = (options.reporter + '').split(':');
 	reporterName = reporterOptions.shift();
 
-	// allow access to options via object.key
+	// allow access to options via object.key (for non-numeric values)
 	reporterOptions.forEach(function(option) {
-		reporterOptions[option] = true;
+		if (!parseInt(option)) {
+			reporterOptions[option] = true;
+		}
 	});
 
 	debug('Setting up %s reporter (options: %j)...', reporterName, reporterOptions);

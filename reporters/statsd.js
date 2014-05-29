@@ -6,6 +6,9 @@
  * --statsd-port 8125
  * --statsd-prefix "myapp.frontPage."
  *
+ * Options:
+ *  <host>:<port>:<prefix>
+ *
  * @see https://github.com/sivy/node-statsd
  */
 'use strict';
@@ -15,11 +18,20 @@ var StatsD = require('node-statsd').StatsD;
 module.exports = function(results, reporterOptions, options) {
 	var client,
 		debug = require('debug')('phantomas:reporter:statsd'),
-		params = {
-			host: options['statsd-host'] || 'localhost',
-			port: options['statsd-port'] || 8125,
-			prefix: (typeof options['statsd-prefix'] === 'undefined') ? 'phantomas.' : options['statsd-prefix']
-		};
+		params;
+
+	// -R statsd:<host>:<port>:<prefix>
+	if (reporterOptions.length > 0) {
+		options['statsd-host'] = reporterOptions[0];
+		options['statsd-port'] = reporterOptions[1];
+		options['statsd-prefix'] = reporterOptions[2];
+	}
+
+	params = {
+		host: options['statsd-host'] || 'localhost',
+		port: options['statsd-port'] || 8125,
+		prefix: (typeof options['statsd-prefix'] === 'undefined') ? 'phantomas.' : options['statsd-prefix']
+	};
 
 	debug('Patameters: %j', params);
 

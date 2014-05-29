@@ -7,16 +7,28 @@
  * --elasticsearch-index "myapp"
  * --elasticsearch-type "phantomas-report"
  *
+ * Options:
+ *  <host>:<port>:<index>:<type>
  */
 'use strict';
 
 module.exports = function (results, reporterOptions, options) {
 	var debug = require('debug')('phantomas:reporter:elasticsearch'),
-		params = {
-			host: (options['elasticsearch-host'] || 'localhost') + ':' + (options['elasticsearch-port'] || 9200),
-			type: (options['elasticsearch-type'] || 'phantomas-report'),
-			index: (options['elasticsearch-index'] || 'phantomas_results')
-		};
+		params;
+
+	// -R elasticsearch:<host>:<port>:<index>:<type>
+	if (reporterOptions.length > 0) {
+		options['elasticsearch-host'] = reporterOptions[0];
+		options['elasticsearch-port'] = reporterOptions[1];
+		options['elasticsearch-type'] = reporterOptions[2];
+		options['elasticsearch-index'] = reporterOptions[3];
+	}
+
+	params = {
+		host: (options['elasticsearch-host'] || 'localhost') + ':' + (options['elasticsearch-port'] || 9200),
+		type: (options['elasticsearch-type'] || 'phantomas-report'),
+		index: (options['elasticsearch-index'] || 'phantomas_results')
+	};
 
 	debug('Parameters: %j', params);
 
