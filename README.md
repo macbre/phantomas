@@ -359,6 +359,9 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### Plain
 * ``no-color`` - disable ANSI colors
 
+#### StatsD
+* ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
+
 ##### TAP
 * ``no-skip`` - don't print out metrics that were skipped
 
