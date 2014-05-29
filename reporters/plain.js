@@ -14,7 +14,7 @@ var colors = require('../lib/ansicolors'),
 
 module.exports = function(results, reporterOptions) {
 	var isMultiple = Array.isArray(results),
-		noColor = reporterOptions['no-color'] === true;
+		noColor = (reporterOptions['no-color'] === true);
 
 	function formatSingleRunResults(results) {
 		var res = [];
