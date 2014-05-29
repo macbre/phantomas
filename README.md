@@ -384,14 +384,14 @@ $ phantomas http://app.net/start -R statsd:stats.app.net:8125:myApp.mainPage.
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
 
-#### Save metrics to ElasticSearch
+#### Save metrics to Elasticsearch
 
-Metrics from phantomas run can be outputted directly in ElasticSearch :
+Metrics from phantomas run can be outputted directly in Elasticsearch :
 
 ##### Parameters
 
-* `--elasticsearch-host=[ip]` ElasticSearch instance ip (default : 127.0.0.1)
-* `--elasticsearch-port=[port]` ElasticSearch instance port (default : 9200)
+* `--elasticsearch-host=[ip]` Elasticsearch instance ip (default : 127.0.0.1)
+* `--elasticsearch-port=[port]` Elasticsearch instance port (default : 9200)
 * `--elasticsearch-index=[index_name]` Name of the index to use
 * `--elasticsearch-type=[type_name]` Name of the document type to use
 
