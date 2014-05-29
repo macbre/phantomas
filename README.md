@@ -353,6 +353,9 @@ This will omit CSV headers row and add current timestamp as the first column, so
 * ``timestamp`` - add the current timestamp as the first column
 * ``url`` - add the URL as the first column
 
+##### Elasticsearch
+* ``<host>:<port>:<index>:<type>`` - shorthand for ``--elasticsearch-*`` options
+
 ##### JSON
 * ``pretty`` - emits pretty printed JSON
 
@@ -392,7 +395,13 @@ Metrics from phantomas run can be outputted directly in ElasticSearch :
 * `--elasticsearch-index=[index_name]` Name of the index to use
 * `--elasticsearch-type=[type_name]` Name of the document type to use
 
+Or by using reporter options (``<host>:<port>:<index>:<type>``):
 
+```
+$ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metrics
+```
+
+Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
 ## For developers
 
