@@ -11,7 +11,7 @@
 var phantomas = require('..'),
 	async = require('async'),
 	debug = require('debug')('phantomas:cli'),
-	program = require('optimist'),
+	program = require('../lib/optimist-config-file'),
 	ProgressBar = require('progress'),
 	options = {},
 	runs,
@@ -33,7 +33,6 @@ program
 	.describe('auth-user', 'sets the user name used for HTTP authentication')
 	.describe('auth-pass', 'sets the password used for HTTP authentication')
 	.describe('block-domain', 'disallow requests to given domain(s) - aka blacklist [domain],[domain],...')
-	.describe('config', 'uses JSON-formatted config file to set parameters')
 	.describe('cookie', 'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")')
 	.describe('cookies-file', 'specifies the file name to store the persistent Cookies')
 	.describe('disable-js', 'disable JavaScript on the page that will be loaded').boolean('disable-js')
@@ -68,6 +67,9 @@ program
 	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory) - EXPERIMENTAL')
 	.describe('page-source', 'save page source to file - EXPERIMENTAL').boolean('page-source')
 	.describe('page-source-dir', 'folder path to output page source (default is ./html directory) - EXPERIMENTAL');
+
+// handle --config (issue #209)
+program.setConfigFile('config');
 
 // parse it
 options = program.parse(process.argv);
