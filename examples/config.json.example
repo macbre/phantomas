@@ -2,7 +2,6 @@
 	"url": "http://phantomjs.org",
 	"verbose": true,
 	"reporter": "tap:no-skip",
-	"log": "log/phantomjs.log",
 	"block-domain": "google-analytics.com, amazonaws.com",
 	"cookies": [
 		{
