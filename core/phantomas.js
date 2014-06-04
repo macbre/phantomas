@@ -39,36 +39,14 @@ var getDefaultUserAgent = function() {
 };
 
 var phantomas = function(params) {
-	// handle JSON config file provided via --config
-	var fs = require('fs'),
-		jsonConfig;
-
-	if (params.config && fs.isReadable(params.config)) {
-		try {
-			jsonConfig = JSON.parse( fs.read(params.config) ) || {};
-		}
-		catch(ex) {
-			jsonConfig = {};
-			params.config = false;
-		}
-
-		// allow parameters from JSON config to be overwritten
-		// by those coming from command line
-		Object.keys(jsonConfig).forEach(function(key) {
-			if (typeof params[key] === 'undefined') {
-				params[key] = jsonConfig[key];
-			}
-		});
-	}
-
-	// parse script CLI parameters
+	// store script CLI parameters
 	this.params = params;
 
 	// --url=http://example.com
-	this.url = this.params.url;
+	this.url = params.url;
 
-	// --format=[csv|json]
-	this.format = params.format || 'plain';
+	// --format
+	this.format = params.format;
 
 	// --verbose
 	this.verboseMode = params.verbose === true;
@@ -115,20 +93,9 @@ var phantomas = function(params) {
 		beSilent: this.silentMode
 	});
 
-	// report version and installation directory
 	if (typeof module.dirname !== 'undefined') {
 		this.dir = module.dirname.replace(/core$/, '');
-		this.log('phantomas v' + this.getVersion() + ' installed in ' + this.dir);
-	}
-
-	// report config file being used
-	if (params.config) {
-		this.log('Using JSON config file: ' + params.config);
-	}
-	else if (params.config === false) {
-		this.log('Failed parsing JSON config file');
-		this.tearDown(EXIT_CONFIG_FAILED);
-		return;
+		this.log('phantomas v%s: running with the following parameters: %j', this.getVersion(), this.params);
 	}
 
 	// queue of jobs that needs to be done before report can be generated
@@ -141,7 +108,6 @@ var phantomas = function(params) {
 
 	this.results.setGenerator('phantomas v' + this.getVersion());
 	this.results.setUrl(this.url);
-	this.results.setAsserts(this.params.asserts);
 
 	// allow asserts to be provided via command-line options (#128)
 	Object.keys(this.params).forEach(function(param) {
@@ -166,13 +132,13 @@ var phantomas = function(params) {
 	this.addCoreModule('timeToFirstByte');
 
 	// load 3rd party modules
-	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
+	var modules = (this.modules.length > 0) ? this.modules : this.listModules(),
+		fs = require('fs');
 
 	modules.forEach(this.addModule, this);
 
 	this.includeDirs.forEach(function(dirName) {
-		var fs = require('fs'),
-			dirPath = fs.absolute(dirName),
+		var dirPath = fs.absolute(dirName),
 			dirModules = this.listModulesInDir(dirPath);
 
 		dirModules.forEach(function(moduleName) {

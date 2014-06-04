@@ -3,19 +3,20 @@
  *
  * Don't run it directly. Use phantomas.js nodejs script instead!
  */
-var args = require('system').args,
-        // parse script arguments
-        params = require('../lib/args').parse(args),
-        phantomas = require('../core/phantomas'),
-        instance;
+var system = require('system'),
+	phantomas = require('../core/phantomas'),
+	instance,
+	options;
 
 // compatibility layer for NodeJS modules
 process = {argv: []};
 
-// run phantomas
-instance = new phantomas(params);
+// read options from stdin
+options = system.stdin.readLine();
 
 try {
+	// run phantomas
+	instance = new phantomas(JSON.parse(options));
 	instance.run();
 }
 catch(ex) {
