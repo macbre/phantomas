@@ -67,7 +67,7 @@ exports.module = function(phantomas) {
 
 				if (!cookie.domain) {
 					var parsed = parseUrl(phantomas.url),
-						root = parsed.hostname.replace(/^www/, ''); // strip www
+						root = (parsed.hostname || '').replace(/^www/, ''); // strip www
 
 					cookie.domain = root;
 					phantomas.log('Cookies: domain fallback applied - %s', root);
