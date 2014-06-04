@@ -73,7 +73,6 @@ program.setConfigFile('config');
 
 // parse it
 options = program.parse(process.argv);
-debug('Command line options: %j', options);
 
 // show version number
 if (options.version === true) {
