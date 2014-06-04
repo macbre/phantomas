@@ -165,7 +165,7 @@ async.series(
 
 		if (results[0] !== false) {
 			// process JSON results by reporters
-			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err);
+			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err || 0);
 
 			reporter = require('../core/reporter')(results, options);
 

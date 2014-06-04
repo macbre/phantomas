@@ -173,7 +173,7 @@ phantomas.prototype = {
 
 	// emit given event "internally"
 	emitInternal: function(/* eventName, arg1, arg2, ... */) {
-		this.log('Event ' + arguments[0] + ' emitted');
+		this.log('Event %s emitted', arguments[0]);
 		this.emitter.emit.apply(this.emitter, arguments);
 	},
 
@@ -264,7 +264,7 @@ phantomas.prototype = {
 		// init a module
 		pkg.module(this.getPublicWrapper());
 
-		this.log('Core module ' + name + (pkg.version ? ' v' + pkg.version : '') + ' initialized');
+		this.log('Core module %s%s initialized', name, (pkg.version ? ' v' + pkg.version : ''));
 	},
 
 	// initialize given phantomas module
@@ -276,26 +276,26 @@ phantomas.prototype = {
 	addModuleInDir: function(dir, name) {
 		var pkg;
 		if (this.skipModules.indexOf(name) > -1) {
-			this.log('Module ' + name + ' skipped!');
+			this.log('Module %s skipped!', name);
 			return;
 		}
 		try {
 			pkg = require(dir + '/' + name + '/' + name);
 		}
 		catch (e) {
-			this.log('Unable to load module "' + name + '" from ' + dir + '!');
+			this.log('Unable to load module "%s" from %s!', name, dir);
 			return false;
 		}
 
 		if (pkg.skip) {
-			this.log('Module ' + name + ' skipped!');
+			this.log('Module %s skipped!', name);
 			return false;
 		}
 
 		// init a module
 		pkg.module(this.getPublicWrapper());
 
-		this.log('Module ' + name + (pkg.version ? ' v' + pkg.version : '') + ' initialized');
+		this.log('Module %s%s initialized', name, (pkg.version ? ' v' + pkg.version : ''));
 		return true;
 	},
 
@@ -470,9 +470,7 @@ phantomas.prototype = {
 		this.emitInternal('results', this.results); // @desc modify the results
 
 		// count all metrics
-		var metricsCount = this.results.getMetricsNames().length;
-
-		this.log('Returning results with ' + metricsCount+ ' metric(s)...');
+		this.log('Returning results with %d metric(s)...', this.results.getMetricsNames().length);
 
 		// emit results in JSON
 		var formatter = require('./formatter'),
@@ -507,7 +505,7 @@ phantomas.prototype = {
 		exitCode = exitCode || EXIT_SUCCESS;
 
 		if (exitCode > 0) {
-			this.log('Exiting with code #' + exitCode + '!');
+			this.log('Exiting with code #%d!', exitCode);
 		}
 
 		this.page.close();
@@ -550,7 +548,7 @@ phantomas.prototype = {
 		this.onLoadFinishedEmitted = true;
 
 		// we're done
-		this.log('Page loading finished ("' + status + '")');
+		this.log('Page loading finished ("%s")', status);
 
 		switch(status) {
 			case 'success':
@@ -566,17 +564,17 @@ phantomas.prototype = {
 
 	// debug
 	onAlert: function(msg) {
-		this.log('Alert: ' + msg);
+		this.log('Alert: %s', msg);
 		this.emitInternal('alert', msg); // @desc the page called window.alert
 	},
 
 	onConfirm: function(msg) {
-		this.log('Confirm: ' + msg);
+		this.log('Confirm: %s', msg);
 		this.emitInternal('confirm', msg); // @desc the page called window.confirm
 	},
 
 	onPrompt: function(msg) {
-		this.log('Prompt: ' + msg);
+		this.log('Prompt: %s', msg);
 		this.emitInternal('prompt', msg); // @desc the page called window.prompt
 	},
 
@@ -607,7 +605,7 @@ phantomas.prototype = {
 			case 'log':
 				msg = this.util.format.apply(this, data);
 
-				this.log('console.log: ' + msg);
+				this.log('console.log: %s', msg);
 				this.emitInternal('consoleLog', msg, data); // @desc the page called console.log
 				break;
 
@@ -647,7 +645,7 @@ phantomas.prototype = {
 				break;
 
 			default:
-				this.log('Message "' + type + '" from browser\'s scope: ' + JSON.stringify(data));
+				this.log('Message "%s" from browser\'s scope: %j', type, data);
 				this.emitInternal('message', msg); // @desc the scope script sent a message
 		}
 	},
