@@ -35,6 +35,7 @@ program
 	.describe('block-domain', 'disallow requests to given domain(s) - aka blacklist [domain],[domain],...')
 	.describe('cookie', 'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")')
 	.describe('cookies-file', 'specifies the file name to store the persistent Cookies')
+	.describe('colors', 'forces ANSI colors even when output is piped').boolean('colors')
 	.describe('disable-js', 'disable JavaScript on the page that will be loaded').boolean('disable-js')
 	.describe('ignore-ssl-errors', 'ignores SSL errors, such as expired or self-signed certificate errors')
 	.describe('log', 'log to a given file')
@@ -118,6 +119,13 @@ if (options.progress === true) {
 		total: 100 * runs,
 		width: 50
 	});
+}
+
+// add env variable to turn off ANSI colors when needed (#237)
+// suppress this behaviour by passing --colors option (issue #342)
+if (!process.stdout.isTTY && (options.colors !== true)) {
+	debug('ANSI colors turned off');
+	process.env.BW = 1;
 }
 
 // perform a single run
