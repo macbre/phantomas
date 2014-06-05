@@ -480,8 +480,7 @@ phantomas.prototype = {
 
 		// handle timeouts (issue #129)
 		if (this.timedOut) {
-			this.log('Timed out!');
-			this.tearDown(EXIT_TIMED_OUT);
+			this.tearDown(EXIT_TIMED_OUT, 'Timeout');
 			return;
 		}
 
@@ -501,14 +500,16 @@ phantomas.prototype = {
 		this.tearDown();
 	},
 
-	tearDown: function(exitCode) {
+	tearDown: function(exitCode, msg) {
 		exitCode = exitCode || EXIT_SUCCESS;
 
 		if (exitCode > 0) {
-			this.log('Exiting with code #%d!', exitCode);
+			this.log('Exiting with code #%d%s!', exitCode, msg ? ' (' + msg + ')' : '');
 		}
 
+		this.emit('exit', exitCode, msg);
 		this.page.close();
+
 		phantom.exit(exitCode);
 	},
 
@@ -516,8 +517,7 @@ phantomas.prototype = {
 	onInitialized: function() {
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(module.dirname + '/scope.js')) {
-			this.log('Unable to inject scope.js file!');
-			this.tearDown(EXIT_ERROR);
+			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
 			return;
 		}
 
@@ -557,7 +557,7 @@ phantomas.prototype = {
 
 			default:
 				this.emitInternal('loadFailed', status); // @desc page loading failed
-				this.tearDown(EXIT_LOAD_FAILED);
+				this.tearDown(EXIT_LOAD_FAILED, 'Page loading failed');
 				break;
 		}
 	},
