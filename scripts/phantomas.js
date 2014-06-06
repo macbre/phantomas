@@ -11,8 +11,8 @@ var system = require('system'),
 // compatibility layer for NodeJS modules
 process = {argv: []};
 
-// read options from stdin
-options = system.stdin.readLine();
+// read options from script arguments
+options = system.args[1];
 
 try {
 	// run phantomas
