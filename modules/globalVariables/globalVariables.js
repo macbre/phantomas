@@ -42,6 +42,11 @@ exports.module = function(phantomas) {
 					continue;
 				}
 
+				// filter out 0, 1, 2, ...
+				if (/^\d+$/.test(varName)) {
+					continue;
+				}
+
 				phantomas.incrMetric('globalVariables');
 				phantomas.addOffender('globalVariables', varName);
 
