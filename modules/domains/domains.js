@@ -5,6 +5,8 @@
 
 exports.version = '0.3';
 
+var Stats = require('fast-stats').Stats;
+
 exports.module = function(phantomas) {
 	var Collection = require('../../lib/collection'),
 		domains = new Collection();
@@ -23,8 +25,7 @@ exports.module = function(phantomas) {
 
 	// add metrics
 	phantomas.on('report', function() {
-		var Stats = require('fast-stats').Stats,
-			domainsRequests = new Stats();
+		var domainsRequests = new Stats();
 
 		domains.sort().forEach(function(name, cnt) {
 			phantomas.addOffender('domains', '%s: %d request(s)', name, cnt);
