@@ -30,14 +30,6 @@ var EXIT_SUCCESS = 0,
 // get phantomas version from package.json file
 var VERSION = require('../package').version;
 
-var getDefaultUserAgent = function() {
-	var version = phantom.version,
-		system = require('system'),
-		os = system.os;
-
-	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.name + " " + os.architecture + ")";
-};
-
 var phantomas = function(params) {
 	var fs = require('fs');
 
@@ -378,7 +370,7 @@ phantomas.prototype = {
 		}
 
 		// setup user agent /  --user-agent=custom-agent
-		this.page.settings.userAgent = this.getParam('user-agent', getDefaultUserAgent(), 'string');
+		this.page.settings.userAgent = this.getParam('user-agent');
 
 		// disable JavaScript on the page that will be loaded
 		if (this.disableJs) {
