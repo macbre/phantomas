@@ -5,7 +5,8 @@
  */
 'use strict';
 
-var stream = require('system').stdout;
+var stream = require('system').stdout,
+	SEPARATOR = "\xFF\xFF";
 
 function ipc(event) {
 	/* jshint validthis: true */
@@ -17,6 +18,7 @@ ipc.prototype.push = function() {
 		event: this.event,
 		data: Array.prototype.slice.apply(arguments)
 	}));
+	stream.writeLine(SEPARATOR);
 };
 
 module.exports = ipc;
