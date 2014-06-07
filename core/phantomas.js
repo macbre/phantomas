@@ -480,10 +480,8 @@ phantomas.prototype = {
 		this.log('Returning results with %d metric(s)...', this.results.getMetricsNames().length);
 
 		// emit results in JSON
-		var formatter = require('./formatter'),
-			stdout = require('system').stdout;
-
-		stdout.write(formatter(this.results));
+		var formatter = require('./formatter');
+		this.emit('json', formatter(this.results));
 
 		// handle timeouts (issue #129)
 		if (this.timedOut) {
