@@ -350,7 +350,12 @@ phantomas.prototype = {
 			this.emit('progress', currentProgress, inc); // @desc loading progress has changed
 		}
 
-		setInterval(pollFn.bind(this), 50);
+		if (typeof this.page.loadingProgress !== 'undefined') {
+			setInterval(pollFn.bind(this), 50);
+		}
+		else {
+			this.log('Loading progress: not available!');
+		}
 	},
 
 	// runs phantomas
