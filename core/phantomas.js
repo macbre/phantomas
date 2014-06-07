@@ -39,6 +39,8 @@ var getDefaultUserAgent = function() {
 };
 
 var phantomas = function(params) {
+	var fs = require('fs');
+
 	// store script CLI parameters
 	this.params = params;
 
@@ -93,10 +95,17 @@ var phantomas = function(params) {
 		beSilent: this.silentMode
 	});
 
+	// detect phantomas working directory
 	if (typeof module.dirname !== 'undefined') {
 		this.dir = module.dirname.replace(/core$/, '');
-		this.log('phantomas v%s: running with the following parameters: %j', this.getVersion(), this.params);
 	}
+	else if (typeof slimer !== 'undefined') {
+		var args = require('system').args;
+		this.dir = fs.dirname(args[0]).replace(/scripts$/, '');
+	}
+
+	this.log('phantomas v%s: %s', this.getVersion(), this.dir);
+	this.log('Options: %j', this.params);
 
 	// queue of jobs that needs to be done before report can be generated
 	var Queue = require('../lib/simple-queue');
@@ -132,9 +141,7 @@ var phantomas = function(params) {
 	this.addCoreModule('timeToFirstByte');
 
 	// load 3rd party modules
-	var modules = (this.modules.length > 0) ? this.modules : this.listModules(),
-		fs = require('fs');
-
+	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
 	modules.forEach(this.addModule, this);
 
 	this.includeDirs.forEach(function(dirName) {
@@ -301,7 +308,7 @@ phantomas.prototype = {
 
 	// returns list of 3rd party modules located in modules directory
 	listModules: function() {
-		return this.listModulesInDir(module.dirname + '/../modules');
+		return this.listModulesInDir(this.dir + 'modules');
 	},
 
 	// returns list of 3rd party modules located in modules directory
@@ -516,7 +523,7 @@ phantomas.prototype = {
 	// core events
 	onInitialized: function() {
 		// add helper tools into window.__phantomas "namespace"
-		if (!this.page.injectJs(module.dirname + '/scope.js')) {
+		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
 			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
 			return;
 		}
