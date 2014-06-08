@@ -517,13 +517,20 @@ phantomas.prototype = {
 
 	// core events
 	onInitialized: function() {
+		// SlimerJS triggers this event twice
+		// @see https://github.com/laurentj/slimerjs/blob/master/docs/api/webpage.rst#oninitialized
+		if (this.page.url === '') {
+			this.log('onInit: webpage.url is empty, waiting for the second trigger...');
+			return;
+		}
+
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
 			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
 			return;
 		}
 
-		this.log('Page object initialized');
+		this.log('onInit: page object initialized');
 		this.emitInternal('init'); // @desc page has been initialized, scripts can be injected
 	},
 
