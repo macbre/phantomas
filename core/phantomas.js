@@ -534,7 +534,15 @@ phantomas.prototype = {
 		this.emitInternal('init'); // @desc page has been initialized, scripts can be injected
 	},
 
-	onLoadStarted: function() {
+	onLoadStarted: function(url, isFrame) {
+		if (this.onLoadStartedEmitted) {
+			return;
+		}
+
+		// onLoadStarted is called for the page and each iframe
+		// tigger "loadStarted" event just once
+		this.onLoadStartedEmitted = true;
+
 		this.log('Page loading started');
 		this.emitInternal('loadStarted'); // @desc page loading has started
 	},
