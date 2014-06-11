@@ -13,8 +13,6 @@ if (typeof slimer !== 'undefined') {
 	// @see http://docs.slimerjs.org/current/api/require.html#require-paths
 	require.paths.push('../node_modules/ansicolors');
 	require.paths.push('../node_modules/ansistyles');
-
-	system.stderr = system.stdout; // FIXME: temp hack
 }
 
 // compatibility layer for NodeJS modules
