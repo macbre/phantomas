@@ -14,6 +14,8 @@
 
 exports.version = '0.3';
 
+var Stats = require('fast-stats').Stats;
+
 exports.module = function(phantomas) {
 	var stack = {};
 
@@ -33,8 +35,7 @@ exports.module = function(phantomas) {
 		return stack[type];
 	}
 
-	var Stats = require('fast-stats').Stats,
-		responseTimes = new Stats(),
+	var responseTimes = new Stats(),
 		latencyTimes = new Stats();
 
 	phantomas.on('recv', function(entry, res) {

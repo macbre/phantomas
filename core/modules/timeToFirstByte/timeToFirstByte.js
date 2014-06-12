@@ -36,7 +36,7 @@ exports.module = function(phantomas) {
 			phantomas.log('Time to first byte: set to %d ms for #%d request to <%s> (HTTP %d)', entry.timeToFirstByte, entry.id, entry.url, entry.status);
 			phantomas.log('Time to last byte: set to %d ms', entry.timeToLastByte);
 
-			phantomas.emit('responseEnd', entry, res); // @desc the first response (that was not a redirect) fully received
+			phantomas.emitInternal('responseEnd', entry, res); // @desc the first response (that was not a redirect) fully received
 		}
 	});
 };

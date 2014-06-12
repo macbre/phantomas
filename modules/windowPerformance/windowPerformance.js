@@ -29,11 +29,14 @@ exports.module = function(phantomas) {
 
 	phantomas.on('responseEnd', function() {
 		responseEndTime = Date.now();
-		phantomas.log('Performance timing: responseEnd');
+		phantomas.log('Performance timing: responseEnd = %d', responseEndTime);
 
 		phantomas.evaluate(function(responseEndTime) {
-			window.performance = window.performance || {timing: {}};
-			window.performance.timing.responseEnd = responseEndTime;
+			try {
+				window.performance = window.performance || {timing: {}};
+				window.performance.timing.responseEnd = responseEndTime;
+			}
+			catch(e) {}
 		}, responseEndTime);
 	});
 
@@ -44,11 +47,18 @@ exports.module = function(phantomas) {
 
 				// extend window.performance
 				// "init" event is sometimes fired twice, pass a value set by "responseEnd" event handler (fixes #192)
-				window.performance = window.performance || {
-					timing: {
-						responseEnd: responseEndTime
-					}
-				};
+				if (typeof window.performance === 'undefined') {
+					window.performance = {
+						timing: {
+							responseEnd: responseEndTime
+						}
+					};
+
+					phantomas.log('Performance timing: emulating window.performance');
+				}
+				else {
+					phantomas.log('Performance timing: using native window.performance');
+				}
 
 				// emulate Navigation Timing
 				document.addEventListener('readystatechange', function() {
@@ -74,14 +84,16 @@ exports.module = function(phantomas) {
 							return;
 					}
 
-					phantomas.setMarkerMetric(metricName);
+					phantomas.setMetric(metricName, time);
+
 					phantomas.log('Performance timing: document reached "' + readyState + '" state after ' + time + ' ms');
+					phantomas.log('Performance timing: ' + JSON.stringify(window.performance.timing));
 
 					// measure when event handling is completed
 					setTimeout(function() {
 						var time = Date.now() - responseEndTime;
 
-						phantomas.setMarkerMetric(metricName + 'End');
+						phantomas.setMetric(metricName + 'End', time);
 						phantomas.log('Performance timing: "' + readyState + '" state handling completed after ' + time + ' ms (experimental)');
 					}, 0);
 				});

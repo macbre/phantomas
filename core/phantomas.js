@@ -30,15 +30,9 @@ var EXIT_SUCCESS = 0,
 // get phantomas version from package.json file
 var VERSION = require('../package').version;
 
-var getDefaultUserAgent = function() {
-	var version = phantom.version,
-		system = require('system'),
-		os = system.os;
-
-	return "phantomas/" + VERSION + " (PhantomJS/" + version.major + "." + version.minor + "." + version.patch + "; " + os.name + " " + os.architecture + ")";
-};
-
 var phantomas = function(params) {
+	var fs = require('fs');
+
 	// store script CLI parameters
 	this.params = params;
 
@@ -93,10 +87,17 @@ var phantomas = function(params) {
 		beSilent: this.silentMode
 	});
 
+	// detect phantomas working directory
 	if (typeof module.dirname !== 'undefined') {
 		this.dir = module.dirname.replace(/core$/, '');
-		this.log('phantomas v%s: running with the following parameters: %j', this.getVersion(), this.params);
 	}
+	else if (typeof slimer !== 'undefined') {
+		var args = require('system').args;
+		this.dir = fs.dirname(args[0]).replace(/scripts$/, '');
+	}
+
+	this.log('phantomas v%s: %s', this.getVersion(), this.dir);
+	this.log('Options: %j', this.params);
 
 	// queue of jobs that needs to be done before report can be generated
 	var Queue = require('../lib/simple-queue');
@@ -132,9 +133,7 @@ var phantomas = function(params) {
 	this.addCoreModule('timeToFirstByte');
 
 	// load 3rd party modules
-	var modules = (this.modules.length > 0) ? this.modules : this.listModules(),
-		fs = require('fs');
-
+	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
 	modules.forEach(this.addModule, this);
 
 	this.includeDirs.forEach(function(dirName) {
@@ -301,7 +300,7 @@ phantomas.prototype = {
 
 	// returns list of 3rd party modules located in modules directory
 	listModules: function() {
-		return this.listModulesInDir(module.dirname + '/../modules');
+		return this.listModulesInDir(this.dir + 'modules');
 	},
 
 	// returns list of 3rd party modules located in modules directory
@@ -343,7 +342,12 @@ phantomas.prototype = {
 			this.emit('progress', currentProgress, inc); // @desc loading progress has changed
 		}
 
-		setInterval(pollFn.bind(this), 50);
+		if (typeof this.page.loadingProgress !== 'undefined') {
+			setInterval(pollFn.bind(this), 50);
+		}
+		else {
+			this.log('Loading progress: not available!');
+		}
 	},
 
 	// runs phantomas
@@ -366,7 +370,7 @@ phantomas.prototype = {
 		}
 
 		// setup user agent /  --user-agent=custom-agent
-		this.page.settings.userAgent = this.getParam('user-agent', getDefaultUserAgent(), 'string');
+		this.page.settings.userAgent = this.getParam('user-agent');
 
 		// disable JavaScript on the page that will be loaded
 		if (this.disableJs) {
@@ -473,10 +477,8 @@ phantomas.prototype = {
 		this.log('Returning results with %d metric(s)...', this.results.getMetricsNames().length);
 
 		// emit results in JSON
-		var formatter = require('./formatter'),
-			stdout = require('system').stdout;
-
-		stdout.write(formatter(this.results));
+		var formatter = require('./formatter');
+		this.emit('json', formatter(this.results));
 
 		// handle timeouts (issue #129)
 		if (this.timedOut) {
@@ -515,17 +517,32 @@ phantomas.prototype = {
 
 	// core events
 	onInitialized: function() {
+		// SlimerJS triggers this event twice
+		// @see https://github.com/laurentj/slimerjs/blob/master/docs/api/webpage.rst#oninitialized
+		if (this.page.url === '') {
+			this.log('onInit: webpage.url is empty, waiting for the second trigger...');
+			return;
+		}
+
 		// add helper tools into window.__phantomas "namespace"
-		if (!this.page.injectJs(module.dirname + '/scope.js')) {
+		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
 			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
 			return;
 		}
 
-		this.log('Page object initialized');
+		this.log('onInit: page object initialized');
 		this.emitInternal('init'); // @desc page has been initialized, scripts can be injected
 	},
 
-	onLoadStarted: function() {
+	onLoadStarted: function(url, isFrame) {
+		if (this.onLoadStartedEmitted) {
+			return;
+		}
+
+		// onLoadStarted is called for the page and each iframe
+		// tigger "loadStarted" event just once
+		this.onLoadStartedEmitted = true;
+
 		this.log('Page loading started');
 		this.emitInternal('loadStarted'); // @desc page loading has started
 	},

@@ -123,6 +123,9 @@ exports.module = function(phantomas) {
 
 			// the end of response
 			case 'end':
+				// SlimerJS sets res.bodySize at stage = end
+				entry.bodySize = entry.bodySize || res.bodySize;
+
 				// timing
 				entry.recvEndTime = res.time;
 				entry.timeToLastByte = res.time - entry.sendTime;
@@ -282,6 +285,7 @@ exports.module = function(phantomas) {
 
 				if (entry.gzip) {
 					phantomas.incrMetric('gzipRequests');
+					phantomas.addOffender('gzipRequests', '%s (gzip: %s kB / uncompressed: %s kB)', entry.url, (entry.contentLength/1024).toFixed(2), (entry.bodySize/1024).toFixed(2));
 				}
 
 				if (entry.isSSL) {

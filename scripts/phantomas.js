@@ -8,11 +8,18 @@ var system = require('system'),
 	instance,
 	options;
 
+// compatibility with SlimerJS
+if (typeof slimer !== 'undefined') {
+	// @see http://docs.slimerjs.org/current/api/require.html#require-paths
+	require.paths.push('../node_modules/ansicolors');
+	require.paths.push('../node_modules/ansistyles');
+}
+
 // compatibility layer for NodeJS modules
 process = {argv: []};
 
-// read options from stdin
-options = system.stdin.readLine();
+// read options from script arguments
+options = system.args[1];
 
 try {
 	// run phantomas

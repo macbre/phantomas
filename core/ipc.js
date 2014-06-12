@@ -1,11 +1,12 @@
 /**
- * Simple IPC implementation using JSON-encoded messages sent over stderr stream
+ * Simple IPC implementation using JSON-encoded messages sent over stdout stream
  *
  * Implements producer of the data (for PhantomJS environment)
  */
 'use strict';
 
-var stderr = require('system').stderr;
+var stream = require('system').stdout,
+	SEPARATOR = "\xFF\xFF";
 
 function ipc(event) {
 	/* jshint validthis: true */
@@ -13,10 +14,11 @@ function ipc(event) {
 }
 
 ipc.prototype.push = function() {
-	stderr.writeLine(JSON.stringify({
+	stream.writeLine(JSON.stringify({
 		event: this.event,
 		data: Array.prototype.slice.apply(arguments)
 	}));
+	stream.writeLine(SEPARATOR);
 };
 
 module.exports = ipc;

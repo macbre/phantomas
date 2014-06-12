@@ -15,7 +15,7 @@ mockery.registerMock('fs', {
 });
 mockery.registerMock('system', {
 	os: {},
-	stderr: {
+	stdout: {
 		writeLine: function() {}
 	}
 });
