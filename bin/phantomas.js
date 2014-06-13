@@ -28,6 +28,9 @@ program
 	.describe('version', 'Show version number and quit').boolean('version').alias('version', 'V')
 	.describe('help', 'This help text').boolean('help').alias('help', 'h')
 
+	// --engine=[webkit|gecko]
+	.describe('engine', 'select engine used to run the phantomas [webkit|gecko]  - EXPERIMENTAL').string('engine')
+
 	// optional params
 	.describe('allow-domain', 'allow requests to given domain(s) - aka whitelist [domain],[domain],...')
 	.describe('auth-user', 'sets the user name used for HTTP authentication')
