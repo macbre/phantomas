@@ -45,8 +45,18 @@
 
 	// for backtraces
 	(function() {
-		function formatEntry(entry) {
-			return entry ? ((entry.function ? entry.function + '(): ' : 'unknown fn: ') + entry.sourceURL + ' @ ' + entry.line) : '';
+		// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Stack
+		function getStackFromError(e) {
+			var stack = e.stack.trim().split("\n").
+				map(function(item) {
+					return item.replace(/^(\s+at\s|@)/, '').trim();
+				}).
+				filter(function(item) {
+					return /:\d+\)?$/.test(item);
+				});
+
+			//console.log(stack);
+			return stack;
 		}
 
 		function getBacktrace() {
@@ -55,10 +65,10 @@
 			try {
 				throw new Error('backtrace');
 			} catch(e) {
-				stack = e.stackArray.slice(3);
+				stack = getStackFromError(e).slice(3);
 			}
 
-			return stack.map(formatEntry).join(' / ');
+			return stack.join(' / ');
 		}
 
 		function getCaller(stepBack) {
@@ -69,10 +79,10 @@
 			try {
 				throw new Error('backtrace');
 			} catch(e) {
-				caller = (e.stackArray && e.stackArray[3 + stepBack]) || {};
+				caller = getStackFromError(e)[3 + stepBack];
 			}
 
-			return formatEntry(caller);
+			return caller;
 		}
 
 		phantomas.getBacktrace = getBacktrace;
