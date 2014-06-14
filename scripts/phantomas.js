@@ -15,9 +15,6 @@ if (typeof slimer !== 'undefined') {
 	require.paths.push('../node_modules/ansistyles');
 }
 
-// compatibility layer for NodeJS modules
-process = {argv: []};
-
 // read options from script arguments
 options = system.args[1];
 
