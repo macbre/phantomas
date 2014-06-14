@@ -14,7 +14,7 @@
 
 exports.version = '0.3';
 
-var Stats = require('fast-stats').Stats;
+var Stats = require('../../lib/fast-stats').Stats;
 
 exports.module = function(phantomas) {
 	var stack = {};

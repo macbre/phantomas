@@ -283,6 +283,7 @@ phantomas.prototype = {
 		}
 		catch (e) {
 			this.log('Unable to load module "%s" from %s!', name, dir);
+			this.log('%s!', e);
 			return false;
 		}
 

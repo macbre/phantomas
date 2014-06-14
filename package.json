@@ -30,7 +30,6 @@
     "csv-string": "~2.1.1",
     "debug": "~0.8.0",
     "elasticsearch": "~1.5.14",
-    "fast-stats": ">=0.0.2",
     "node-statsd": "0.0.7",
     "optimist": "0.6.x",
     "phantomjs": "~1.9.0",
