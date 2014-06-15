@@ -127,8 +127,8 @@
 			}
 		}
 
-		function log(msg) {
-			sendMsg('log', msg);
+		function log() {
+			sendMsg('log', Array.prototype.slice.apply(arguments));
 		}
 
 		function setMetric(name, value, isFinal) {
