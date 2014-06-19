@@ -123,7 +123,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 104_
+_Current number of metrics: 107_
 
 Units:
 
@@ -227,6 +227,14 @@ Units:
 * DOMqueriesByQuerySelectorAll: number of `document.querySelectorAll` calls
 * DOMinserts: number of DOM nodes inserts
 * DOMqueriesDuplicated: number of duplicated DOM queries
+
+### DOM mutations
+
+> These metrics are only available when running phantomas using **Gecko engine** (``--engine=gecko``)
+
+* DOMmutationsInserts: number of node inserts
+* DOMmutationsRemoves: number of node removes
+* DOMmutationsAttributes: number of DOM nodes attributes changes
 
 ### Event listeners
 
