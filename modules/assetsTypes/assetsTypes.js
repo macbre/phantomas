@@ -13,6 +13,8 @@
  * setMetric('imageSize')  @desc size of image responses @unreliable
  * setMetric('webfontCount') @desc number of web font responses @offenders
  * setMetric('webfontSize')  @desc size of web font responses @unreliable
+ * setMetric('videoCount') @desc number of video responses @gecko
+ * setMetric('videoSize')  @desc size of video responses @gecko
  * setMetric('base64Count') @desc number of base64 encoded "responses" (no HTTP request was actually made) @offenders
  * setMetric('base64Size')  @desc size of base64 encoded responses @unreliable
  * setMetric('otherCount') @desc number of other responses @offenders
@@ -20,10 +22,10 @@
  */
 'use strict';
 
-exports.version = '0.1';
+exports.version = '0.2';
 
 exports.module = function(phantomas) {
-	['html', 'css', 'js', 'json', 'image', 'webfont', 'base64', 'other'].forEach(function(key) {
+	['html', 'css', 'js', 'json', 'image', 'video', 'webfont', 'base64', 'other'].forEach(function(key) {
 		phantomas.setMetric(key + 'Count');
 		phantomas.setMetric(key + 'Size');
 	});
