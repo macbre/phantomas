@@ -123,7 +123,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 107_
+_Current number of metrics: 109_
 
 Units:
 
@@ -165,6 +165,8 @@ Units:
 * imageSize: size of image responses
 * webfontCount: number of web font responses
 * webfontSize: size of web font responses
+* videoCount: number of video responses
+* videoSize: size of video responses
 * base64Count: number of base64 encoded "responses" (no HTTP request was actually made)
 * base64Size: size of base64 encoded "responses"
 * otherCount: number of other responses
