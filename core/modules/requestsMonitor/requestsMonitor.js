@@ -204,6 +204,11 @@ exports.module = function(phantomas) {
 									entry.isImage = true;
 									break;
 
+								case 'video/webm':
+									entry.type = 'video';
+									entry.isVideo = true;
+									break;
+
 								// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
 								case 'application/font-wof':
 								case 'application/font-woff':

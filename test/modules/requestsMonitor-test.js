@@ -142,6 +142,10 @@ vows.describe('requestMonitor').addBatch({
 		topic: recvContentType('image/webp'),
 		'isImage is set': assertField('isImage', true)
 	},
+	'WebM video is properly detected': {
+		topic: recvContentType('video/webm'),
+		'isVideo is set': assertField('isVideo', true)
+	},
 	'Web font is properly detected (via MIME)': {
 		topic: recvContentType('application/font-woff'),
 		'isWebFont is set': assertField('isWebFont', true)

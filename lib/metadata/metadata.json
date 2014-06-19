@@ -337,6 +337,19 @@
       "unit": "bytes",
       "module": "assetsTypes"
     },
+    "videoCount": {
+      "desc": "number of video responses",
+      "offenders": true,
+      "gecko": true,
+      "unit": "number",
+      "module": "assetsTypes"
+    },
+    "videoSize": {
+      "desc": "size of video responses",
+      "gecko": true,
+      "unit": "bytes",
+      "module": "assetsTypes"
+    },
     "base64Count": {
       "desc": "number of base64 encoded \"responses\" (no HTTP request was actually made)",
       "offenders": true,
@@ -802,7 +815,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 137,
+  "metricsCount": 139,
   "modulesCount": 37,
   "version": "1.3.0"
 }
