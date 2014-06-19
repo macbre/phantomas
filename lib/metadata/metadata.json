@@ -339,6 +339,7 @@
     },
     "videoCount": {
       "desc": "number of video responses",
+      "offenders": true,
       "gecko": true,
       "unit": "number",
       "module": "assetsTypes"

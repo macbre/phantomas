@@ -13,7 +13,7 @@
  * setMetric('imageSize')  @desc size of image responses @unreliable
  * setMetric('webfontCount') @desc number of web font responses @offenders
  * setMetric('webfontSize')  @desc size of web font responses @unreliable
- * setMetric('videoCount') @desc number of video responses @gecko
+ * setMetric('videoCount') @desc number of video responses @offenders @gecko
  * setMetric('videoSize')  @desc size of video responses @gecko
  * setMetric('base64Count') @desc number of base64 encoded "responses" (no HTTP request was actually made) @offenders
  * setMetric('base64Size')  @desc size of base64 encoded responses @unreliable
