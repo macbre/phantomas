@@ -215,7 +215,7 @@
 	 *
 	 * Example: body.logged_out.vis-public.env-production > div > div
 	 */
-	function getDOMPath(node) {
+	function getDOMPath(node, dontGoUpTheDom /* = false */) {
 		var path = [],
 			entry = '';
 
@@ -247,6 +247,10 @@
 			}
 
 			path.push(entry);
+
+			if (dontGoUpTheDom === true) {
+				break;
+			}
 
 			// go up the DOM
 			node = node && node.parentNode;
