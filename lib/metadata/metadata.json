@@ -491,6 +491,27 @@
       "unit": "number",
       "module": "domComplexity"
     },
+    "DOMmutationsInserts": {
+      "desc": "number of <body> node inserts",
+      "gecko": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "domMutations"
+    },
+    "DOMmutationsRemoves": {
+      "desc": "number of <body> node removes",
+      "gecko": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "domMutations"
+    },
+    "DOMmutationsAttributes": {
+      "desc": "number of DOM nodes attributes changes",
+      "gecko": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "domMutations"
+    },
     "DOMqueries": {
       "desc": "number of all DOM queries",
       "offenders": true,
@@ -781,7 +802,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 134,
-  "modulesCount": 36,
+  "metricsCount": 137,
+  "modulesCount": 37,
   "version": "1.3.0"
 }

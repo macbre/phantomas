@@ -639,7 +639,7 @@ phantomas.prototype = {
 
 		switch(type) {
 			case 'log':
-				this.log(data);
+				this.log.apply(this, data);
 				break;
 
 			case 'setMetric':
