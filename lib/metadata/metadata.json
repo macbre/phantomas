@@ -784,23 +784,24 @@
       "unit": "ms",
       "module": "timeToFirst"
     },
-    "onDOMReadyTime": {
-      "desc": "time it took to fire onDOMready event",
+    "domInteractive": {
+      "desc": "time it took to parse the HTML and construct the DOM",
       "unit": "ms",
       "module": "windowPerformance"
     },
-    "onDOMReadyTimeEnd": {
-      "desc": "time it took to finish processing onDOMready event",
+    "domContentLoaded": {
+      "desc": "time it took to construct both DOM and CSSOM, no stylesheets that are blocking JavaScript execution (i.e. onDOMReady)",
       "unit": "ms",
       "module": "windowPerformance"
     },
-    "windowOnLoadTime": {
-      "desc": "time it took to fire window.load event",
+    "domContentLoadedEnd": {
+      "desc": "time it took to finish handling of onDOMReady event",
+      "unreliable": true,
       "unit": "ms",
       "module": "windowPerformance"
     },
-    "windowOnLoadTimeEnd": {
-      "desc": "time it took to finish processing window.load event",
+    "domComplete": {
+      "desc": "time it took to load all page resources, the loading spinner has stopped spinning",
       "unit": "ms",
       "module": "windowPerformance"
     },
@@ -817,5 +818,5 @@
   },
   "metricsCount": 139,
   "modulesCount": 37,
-  "version": "1.3.0"
+  "version": "1.4.0"
 }
