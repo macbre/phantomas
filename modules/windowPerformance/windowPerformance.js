@@ -2,42 +2,30 @@
  * Measure when the page reaches certain states
  *
  * @see http://w3c-test.org/webperf/specs/NavigationTiming/#dom-performancetiming-domloading
- *
- * onDOMReadyTime       Navigation Timing - domContentLoadedEventStart and domComplete
- * onDOMReadyTimeEnd    Navigation Timing - domContentLoadedEventEnd
- * windowOnLoadTime     Navigation Timing - loadEventStart
- * windowOnLoadTimeEnd  Navigation Timing - loadEventEnd
+ * @see https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp
  */
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.5';
+exports.version = '1.0';
 
 exports.module = function(phantomas) {
 	// times below are calculated relative to performance.timing.responseEnd (#117)
-	phantomas.setMetric('onDOMReadyTime');       // @desc time it took to fire onDOMready event
-	phantomas.setMetric('onDOMReadyTimeEnd');    // @desc time it took to finish processing onDOMready event
-	phantomas.setMetric('windowOnLoadTime');     // @desc time it took to fire window.load event
-	phantomas.setMetric('windowOnLoadTimeEnd');  // @desc time it took to finish processing window.load event
+	phantomas.setMetric('domInteractive');      // @desc time it took to parse the HTML and construct the DOM
+	phantomas.setMetric('domContentLoaded');    // @desc time it took to construct both DOM and CSSOM, no stylesheets that are blocking JavaScript execution (i.e. onDOMReady)
+	phantomas.setMetric('domContentLoadedEnd'); // @desc time it took to finish handling of onDOMReady event @unreliable
+	phantomas.setMetric('domComplete');         // @desc time it took to load all page resources, the loading spinner has stopped spinning
 
 	// backend vs frontend time
 	phantomas.setMetric('timeBackend');  // @desc time to the first byte compared to the total loading time [%]
 	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
 
-	// measure onDOMReadyTime and windowOnLoadTime from the moment HTML response was fully received
+	// measure dom... metrics from the moment HTML response was fully received
 	var responseEndTime = Date.now();
 
 	phantomas.on('responseEnd', function() {
 		responseEndTime = Date.now();
 		phantomas.log('Performance timing: responseEnd = %d', responseEndTime);
-
-		phantomas.evaluate(function(responseEndTime) {
-			try {
-				window.performance = window.performance || {timing: {}};
-				window.performance.timing.responseEnd = responseEndTime;
-			}
-			catch(e) {}
-		}, responseEndTime);
 	});
 
 	phantomas.on('init', function() {
@@ -60,6 +48,25 @@ exports.module = function(phantomas) {
 					phantomas.log('Performance timing: using native window.performance');
 				}
 
+				// onDOMReady
+				document.addEventListener("DOMContentLoaded", function() {
+					var time = Date.now() - responseEndTime;
+
+					phantomas.setMetric('domContentLoaded', time, true);
+					phantomas.log('Performance timing: document reached "DOMContentLoaded" state after %d ms', time);
+
+					setTimeout(function() {
+						// use NavigationTiming if possible
+						var time = window.performance.timing.domContentLoadedEventEnd ?
+							(window.performance.timing.domContentLoadedEventEnd - window.performance.timing.responseEnd)
+							:
+							(Date.now() - responseEndTime);
+
+						phantomas.setMetric('domContentLoadedEnd', time, true);
+						phantomas.log('Performance timing: document reached "DOMContentLoadedEnd" state after %d ms', time);
+					}, 0);
+				});
+
 				// emulate Navigation Timing
 				document.addEventListener('readystatechange', function() {
 					var readyState = document.readyState,
@@ -69,50 +76,30 @@ exports.module = function(phantomas) {
 
 					// @see http://www.w3.org/TR/html5/dom.html#documentreadystate
 					switch(readyState) {
-						// DOMContentLoaded
+						// the browser has finished parsing all of the HTML and DOM construction is complete
 						case 'interactive':
-							metricName = 'onDOMReadyTime';
+							metricName = 'domInteractive';
 							break;
 
-						// window.onload
+						// the processing is complete and all of the resources on the page have finished downloading
 						case 'complete':
-							metricName = 'windowOnLoadTime';
+							metricName = 'domComplete';
+							phantomas.log('Performance timing: %j', window.performance.timing);
 							break;
 
 						default:
-							phantomas.log('Performance timing: unhandled "' + readyState + '" state!');
+							phantomas.log('Performance timing: unhandled "%s" state!', readyState);
 							return;
 					}
 
-					phantomas.setMetric(metricName, time);
+					phantomas.setMetric(metricName, time, true);
 
-					phantomas.log('Performance timing: document reached "' + readyState + '" state after ' + time + ' ms');
-					phantomas.log('Performance timing: ' + JSON.stringify(window.performance.timing));
-
-					// measure when event handling is completed
-					setTimeout(function() {
-						var time = Date.now() - responseEndTime;
-
-						phantomas.setMetric(metricName + 'End', time);
-						phantomas.log('Performance timing: "' + readyState + '" state handling completed after ' + time + ' ms (experimental)');
-					}, 0);
+					phantomas.log('Performance timing: document reached "%s" state after %d ms', readyState, time);
 				});
 
 				phantomas.spyEnabled(true);
 			})(window.__phantomas);
 		}, responseEndTime);
-	});
-
-	// fallback for --disable-js mode
-	phantomas.on('loadFinished', function() {
-		var time;
-
-		if (phantomas.getMetric('onDOMReadyTime') === 0) {
-			time = phantomas.setMarkerMetric('windowOnLoadTime');
-			phantomas.setMarkerMetric('windowOnLoadTimeEnd');
-
-			phantomas.log('Performance timing: document reached "complete" state after ' + time + ' ms (no JS fallback)');
-		}
 	});
 
 	/**
@@ -125,9 +112,9 @@ exports.module = function(phantomas) {
 	 */
 	phantomas.on('report', function() {
 		//  The “backend” time is the time it takes the server to get the first byte back to the client.
-		//  The “frontend” time is everything else (measured until window.onload)
+		//  The “frontend” time is measured from the last byte of the response (responseEnd) until all resources are fetched (domComplete)
 		var backendTime = parseInt(phantomas.getMetric('timeToFirstByte'), 10),
-			frontendTime = parseInt(phantomas.getMetric('windowOnLoadTime'), 10),
+			frontendTime = parseInt(phantomas.getMetric('domComplete'), 10),
 			totalTime = backendTime + frontendTime,
 			backendTimePercentage;
 
@@ -139,5 +126,7 @@ exports.module = function(phantomas) {
 
 		phantomas.setMetric('timeBackend', backendTimePercentage);
 		phantomas.setMetric('timeFrontend', 100 - backendTimePercentage);
+
+		phantomas.log('Performance timing: backend vs frontend time - %d% / %d%', backendTimePercentage, 100 - backendTimePercentage);
 	});
 };

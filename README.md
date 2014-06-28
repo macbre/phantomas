@@ -246,10 +246,10 @@ Units:
 
 > Times below are relative to ``responseEnd`` entry in NavigationTiming (represented by ``timeToLastByte`` metric). See [NavigationTiming spec](http://w3c-test.org/webperf/specs/NavigationTiming/) for more information.
 
-* onDOMReadyTime: time it took to fire onDOMready event
-* onDOMReadyTimeEnd: time it took to finish processing onDOMready event **experimental**
-* windowOnLoadTime: time it took to fire window.load event
-* windowOnLoadTimeEnd: time it took to finish processing window.load event **experimental**
+* domInteractive: time it took to parse the HTML and construct the DOM
+* domContentLoaded: time it took to construct both DOM and CSSOM, no stylesheets are blocking JavaScript execution (i.e. onDOMReady)
+* domContentLoadedEnd: time it took to finish handling of onDOMReady event **experimental**
+* domComplete: time it took to load all page resources, the loading spinner has stopped spinning
 * timeBackend: time to the first byte compared to the total loading time (in %)
 * timeFrontend: time to window on load compared to the total loading time (in %)
 

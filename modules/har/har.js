@@ -1,5 +1,7 @@
 /**
 * Log requests for build HAR output
+*
+* Depends on windowPerformance module!
 * 
 * @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
 */
@@ -129,7 +131,7 @@ exports.module = function(phantomas) {
     };
 
     if (typeof param === 'undefined') {
-        phantomas.log('No HAR path specified, use --har <path>');
+        phantomas.log('HAR: no path specified, use --har <path>');
         return;
     }
 
@@ -143,7 +145,7 @@ exports.module = function(phantomas) {
         path = param;
     }
 
-    phantomas.log('HAR path: %s', path);
+    phantomas.log('HAR: will be stored in %s', path);
 
     phantomas.on('pageBeforeOpen', function(p) {
         page.origin = p;
@@ -172,10 +174,10 @@ exports.module = function(phantomas) {
 
     phantomas.on('metric', function(name, value) {
         switch (name) {
-            case 'onDOMReadyTime':
+            case 'domContentLoaded':
                 page.onDOMReadyTime = value;
                 break;
-            case 'windowOnLoadTime':
+            case 'domComplete':
                 page.windowOnLoadTime = value;
                 break;
             case 'timeToLastByte':
@@ -201,7 +203,7 @@ exports.module = function(phantomas) {
         page.onLoad = page.timeToLastByte + page.windowOnLoadTime;
         page.onContentLoad = page.timeToLastByte + page.onDOMReadyTime;
 
-        phantomas.log('Create HAR: %s ("%s")', page.address, page.title);
+        phantomas.log('HAR: generating for <%s> ("%s")', page.address, page.title);
 
         var har,
             dump;
@@ -209,26 +211,25 @@ exports.module = function(phantomas) {
         try {
             har = createHAR(page, creator);
         } catch (e) {
-            phantomas.log('Impossible to build HAR: %s', e);
+            phantomas.log('HAR: failed to build - %s', e);
             return;
         }
     
-        phantomas.log('Convert HAR to JSON');
         try {
             dump = JSON.stringify(har);
         } catch (e) {
-            phantomas.log('Impossible stringify HAR on JSON format: %s', e);
+            phantomas.log('HAR: failed to stringify HAR to JSON - %s!', e);
             return;
         }
 
-        phantomas.log("Write HAR in '%s'", path);
+        phantomas.log("HAR: saving to '%s',,,", path);
         try {
             fs.write(path, dump);
         } catch (e) {
-            phantomas.log('Impossible write HAR file: %s', e);
+            phantomas.log('HAR: failed to save HAR - %s!', e);
             return;
         }
 
-        phantomas.log('HAR Done !');
+        phantomas.log('HAR: done');
     });
 };
