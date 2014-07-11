@@ -1,6 +1,7 @@
 log
 *.log
 *.swp
+*.har
 filmstrip
 html
 
