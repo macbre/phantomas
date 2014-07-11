@@ -1,0 +1,19 @@
+# YAML config file
+url: "http://phantomjs.org"
+verbose: true
+reporter: "tap:no-skip"
+"block-domain": "google-analytics.com, amazonaws.com"
+cookies:
+  - name: "mobile"
+    value: "on"
+    domain: ".phantomjs.org"
+  - name: "foo"
+    value: "bar"
+# we can put comments here, yay!
+asserts:
+  requests: 12
+  redirects: 0
+  domains: 2
+  timeToFirstByte: 600
+  httpTrafficCompleted: 1000
+

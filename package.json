@@ -30,6 +30,7 @@
     "csv-string": "~2.1.1",
     "debug": "~0.8.0",
     "elasticsearch": "~1.5.14",
+    "js-yaml": "^3.1.0",
     "node-statsd": "0.0.7",
     "optimist": "0.6.x",
     "phantomjs": "~1.9.0",
