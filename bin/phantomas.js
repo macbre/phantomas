@@ -41,6 +41,7 @@ program
 	.describe('colors', 'forces ANSI colors even when output is piped').boolean('colors')
 	.describe('disable-js', 'disable JavaScript on the page that will be loaded').boolean('disable-js')
 	.describe('ignore-ssl-errors', 'ignores SSL errors, such as expired or self-signed certificate errors')
+	.describe('ssl-protocol', 'sets the SSL protocol for secure connections [sslv3|sslv2|tlsv1|any]')
 	.describe('log', 'log to a given file')
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
 	.describe('include-dirs', 'load modules from specified directories [dirOne],[dirTwo],...')
