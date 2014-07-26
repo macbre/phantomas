@@ -166,7 +166,12 @@ async.series(
 			res;
 
 		debug('err: %j', err);
-		debug('results: %j', results);
+		debug('results [%d]: %j', results.length, results);
+
+		// filter out "broken" results (issue #366)
+		results = results.filter(function(item) {
+			return typeof item !== 'undefined';
+		});
 
 		// this function is called when phantomas is done with all runs
 		function doneFn() {
@@ -175,7 +180,7 @@ async.series(
 			process.exit(err);
 		}
 
-		if (results[0] !== false) {
+		if (typeof results[0] !== 'undefined') {
 			// process JSON results by reporters
 			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err || 0);
 
