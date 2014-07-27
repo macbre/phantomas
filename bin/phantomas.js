@@ -71,7 +71,8 @@ program
 	.describe('film-strip', 'register film strip when page is loading - EXPERIMENTAL').boolean('film-strip')
 	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory) - EXPERIMENTAL')
 	.describe('page-source', 'save page source to file - EXPERIMENTAL').boolean('page-source')
-	.describe('page-source-dir', 'folder path to output page source (default is ./html directory) - EXPERIMENTAL');
+	.describe('page-source-dir', 'folder path to output page source (default is ./html directory) - EXPERIMENTAL')
+	.describe('socket', 'use provided UNIX socket for IPC - EXPERIMENTAL');
 
 // handle --config (issue #209)
 program.setConfigFile('config');
