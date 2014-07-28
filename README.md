@@ -123,7 +123,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 109_
+_Current number of metrics: 110_
 
 Units:
 
