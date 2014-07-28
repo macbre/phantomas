@@ -123,7 +123,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 109_
+_Current number of metrics: 110_
 
 Units:
 
@@ -330,6 +330,10 @@ Units:
 > Analyzes bits of data pertaining to the main request only
 
 * statusCodesTrail: comma-separated list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one)
+
+### Document height
+
+* [documentHeight](http://www.stevesouders.com/blog/2014/06/08/http-archive-new-stuff/): the page height in pixels
 
 ### Optional metrics
 
