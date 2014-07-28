@@ -455,6 +455,11 @@
       "unit": "number",
       "module": "cookies"
     },
+    "documentHeight": {
+      "desc": "the page height",
+      "unit": "px",
+      "module": "documentHeight"
+    },
     "commentsSize": {
       "desc": "the size of HTML comments on the page",
       "offenders": true,
@@ -816,7 +821,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 139,
-  "modulesCount": 37,
+  "metricsCount": 140,
+  "modulesCount": 38,
   "version": "1.4.0"
 }

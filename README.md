@@ -331,6 +331,10 @@ Units:
 
 * statusCodesTrail: comma-separated list of HTTP status codes that main request followed through (could contain a single element if the main request is a terminal one)
 
+### Document height
+
+* [documentHeight](http://www.stevesouders.com/blog/2014/06/08/http-archive-new-stuff/): the page height in pixels
+
 ### Optional metrics
 
 > The following metrics are emitted only when certain options are passed to phantomas
