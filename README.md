@@ -103,6 +103,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--screenshot=[file name]` render fully loaded page to a given file
 * `--har=[file name]` save HAR to a given file
 * `--wait-for-selector=[CSS selector]` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
+* `--scroll` scroll down the page when it''s loaded
 * `--post-load-delay=[seconds]` wait X seconds before generating a report, timeout setting still applies
 * `--ignore-ssl-errors` ignores SSL errors, such as expired or self-signed certificate errors
 * `--proxy=[host:port]` specifies the proxy server to use
