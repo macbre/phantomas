@@ -130,6 +130,7 @@ var phantomas = function(params) {
 
 	this.addCoreModule('cookies');
 	this.addCoreModule('httpAuth');
+	this.addCoreModule('scroll');
 	this.addCoreModule('timeToFirstByte');
 
 	// load 3rd party modules
