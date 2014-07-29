@@ -65,6 +65,7 @@ program
 	.describe('debug', 'run PhantomJS in debug mode').default('debug')
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
+	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
 
 	// experimental features
 	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
