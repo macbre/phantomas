@@ -63,15 +63,24 @@ exports.module = function(phantomas) {
 				// count DOM inserts
 				function appendSpy(child) {
 					/* jshint validthis: true */
-					var hasParent = (typeof this.parentNode !== 'undefined');
-
 					// ignore appending to the node that's not yet added to DOM tree
-					if (!hasParent) {
+					if (!this.parentNode) {
+						return;
+					}
+
+					var destNodePath = phantomas.getDOMPath(this),
+					    appendedNodePath = phantomas.getDOMPath(child);
+
+					// don't count elements added to fragments as a DOM inserts (issue #350)
+					// DocumentFragment > div[0]
+					if (destNodePath.indexOf('DocumentFragment') === 0) {
 						return;
 					}
 
 					phantomas.incrMetric('DOMinserts');
-					phantomas.log('DOM insert: node "' + phantomas.getDOMPath(child) + '" added to "' + phantomas.getDOMPath(this) + '"');
+					phantomas.addOffender('DOMinserts', '"%s" appended to "%s"', appendedNodePath, destNodePath);
+
+					phantomas.log('DOM insert: node "%s" appended to "%s"', appendedNodePath, destNodePath);
 				}
 
 				phantomas.spy(Node.prototype, 'appendChild', appendSpy);
