@@ -1,0 +1,45 @@
+<head>
+	<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+	<p id="foo" class="bar">foo</p>
+	<span id="delete"></span>
+
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script>
+		$(function() {
+			$('#foo').css({
+				color: 'red',
+				background: 'green'
+			});
+
+			$('#foo').
+				css('color', 'red').
+				css('background', 'green').
+				append('<b>bar</b>');
+
+			var del = document.getElementById('delete');
+			$(del).remove();
+
+			var nodes = [
+				document.querySelector('#foo'),
+				document.getElementsByClassName('bar'),
+				document.getElementsByTagName('span')
+			];
+
+			console.log(nodes);
+	});
+	</script>
+</body>
+
+<!--
+
+10:13:22.056 DOM mutation: "style" attr (was "") set on p#foo
+10:13:22.058 DOM mutation: "style" attr (was "color: red;") set on p#foo
+10:13:22.059 DOM mutation: "style" attr (was "color: red; background: none repeat scroll 0% 0% green;") set on p#foo
+10:13:22.061 DOM mutation: "style" attr (was "color: red; background: none repeat scroll 0% 0% green;") set on p#foo
+10:13:22.062 DOM mutation: node "b[1]" added to "p#foo"
+10:13:22.063 DOM mutation: node "span#delete" removed from "body"
+
+
+-->
