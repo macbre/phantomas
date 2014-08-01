@@ -543,16 +543,18 @@
     },
     "DOMqueriesByClassName": {
       "desc": "number of document.getElementsByClassName calls",
+      "offenders": true,
       "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesByTagName": {
       "desc": "number of document.getElementsByTagName calls",
+      "offenders": true,
       "unit": "number",
       "module": "domQueries"
     },
     "DOMqueriesByQuerySelectorAll": {
-      "desc": "number of document.querySelectorAll calls",
+      "desc": "number of document.querySelector(All) calls",
       "offenders": true,
       "unit": "number",
       "module": "domQueries"
@@ -822,6 +824,6 @@
     }
   },
   "metricsCount": 140,
-  "modulesCount": 38,
+  "modulesCount": 39,
   "version": "1.4.0"
 }
