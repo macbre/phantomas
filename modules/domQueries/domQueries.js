@@ -4,14 +4,14 @@
 /* global Element: true, Document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '0.6';
+exports.version = '0.7';
 
 exports.module = function(phantomas) {
         phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
         phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
         phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
         phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
-        phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelectorAll calls
+        phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelector(All) calls
         phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
         phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of duplicated DOM queries
 
@@ -19,33 +19,45 @@ exports.module = function(phantomas) {
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-				function querySpy(type, query) {
-					phantomas.emit('domQuery', type, query); // @desc DOM query has been made
+				function querySpy(type, query, fnName) {
+					phantomas.emit('domQuery', type, query, fnName); // @desc DOM query has been made
 				}
 
 				phantomas.spy(Document.prototype, 'getElementById', function(id) {
 					phantomas.incrMetric('DOMqueriesById');
-					querySpy('id', '#' + id);
+					querySpy('id', '#' + id, 'getElementById');
 				});
 
-				phantomas.spy(Document.prototype, 'getElementsByClassName', function(className) {
+				// selectors by class name
+				function selectorClassNameSpy(className) {
 					phantomas.incrMetric('DOMqueriesByClassName');
-					querySpy('class', '.' + className);
-				});
+					phantomas.addOffender('DOMqueriesByClassName', '.' + className);
+					querySpy('class', '.' + className, 'getElementsByClassName');
+				}
 
-				phantomas.spy(Document.prototype, 'getElementsByTagName', function(tagName) {
+				phantomas.spy(Document.prototype, 'getElementsByClassName', selectorClassNameSpy);
+				phantomas.spy(Element.prototype, 'getElementsByClassName', selectorClassNameSpy);
+
+				// selectors by tag name
+				function selectorTagNameSpy(tagName) {
 					phantomas.incrMetric('DOMqueriesByTagName');
-					querySpy('tag name', tagName);
-				});
+					phantomas.addOffender('DOMqueriesByTagName', tagName);
+					querySpy('tag name', tagName, 'getElementsByTagName');
+				}
+
+				phantomas.spy(Document.prototype, 'getElementsByTagName', selectorTagNameSpy);
+				phantomas.spy(Element.prototype, 'getElementsByTagName', selectorTagNameSpy);
 
 				// selector queries
 				function selectorQuerySpy(selector) {
 					phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
 					phantomas.addOffender('DOMqueriesByQuerySelectorAll', selector);
-					querySpy('selector', selector);
+					querySpy('selector', selector, 'querySelectorAll');
 				}
 
+				phantomas.spy(Document.prototype, 'querySelector', selectorQuerySpy);
 				phantomas.spy(Document.prototype, 'querySelectorAll', selectorQuerySpy);
+				phantomas.spy(Element.prototype, 'querySelector', selectorQuerySpy);
 				phantomas.spy(Element.prototype, 'querySelectorAll', selectorQuerySpy);
 
 				// count DOM inserts
@@ -73,8 +85,8 @@ exports.module = function(phantomas) {
 	var Collection = require('../../lib/collection'),
 		DOMqueries = new Collection();
 
-	phantomas.on('domQuery', function(type, query) {
-		phantomas.log('DOM query: by %s - "%s"', type, query);
+	phantomas.on('domQuery', function(type, query, fnName) {
+		phantomas.log('DOM query: by %s - "%s" (using %s)', type, query, fnName);
 		phantomas.incrMetric('DOMqueries');
 
 		DOMqueries.push(type + ' "' + query + '"');
