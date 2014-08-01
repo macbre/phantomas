@@ -561,6 +561,7 @@
     },
     "DOMinserts": {
       "desc": "number of DOM nodes inserts",
+      "offenders": true,
       "unit": "number",
       "module": "domQueries"
     },
