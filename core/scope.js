@@ -233,6 +233,10 @@
 				break;
 			}
 
+			if (node instanceof DocumentFragment) {
+				entry = 'DocumentFragment';
+			}
+
 			// div#foo
 			if (node.id && node.id !== '') {
 				entry += '#' + node.id;
