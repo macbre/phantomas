@@ -58,7 +58,7 @@
   "jshintConfig": {
     "node": true,
     "-W020": false,
-    "-W030": false
+    "-W030": false,
     "globals": {
         "window": true
     }
