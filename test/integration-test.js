@@ -12,6 +12,20 @@ var WEBROOT = 'http://127.0.0.1:8888';
 
 // run the test
 vows.describe('Integration tests').addBatch({
+	'server': {
+		topic: function() {
+			var http = require('http'),
+				self = this;
+
+			http.get(WEBROOT + '/', function(res) {
+				self.callback(null, res);
+			}).on('error', self.callback);
+		},
+		'should be up and running': function(err, res) {
+			assert.equal(typeof res !== 'undefined', true);
+			assert.equal(res.statusCode, 200);
+		}
+	},
 	'/dom.html': {
 		topic: function() {
 			phantomas(WEBROOT + '/dom.html', this.callback);
