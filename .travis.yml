@@ -1,3 +1,6 @@
 language: node_js
 node_js: "0.10"
+before_script:
+  - npm install
+  - sh test/server-start.sh
 script: "npm test && npm run-script lint"
