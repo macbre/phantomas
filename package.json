@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "glob": "~3.2.9",
+    "http-server": "^0.6.1",
     "jshint": ">=2.1.11",
     "mockery": ">=1.4",
     "vows": ">=0.7"

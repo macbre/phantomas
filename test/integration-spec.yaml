@@ -1,0 +1,16 @@
+# Defines spec to be run by integration-test.js
+
+# DOM operations
+- url: "/dom.html"
+  metrics:
+    requests: 3
+    cssCount: 1
+    jsCount: 1
+    domains: 2
+    DOMqueries: 10
+    DOMqueriesById: 3
+    DOMqueriesByClassName: 1
+    DOMqueriesByTagName: 5
+    DOMqueriesByQuerySelectorAll: 1
+    DOMinserts: 2
+    DOMqueriesDuplicated: 3
