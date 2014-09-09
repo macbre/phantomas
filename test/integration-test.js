@@ -5,14 +5,16 @@
 
 var vows = require('vows'),
 	assert = require('assert'),
+	fs = require('fs'),
+	yaml = require('js-yaml'),
 	phantomas = require('..');
 
 // see start-server.sh
 var WEBROOT = 'http://127.0.0.1:8888';
 
 // run the test
-vows.describe('Integration tests').addBatch({
-	'server': {
+var suite = vows.describe('Integration tests').addBatch({
+	'test server': {
 		topic: function() {
 			var http = require('http'),
 				self = this;
@@ -22,34 +24,34 @@ vows.describe('Integration tests').addBatch({
 			}).on('error', self.callback);
 		},
 		'should be up and running': function(err, res) {
-			assert.equal(typeof res !== 'undefined', true);
-			assert.equal(res.statusCode, 200);
+			assert.equal(typeof res !== 'undefined', true, 'responses to the request');
+			assert.equal(res.statusCode, 200, 'responses with HTTP 200');
 		}
-	},
-	'/dom.html': {
+	}
+});
+
+// register tests from spec file
+var raw = fs.readFileSync(__dirname + '/integration-spec.yaml').toString(),
+	spec = yaml.safeLoad(raw);
+
+spec.forEach(function(test) {
+	var batch = {};
+
+	batch[test.url] = {
 		topic: function() {
-			phantomas(WEBROOT + '/dom.html', this.callback);
+			phantomas(WEBROOT + test.url, this.callback);
 		},
-		'metrics should match': function(err, data, results) {
+		'phantomas run is succssful': function(err, data, results) {
 			assert.equal(err, null);
-
-			var metrics = {
-				requests: 3,
-				cssCount: 1,
-				jsCount: 1,
-				domains: 2,
-				DOMqueries: 10,
-				DOMqueriesById: 3,
-				DOMqueriesByClassName: 1,
-				DOMqueriesByTagName: 5,
-				DOMqueriesByQuerySelectorAll: 1,
-				DOMinserts: 2,
-				DOMqueriesDuplicated: 3,
-			};
-
-			Object.keys(metrics).forEach(function(name) {
-				assert.equal(results.getMetric(name), metrics[name], name + ' should be = ' + metrics[name]);
+		},
+		'metrics should match the expected values': function(err, data, results) {
+			Object.keys(test.metrics).forEach(function (name) {
+				assert.equal(results.getMetric(name), test.metrics[name], name + ' should be = ' + test.metrics[name]);
 			});
-		}
-	},
-}).export(module);
+		},
+	};
+
+	suite.addBatch(batch);
+});
+
+suite.export(module);
