@@ -466,12 +466,6 @@
       "unit": "bytes",
       "module": "domComplexity"
     },
-    "hiddenContentSize": {
-      "desc": "the size of content of hidden elements on the page (with CSS display: none)",
-      "offenders": true,
-      "unit": "bytes",
-      "module": "domComplexity"
-    },
     "whiteSpacesSize": {
       "desc": "the size of text nodes with whitespaces only",
       "unit": "bytes",
@@ -508,6 +502,12 @@
       "offenders": true,
       "unit": "number",
       "module": "domComplexity"
+    },
+    "hiddenContentSize": {
+      "desc": "the size of content of hidden elements on the page (with CSS display: none)",
+      "offenders": true,
+      "unit": "bytes",
+      "module": "domHiddenContent"
     },
     "DOMmutationsInserts": {
       "desc": "number of <body> node inserts",
@@ -825,6 +825,6 @@
     }
   },
   "metricsCount": 140,
-  "modulesCount": 39,
-  "version": "1.4.0"
+  "modulesCount": 40,
+  "version": "1.5.0"
 }

@@ -35,21 +35,23 @@ var raw = fs.readFileSync(__dirname + '/integration-spec.yaml').toString(),
 	spec = yaml.safeLoad(raw);
 
 spec.forEach(function(test) {
-	var batch = {};
+	var batch = {},
+		batchName = test.url;
 
-	batch[test.url] = {
+	batch[batchName] = {
 		topic: function() {
 			phantomas(WEBROOT + test.url, this.callback);
 		},
-		'phantomas run is succssful': function(err, data, results) {
+		'should be generated': function(err, data, results) {
 			assert.equal(err, null);
 		},
-		'metrics should match the expected values': function(err, data, results) {
-			Object.keys(test.metrics).forEach(function (name) {
-				assert.equal(results.getMetric(name), test.metrics[name], name + ' should be = ' + test.metrics[name]);
-			});
-		},
 	};
+
+	Object.keys(test.metrics).forEach(function (name) {
+		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
+			assert.equal(results.getMetric(name), test.metrics[name]);
+		};
+	});
 
 	suite.addBatch(batch);
 });
