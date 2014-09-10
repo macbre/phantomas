@@ -1,7 +1,7 @@
 # Defines spec to be run by integration-test.js
 
 # DOM operations
-- url: "/dom.html"
+- url: "/dom-operations.html"
   metrics:
     requests: 3
     cssCount: 1
