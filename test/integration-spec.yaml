@@ -14,3 +14,12 @@
     DOMqueriesByQuerySelectorAll: 1
     DOMinserts: 2
     DOMqueriesDuplicated: 3
+# DOM complexity
+- url: "/dom-complexity.html"
+  metrics:
+    bodyHTMLSize: 109
+    commentsSize: 12
+    DOMelementsCount: 3
+    DOMelementMaxDepth: 2
+    hiddenContentSize: 10
+    nodesWithInlineCSS: 1
