@@ -25,3 +25,7 @@
     imagesWithoutDimensions: 2
     nodesWithInlineCSS: 1
     whiteSpacesSize: 14 # 7 lines of HTML - "\n\t" each
+# document height
+- url: "/document-height.html"
+  metrics:
+    documentHeight: 50000
