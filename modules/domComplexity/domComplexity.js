@@ -21,6 +21,10 @@ exports.module = function(phantomas) {
 	// nodes with inlines CSS (style attribute)
 	phantomas.setMetric('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
 
+	// images
+	phantomas.setMetric('imagesScaledDown'); // @desc number of <img> nodes that have images scaled down in HTML @offenders
+	phantomas.setMetric('imagesWithoutDimensions'); // @desc number of <img> nodes without both width and height attribute @offenders
+
 	// HTML size
 	phantomas.on('report', function() {
 		phantomas.setMetricEvaluate('bodyHTMLSize', function() { // @desc the size of body tag content (document.body.innerHTML.length)
@@ -33,11 +37,6 @@ exports.module = function(phantomas) {
 					whitespacesRegExp = /^\s+$/,
 					DOMelementMaxDepth = 0,
 					size = 0;
-
-				// include all nodes
-				runner.isSkipped = function(node) {
-					return false;
-				};
 
 				runner.walk(document.body, function(node, depth) {
 					switch (node.nodeType) {
@@ -58,6 +57,20 @@ exports.module = function(phantomas) {
 							// ignore inline <script> tags
 							if (node.nodeName === 'SCRIPT') {
 								return false;
+							}
+
+							// images
+							if (node.nodeName === 'IMG') {
+								if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
+									phantomas.incrMetric('imagesWithoutDimensions');
+									phantomas.addOffender('imagesWithoutDimensions', '%s <%s>', phantomas.getDOMPath(node), node.src);
+								}
+								if (node.naturalHeight && node.naturalWidth && node.height && node.width) {
+									if (node.naturalHeight > node.height || node.naturalWidth > node.width) {
+										phantomas.incrMetric('imagesScaledDown');
+										phantomas.addOffender('imagesScaledDown', '%s (%dx%d -> %dx%d)', node.src, node.naturalWidth, node.naturalHeight, node.width, node.height);
+									}
+								}
 							}
 
 							// count nodes with inline CSS
@@ -82,23 +95,6 @@ exports.module = function(phantomas) {
 
 				// count <iframe> tags
 				phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length); // @desc number of iframe nodes
-
-				// <img> nodes without dimensions (one of width / height missing)
-				phantomas.setMetric('imagesWithoutDimensions', (function() { // @desc number of <img> nodes without both width and height attribute @offenders
-					var imgNodes = document.body && document.body.querySelectorAll('img') || [],
-						node,
-						imagesWithoutDimensions = 0;
-
-					for (var i=0, len=imgNodes.length; i<len; i++) {
-						node = imgNodes[i];
-						if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
-							phantomas.addOffender('imagesWithoutDimensions', phantomas.getDOMPath(node));
-							imagesWithoutDimensions++;
-						}
-					}
-
-					return imagesWithoutDimensions;
-				})());
 
 				phantomas.spyEnabled(true);
 			}(window.__phantomas));

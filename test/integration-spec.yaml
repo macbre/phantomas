@@ -17,11 +17,12 @@
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
-    bodyHTMLSize: 243
+    bodyHTMLSize: 264
     commentsSize: 12
     DOMelementsCount: 6
     DOMelementMaxDepth: 2
     hiddenContentSize: 10
+    imagesScaledDown: 0
     imagesWithoutDimensions: 2
     nodesWithInlineCSS: 1
     whiteSpacesSize: 14 # 7 lines of HTML - "\n\t" each
@@ -29,3 +30,9 @@
 - url: "/document-height.html"
   metrics:
     documentHeight: 50000
+# image scaling (issue #390)
+- url: "/image-scaling.html"
+  metrics:
+    imagesScaledDown: 1
+    imagesWithoutDimensions: 2
+
