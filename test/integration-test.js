@@ -49,7 +49,7 @@ spec.forEach(function(test) {
 
 	Object.keys(test.metrics).forEach(function (name) {
 		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
-			assert.equal(results.getMetric(name), test.metrics[name]);
+			assert.strictEqual(results.getMetric(name), test.metrics[name]);
 		};
 	});
 
