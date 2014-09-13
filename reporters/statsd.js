@@ -57,7 +57,7 @@ module.exports = function(results, reporterOptions, options) {
 				else {
 					//debug('Sending %s = %s...', metric, value);
 
-					client.timing(metric, value, 1 /* sampling rate */, function(err, bytes) {
+					client.gauge(metric, value, function(err, bytes) {
 						if (err) {
 							debug('Error: %s', err);
 						}
