@@ -487,6 +487,18 @@
       "unit": "number",
       "module": "domComplexity"
     },
+    "imagesScaledDown": {
+      "desc": "number of <img> nodes that have images scaled down in HTML",
+      "offenders": true,
+      "unit": "number",
+      "module": "domComplexity"
+    },
+    "imagesWithoutDimensions": {
+      "desc": "number of <img> nodes without both width and height attribute",
+      "offenders": true,
+      "unit": "number",
+      "module": "domComplexity"
+    },
     "bodyHTMLSize": {
       "desc": "the size of body tag content (document.body.innerHTML.length)",
       "unit": "bytes",
@@ -494,12 +506,6 @@
     },
     "iframesCount": {
       "desc": "number of iframe nodes",
-      "unit": "number",
-      "module": "domComplexity"
-    },
-    "imagesWithoutDimensions": {
-      "desc": "number of <img> nodes without both width and height attribute",
-      "offenders": true,
       "unit": "number",
       "module": "domComplexity"
     },
@@ -824,7 +830,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 140,
+  "metricsCount": 141,
   "modulesCount": 40,
   "version": "1.5.0"
 }
