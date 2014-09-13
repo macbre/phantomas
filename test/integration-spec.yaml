@@ -17,7 +17,7 @@
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
-    bodyHTMLSize: 243
+    bodyHTMLSize: 264
     commentsSize: 12
     DOMelementsCount: 6
     DOMelementMaxDepth: 2
