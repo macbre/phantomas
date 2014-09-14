@@ -8,10 +8,13 @@
  *
  * --film-strip-dir folder path to output film strip (default is ./filmstrip directory)
  * --film-strip-prefix film strip files name prefix (defaults to 'screenshot')
+ *
+ * Youcan pass a comma separated list of milliseconds when to trigger a screenshot.
+ * The time will be calculated relative to "responseEnd" event (issue #174)
  */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '0.3';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('film-strip')) {
@@ -38,10 +41,9 @@ exports.module = function(phantomas) {
 		timeTotal = 0,
 		screenshots = [];
 
-	function screenshot() {
+	function screenshot(ts /* force timestamp in file name */) {
 		var now = Date.now(),
-			path,
-			ts;
+			path;
 
 		// check when was the last screenshot taken (exclude time it took to render the screenshot)
 		if (now - lastScreenshot < SCREENSHOTS_MIN_INTERVAL) {
@@ -50,7 +52,7 @@ exports.module = function(phantomas) {
 		}
 
 		// time offset excluding time it took to render screenshots
-		ts = now - start - timeTotal;
+		ts = ts || (now - start - timeTotal);
 		path = util.format('%s/%s-%s-%d.png', filmStripOutputDir, filmStripPrefix, startFormatted, ts);
 
 		phantomas.render(path);
@@ -74,16 +76,34 @@ exports.module = function(phantomas) {
 		}
 	}
 
-	// bind to events to render screenshots on
-	[
-		'loadStarted',
-		'send',
-		'recv',
-		'loadFinished',
-		'report'
-	].forEach(function(ev) {
-		phantomas.on(ev, screenshot);
-	});
+	if (phantomas.getParam('film-strip', false, 'string')) {
+		// a comma separated list of milliseconds was passed (issue #174)
+		var timePoints = phantomas.getParam('film-strip').split(',');
+		phantomas.log('Film strip: screenshots will be taken at: %s ms', timePoints.join(', '));
+
+		phantomas.on('responseEnd', function() {
+			timePoints.forEach(function(point) {
+				setTimeout(function() {
+					phantomas.log('Film strip: rendering for %d ms', point);
+					screenshot(point);
+				}, point);
+			});
+		});
+	}
+	else {
+		// bind to events to render screenshots on
+		[
+			'loadStarted',
+			'send',
+			'recv',
+			'loadFinished',
+			'report',
+		].forEach(function(ev) {
+			phantomas.on(ev, function() {
+				screenshot();
+			});
+		});
+	}
 
 	// print-out stats
 	phantomas.on('report', function() {

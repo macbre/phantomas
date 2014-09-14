@@ -66,11 +66,11 @@ program
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
+	.describe('film-strip', 'register film strip when page is loading (a comma separated list of milliseconds can be passed)').boolean('film-strip')
+	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory)')
 
 	// experimental features
 	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
-	.describe('film-strip', 'register film strip when page is loading - EXPERIMENTAL').boolean('film-strip')
-	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory) - EXPERIMENTAL')
 	.describe('page-source', 'save page source to file - EXPERIMENTAL').boolean('page-source')
 	.describe('page-source-dir', 'folder path to output page source (default is ./html directory) - EXPERIMENTAL')
 	.describe('socket', 'use provided UNIX socket for IPC - EXPERIMENTAL');
