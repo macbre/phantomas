@@ -1,6 +1,7 @@
 /**
  * Support for HTTP authentication
  */
+ /* global window: true */
 'use strict';
 
 exports.version = '1.0';
@@ -18,5 +19,8 @@ exports.module = function(phantomas) {
 
 		page.settings.userName = userName;
 		page.settings.password = password;
+		
+		// https://github.com/ariya/phantomjs/issues/10590
+		page.customHeaders = {'Authorization': 'Basic ' + window.btoa(userName + ':' + password)};
 	});
 };
