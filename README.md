@@ -124,7 +124,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 110_
+_Current number of metrics: 111_
 
 Units:
 
@@ -219,6 +219,7 @@ Units:
 * DOMelementMaxDepth: maximum level on nesting of HTML element node
 * iframesCount: number of iframe nodes
 * nodesWithInlineCSS: number of nodes with inline CSS styling (with `style` attribute)
+* imagesScaledDown: number of <img> nodes that have images scaled down in HTML
 * imagesWithoutDimensions: number of ``<img>`` nodes without both ``width`` and ``height`` attribute
 
 ### DOM queries

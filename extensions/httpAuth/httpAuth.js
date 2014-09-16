@@ -1,6 +1,7 @@
 /**
  * Support for HTTP authentication
  */
+ /* global window: true */
 'use strict';
 
 exports.version = '1.0';
