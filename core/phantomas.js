@@ -125,18 +125,22 @@ var phantomas = function(params) {
 	}, this);
 
 	// load core modules
-	this.log('Loading core modules...');
+	this.log('Loading: core modules...');
 	this.addCoreModule('requestsMonitor');
-
-	this.addCoreModule('cookies');
-	this.addCoreModule('httpAuth');
-	this.addCoreModule('scroll');
 	this.addCoreModule('timeToFirstByte');
 
-	// load 3rd party modules
+	// load extensions
+	this.log('Loading: extensions...');
+	var extensions = this.listExtensions();
+	extensions.forEach(this.addExtension, this);
+
+	// load modules
+	this.log('Loading: modules...');
 	var modules = (this.modules.length > 0) ? this.modules : this.listModules();
 	modules.forEach(this.addModule, this);
 
+	// load 3rd party modules
+	this.log('Loading: 3rd party modules...');
 	this.includeDirs.forEach(function(dirName) {
 		var dirPath = fs.absolute(dirName),
 			dirModules = this.listModulesInDir(dirPath);
@@ -267,6 +271,11 @@ phantomas.prototype = {
 		this.log('Core module %s%s initialized', name, (pkg.version ? ' v' + pkg.version : ''));
 	},
 
+	// initialize given phantomas extension
+	addExtension: function(name) {
+		return this.addModuleInDir('./../extensions', name);
+	},
+
 	// initialize given phantomas module
 	addModule: function(name) {
 		return this.addModuleInDir('./../modules', name);
@@ -300,7 +309,12 @@ phantomas.prototype = {
 		return true;
 	},
 
-	// returns list of 3rd party modules located in modules directory
+	// returns list of extensions located in modules directory
+	listExtensions: function() {
+		return this.listModulesInDir(this.dir + 'extensions');
+	},
+
+	// returns list of modules located in modules directory
 	listModules: function() {
 		return this.listModulesInDir(this.dir + 'modules');
 	},
