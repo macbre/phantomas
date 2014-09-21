@@ -124,7 +124,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 111_
+_Current number of metrics: 112_
 
 Units:
 
@@ -217,6 +217,7 @@ Units:
 * whiteSpacesSize: the size of text nodes with whitespaces only
 * DOMelementsCount: total number of HTML element nodes
 * DOMelementMaxDepth: maximum level on nesting of HTML element node
+* DOMidDuplicated: number of duplicated IDs found in DOM
 * iframesCount: number of iframe nodes
 * nodesWithInlineCSS: number of nodes with inline CSS styling (with `style` attribute)
 * imagesScaledDown: number of <img> nodes that have images scaled down in HTML

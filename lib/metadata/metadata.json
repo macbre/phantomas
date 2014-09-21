@@ -499,6 +499,12 @@
       "unit": "number",
       "module": "domComplexity"
     },
+    "DOMidDuplicated": {
+      "desc": "number of duplicated IDs found in DOM",
+      "offenders": true,
+      "unit": "number",
+      "module": "domComplexity"
+    },
     "bodyHTMLSize": {
       "desc": "the size of body tag content (document.body.innerHTML.length)",
       "unit": "bytes",
@@ -830,7 +836,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 141,
+  "metricsCount": 142,
   "modulesCount": 30,
-  "version": "1.5.0"
+  "version": "1.6.0"
 }
