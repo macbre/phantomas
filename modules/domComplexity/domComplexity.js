@@ -4,7 +4,7 @@
 /* global document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '0.4';
+exports.version = '1.0';
 
 exports.module = function(phantomas) {
 
@@ -24,6 +24,16 @@ exports.module = function(phantomas) {
 	// images
 	phantomas.setMetric('imagesScaledDown'); // @desc number of <img> nodes that have images scaled down in HTML @offenders
 	phantomas.setMetric('imagesWithoutDimensions'); // @desc number of <img> nodes without both width and height attribute @offenders
+
+	// duplicated ID (issue #392)
+	phantomas.setMetric('DOMidDuplicated'); // @desc number of duplicated IDs found in DOM
+
+	var Collection = require('../../lib/collection'),
+		DOMids = new Collection();
+
+	phantomas.on('domId', function(id) {
+		DOMids.push(id);
+	});
 
 	// HTML size
 	phantomas.on('report', function() {
@@ -53,6 +63,11 @@ exports.module = function(phantomas) {
 						case Node.ELEMENT_NODE:
 							phantomas.incrMetric('DOMelementsCount');
 							DOMelementMaxDepth = Math.max(DOMelementMaxDepth, depth);
+
+							// report duplicated ID (issue #392)
+							if (node.id) {
+								phantomas.emit('domId', node.id);
+							}
 
 							// ignore inline <script> tags
 							if (node.nodeName === 'SCRIPT') {
@@ -98,6 +113,13 @@ exports.module = function(phantomas) {
 
 				phantomas.spyEnabled(true);
 			}(window.__phantomas));
+		});
+
+		DOMids.sort().forEach(function(id, cnt) {
+			if (cnt > 1) {
+				phantomas.incrMetric('DOMidDuplicated');
+				phantomas.addOffender('DOMidDuplicated', '%s: %d occurrences', id, cnt);
+			}
 		});
 	});
 };
