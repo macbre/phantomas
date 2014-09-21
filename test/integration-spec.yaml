@@ -21,6 +21,7 @@
     commentsSize: 12
     DOMelementsCount: 6
     DOMelementMaxDepth: 2
+    DOMidDuplicated: 0
     hiddenContentSize: 10
     imagesScaledDown: 0
     imagesWithoutDimensions: 2
@@ -35,4 +36,8 @@
   metrics:
     imagesScaledDown: 1
     imagesWithoutDimensions: 2
+# duplicated ID (issue #392)
+- url: "/dom-id.html"
+  metrics:
+    DOMidDuplicated: 2 # foo and bar
 
