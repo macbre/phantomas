@@ -5,7 +5,7 @@
 	<p id="foo" class="bar">foo</p>
 	<span id="delete"></span>
 
-	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
 	<script>
 		$(function() {
 			$('#foo').css({
@@ -24,7 +24,8 @@
 			var nodes = [
 				document.querySelector('#foo'),
 				document.getElementsByClassName('bar'),
-				document.getElementsByTagName('span')
+				document.getElementsByTagName('span'),
+				document.getElementById('foo')
 			];
 
 			console.log(nodes);

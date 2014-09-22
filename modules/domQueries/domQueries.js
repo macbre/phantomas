@@ -13,7 +13,8 @@ exports.module = function(phantomas) {
         phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
         phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelector(All) calls
         phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
-        phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of duplicated DOM queries
+        phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of DOM queries called more than once
+        phantomas.setMetric('DOMqueriesAvoidable'); // @desc number of repeated uses of a duplicated query 
 
 	// fake native DOM functions
 	phantomas.once('init', function() {
@@ -105,6 +106,7 @@ exports.module = function(phantomas) {
 		DOMqueries.sort().forEach(function(query, cnt) {
 			if (cnt > 1) {
 				phantomas.incrMetric('DOMqueriesDuplicated');
+				phantomas.incrMetric('DOMqueriesAvoidable', cnt - 1);
 				phantomas.addOffender('DOMqueriesDuplicated', '%s: %d queries', query, cnt);
 			}
 		});
