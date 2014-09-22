@@ -4,7 +4,7 @@
 /* global Element: true, Document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '0.7';
+exports.version = '0.8';
 
 exports.module = function(phantomas) {
         phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
