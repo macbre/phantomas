@@ -26,9 +26,9 @@
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.4",
-    "async": "~0.8.0",
+    "async": "~0.9.0",
     "csv-string": "~2.1.1",
-    "debug": "~0.8.0",
+    "debug": "~2.1.0",
     "elasticsearch": "~1.5.14",
     "js-yaml": "^3.1.0",
     "node-statsd": "0.0.7",
@@ -42,11 +42,11 @@
     "travis-fold": ">=0.1.2"
   },
   "devDependencies": {
-    "glob": "~3.2.9",
+    "glob": "^4.0.6",
     "http-server": "^0.6.1",
-    "jshint": ">=2.1.11",
-    "mockery": ">=1.4",
-    "vows": ">=0.7"
+    "jshint": "^2.5.6",
+    "mockery": "^1.4.0",
+    "vows": "^0.7.0"
   },
   "optionalDependencies": {},
   "bin": "./bin/phantomas.js",
