@@ -7,13 +7,14 @@
     cssCount: 1
     jsCount: 1
     domains: 2
-    DOMqueries: 10
-    DOMqueriesById: 3
+    DOMqueries: 11
+    DOMqueriesById: 4
     DOMqueriesByClassName: 1
     DOMqueriesByTagName: 5
     DOMqueriesByQuerySelectorAll: 1
     DOMinserts: 2
     DOMqueriesDuplicated: 3
+    DOMqueriesAvoidable: 4
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:

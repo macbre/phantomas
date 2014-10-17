@@ -129,7 +129,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 112_
+_Current number of metrics: 113_
 
 Units:
 
@@ -236,7 +236,8 @@ Units:
 * DOMqueriesByTagName: number of `document.getElementsByTagName` calls
 * DOMqueriesByQuerySelectorAll: number of `document.querySelectorAll` calls
 * DOMinserts: number of DOM nodes inserts
-* DOMqueriesDuplicated: number of duplicated DOM queries
+* DOMqueriesDuplicated: number of DOM queries called more than once
+* DOMqueriesAvoidable: number of repeated uses of a duplicated query
 
 ### DOM mutations
 

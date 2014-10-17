@@ -578,8 +578,13 @@
       "module": "domQueries"
     },
     "DOMqueriesDuplicated": {
-      "desc": "number of duplicated DOM queries",
+      "desc": "number of DOM queries called more than once",
       "offenders": true,
+      "unit": "number",
+      "module": "domQueries"
+    },
+    "DOMqueriesAvoidable": {
+      "desc": "number of repeated uses of a duplicated query",
       "unit": "number",
       "module": "domQueries"
     },
@@ -836,7 +841,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 142,
+  "metricsCount": 143,
   "modulesCount": 30,
   "version": "1.6.0"
 }
