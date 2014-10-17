@@ -328,12 +328,20 @@ phantomas.prototype = {
 			modules = [];
 
 		ls.forEach(function(entry) {
-			if (fs.isFile(modulesDir + '/' + entry + '/' + entry + '.js')) {
+			/**
+			 * README.md will be listed as an entry. That caused issue #409:
+			 * SlimerJS raised: "Component returned failure code: 0x80520005 (NS_ERROR_FILE_DESTINATION_NOT_DIR) [nsILocalFile.isFile]"
+			 *
+			 * First check whether an entry is a directory, than check if it contains a module file
+			 */
+			if (fs.isDirectory(modulesDir + '/' + entry) && fs.isFile(modulesDir + '/' + entry + '/' + entry + '.js')) {
 				modules.push(entry);
 			}
 		});
 
-		return modules;
+		// SlimerJS 'fs.list' does not order the returned array
+		// PhantomJS does that, so be consistent here :)
+		return modules.sort();
 	},
 
 	// setup polling for loading progress (issue #204)
