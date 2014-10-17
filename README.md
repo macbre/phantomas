@@ -111,6 +111,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--scroll` scroll down the page when it''s loaded
 * `--post-load-delay=[seconds]` wait X seconds before generating a report, timeout setting still applies
 * `--ignore-ssl-errors` ignores SSL errors, such as expired or self-signed certificate errors
+* `--ssl-protocol` sets the SSL protocol for secure connections ``[sslv3|sslv2|tlsv1|any]``
 * `--proxy=[host:port]` specifies the proxy server to use
 * `--proxy-auth=[username:password]` specifies the authentication information for the proxy
 * `--proxy-type=[http|socks5|none]` specifies the type of the proxy server (default is http)
