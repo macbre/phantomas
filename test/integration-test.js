@@ -36,11 +36,11 @@ var raw = fs.readFileSync(__dirname + '/integration-spec.yaml').toString(),
 
 spec.forEach(function(test) {
 	var batch = {},
-		batchName = test.url;
+		batchName = test.label || test.url;
 
 	batch[batchName] = {
 		topic: function() {
-			phantomas(WEBROOT + test.url, this.callback);
+			phantomas(WEBROOT + test.url, test.options || {}, this.callback);
 		},
 		'should be generated': function(err, data, results) {
 			assert.equal(err, null);
