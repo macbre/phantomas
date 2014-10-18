@@ -43,11 +43,11 @@ spec.forEach(function(test) {
 			phantomas(WEBROOT + test.url, test.options || {}, this.callback);
 		},
 		'should be generated': function(err, data, results) {
-			assert.equal(err, null);
+			assert.equal(err, test.exitCode || null, 'Exit code matches the expected value');
 		},
 	};
 
-	Object.keys(test.metrics).forEach(function (name) {
+	Object.keys(test.metrics || {}).forEach(function (name) {
 		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
 			assert.strictEqual(results.getMetric(name), test.metrics[name]);
 		};
