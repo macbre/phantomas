@@ -129,7 +129,7 @@ if (options.progress === true) {
 
 // add env variable to turn off ANSI colors when needed (#237)
 // suppress this behaviour by passing --colors option (issue #342)
-if (!process.stdout.isTTY && (options.colors !== true)) {
+if (!process.stderr.isTTY && (options.colors !== true)) {
 	debug('ANSI colors turned off');
 	process.env.BW = 1;
 }
