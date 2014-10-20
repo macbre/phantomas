@@ -357,6 +357,8 @@ Units:
 
 Take a look at [analyze-css README](https://github.com/macbre/analyze-css) for the full list of metrics.
 
+* cssParsingErrors: number of CSS files (or embeded CSS) that failed to be parse by analyze-css
+
 ### Reporters
 
 phantomas provides a number of reporters that can format the run results and send them to various tools. Use ``--reporter`` (or ``-R`` shortcut) option to use one.

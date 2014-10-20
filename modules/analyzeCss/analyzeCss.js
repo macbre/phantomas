@@ -60,6 +60,8 @@ exports.module = function(phantomas) {
 	var isWindows = (require('system').os.name === 'windows'),
 		binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
 
+	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
+
 	phantomas.on('recv', function(entry, res) {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
@@ -68,6 +70,15 @@ exports.module = function(phantomas) {
 			phantomas.runScript('node_modules/.bin/' + binary, ['--url', entry.url, '--json'], function(err, results) {
 				if (err !== null) {
 					phantomas.log('analyzeCss: sub-process failed!');
+
+					// report failed CSS parsing (issue #494(
+					var offender = entry.url;
+					if (err.indexOf('CSS parsing failed') > 0) {
+						offender += ' (' + err.trim() + ')';
+					}
+
+					phantomas.incrMetric('cssParsingErrors');
+					phantomas.addOffender('cssParsingErrors', offender);
 					return;
 				}
 

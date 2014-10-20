@@ -265,6 +265,13 @@
       "unit": "number",
       "module": "analyzeCss"
     },
+    "cssParsingErrors": {
+      "desc": "number of CSS files (or embeded CSS) that failed to be parse by analyze-css",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
     "htmlCount": {
       "desc": "number of HTML responses",
       "offenders": true,
@@ -841,7 +848,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 143,
+  "metricsCount": 144,
   "modulesCount": 30,
   "version": "1.6.0"
 }
