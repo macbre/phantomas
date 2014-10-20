@@ -67,4 +67,19 @@
   options:
     "assert-requests": 0
   exitCode: 1 # one assert not met
+# analyze-css fails to parse a file (#404)
+- url: "/broken-css.html"
+  options:
+    "analyze-css": true
+  metrics:
+    cssParsingErrors: 1
+    cssLength: 22
+    cssRules: 1
+- url: "/dom-operations.html"
+  options:
+    "analyze-css": true
+  metrics:
+    cssParsingErrors: 0
+    cssLength: 22
+    cssRules: 1
 
