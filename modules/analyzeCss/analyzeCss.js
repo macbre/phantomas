@@ -7,13 +7,17 @@
  *
  * setMetric('cssBase64Length') @desc total length of base64-encoded data in CSS source (will warn about base64-encoded data bigger than 4 kB) @optional @offenders
  * setMetric('cssRedundantBodySelectors') @desc number of redundant body selectors (e.g. body .foo, section body h2, but not body > h1) @optional @offenders
+ * setMetric('redundantChildNodesSelectors') @desc number of redundant child nodes selectors @optional @offenders
  * setMetric('cssComments') @desc number of comments in CSS source @optional @offenders
  * setMetric('cssCommentsLength') @desc length of comments content in CSS source @optional
  * setMetric('cssComplexSelectors') @desc number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo) @optional @offenders
+ * setMetric('cssComplexSelectorsByAttribute') @desc  number of selectors with complex matching by attribute (e.g. [class$="foo"]) @optional @offenders
  * setMetric('cssDuplicatedSelectors') @desc number of CSS selectors defined more than once in CSS source @optional @offenders
+ * setMetric('cssDuplicatedProperties') @desc number of CSS property definitions duplicated within a selector @optional @offenders
  * setMetric('cssEmptyRules') @desc number of rules with no properties (e.g. .foo { }) @optional @offenders
  * setMetric('cssExpressions') @desc number of rules with CSS expressions (e.g. expression( document.body.clientWidth > 600 ? "600px" : "auto" )) @optional @offenders
  * setMetric('cssOldIEFixes') @desc number of fixes for old versions of Internet Explorer (e.g. * html .foo {} and .foo { *zoom: 1 }) @optional @offenders
+ * setMetric('cssImports') @desc number of @import rules @optional @offenders
  * setMetric('cssImportants') @desc number of properties with value forced by !important @optional @offenders
  * setMetric('cssMediaQueries') @desc number of media queries (e.g. @media screen and (min-width: 1370px)) @optional @offenders
  * setMetric('cssOldPropertyPrefixes') @desc number of properties with no longer needed vendor prefix, powered by data provided by autoprefixer (e.g. --moz-border-radius) @optional @offenders
