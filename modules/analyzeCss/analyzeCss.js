@@ -11,7 +11,7 @@
  * setMetric('cssComments') @desc number of comments in CSS source @optional @offenders
  * setMetric('cssCommentsLength') @desc length of comments content in CSS source @optional
  * setMetric('cssComplexSelectors') @desc number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo) @optional @offenders
- * setMetric('cssComplexSelectorsByAttribute') @desc  number of selectors with complex matching by attribute (e.g. [class$="foo"]) @optional @offenders
+ * setMetric('cssComplexSelectorsByAttribute') @desc  [number] number of selectors with complex matching by attribute (e.g. [class$="foo"]) @optional @offenders
  * setMetric('cssDuplicatedSelectors') @desc number of CSS selectors defined more than once in CSS source @optional @offenders
  * setMetric('cssDuplicatedProperties') @desc number of CSS property definitions duplicated within a selector @optional @offenders
  * setMetric('cssEmptyRules') @desc number of rules with no properties (e.g. .foo { }) @optional @offenders
