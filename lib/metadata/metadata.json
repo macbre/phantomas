@@ -92,6 +92,13 @@
       "unit": "number",
       "module": "analyzeCss"
     },
+    "redundantChildNodesSelectors": {
+      "desc": "number of redundant child nodes selectors",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
     "cssComments": {
       "desc": "number of comments in CSS source",
       "optional": true,
@@ -112,8 +119,22 @@
       "unit": "number",
       "module": "analyzeCss"
     },
+    "cssComplexSelectorsByAttribute": {
+      "desc": "number of selectors with complex matching by attribute (e.g. )",
+      "optional": true,
+      "offenders": true,
+      "unit": "class$=\"foo\"",
+      "module": "analyzeCss"
+    },
     "cssDuplicatedSelectors": {
       "desc": "number of CSS selectors defined more than once in CSS source",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssDuplicatedProperties": {
+      "desc": "number of CSS property definitions duplicated within a selector",
       "optional": true,
       "offenders": true,
       "unit": "number",
@@ -135,6 +156,13 @@
     },
     "cssOldIEFixes": {
       "desc": "number of fixes for old versions of Internet Explorer (e.g. * html .foo {} and .foo { *zoom: 1 })",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssImports": {
+      "desc": "number of @import rules",
       "optional": true,
       "offenders": true,
       "unit": "number",
@@ -848,7 +876,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 144,
+  "metricsCount": 148,
   "modulesCount": 30,
   "version": "1.6.0"
 }
