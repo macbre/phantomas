@@ -5,6 +5,16 @@
 	<p id="foo" class="bar">foo</p>
 	<span id="delete"></span>
 
+	<ul id="list1">
+		<li>foo</li>
+		<li>foo</li>
+	</ul>
+
+	<ul id="list2">
+		<li>foo</li>
+		<li>foo</li>
+	</ul>
+
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script>
 		$(function() {
@@ -25,7 +35,9 @@
 				document.querySelector('#foo'),
 				document.getElementsByClassName('bar'),
 				document.getElementsByTagName('span'),
-				document.getElementById('foo')
+				document.getElementById('foo'),
+				document.getElementById('list1').getElementsByTagName('li'),
+				document.getElementById('list2').getElementsByTagName('li'),
 			];
 
 			console.log(nodes);
