@@ -585,6 +585,7 @@
     },
     "DOMqueriesById": {
       "desc": "number of document.getElementById calls",
+      "offenders": true,
       "unit": "number",
       "module": "domQueries"
     },
