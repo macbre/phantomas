@@ -18,7 +18,9 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('assetsNotGzipped'); // @desc number of static assets that were not gzipped @unreliable
 	phantomas.setMetric('assetsWithQueryString'); // @desc number of static assets requested with query string (e.g. ?foo) in URL
 	phantomas.setMetric('assetsWithCookies'); // @desc number of static assets requested from domains with cookie set
-	phantomas.setMetric('smallImages'); // @desc number of images smaller than 2 kB that can be base64 encoded @unreliable
+	phantomas.setMetric('smallImages'); // @desc number of images smaller than 2 KiB that can be base64 encoded @unreliable
+	phantomas.setMetric('smallCssFiles'); // @desc number of CSS assets smaller than 2 KiB that can be inlined or merged @unreliable
+	phantomas.setMetric('smallJsFiles'); // @desc number of JS assets smaller than 2 KiB that can be inlined or merged @unreliable
 	phantomas.setMetric('multipleRequests'); // @desc number of static assets that are requested more than once
 
 	phantomas.on('recv', function(entry, res) {
@@ -58,7 +60,16 @@ exports.module = function(phantomas) {
 			// check small images that can be base64 encoded
 			if (entry.isImage) {
 				phantomas.incrMetric('smallImages');
-				phantomas.addOffender('smallImages', entry.url + ' (' + sizeFormatted + ' kB)');
+				phantomas.addOffender('smallImages', '%s (%s kB)', entry.url, sizeFormatted);
+			}
+			// CSS / JS that can be inlined
+			else if (entry.isCSS) {
+				phantomas.incrMetric('smallCssFiles');
+				phantomas.addOffender('smallCssFiles', '%s (%s kB)', entry.url, sizeFormatted);
+			}
+			else if (entry.isJS) {
+				phantomas.incrMetric('smallJsFiles');
+				phantomas.addOffender('smallJsFiles', '%s (%s kB)', entry.url, sizeFormatted);
 			}
 		}
 

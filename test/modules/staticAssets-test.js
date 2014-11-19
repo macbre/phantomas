@@ -17,6 +17,8 @@ vows.describe('staticAssets').
 			'assetsWithQueryString': 0,
 			'assetsWithCookies': 0,
 			'smallImages': 0,
+			'smallCssFiles': 0,
+			'smallJsFiles': 0,
 			'multipleRequests': 0
 		}),
 		'no gzip': mock.getContext('staticAssets', function(phantomas) {
@@ -56,6 +58,18 @@ vows.describe('staticAssets').
 		},
 		{
 			'smallImages': 1,
+		}),
+		'small CSS': mock.getContext('staticAssets', function(phantomas) {
+			return phantomas.recv({url: URL, status: 200, isCSS: true, type: 'css', contentLength: 1024}).report();
+		},
+		{
+			'smallCssFiles': 1,
+		}),
+		'small JS': mock.getContext('staticAssets', function(phantomas) {
+			return phantomas.recv({url: URL, status: 200, isJS: true, type: 'js', contentLength: 1024}).report();
+		},
+		{
+			'smallJsFiles': 1,
 		}),
 	}).
 	export(module);
