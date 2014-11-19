@@ -2,12 +2,15 @@
  * Defines phantomas global API mock
  */
 var assert = require('assert'),
+	debug = require('debug'),
 	noop = function() {};
 
-var phantomas = function() {
+var phantomas = function(name) {
 	this.emitter = new (require('events').EventEmitter)();
 	this.wasEmitted = {};
-	this.metrics = [];
+	this.metrics = {};
+
+	this.log = debug('phantomas:test:' + name);
 };
 
 phantomas.prototype = {
@@ -20,6 +23,7 @@ phantomas.prototype = {
 	// events
 	emit: function(/* eventName, arg1, arg2, ... */) { //console.log('emit: ' + arguments[0]);
 		try {
+			this.log('emit: %j', Array.prototype.slice.apply(arguments));
 			this.emitter.emit.apply(this.emitter, arguments);
 		}
 		catch(ex) {
@@ -66,6 +70,8 @@ phantomas.prototype = {
 		req.url = req.url || 'http://example.com';
 		req.headers = req.headers || [];
 
+		this.log('sendRequest: %j', req);
+
 		try {
 			this.emitter.emit('onResourceRequested', req, {abort: noop});
 		}
@@ -82,6 +88,8 @@ phantomas.prototype = {
 		req.method = req.method || 'GET';
 		req.url = req.url || 'http://example.com';
 		req.headers = req.headers || [];
+
+		this.log('recvRequest: %j', req);
 
 		try {
 			this.emitter.emit('onResourceRequested', req);
@@ -108,11 +116,16 @@ phantomas.prototype = {
 	},
 
 	report: function() {
-		return this.emit('report');
+		this.emit('report');
+		this.log('metrics: %j', this.metrics);
+
+		return this;
 	},
 
 	// noop mocks
-	addOffender: noop,
+	addOffender: function() {
+		this.log('addOffenders: %j', Array.prototype.slice.apply(arguments));
+	},
 	log: noop,
 	echo: noop,
 	evaluate: noop,
@@ -123,7 +136,7 @@ function initModule(name, isCore) {
 	var instance, def;
 
 	try {
-		instance = new phantomas();
+		instance = new phantomas(name);
 		def = require('../../' + (isCore ? 'core/modules' : 'modules') + '/' + name + '/' + name + '.js');
 
 		new (def.module)(instance);
