@@ -20,19 +20,19 @@ console.log('Number of available metrics: %d', phantomas.metadata.metricsCount);
 
 // handle the promise
 run.
-	then(function(res) {
-		console.log('Exit code: %d', res.code);
-		console.log('Number of requests: %d', res.results.getMetric('requests'));
-		console.log('Failed asserts: %j', res.results.getFailedAsserts());
-	}).
-	fail(function(code) {
-		console.log('Exit code #%d', code);
-		process.exit(code);
-	}).
-	progress(function(progress) {
-		console.log('Loading progress: %d%', progress * 100);
-	}).
-	done();
+then(function(res) {
+	console.log('Exit code: %d', res.code);
+	console.log('Number of requests: %d', res.results.getMetric('requests'));
+	console.log('Failed asserts: %j', res.results.getFailedAsserts());
+}).
+fail(function(code) {
+	console.log('Exit code #%d', code);
+	process.exit(code);
+}).
+progress(function(progress) {
+	console.log('Loading progress: %d%', progress * 100);
+}).
+done();
 
 // events handling
 run.on('milestone', function(milestone, timing) {

@@ -15,7 +15,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('maxRequestsPerDomain'); // @desc maximum number of requests fetched from a single domain
 	phantomas.setMetric('medianRequestsPerDomain'); // @desc median of number of requests fetched from each domain
 
-	phantomas.on('recv', function(entry,res) {
+	phantomas.on('recv', function(entry, res) {
 		var domain = entry.domain;
 
 		if (domain) {

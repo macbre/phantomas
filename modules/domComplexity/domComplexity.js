@@ -91,7 +91,7 @@ exports.module = function(phantomas) {
 							// count nodes with inline CSS
 							if (node.hasAttribute('style')) {
 								phantomas.incrMetric('nodesWithInlineCSS');
-								phantomas.addOffender('nodesWithInlineCSS', phantomas.getDOMPath(node) + ' (' + node.getAttribute('style')  + ')');
+								phantomas.addOffender('nodesWithInlineCSS', phantomas.getDOMPath(node) + ' (' + node.getAttribute('style') + ')');
 							}
 
 							break;

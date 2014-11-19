@@ -35,8 +35,7 @@ module.exports = function(results, options) {
 		if (results.length === 1) {
 			debug('Single run mode');
 			results = results[0];
-		}
-		else {
+		} else {
 			debug('Multiple runs mode');
 			inMultipleMode = true;
 		}
@@ -46,9 +45,8 @@ module.exports = function(results, options) {
 	reporterPath = '../reporters/' + reporterName;
 
 	try {
-		reporter = new (require(reporterPath))(results, reporterOptions, options);
-	}
-	catch(ex) {
+		reporter = new(require(reporterPath))(results, reporterOptions, options);
+	} catch (ex) {
 		debug('Failed: %s', ex);
 		throw new Error('Reporter "' + reporterName + '" is not supported!');
 	}

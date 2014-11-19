@@ -100,7 +100,7 @@ exports.module = function(phantomas) {
 				case 'smallestResponse':
 				case 'biggestResponse':
 					phantomas.setMetric(metric, entry.contentLength);
-					details = (entry.contentLength/1024).toFixed(2) + ' kB';
+					details = (entry.contentLength / 1024).toFixed(2) + ' kB';
 					break;
 
 				case 'fastestResponse':

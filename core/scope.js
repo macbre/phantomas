@@ -26,7 +26,7 @@
 
 			depth = (depth || 1);
 
-			for (var n=0, len = childNodes.length; n < len; n++) {
+			for (var n = 0, len = childNodes.length; n < len; n++) {
 				childNode = childNodes[n];
 
 				// callback can return false to stop recursive
@@ -48,12 +48,12 @@
 		// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Stack
 		function getStackFromError(e) {
 			var stack = e.stack.trim().split("\n").
-				map(function(item) {
-					return item.replace(/^(\s+at\s|@)/, '').trim();
-				}).
-				filter(function(item) {
-					return /:\d+\)?$/.test(item);
-				});
+			map(function(item) {
+				return item.replace(/^(\s+at\s|@)/, '').trim();
+			}).
+			filter(function(item) {
+				return /:\d+\)?$/.test(item);
+			});
 
 			//console.log(stack);
 			return stack;
@@ -64,7 +64,7 @@
 
 			try {
 				throw new Error('backtrace');
-			} catch(e) {
+			} catch (e) {
 				stack = getStackFromError(e).slice(3);
 			}
 
@@ -78,7 +78,7 @@
 
 			try {
 				throw new Error('backtrace');
-			} catch(e) {
+			} catch (e) {
 				caller = getStackFromError(e)[3 + stepBack];
 			}
 
@@ -102,8 +102,7 @@
 			// avoid 'TypeError: JSON.stringify cannot serialize cyclic structures.'
 			try {
 				origConsoleLog.call(console, 'log:' + stringify(Array.prototype.slice.call(arguments)));
-			}
-			catch (e) {}
+			} catch (e) {}
 		};
 
 		// now "freeze" the console object (issue #230)
@@ -120,9 +119,11 @@
 			**/
 
 			try {
-				origConsoleLog.call(console, 'msg:' + stringify({type: type || false, data: data || false}));
-			}
-			catch(e) {
+				origConsoleLog.call(console, 'msg:' + stringify({
+					type: type || false,
+					data: data || false
+				}));
+			} catch (e) {
 				throw new Error('phantomas: calling native console.log() failed ("' + e + '")!');
 			}
 		}
@@ -132,22 +133,31 @@
 		}
 
 		function setMetric(name, value, isFinal) {
-			sendMsg('setMetric', {name: name, value: (typeof value !== 'undefined') ? value : 0, isFinal: isFinal === true});
+			sendMsg('setMetric', {
+				name: name,
+				value: (typeof value !== 'undefined') ? value : 0,
+				isFinal: isFinal === true
+			});
 		}
 
-		function incrMetric(name, incr /* =1 */) {
-			sendMsg('incrMetric', {name: name, incr: incr || 1});
+		function incrMetric(name, incr /* =1 */ ) {
+			sendMsg('incrMetric', {
+				name: name,
+				incr: incr || 1
+			});
 		}
 
 		function setMarkerMetric(name) {
-			sendMsg('setMarkerMetric', {name: name});
+			sendMsg('setMarkerMetric', {
+				name: name
+			});
 		}
 
-		function addOffender(/*metricName, msg, ...*/) {
+		function addOffender( /*metricName, msg, ...*/ ) {
 			sendMsg('addOffender', Array.prototype.slice.apply(arguments));
 		}
 
-		function emit(/* eventName, arg1, arg2, ... */) {
+		function emit( /* eventName, arg1, arg2, ... */ ) {
 			sendMsg('emit', Array.prototype.slice.apply(arguments));
 		}
 
@@ -215,7 +225,7 @@
 	 *
 	 * Example: body.logged_out.vis-public.env-production > div > div
 	 */
-	function getDOMPath(node, dontGoUpTheDom /* = false */) {
+	function getDOMPath(node, dontGoUpTheDom /* = false */ ) {
 		var path = [],
 			entry = '';
 

@@ -10,8 +10,7 @@ function checkSelector(phantomas, selector) {
 	var res = phantomas.evaluate(function(selector) {
 		try {
 			return document.querySelector(selector) !== null;
-		}
-		catch (ex) {
+		} catch (ex) {
 			return ex.toString();
 		}
 	}, selector);

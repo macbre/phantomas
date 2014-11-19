@@ -37,13 +37,11 @@ module.exports = function(results, reporterOptions) {
 			if (results.hasAssertion(metric)) {
 				if (results.assert(metric)) {
 					line = colors.brightGreen(OK + line);
-				}
-				else {
+				} else {
 					line = rpad(ERR + line, 50) + 'Assertion failed! Expected to be less than or equal: ' + results.getAssertion(metric);
 					line = colors.brightRed(line);
 				}
-			}
-			else {
+			} else {
 				line = '*' + line;
 			}
 
@@ -87,7 +85,7 @@ module.exports = function(results, reporterOptions) {
 	function formatMultipleRunResults(results) {
 		var AsciiTable = require('ascii-table'),
 			format = require('util').format,
-			stats = new (require('../lib/stats'))(),
+			stats = new(require('../lib/stats'))(),
 			runs = results.length,
 			fields, table;
 
@@ -106,7 +104,7 @@ module.exports = function(results, reporterOptions) {
 		table.setHeading(heading);
 
 		// metrics stats
-		for (var i=0; i<runs; i++) {
+		for (var i = 0; i < runs; i++) {
 			stats.pushMetrics(results[i].getMetrics());
 		}
 
@@ -133,8 +131,7 @@ module.exports = function(results, reporterOptions) {
 		render: function() {
 			if (!isMultiple) {
 				return formatSingleRunResults(results);
-			}
-			else {
+			} else {
 				return formatMultipleRunResults(results);
 			}
 		}

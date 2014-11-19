@@ -36,7 +36,7 @@ exports.module = function(phantomas) {
 		phantomas.incrMetric(entry.type + 'Count');
 		phantomas.incrMetric(entry.type + 'Size', size);
 
-		phantomas.addOffender(entry.type + 'Count', entry.url + ' (' + (size / 1024).toFixed(2)  + ' kB)');
+		phantomas.addOffender(entry.type + 'Count', entry.url + ' (' + (size / 1024).toFixed(2) + ' kB)');
 	});
 
 	phantomas.on('base64recv', function(entry, res) {

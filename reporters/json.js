@@ -43,9 +43,8 @@ module.exports = function(results, reporterOptions) {
 
 			if (!isMultiple) {
 				res = formatSingleRunResults(results);
-			}
-			else {
-				var stats = new (require('../lib/stats'))();
+			} else {
+				var stats = new(require('../lib/stats'))();
 
 				res = {
 					runs: results.map(function(run) {
@@ -55,7 +54,7 @@ module.exports = function(results, reporterOptions) {
 				};
 
 				// generate metrics stats (issue #285)
-				for (var i=0, runs=results.length; i<runs; i++) {
+				for (var i = 0, runs = results.length; i < runs; i++) {
 					stats.pushMetrics(results[i].getMetrics());
 				}
 
@@ -67,8 +66,7 @@ module.exports = function(results, reporterOptions) {
 			// -R json:pretty
 			if (reporterOptions.pretty === true) {
 				return JSON.stringify(res, null, 2);
-			}
-			else {
+			} else {
 				return JSON.stringify(res);
 			}
 		}

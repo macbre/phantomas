@@ -11,7 +11,7 @@
  * @see https://github.com/abe33/source-map/commit/61131e53ceb3b69d387da3c6daad6adbbaaae9b3
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
  */
-if(!Function.prototype.bind) {
+if (!Function.prototype.bind) {
 	Function.prototype.bind = function(scope) {
 		var self = this;
 		return function() {
@@ -64,7 +64,7 @@ var phantomas = function(params) {
 	this.disableJs = params['disable-js'] === true;
 
 	// setup the stuff
-	this.emitter = new (this.require('events').EventEmitter)();
+	this.emitter = new(this.require('events').EventEmitter)();
 	this.emitter.setMaxListeners(200);
 	this.ipc = require('./ipc');
 
@@ -90,8 +90,7 @@ var phantomas = function(params) {
 	// detect phantomas working directory
 	if (typeof module.dirname !== 'undefined') {
 		this.dir = module.dirname.replace(/core$/, '');
-	}
-	else if (typeof slimer !== 'undefined') {
+	} else if (typeof slimer !== 'undefined') {
 		var args = require('system').args;
 		this.dir = fs.dirname(args[0]).replace(/scripts$/, '');
 	}
@@ -158,13 +157,13 @@ phantomas.prototype = {
 	// simple version of jQuery.proxy
 	proxy: function(fn, scope) {
 		scope = scope || this;
-		return function () {
+		return function() {
 			return fn.apply(scope, arguments);
 		};
 	},
 
 	// emit given event and pass it to CommonJS API via IPC
-	emit: function(/* eventName, arg1, arg2, ... */) {
+	emit: function( /* eventName, arg1, arg2, ... */ ) {
 		this.emitInternal.apply(this, arguments);
 
 		// pass it via IPC
@@ -176,7 +175,7 @@ phantomas.prototype = {
 	},
 
 	// emit given event "internally"
-	emitInternal: function(/* eventName, arg1, arg2, ... */) {
+	emitInternal: function( /* eventName, arg1, arg2, ... */ ) {
 		this.log('Event %s emitted', arguments[0]);
 		this.emitter.emit.apply(this.emitter, arguments);
 	},
@@ -290,8 +289,7 @@ phantomas.prototype = {
 		}
 		try {
 			pkg = require(dir + '/' + name + '/' + name);
-		}
-		catch (e) {
+		} catch (e) {
 			this.log('Unable to load module "%s" from %s!', name, dir);
 			this.log('%s!', e);
 			return false;
@@ -368,8 +366,7 @@ phantomas.prototype = {
 
 		if (typeof this.page.loadingProgress !== 'undefined') {
 			setInterval(pollFn.bind(this), 50);
-		}
-		else {
+		} else {
 			this.log('Loading progress: not available!');
 		}
 	},
@@ -571,7 +568,7 @@ phantomas.prototype = {
 		this.emitInternal('loadStarted'); // @desc page loading has started
 	},
 
-	onResourceRequested: function(res, request /* added in PhantomJS v1.9 */) {
+	onResourceRequested: function(res, request /* added in PhantomJS v1.9 */ ) {
 		this.emitInternal('onResourceRequested', res, request); // @desc HTTP request has been sent
 		//this.log(JSON.stringify(res));
 	},
@@ -591,7 +588,7 @@ phantomas.prototype = {
 		// we're done
 		this.log('Page loading finished ("%s")', status);
 
-		switch(status) {
+		switch (status) {
 			case 'success':
 				this.emitInternal('loadFinished', status); // @desc page has been fully loaded
 				break;
@@ -623,26 +620,25 @@ phantomas.prototype = {
 		var prefix, data;
 
 		// split "foo:content"
-		prefix = msg.substr(0,3);
+		prefix = msg.substr(0, 3);
 		data = msg.substr(4);
 
 		try {
 			data = JSON.parse(data);
-		}
-		catch(ex) {
+		} catch (ex) {
 			// fallback to plain log
 			prefix = false;
 		}
 
 		//console.log(JSON.stringify([prefix, data]));
 
-		switch(prefix) {
+		switch (prefix) {
 			// handle JSON-encoded messages from browser's scope sendMsg()
 			case 'msg':
 				this.onCallback(data);
 				break;
 
-			// console.log arguments are passed as JSON-encoded array
+				// console.log arguments are passed as JSON-encoded array
 			case 'log':
 				msg = this.util.format.apply(this, data);
 
@@ -660,7 +656,7 @@ phantomas.prototype = {
 		var type = msg && msg.type || '',
 			data = msg && msg.data || {};
 
-		switch(type) {
+		switch (type) {
 			case 'log':
 				this.log.apply(this, data);
 				break;
@@ -707,7 +703,7 @@ phantomas.prototype = {
 	},
 
 	setMetricEvaluate: function(name, fn) {
-		this.setMetric(name, this.page.evaluate(fn), true /* isFinal */);
+		this.setMetric(name, this.page.evaluate(fn), true /* isFinal */ );
 	},
 
 	setMarkerMetric: function(name) {
@@ -718,12 +714,12 @@ phantomas.prototype = {
 			throw 'setMarkerMetric() called before responseEnd event!';
 		}
 
-		this.setMetric(name, value, true /* isFinal */);
+		this.setMetric(name, value, true /* isFinal */ );
 		return value;
 	},
 
 	// increements given metric by given number (default is one)
-	incrMetric: function(name, incr /* =1 */) {
+	incrMetric: function(name, incr /* =1 */ ) {
 		var currVal = this.getMetric(name) || 0;
 		this.setMetric(name, currVal + (typeof incr === 'number' ? incr : 1));
 	},
@@ -732,11 +728,11 @@ phantomas.prototype = {
 		return this.results.getMetric(name);
 	},
 
-	getSource: function () {
+	getSource: function() {
 		return this.page.content;
 	},
 
-	addOffender: function(/**metricName, msg, ... */) {
+	addOffender: function( /**metricName, msg, ... */ ) {
 		var args = Array.prototype.slice.call(arguments),
 			metricName = args.shift();
 
@@ -778,25 +774,22 @@ phantomas.prototype = {
 		args = args || [];
 		script = this.dir + script;
 
-		ctx = execFile(script, args, null, function (err, stdout, stderr) {
+		ctx = execFile(script, args, null, function(err, stdout, stderr) {
 			var time = Date.now() - start;
 
 			if (err || stderr) {
 				self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
-			}
-			else if (!pid) {
+			} else if (!pid) {
 				self.log('runScript: failed running %s %s!', script, args.join(' '));
 				return;
-			}
-			else {
+			} else {
 				self.log('runScript: pid #%d done (took %d ms)', pid, time);
 			}
 
 			// (try to) parse JSON-encoded output
 			try {
 				callback(null, JSON.parse(stdout));
-			}
-			catch(ex) {
+			} catch (ex) {
 				self.log('runScript: JSON parsing failed!');
 				callback(stderr, stdout);
 			}

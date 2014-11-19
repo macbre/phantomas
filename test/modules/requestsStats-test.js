@@ -32,8 +32,7 @@ vows.describe('requestsStats').addBatch({
 
 		// calculate metrics
 		return phantomas.report();
-	},
-	{
+	}, {
 		'smallestResponse': 25,
 		'biggestResponse': 2245,
 		'fastestResponse': 2,

@@ -7,7 +7,7 @@ module.exports = function(logFile, params) {
 	var colors = require('../lib/ansicolors'),
 		styles = require('ansistyles'),
 		fs = require('fs'),
-		ipc = new (require('./ipc'))('log'),
+		ipc = new(require('./ipc'))('log'),
 		beVerbose = params.beVerbose === true,
 		beSilent = params.beSilent === true,
 		stream;

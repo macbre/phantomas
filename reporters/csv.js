@@ -36,7 +36,7 @@ module.exports = function(results, reporterOptions) {
 
 			// -R csv:timestamp
 			if (reporterOptions.timestamp === true) {
-				values.unshift( new Date().toJSON().substr(0,19) );
+				values.unshift(new Date().toJSON().substr(0, 19));
 				keys.unshift('timestamp');
 			}
 

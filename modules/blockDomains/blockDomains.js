@@ -43,10 +43,10 @@ exports.module = function(phantomas) {
 	// parse settings
 	function parseParameter(value) {
 		return value.
-			split(',').
-			map(function(item) {
-				return item.trim();
-			});
+		split(',').
+		map(function(item) {
+			return item.trim();
+		});
 	}
 
 	allowedDomains = (typeof allowedDomains === 'string') ? parseParameter(allowedDomains) : false;

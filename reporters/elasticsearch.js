@@ -12,7 +12,7 @@
  */
 'use strict';
 
-module.exports = function (results, reporterOptions, options) {
+module.exports = function(results, reporterOptions, options) {
 	var debug = require('debug')('phantomas:reporter:elasticsearch'),
 		params;
 
@@ -34,7 +34,7 @@ module.exports = function (results, reporterOptions, options) {
 
 	// public API
 	return {
-		render: function (done) {
+		render: function(done) {
 			var elasticsearch = require('elasticsearch'),
 				client = new elasticsearch.Client({
 					host: params.host
@@ -45,8 +45,13 @@ module.exports = function (results, reporterOptions, options) {
 					reportDate: new Date()
 				},
 				mappingFields = {
-					url: {type: 'string', index: 'not_analyzed'},
-					reportDate: {type: 'date'}
+					url: {
+						type: 'string',
+						index: 'not_analyzed'
+					},
+					reportDate: {
+						type: 'date'
+					}
 				};
 			// create and index an elasticsearch document with metrics data
 			function indexReport(documentBody) {
@@ -55,7 +60,7 @@ module.exports = function (results, reporterOptions, options) {
 					type: params.type,
 					id: '',
 					body: documentBody
-				}, function (error) {
+				}, function(error) {
 					if (typeof error != "undefined") {
 						debug('Indexing error : %s ', error);
 					}
@@ -64,22 +69,34 @@ module.exports = function (results, reporterOptions, options) {
 			}
 
 			// store metrics value and mapping types
-			metrics.forEach(function (metric) {
+			metrics.forEach(function(metric) {
 				var value = results.getMetric(metric);
 				documentBody[metric] = value;
 
-				mappingFields[metric] = {type: (isNaN(value) ? 'string' : 'integer')};
+				mappingFields[metric] = {
+					type: (isNaN(value) ? 'string' : 'integer')
+				};
 			});
 
-			client.indices.exists({index: params.index}, function (err, exists) {
+			client.indices.exists({
+				index: params.index
+			}, function(err, exists) {
 				if (typeof(err) == "undefined") {
 					// index does not exists, we have to create it and define the mapping
 					if (!exists) {
-						client.indices.create({index: params.index}, function (err) {
+						client.indices.create({
+							index: params.index
+						}, function(err) {
 							if (typeof(err) == "undefined") {
 								var mapping = {};
-								mapping[params.type] = {properties: mappingFields};
-								client.indices.putMapping({type: params.type, index: params.index, body: mapping}, function (err) {
+								mapping[params.type] = {
+									properties: mappingFields
+								};
+								client.indices.putMapping({
+									type: params.type,
+									index: params.index,
+									body: mapping
+								}, function(err) {
 									if (typeof(err) == "undefined") {
 										indexReport(documentBody);
 									} else {
