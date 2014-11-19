@@ -44,6 +44,7 @@
   "devDependencies": {
     "glob": "^4.0.6",
     "http-server": "^0.6.1",
+    "js-beautify": "^1.5.4",
     "jshint": "^2.5.6",
     "mockery": "^1.4.0",
     "vows": "^0.7.0"
@@ -54,6 +55,7 @@
   "scripts": {
     "test": "vows --spec",
     "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/",
+    "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
     "metadata": "DEBUG=* node lib/metadata/generate.js"
   },
   "jshintConfig": {
