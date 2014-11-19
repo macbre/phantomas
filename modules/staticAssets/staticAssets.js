@@ -3,10 +3,10 @@
  */
 'use strict';
 
-exports.version = '0.4';
+exports.version = '0.5';
 
 exports.module = function(phantomas) {
-	var BASE64_SIZE_THRESHOLD = 2 * 1024;
+	var SIZE_THRESHOLD = 2 * 1024;
 
 	// count requests for each asset
 	var Collection = require('../../lib/collection'),
@@ -22,13 +22,13 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('multipleRequests'); // @desc number of static assets that are requested more than once
 
 	phantomas.on('recv', function(entry, res) {
+		var isContent = (entry.status === 200),
+			sizeFormatted;
+
 		// mark domains with cookie set
 		if (entry.hasCookies) {
 			cookieDomains.push(entry.domain);
 		}
-
-		//phantomas.log('entry: %j', entry);
-		var isContent = entry.status === 200;
 
 		// skip tracking requests
 		if (trackingUrls.test(entry.url)) {
@@ -51,11 +51,14 @@ exports.module = function(phantomas) {
 			}
 		}
 
-		// check small images that can be base64 encoded
-		if (entry.isImage) {
-			if (entry.contentLength < BASE64_SIZE_THRESHOLD) {
+		// small assets can be inlined
+		if (entry.contentLength < SIZE_THRESHOLD) {
+			sizeFormatted = (entry.contentLength/1024).toFixed(2);
+
+			// check small images that can be base64 encoded
+			if (entry.isImage) {
 				phantomas.incrMetric('smallImages');
-				phantomas.addOffender('smallImages', entry.url + ' (' + (entry.contentLength/1024).toFixed(2) + ' kB)');
+				phantomas.addOffender('smallImages', entry.url + ' (' + sizeFormatted + ' kB)');
 			}
 		}
 
