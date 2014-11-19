@@ -815,7 +815,21 @@
       "module": "staticAssets"
     },
     "smallImages": {
-      "desc": "number of images smaller than 2 kB that can be base64 encoded",
+      "desc": "number of images smaller than 2 KiB that can be base64 encoded",
+      "unreliable": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "staticAssets"
+    },
+    "smallCssFiles": {
+      "desc": "number of CSS assets smaller than 2 KiB that can be inlined or merged",
+      "unreliable": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "staticAssets"
+    },
+    "smallJsFiles": {
+      "desc": "number of JS assets smaller than 2 KiB that can be inlined or merged",
       "unreliable": true,
       "offenders": true,
       "unit": "number",
@@ -877,7 +891,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 148,
+  "metricsCount": 150,
   "modulesCount": 30,
-  "version": "1.6.0"
+  "version": "1.7.0"
 }
