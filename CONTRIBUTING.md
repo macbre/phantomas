@@ -13,6 +13,7 @@ Please fork from ``devel`` branch when proposing changes to phantomas.
 * make sure the code validates (``npm run-script lint``) and unit tests pass (``./test/server-start.sh`` and ``npm test``)
 * register new dependencies in ``package.json`` (``npm install --save ...`` will be happy to assist you)
 * use tabs for indentations
+* run ``npm run-script beautify`` to format the code
 * make a pull request
 
 ## Adding a metric

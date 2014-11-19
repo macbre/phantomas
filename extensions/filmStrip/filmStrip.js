@@ -22,8 +22,8 @@ exports.module = function(phantomas) {
 		return;
 	}
 
-	var filmStripOutputDir = phantomas.getParam('film-strip-dir', 'filmstrip', 'string').replace(/\/+$/,''),
-		filmStripPrefix = phantomas.getParam('film-strip-prefix', 'screenshot', 'string').replace(/[^a-z0-9\-]+/ig,'-');
+	var filmStripOutputDir = phantomas.getParam('film-strip-dir', 'filmstrip', 'string').replace(/\/+$/, ''),
+		filmStripPrefix = phantomas.getParam('film-strip-prefix', 'screenshot', 'string').replace(/[^a-z0-9\-]+/ig, '-');
 
 	var zoomFactor = 0.5;
 	phantomas.setZoom(zoomFactor);
@@ -36,12 +36,12 @@ exports.module = function(phantomas) {
 		SCREENSHOTS_MIN_INTERVAL = 75,
 		lastScreenshot = 0,
 		start = Date.now(),
-		startFormatted = (new Date()).toJSON().substr(0,19), // 2014-05-18T13:08:13
+		startFormatted = (new Date()).toJSON().substr(0, 19), // 2014-05-18T13:08:13
 		// stats
 		timeTotal = 0,
 		screenshots = [];
 
-	function screenshot(ts /* force timestamp in file name */) {
+	function screenshot(ts /* force timestamp in file name */ ) {
 		var now = Date.now(),
 			path;
 
@@ -70,8 +70,7 @@ exports.module = function(phantomas) {
 
 			// stats
 			timeTotal += (Date.now() - now);
-		}
-		else {
+		} else {
 			phantomas.log('Film strip: rendering to %s failed!', path);
 		}
 	}
@@ -89,8 +88,7 @@ exports.module = function(phantomas) {
 				}, point);
 			});
 		});
-	}
-	else {
+	} else {
 		// bind to events to render screenshots on
 		[
 			'loadStarted',

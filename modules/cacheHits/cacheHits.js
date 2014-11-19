@@ -10,7 +10,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('cacheMisses'); // @desc number of cache misses @offenders
 	phantomas.setMetric('cachePasses'); // @desc number of cache passes @offenders
 
-	phantomas.on('recv', function(entry,res) {
+	phantomas.on('recv', function(entry, res) {
 		var age, xCacheHeader,
 			isHit, isMiss, isPass;
 
@@ -41,12 +41,10 @@ exports.module = function(phantomas) {
 		if (isHit) {
 			phantomas.incrMetric('cacheHits');
 			phantomas.addOffender('cacheHits', entry.url);
-		}
-		else if (isPass) {
+		} else if (isPass) {
 			phantomas.incrMetric('cachePasses');
 			phantomas.addOffender('cachePasses', entry.url);
-		}
-		else if (isMiss) {
+		} else if (isMiss) {
 			phantomas.incrMetric('cacheMisses');
 			phantomas.addOffender('cacheMisses', entry.url);
 		}

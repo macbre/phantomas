@@ -61,8 +61,7 @@ exports.module = function(phantomas) {
 		phantomas.setMetricEvaluate('documentCookiesLength', function() {
 			try {
 				return document.cookie.length;
-			}
-			catch(ex) {
+			} catch (ex) {
 				window.__phantomas.log('documentCookiesLength: not set because ' + ex + '!');
 				return 0;
 			}
@@ -72,8 +71,7 @@ exports.module = function(phantomas) {
 			try {
 				window.__phantomas.log('Cookies: document.cookie = "' + document.cookie + '"');
 				return document.cookie.split(';').length;
-			}
-			catch(ex) {
+			} catch (ex) {
 				window.__phantomas.log('documentCookiesCount: not set because ' + ex + '!');
 				return 0;
 			}

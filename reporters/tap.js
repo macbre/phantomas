@@ -35,12 +35,10 @@ module.exports = function(results, reporterOptions) {
 
 						entry.expected = results.getAssertion(metric);
 						entry.actual = results.getMetric(metric);
-					}
-					else {
+					} else {
 						entry.value = results.getMetric(metric);
 					}
-				}
-				else {
+				} else {
 					// mark metrics with no assertions as skipped
 					entry.skip = true;
 					entry.value = results.getMetric(metric);
@@ -65,7 +63,7 @@ module.exports = function(results, reporterOptions) {
 				res.push(entry);
 			});
 
-			return Producer.encode(res, true /* emit yanlish data in TAP */);
+			return Producer.encode(res, true /* emit yanlish data in TAP */ );
 		}
 	};
 };

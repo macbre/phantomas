@@ -11,45 +11,45 @@
 exports.version = '0.1';
 
 exports.module = function(phantomas) {
-        phantomas.setMetric('documentWriteCalls'); //@desc number of calls to either document.write or document.writeln
-        phantomas.setMetric('evalCalls'); // @desc number of calls to eval (either direct or via setTimeout / setInterval)
+	phantomas.setMetric('documentWriteCalls'); //@desc number of calls to either document.write or document.writeln
+	phantomas.setMetric('evalCalls'); // @desc number of calls to eval (either direct or via setTimeout / setInterval)
 
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-					function report(msg, caller, backtrace, metric) {
-						phantomas.log(msg +': from ' + caller + '!');
-						phantomas.log('Backtrace: ' + backtrace);
-						phantomas.incrMetric(metric);
-					}
+				function report(msg, caller, backtrace, metric) {
+					phantomas.log(msg + ': from ' + caller + '!');
+					phantomas.log('Backtrace: ' + backtrace);
+					phantomas.incrMetric(metric);
+				}
 
-					// spy calls to eval()
-					phantomas.spy(window, 'eval', function(code) {
-						report('eval() called directly', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
-						phantomas.log('eval\'ed code: ' + (code || '').substring(0, 150) + '(...)');
-					});
+				// spy calls to eval()
+				phantomas.spy(window, 'eval', function(code) {
+					report('eval() called directly', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
+					phantomas.log('eval\'ed code: ' + (code || '').substring(0, 150) + '(...)');
+				});
 
-					// spy calls to setTimeout / setInterval with string passed instead of a function
-					phantomas.spy(window, 'setTimeout', function(fn, interval) {
-						if (typeof fn !== 'string') return;
+				// spy calls to setTimeout / setInterval with string passed instead of a function
+				phantomas.spy(window, 'setTimeout', function(fn, interval) {
+					if (typeof fn !== 'string') return;
 
-						report('eval() called via setTimeout("' + fn + '")', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
-					});
+					report('eval() called via setTimeout("' + fn + '")', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
+				});
 
-					phantomas.spy(window, 'setInterval', function(fn, interval) {
-						if (typeof fn !== 'string') return;
+				phantomas.spy(window, 'setInterval', function(fn, interval) {
+					if (typeof fn !== 'string') return;
 
-						report('eval() called via setInterval("' + fn + '")', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
-					});
+					report('eval() called via setInterval("' + fn + '")', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
+				});
 
-					// spy document.write(ln)
-					phantomas.spy(document, 'write', function(arg) {
-						report('document.write() used', phantomas.getCaller(), phantomas.getBacktrace(), 'documentWriteCalls');
-					});
+				// spy document.write(ln)
+				phantomas.spy(document, 'write', function(arg) {
+					report('document.write() used', phantomas.getCaller(), phantomas.getBacktrace(), 'documentWriteCalls');
+				});
 
-					phantomas.spy(document, 'writeln', function(arg) {
-						report('document.writeln() used', phantomas.getCaller(), phantomas.getBacktrace(), 'documentWriteCalls');
-					});
+				phantomas.spy(document, 'writeln', function(arg) {
+					report('document.writeln() used', phantomas.getCaller(), phantomas.getBacktrace(), 'documentWriteCalls');
+				});
 			})(window.__phantomas);
 		});
 	});

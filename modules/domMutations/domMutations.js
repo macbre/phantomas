@@ -31,9 +31,9 @@ exports.module = function(phantomas) {
 						var observer = new MutationObserver(function(allmutations) {
 							allmutations.map(function(mutation) {
 								// @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#MutationRecord
-								var targetPath = phantomas.getDOMPath(mutation.target, true /* dontGoUpTheDom */);
+								var targetPath = phantomas.getDOMPath(mutation.target, true /* dontGoUpTheDom */ );
 
-								switch(mutation.type) {
+								switch (mutation.type) {
 									case 'attributes':
 										phantomas.log('DOM mutation: "%s" attr (was "%s") set on %s',
 											mutation.attributeName,
@@ -50,8 +50,8 @@ exports.module = function(phantomas) {
 											nodes = wereAdded ? mutation.addedNodes : mutation.removedNodes,
 											nodePath;
 
-										for (var n= 0, nodesLen = nodes.length; n<nodesLen; n++) {
-											nodePath = phantomas.getDOMPath(nodes[n], true /* dontGoUpTheDom */);
+										for (var n = 0, nodesLen = nodes.length; n < nodesLen; n++) {
+											nodePath = phantomas.getDOMPath(nodes[n], true /* dontGoUpTheDom */ );
 
 											phantomas.log('DOM mutation: node "%s" %s "%s"',
 												nodePath,
@@ -62,8 +62,7 @@ exports.module = function(phantomas) {
 											if (wereAdded) {
 												phantomas.incrMetric('DOMmutationsInserts');
 												phantomas.addOffender('DOMmutationsInserts', '"%s" added to "%s"', nodePath, targetPath);
-											}
-											else {
+											} else {
 												phantomas.incrMetric('DOMmutationsRemoves');
 												phantomas.addOffender('DOMmutationsRemoves', '"%s" removed from "%s"', nodePath, targetPath);
 											}
@@ -84,8 +83,7 @@ exports.module = function(phantomas) {
 							attributeOldValue: true
 						});
 					});
-				}
-				else {
+				} else {
 					phantomas.log('DOM query: MutationObserver not available!');
 				}
 			})(window.__phantomas);

@@ -41,7 +41,7 @@ exports.module = function(phantomas) {
 		phantomas.incrMetric('headersSentCount', headers.count);
 		phantomas.incrMetric('headersSentSize', headers.size);
 	});
-		
+
 	phantomas.on('recv', function(entry, res) {
 		var headers = processHeaders(res.headers);
 

@@ -7,14 +7,14 @@
 exports.version = '0.9';
 
 exports.module = function(phantomas) {
-        phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
-        phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
-        phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
-        phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
-        phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelector(All) calls
-        phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
-        phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of DOM queries called more than once
-        phantomas.setMetric('DOMqueriesAvoidable'); // @desc number of repeated uses of a duplicated query 
+	phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
+	phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
+	phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
+	phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
+	phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelector(All) calls
+	phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
+	phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of DOM queries called more than once
+	phantomas.setMetric('DOMqueriesAvoidable'); // @desc number of repeated uses of a duplicated query 
 
 	// fake native DOM functions
 	phantomas.once('init', function() {
@@ -33,7 +33,7 @@ exports.module = function(phantomas) {
 				// selectors by class name
 				function selectorClassNameSpy(className) {
 					/* jshint validthis: true */
-					var context =  phantomas.getDOMPath(this);
+					var context = phantomas.getDOMPath(this);
 
 					phantomas.incrMetric('DOMqueriesByClassName');
 					phantomas.addOffender('DOMqueriesByClassName', '.%s (in %s)', className, context);
@@ -46,7 +46,7 @@ exports.module = function(phantomas) {
 				// selectors by tag name
 				function selectorTagNameSpy(tagName) {
 					/* jshint validthis: true */
-					var context =  phantomas.getDOMPath(this);
+					var context = phantomas.getDOMPath(this);
 
 					phantomas.incrMetric('DOMqueriesByTagName');
 					phantomas.addOffender('DOMqueriesByTagName', '%s (in %s)', tagName, context);
@@ -59,7 +59,7 @@ exports.module = function(phantomas) {
 				// selector queries
 				function selectorQuerySpy(selector) {
 					/* jshint validthis: true */
-					var context =  phantomas.getDOMPath(this);
+					var context = phantomas.getDOMPath(this);
 
 					phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
 					phantomas.addOffender('DOMqueriesByQuerySelectorAll', '%s (in %s)', selector, context);
@@ -80,7 +80,7 @@ exports.module = function(phantomas) {
 					}
 
 					var destNodePath = phantomas.getDOMPath(this),
-					    appendedNodePath = phantomas.getDOMPath(child);
+						appendedNodePath = phantomas.getDOMPath(child);
 
 					// don't count elements added to fragments as a DOM inserts (issue #350)
 					// DocumentFragment > div[0]

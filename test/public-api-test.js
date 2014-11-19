@@ -144,11 +144,15 @@ vows.describe('phantomas public API').addBatch({
 				diff = 5;
 
 			// emit fake responseEnd event
-			Date.now = function() { return now - diff; };
+			Date.now = function() {
+				return now - diff;
+			};
 			api.emit('responseEnd');
 
 			// set the marker
-			Date.now = function() { return now; };
+			Date.now = function() {
+				return now;
+			};
 			api.setMarkerMetric('marker');
 
 			assert.equal(api.getMetric('marker'), diff);
@@ -200,7 +204,7 @@ vows.describe('phantomas public API').addBatch({
 	},
 	'page source': {
 		topic: getPhantomasAPI,
-		'getSource() return the page source': function (api) {
+		'getSource() return the page source': function(api) {
 			assert.equal(api.getSource(), '<html></html>');
 		}
 	}

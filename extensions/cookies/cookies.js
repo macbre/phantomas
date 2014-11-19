@@ -38,11 +38,11 @@ exports.module = function(phantomas) {
 					cookie.name = frag[0];
 					cookie.value = frag[1];
 
-				// special case: secure
+					// special case: secure
 				} else if (frag[0] === 'secure') {
 					cookie.secure = true;
 
-				// everything else
+					// everything else
 				} else {
 					cookie[frag[0]] = frag[1];
 				}

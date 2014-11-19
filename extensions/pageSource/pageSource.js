@@ -22,7 +22,7 @@ exports.module = function(phantomas) {
 
 	// grab output dir from args
 	if (phantomas.getParam('page-source-dir')) {
-		pageSourceOutputDir = phantomas.getParam('page-source-dir').replace(/\/+$/,'');
+		pageSourceOutputDir = phantomas.getParam('page-source-dir').replace(/\/+$/, '');
 	}
 
 	// save source data
@@ -35,8 +35,7 @@ exports.module = function(phantomas) {
 		// verify that the file was really written
 		if (fs.isReadable(path)) {
 			phantomas.log('Page source: saved to %s in %d ms', path, Date.now() - now);
-		}
-		else {
+		} else {
 			phantomas.log('Page source: saved to %s failed!', path);
 		}
 	});

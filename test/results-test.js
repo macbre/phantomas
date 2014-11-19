@@ -25,7 +25,10 @@ vows.describe('Results wrapper').addBatch({
 			assert.deepEqual(results.getMetricsNames(), ['foo', 'bar']);
 		},
 		'should return the list of metrics and their values': function(results) {
-			assert.deepEqual(results.getMetrics(), {foo: 'bar', bar: null});
+			assert.deepEqual(results.getMetrics(), {
+				foo: 'bar',
+				bar: null
+			});
 		},
 	},
 	'Offenders': {
@@ -49,7 +52,10 @@ vows.describe('Results wrapper').addBatch({
 				foo: 123,
 				bar: 0
 			});
-			assert.deepEqual(results.getAsserts(), {foo: 123, bar: 0});
+			assert.deepEqual(results.getAsserts(), {
+				foo: 123,
+				bar: 0
+			});
 
 			assert.isTrue(results.hasAssertion('foo'));
 			assert.isFalse(results.hasAssertion('test'));

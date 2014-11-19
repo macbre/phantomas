@@ -21,7 +21,7 @@ exports.module = function(phantomas) {
 	phantomas.reportQueuePush(function(done) {
 		phantomas.on('loadFinished', function() {
 			phantomas.evaluate(function() {
-	                        (function(phantomas) {
+				(function(phantomas) {
 					phantomas.log('Scroll: scrolling the page down...');
 					document.body.scrollIntoView(false);
 

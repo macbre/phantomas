@@ -7,7 +7,7 @@
 exports.version = '1.0';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('localStorageEntries');// @desc number of entries in local storage
+	phantomas.setMetric('localStorageEntries'); // @desc number of entries in local storage
 
 	phantomas.on('report', function() {
 		phantomas.evaluate(function() {
@@ -22,8 +22,7 @@ exports.module = function(phantomas) {
 					entries.forEach(function(entry) {
 						phantomas.addOffender('localStorageEntries', entry);
 					});
-				}
-				catch(ex) {
+				} catch (ex) {
 					phantomas.log('localStorageEntries: not set because ' + ex + '!');
 				}
 			}(window.__phantomas));

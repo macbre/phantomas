@@ -22,8 +22,7 @@ try {
 	// run phantomas
 	instance = new phantomas(JSON.parse(options));
 	instance.run();
-}
-catch(ex) {
+} catch (ex) {
 	console.log('phantomas v' + phantomas.version + ' failed with an error:');
 	console.log(ex);
 

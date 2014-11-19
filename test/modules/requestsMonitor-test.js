@@ -156,32 +156,49 @@ vows.describe('requestMonitor').addBatch({
 	}
 }).addBatch({
 	'redirects are detected (HTTP 301)': {
-		topic: recvReq('', {status: 301}),
+		topic: recvReq('', {
+			status: 301
+		}),
 		'isRedirect field is set': assertField('isRedirect', true)
 	},
 	'redirects are detected (HTTP 302)': {
-		topic: recvReq('', {status: 302}),
+		topic: recvReq('', {
+			status: 302
+		}),
 		'isRedirect field is set': assertField('isRedirect', true)
 	},
 	'redirects are detected (HTTP 303)': {
-		topic: recvReq('', {status: 303}),
+		topic: recvReq('', {
+			status: 303
+		}),
 		'isRedirect field is set': assertField('isRedirect', true)
 	},
 	'redirects are detected (HTTP 200)': {
-		topic: recvReq('', {status: 200}),
+		topic: recvReq('', {
+			status: 200
+		}),
 		'isRedirect field is not set': assertField('isRedirect', undefined)
 	}
 }).addBatch({
 	'POST requests are detected': {
-		topic: mock.initCoreModule('requestsMonitor').recvRequest({method: 'POST'}),
+		topic: mock.initCoreModule('requestsMonitor').recvRequest({
+			method: 'POST'
+		}),
 		'postRequests metric is set': mock.assertMetric('postRequests', 1)
 	},
 	'not found responses are detected (HTTP 404)': {
-		topic: mock.initCoreModule('requestsMonitor').recvRequest({status: 404}),
+		topic: mock.initCoreModule('requestsMonitor').recvRequest({
+			status: 404
+		}),
 		'notFound metric is set': mock.assertMetric('notFound', 1)
 	},
 	'GZIP responses are detected': {
-		topic: recvReq(undefined, {headers: [{name: 'Content-Encoding', value: 'gzip'}]}),
+		topic: recvReq(undefined, {
+			headers: [{
+				name: 'Content-Encoding',
+				value: 'gzip'
+			}]
+		}),
 		'gzip is set': assertField('gzip', true)
 	}
 }).export(module);

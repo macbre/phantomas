@@ -53,15 +53,13 @@ module.exports = function(results, reporterOptions, options) {
 				if (isNaN(parseFloat(value))) {
 					debug('Not sending %s as "%s" is not a numeric metric', metric, value);
 					remaining--;
-				}
-				else {
+				} else {
 					//debug('Sending %s = %s...', metric, value);
 
 					client.gauge(metric, value, function(err, bytes) {
 						if (err) {
 							debug('Error: %s', err);
-						}
-						else {
+						} else {
 							bytesSent += bytes;
 							remaining--;
 

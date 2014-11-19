@@ -19,7 +19,9 @@ vows.describe('CommonJS module').addBatch({
 	},
 	'when timed out': {
 		topic: function() {
-			phantomas('http://phantomjs.org/', {timeout: 1}, this.callback);
+			phantomas('http://phantomjs.org/', {
+				timeout: 1
+			}, this.callback);
 		},
 		'should fail with err #252': function(err, stats) {
 			assert.equal(err, 252);

@@ -55,7 +55,7 @@ exports.module = function(phantomas) {
 
 		// small assets can be inlined
 		if (entry.contentLength < SIZE_THRESHOLD) {
-			sizeFormatted = (entry.contentLength/1024).toFixed(2);
+			sizeFormatted = (entry.contentLength / 1024).toFixed(2);
 
 			// check small images that can be base64 encoded
 			if (entry.isImage) {
@@ -66,8 +66,7 @@ exports.module = function(phantomas) {
 			else if (entry.isCSS) {
 				phantomas.incrMetric('smallCssFiles');
 				phantomas.addOffender('smallCssFiles', '%s (%s kB)', entry.url, sizeFormatted);
-			}
-			else if (entry.isJS) {
+			} else if (entry.isJS) {
 				phantomas.incrMetric('smallJsFiles');
 				phantomas.addOffender('smallJsFiles', '%s (%s kB)', entry.url, sizeFormatted);
 			}

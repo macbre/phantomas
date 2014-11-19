@@ -18,7 +18,7 @@ exports.module = function(phantomas) {
 		for (headerName in headers) {
 			var value = headers[headerName];
 
-			switch(headerName.toLowerCase()) {
+			switch (headerName.toLowerCase()) {
 				// parse max-age=...
 				//
 				// max-age=2592000
@@ -31,10 +31,10 @@ exports.module = function(phantomas) {
 					}
 					break;
 
-				// catch Expires and Pragma headers
+					// catch Expires and Pragma headers
 				case 'expires':
 				case 'pragma':
-				// and Varnish specific headers
+					// and Varnish specific headers
 				case 'x-pass-expires':
 				case 'x-pass-cache-control':
 					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
@@ -62,12 +62,10 @@ exports.module = function(phantomas) {
 			if (ttl === false) {
 				phantomas.incrMetric('cachingNotSpecified');
 				phantomas.addOffender('cachingNotSpecified', entry.url);
-			}
-			else if (ttl === 0) {
+			} else if (ttl === 0) {
 				phantomas.incrMetric('cachingDisabled');
 				phantomas.addOffender('cachingDisabled', entry.url);
-			}
-			else if (ttl < 7 * 86400) {
+			} else if (ttl < 7 * 86400) {
 				phantomas.incrMetric('cachingTooShort');
 				phantomas.addOffender('cachingTooShort', entry.url + ' cached for ' + ttl + ' s');
 			}

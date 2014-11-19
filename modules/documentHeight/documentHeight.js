@@ -16,7 +16,7 @@ exports.module = function(phantomas) {
 				body = doc.body,
 				docelem = doc.documentElement;
 
-			return Math.max( body.scrollHeight, body.offsetHeight, docelem.clientHeight, docelem.scrollHeight, docelem.offsetHeight );
+			return Math.max(body.scrollHeight, body.offsetHeight, docelem.clientHeight, docelem.scrollHeight, docelem.offsetHeight);
 		});
 	});
 };

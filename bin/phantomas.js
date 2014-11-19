@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * PhantomJS-based web performance metrics collector
  *
@@ -20,17 +21,13 @@ var phantomas = require('..'),
 // parse options
 program
 	.usage('PhantomJS-based web performance metrics collector\n\nphantomas <url> [options]')
-
 	// mandatory
 	.describe('url', 'Set URL to work with').string('url')
-
 	// version / help
 	.describe('version', 'Show version number and quit').boolean('version').alias('version', 'V')
 	.describe('help', 'This help text').boolean('help').alias('help', 'h')
-
 	// --engine=[webkit|gecko]
 	.describe('engine', 'select engine used to run the phantomas [webkit|gecko]  - EXPERIMENTAL').string('engine')
-
 	// optional params
 	.describe('allow-domain', 'allow requests to given domain(s) - aka whitelist [domain],[domain],...')
 	.describe('auth-user', 'sets the user name used for HTTP authentication')
@@ -68,7 +65,6 @@ program
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
 	.describe('film-strip', 'register film strip when page is loading (a comma separated list of milliseconds can be passed)').boolean('film-strip')
 	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory)')
-
 	// experimental features
 	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
 	.describe('page-source', 'save page source to file - EXPERIMENTAL').boolean('page-source')
@@ -156,7 +152,7 @@ var series = [];
 
 debug('Preparing %d run(s)...', runs);
 
-for (var r=0; r<runs; r++) {
+for (var r = 0; r < runs; r++) {
 	series.push(task);
 }
 
@@ -197,12 +193,10 @@ async.series(
 			if (typeof res !== 'undefined') {
 				process.stdout.write(res);
 				doneFn();
-			}
-			else {
+			} else {
 				debug('Waiting for the results...');
 			}
-		}
-		else {
+		} else {
 			doneFn();
 		}
 	}

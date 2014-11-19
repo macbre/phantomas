@@ -7,13 +7,13 @@ exports.version = '0.3';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('jsErrors'); // @desc number of JavaScript errors
-	
+
 	function formatTrace(trace) {
 		var ret = [];
 
-		if(Array.isArray(trace)) {
+		if (Array.isArray(trace)) {
 			trace.forEach(function(entry) {
-				ret.push((entry.function ? entry.function + '(): ' : 'unknown fn: ') + (entry.sourceURL || entry.file) + ' @ ' + entry.line);
+				ret.push((entry.function ? entry.function+'(): ' : 'unknown fn: ') + (entry.sourceURL || entry.file) + ' @ ' + entry.line);
 			});
 		}
 

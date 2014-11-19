@@ -6,7 +6,7 @@ var assert = require('assert'),
 	noop = function() {};
 
 var phantomas = function(name) {
-	this.emitter = new (require('events').EventEmitter)();
+	this.emitter = new(require('events').EventEmitter)();
 	this.wasEmitted = {};
 	this.metrics = {};
 
@@ -21,12 +21,11 @@ phantomas.prototype = {
 	getParam: noop,
 
 	// events
-	emit: function(/* eventName, arg1, arg2, ... */) { //console.log('emit: ' + arguments[0]);
+	emit: function( /* eventName, arg1, arg2, ... */ ) { //console.log('emit: ' + arguments[0]);
 		try {
 			this.log('emit: %j', Array.prototype.slice.apply(arguments));
 			this.emitter.emit.apply(this.emitter, arguments);
-		}
-		catch(ex) {
+		} catch (ex) {
 			console.log(ex);
 		}
 
@@ -52,7 +51,7 @@ phantomas.prototype = {
 		this.metrics[name] = (typeof value !== 'undefined') ? value : 0;
 	},
 	setMetricEvaluate: noop,
-	incrMetric: function(name, incr /* =1 */) {
+	incrMetric: function(name, incr /* =1 */ ) {
 		this.metrics[name] = (this.metrics[name] || 0) + (incr || 1);
 	},
 	getMetric: function(name) {
@@ -73,9 +72,10 @@ phantomas.prototype = {
 		this.log('sendRequest: %j', req);
 
 		try {
-			this.emitter.emit('onResourceRequested', req, {abort: noop});
-		}
-		catch(ex) {
+			this.emitter.emit('onResourceRequested', req, {
+				abort: noop
+			});
+		} catch (ex) {
 			console.log(ex);
 		}
 
@@ -94,8 +94,7 @@ phantomas.prototype = {
 		try {
 			this.emitter.emit('onResourceRequested', req);
 			this.emitter.emit('onResourceReceived', req);
-		}
-		catch(ex) {
+		} catch (ex) {
 			console.log(ex);
 		}
 
@@ -139,9 +138,8 @@ function initModule(name, isCore) {
 		instance = new phantomas(name);
 		def = require('../../' + (isCore ? 'core/modules' : 'modules') + '/' + name + '/' + name + '.js');
 
-		new (def.module)(instance);
-	}
-	catch(ex) {
+		new(def.module)(instance);
+	} catch (ex) {
 		console.log(ex);
 	}
 
@@ -159,7 +157,7 @@ module.exports = {
 		return initModule(name);
 	},
 	initCoreModule: function(name) {
-		return initModule(name, true /* core */);
+		return initModule(name, true /* core */ );
 	},
 
 	assertMetric: assertMetric,

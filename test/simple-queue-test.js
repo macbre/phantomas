@@ -32,23 +32,23 @@ vows.describe('simple-queue').addBatch({
 				called = 0;
 
 			q.
-				push(function(done) {
+			push(function(done) {
+				called++;
+				done();
+			}).
+			push(function(done) {
+				setTimeout(function() {
 					called++;
 					done();
-				}).
-				push(function(done) {
-					setTimeout(function() {
-						called++;
-						done();
-					});
-				}).
-				done(function() {
-					called++;
-				}).
-				done(function(err, stats) {
-					called++;
-					this.callback(null, called, stats);
-				}, this);
+				});
+			}).
+			done(function() {
+				called++;
+			}).
+			done(function(err, stats) {
+				called++;
+				this.callback(null, called, stats);
+			}, this);
 		},
 		'should call all done() callbacks': function(err, called) {
 			assert.equal(called, 4);
@@ -63,19 +63,19 @@ vows.describe('simple-queue').addBatch({
 				called = 0;
 
 			q.
-				push(function(done) {
-					setTimeout(function() {
-						called++;
-						done();
-					}, 0);
-				}).
-				push(function(done) {
+			push(function(done) {
+				setTimeout(function() {
 					called++;
 					done();
-				}).
-				done(function() {
-					this.callback(null, called);
-				}, this);
+				}, 0);
+			}).
+			push(function(done) {
+				called++;
+				done();
+			}).
+			done(function() {
+				this.callback(null, called);
+			}, this);
 		},
 		'should be completed when all jobs are done': function(err, called) {
 			assert.equal(called, 2);
@@ -87,25 +87,25 @@ vows.describe('simple-queue').addBatch({
 				called = 0;
 
 			q.
-				push(function(done) {
-					setTimeout(function() {
-						called++;
-						done();
-					}, 0);
-				}).
-				push(function(done) {
+			push(function(done) {
+				setTimeout(function() {
 					called++;
 					done();
-				}).
-				done(function() {
-					this.callback(null, called);
-				}, this).
-				push(function(done) {
-					setTimeout(function() {
-						called++;
-						done();
-					}, 0);
-				});
+				}, 0);
+			}).
+			push(function(done) {
+				called++;
+				done();
+			}).
+			done(function() {
+				this.callback(null, called);
+			}, this).
+			push(function(done) {
+				setTimeout(function() {
+					called++;
+					done();
+				}, 0);
+			});
 		},
 		'should be completed when all jobs are done': function(err, called) {
 			assert.equal(called, 3);
