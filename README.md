@@ -162,7 +162,7 @@ Units:
 
 * htmlCount: number of HTML responses
 * htmlSize: size of HTML responses
-5 cssCount: number of CSS responses
+* cssCount: number of CSS responses
 * cssSize: size of CSS responses
 * jsCount: number of JS responses
 * jsSize: size of JS responses
