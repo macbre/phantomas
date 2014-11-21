@@ -20,8 +20,8 @@ module.exports = function(results, reporterOptions, options) {
 	if (reporterOptions.length > 0) {
 		options['elasticsearch-host'] = reporterOptions[0];
 		options['elasticsearch-port'] = reporterOptions[1];
-		options['elasticsearch-type'] = reporterOptions[2];
-		options['elasticsearch-index'] = reporterOptions[3];
+		options['elasticsearch-index'] = reporterOptions[2];
+		options['elasticsearch-type'] = reporterOptions[3];
 	}
 
 	params = {
