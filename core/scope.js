@@ -191,18 +191,26 @@
 			phantomas.log('Spying ' + (enabled ? 'enabled' : 'disabled') + (reason ? ' - ' + reason : ''));
 		}
 
-		function spy(obj, fn, callback) {
+		// pass reportResults = true to prepend arguments passed to callback
+		// with the result of call to the original function - issue #420
+		function spy(obj, fn, callback, reportResults) {
 			var origFn = obj[fn];
 
 			if (typeof origFn !== 'function') {
 				return false;
 			}
 
-			phantomas.log('Attaching a spy to "' + fn + '" function...');
+			phantomas.log('Attaching a spy to "' + fn + '" function%s...', (reportResults ? ' with results reporting' : ''));
 
 			obj[fn] = function() {
-				if (enabled) callback.apply(this, arguments);
-				return origFn.apply(this, arguments);
+				var args = Array.prototype.slice.call(arguments),
+					results = origFn.apply(this, args);
+
+				if (enabled && typeof callback === 'function') {
+					callback.apply(this, (reportResults === true) ? [results].concat(args) : args);
+				}
+
+				return results;
 			};
 
 			// copy custom properties of original function to the mocked one
