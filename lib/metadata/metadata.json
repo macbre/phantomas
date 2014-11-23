@@ -583,6 +583,12 @@
       "unit": "number",
       "module": "domQueries"
     },
+    "DOMqueriesWithoutResults": {
+      "desc": "number of DOM queries that returned nothing",
+      "offenders": true,
+      "unit": "number",
+      "module": "domQueries"
+    },
     "DOMqueriesById": {
       "desc": "number of document.getElementById calls",
       "offenders": true,
@@ -891,7 +897,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 150,
+  "metricsCount": 151,
   "modulesCount": 30,
   "version": "1.7.0"
 }

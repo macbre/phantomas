@@ -7,15 +7,16 @@
     cssCount: 1
     jsCount: 1
     domains: 2
-    DOMqueries: 15
-    DOMqueriesById: 6
+    DOMqueries: 17
+    DOMqueriesById: 7
     DOMqueriesByClassName: 1
-    DOMqueriesByTagName: 7
-    DOMqueriesByQuerySelectorAll: 1
+    DOMqueriesByTagName: 6
+    DOMqueriesByQuerySelectorAll: 3
     DOMinserts: 2
     DOMmutationsInserts: 0
     DOMqueriesDuplicated: 2
     DOMqueriesAvoidable: 3
+    DOMqueriesWithoutResults: 4
 # DOM operations (in SlimerJS)
 - url: "/dom-operations.html"
   label: "/dom-operations.html (using SlimerJS)"
@@ -26,15 +27,16 @@
     cssCount: 1
     jsCount: 1
     domains: 2
-    DOMqueries: 15
-    DOMqueriesById: 6
+    DOMqueries: 17
+    DOMqueriesById: 7
     DOMqueriesByClassName: 1
-    DOMqueriesByTagName: 7
-    DOMqueriesByQuerySelectorAll: 1
+    DOMqueriesByTagName: 6
+    DOMqueriesByQuerySelectorAll: 3
     DOMinserts: 2 # "div" appended to "html" (from jQuery) and the one below
     DOMmutationsInserts: 1 # DocumentFragment > b[0]" appended to "body > p#foo"
     DOMqueriesDuplicated: 2
     DOMqueriesAvoidable: 3
+    DOMqueriesWithoutResults: 4
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:

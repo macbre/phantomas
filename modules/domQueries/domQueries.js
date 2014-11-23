@@ -4,10 +4,11 @@
 /* global Element: true, Document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '0.9';
+exports.version = '1.0';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
+	phantomas.setMetric('DOMqueriesWithoutResults'); // @desc number of DOM queries that returned nothing @offenders
 	phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
 	phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
 	phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
@@ -20,56 +21,56 @@ exports.module = function(phantomas) {
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-				function querySpy(type, query, fnName, context) {
-					phantomas.emit('domQuery', type, query, fnName, context); // @desc DOM query has been made
+				function querySpy(type, query, fnName, context, hasNoResults) {
+					phantomas.emit('domQuery', type, query, fnName, context, hasNoResults); // @desc DOM query has been made
 				}
 
-				phantomas.spy(Document.prototype, 'getElementById', function(id) {
+				phantomas.spy(Document.prototype, 'getElementById', function(results, id) {
 					phantomas.incrMetric('DOMqueriesById');
 					phantomas.addOffender('DOMqueriesById', '#%s (in %s)', id, '#document');
-					querySpy('id', '#' + id, 'getElementById', '#document');
-				});
+					querySpy('id', '#' + id, 'getElementById', '#document', (results === null));
+				}, true);
 
 				// selectors by class name
-				function selectorClassNameSpy(className) {
+				function selectorClassNameSpy(results, className) {
 					/* jshint validthis: true */
 					var context = phantomas.getDOMPath(this);
 
 					phantomas.incrMetric('DOMqueriesByClassName');
 					phantomas.addOffender('DOMqueriesByClassName', '.%s (in %s)', className, context);
-					querySpy('class', '.' + className, 'getElementsByClassName', context);
+					querySpy('class', '.' + className, 'getElementsByClassName', context, (results.length === 0));
 				}
 
-				phantomas.spy(Document.prototype, 'getElementsByClassName', selectorClassNameSpy);
-				phantomas.spy(Element.prototype, 'getElementsByClassName', selectorClassNameSpy);
+				phantomas.spy(Document.prototype, 'getElementsByClassName', selectorClassNameSpy, true);
+				phantomas.spy(Element.prototype, 'getElementsByClassName', selectorClassNameSpy, true);
 
 				// selectors by tag name
-				function selectorTagNameSpy(tagName) {
+				function selectorTagNameSpy(results, tagName) {
 					/* jshint validthis: true */
 					var context = phantomas.getDOMPath(this);
 
 					phantomas.incrMetric('DOMqueriesByTagName');
 					phantomas.addOffender('DOMqueriesByTagName', '%s (in %s)', tagName, context);
-					querySpy('tag name', tagName, 'getElementsByTagName', context);
+					querySpy('tag name', tagName, 'getElementsByTagName', context, (results.length === 0));
 				}
 
-				phantomas.spy(Document.prototype, 'getElementsByTagName', selectorTagNameSpy);
-				phantomas.spy(Element.prototype, 'getElementsByTagName', selectorTagNameSpy);
+				phantomas.spy(Document.prototype, 'getElementsByTagName', selectorTagNameSpy, true);
+				phantomas.spy(Element.prototype, 'getElementsByTagName', selectorTagNameSpy, true);
 
 				// selector queries
-				function selectorQuerySpy(selector) {
+				function selectorQuerySpy(results, selector) {
 					/* jshint validthis: true */
 					var context = phantomas.getDOMPath(this);
 
 					phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
 					phantomas.addOffender('DOMqueriesByQuerySelectorAll', '%s (in %s)', selector, context);
-					querySpy('selector', selector, 'querySelectorAll', context);
+					querySpy('selector', selector, 'querySelectorAll', context, (results === null || results.length === 0));
 				}
 
-				phantomas.spy(Document.prototype, 'querySelector', selectorQuerySpy);
-				phantomas.spy(Document.prototype, 'querySelectorAll', selectorQuerySpy);
-				phantomas.spy(Element.prototype, 'querySelector', selectorQuerySpy);
-				phantomas.spy(Element.prototype, 'querySelectorAll', selectorQuerySpy);
+				phantomas.spy(Document.prototype, 'querySelector', selectorQuerySpy, true);
+				phantomas.spy(Document.prototype, 'querySelectorAll', selectorQuerySpy, true);
+				phantomas.spy(Element.prototype, 'querySelector', selectorQuerySpy, true);
+				phantomas.spy(Element.prototype, 'querySelectorAll', selectorQuerySpy, true);
 
 				// count DOM inserts
 				function appendSpy(child) {
@@ -98,6 +99,19 @@ exports.module = function(phantomas) {
 				phantomas.spy(Node.prototype, 'insertBefore', appendSpy);
 			})(window.__phantomas);
 		});
+	});
+
+	// report DOM queries that return no results (issue #420)
+	phantomas.on('domQuery', function(type, query, fnName, context, hasNoResults) {
+		// ignore DOM queries within DOM fragments (used internally by jQuery)
+		if (context.indexOf('body') !== 0 && context.indexOf('#document') !== 0) {
+			return;
+		}
+
+		if (hasNoResults === true) {
+			phantomas.incrMetric('DOMqueriesWithoutResults');
+			phantomas.addOffender('DOMqueriesWithoutResults', '%s (in %s) using %s', query, context, fnName);
+		}
 	});
 
 	// count DOM queries by either ID, tag name, class name and selector query
