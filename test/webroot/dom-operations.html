@@ -26,15 +26,17 @@
 			$('#foo').
 				css('color', 'red').
 				css('background', 'green').
-				append('<b>bar</b>');
+				append('<strong>bar</strong>');
 
-			var del = document.getElementById('delete');
-			$(del).remove();
+			var nodeToRemove = document.getElementById('delete');
+			document.body.removeChild(nodeToRemove);
 
 			var nodes = [
 				document.querySelector('#foo'),
-				document.getElementsByClassName('bar'),
-				document.getElementsByTagName('span'),
+				document.querySelector('ol li'), // DOMqueriesWithoutResults++
+				document.querySelectorAll('#list li'), // DOMqueriesWithoutResults++
+				document.body.getElementsByClassName('barr'), // DOMqueriesWithoutResults++
+				document.getElementsByTagName('strong'), // should find <strong> appended to #foo
 				document.getElementById('foo'),
 				document.getElementById('list1').getElementsByTagName('li'),
 				document.getElementById('list2').getElementsByTagName('li'),
