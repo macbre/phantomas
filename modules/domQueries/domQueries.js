@@ -8,7 +8,7 @@ exports.version = '1.0';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
-	phantomas.setMetric('DOMqueriesWithoutResults'); // @desc number of DOM queries that retutned nothing @offenders
+	phantomas.setMetric('DOMqueriesWithoutResults'); // @desc number of DOM queries that returned nothing @offenders
 	phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
 	phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
 	phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
