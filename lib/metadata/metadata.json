@@ -513,6 +513,7 @@
     },
     "DOMelementMaxDepth": {
       "desc": "maximum level on nesting of HTML element node",
+      "offenders": true,
       "unit": "number",
       "module": "domComplexity"
     },
