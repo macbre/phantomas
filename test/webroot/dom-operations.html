@@ -37,6 +37,7 @@
 				document.querySelectorAll('#list li'), // DOMqueriesWithoutResults++
 				document.body.getElementsByClassName('barr'), // DOMqueriesWithoutResults++
 				document.getElementsByTagName('strong'), // should find <strong> appended to #foo
+				document.getElementsByTagName('STRONG'), // should be counted as duplicated query (issue #419)
 				document.getElementById('foo'),
 				document.getElementById('list1').getElementsByTagName('li'),
 				document.getElementById('list2').getElementsByTagName('li'),
