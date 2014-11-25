@@ -46,9 +46,12 @@ exports.module = function(phantomas) {
 				var runner = new phantomas.nodeRunner(),
 					whitespacesRegExp = /^\s+$/,
 					DOMelementMaxDepth = 0,
+					DOMelementMaxDepthNodes = [], // stores offenders for DOMelementMaxDepth (issue #414)
 					size = 0;
 
 				runner.walk(document.body, function(node, depth) {
+					var path = '';
+
 					switch (node.nodeType) {
 						case Node.COMMENT_NODE:
 							size = node.textContent.length + 7; // '<!--' + '-->'.length
@@ -56,13 +59,21 @@ exports.module = function(phantomas) {
 
 							// log HTML comments bigger than 64 characters
 							if (size > 64) {
-								phantomas.addOffender('commentsSize', phantomas.getDOMPath(node) + ' (' + size + ' characters)');
+								phantomas.addOffender('commentsSize', '%s (%d characters)', phantomas.getDOMPath(node), size);
 							}
 							break;
 
 						case Node.ELEMENT_NODE:
+							path = phantomas.getDOMPath(node);
+
 							phantomas.incrMetric('DOMelementsCount');
-							DOMelementMaxDepth = Math.max(DOMelementMaxDepth, depth);
+
+							if (depth > DOMelementMaxDepth) {
+								DOMelementMaxDepth = depth;
+								DOMelementMaxDepthNodes = [path];
+							} else if (depth === DOMelementMaxDepth) {
+								DOMelementMaxDepthNodes.push(path);
+							}
 
 							// report duplicated ID (issue #392)
 							if (node.id) {
@@ -78,7 +89,7 @@ exports.module = function(phantomas) {
 							if (node.nodeName === 'IMG') {
 								if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
 									phantomas.incrMetric('imagesWithoutDimensions');
-									phantomas.addOffender('imagesWithoutDimensions', '%s <%s>', phantomas.getDOMPath(node), node.src);
+									phantomas.addOffender('imagesWithoutDimensions', '%s <%s>', path, node.src);
 								}
 								if (node.naturalHeight && node.naturalWidth && node.height && node.width) {
 									if (node.naturalHeight > node.height || node.naturalWidth > node.width) {
@@ -91,7 +102,7 @@ exports.module = function(phantomas) {
 							// count nodes with inline CSS
 							if (node.hasAttribute('style')) {
 								phantomas.incrMetric('nodesWithInlineCSS');
-								phantomas.addOffender('nodesWithInlineCSS', phantomas.getDOMPath(node) + ' (' + node.getAttribute('style') + ')');
+								phantomas.addOffender('nodesWithInlineCSS', '%s (%s)', path, node.getAttribute('style'));
 							}
 
 							break;
@@ -105,12 +116,13 @@ exports.module = function(phantomas) {
 				});
 
 				phantomas.setMetric('DOMelementMaxDepth', DOMelementMaxDepth);
-
-				phantomas.spyEnabled(false, 'counting iframes and images');
+				DOMelementMaxDepthNodes.forEach(function(path) {
+					phantomas.addOffender('DOMelementMaxDepth', path);
+				});
 
 				// count <iframe> tags
+				phantomas.spyEnabled(false, 'counting iframes');
 				phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length); // @desc number of iframe nodes
-
 				phantomas.spyEnabled(true);
 			}(window.__phantomas));
 		});
