@@ -49,6 +49,9 @@ exports.module = function(phantomas) {
 					/* jshint validthis: true */
 					var context = phantomas.getDOMPath(this);
 
+					// querying by BODY and body is the same (issue #419)
+					tagName = tagName.toLowerCase();
+
 					phantomas.incrMetric('DOMqueriesByTagName');
 					phantomas.addOffender('DOMqueriesByTagName', '%s (in %s)', tagName, context);
 					querySpy('tag name', tagName, 'getElementsByTagName', context, (results.length === 0));
