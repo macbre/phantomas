@@ -15,7 +15,7 @@ exports.module = function(phantomas) {
 			// Taking the protocol in account, in case the same domain is called with two different protocols.
 			host = entry.protocol + '://' + entry.domain;
 
-		if (connectionHeader.indexOf('close') !== 1) {
+		if (connectionHeader.indexOf('close') !== -1) {
 			// Don't blame it immediatly, wait to see if the connection is needed a second time.
 			closedConnectionHosts[host] = entry.url;
 		}
