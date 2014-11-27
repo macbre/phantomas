@@ -732,6 +732,12 @@
       "unit": "number",
       "module": "jserrors"
     },
+    "closedConnections": {
+      "desc": "number of requests not keeping the connection alive and slowing down the next request",
+      "offenders": true,
+      "unit": "number",
+      "module": "keepAlive"
+    },
     "localStorageEntries": {
       "desc": "number of entries in local storage",
       "offenders": true,
@@ -898,7 +904,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 151,
-  "modulesCount": 30,
+  "metricsCount": 152,
+  "modulesCount": 31,
   "version": "1.7.0"
 }

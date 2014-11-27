@@ -130,7 +130,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 116_
+_Current number of metrics: 117_
 
 Units:
 
@@ -279,6 +279,12 @@ Units:
 * biggestLatency: the time to the first byte of the slowest response
 * medianResponse: median value of time to the last byte for all responses
 * medianLatency: median value of time to the first byte for all responses
+
+### keepAlive
+
+> Monitors the use of ``Connection: close`` and ``Keep-Alive``
+
+* closedConnections: number of requests not keeping the connection alive and slowing down the next request
 
 ### localStorage
 
