@@ -30,6 +30,8 @@ exports.module = function(phantomas) {
 			phantomas.incrMetric('closedConnections');
 			phantomas.addOffender('closedConnections', previousClosedConnection);
 
+			phantomas.log('keepAlive: connection for <%s> was closed, but the page requested <%s>', host, entry.url);
+
 			closedConnectionHosts[host] = undefined;
 		}
 	});
