@@ -761,9 +761,7 @@ phantomas.prototype = {
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
 			start = Date.now(),
-			self = this,
-			pid,
-			ctx;
+			self = this;
 
 		if (typeof args === 'function') {
 			callback = args;
@@ -774,32 +772,43 @@ phantomas.prototype = {
 		args = args || [];
 		script = this.dir + script;
 
-		ctx = execFile(script, args, null, function(err, stdout, stderr) {
-			var time = Date.now() - start;
+		// always wait for runScript to finish (issue #417)
+		this.reportQueue.push(function(done) {
+			var ctx, pid;
 
-			if (err || stderr) {
-				self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
-			} else if (!pid) {
-				self.log('runScript: failed running %s %s!', script, args.join(' '));
-				return;
+			ctx = execFile(script, args, null, function(err, stdout, stderr) {
+				var time = Date.now() - start;
+
+				if (err || stderr) {
+					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+				} else if (!pid) {
+					self.log('runScript: failed running %s %s!', script, args.join(' '));
+
+					done();
+					return;
+				} else {
+					self.log('runScript: pid #%d done (took %d ms)', pid, time);
+				}
+
+				// (try to) parse JSON-encoded output
+				try {
+					callback(null, JSON.parse(stdout));
+				} catch (ex) {
+					self.log('runScript: JSON parsing failed!');
+					callback(stderr, stdout);
+				}
+
+				done();
+			});
+
+			pid = ctx.pid;
+
+			if (pid) {
+				self.log('runScript: %s %s (pid #%d)', script, args.join(' '), pid);
 			} else {
-				self.log('runScript: pid #%d done (took %d ms)', pid, time);
-			}
-
-			// (try to) parse JSON-encoded output
-			try {
-				callback(null, JSON.parse(stdout));
-			} catch (ex) {
-				self.log('runScript: JSON parsing failed!');
-				callback(stderr, stdout);
+				done();
 			}
 		});
-
-		pid = ctx.pid;
-
-		if (pid) {
-			this.log('runScript: %s %s (pid #%d)', script, args.join(' '), pid);
-		}
 	}
 };
 
