@@ -49,6 +49,8 @@ exports.module = function(phantomas) {
 		return;
 	}
 
+	//phantomas.log('analyzeCss: temporary directory - %s', phantomas.tmpdir());
+
 	function ucfirst(str) {
 		// http://kevin.vanzonneveld.net
 		// +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -79,7 +81,7 @@ exports.module = function(phantomas) {
 					var offender = entry.url;
 					if (err.indexOf('CSS parsing failed') > 0) {
 						offender += ' (' + err.trim() + ')';
-					} else if (err.indexOf('Empty CSS was provided') > 0 ) {
+					} else if (err.indexOf('Empty CSS was provided') > 0) {
 						offender += ' (Empty CSS was provided)';
 					}
 

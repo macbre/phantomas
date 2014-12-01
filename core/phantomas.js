@@ -256,7 +256,8 @@ phantomas.prototype = {
 			getSource: this.getSource.bind(this),
 
 			// utils
-			runScript: this.runScript.bind(this)
+			runScript: this.runScript.bind(this),
+			tmpdir: this.tmpdir.bind(this)
 		};
 	},
 
@@ -809,6 +810,13 @@ phantomas.prototype = {
 				done();
 			}
 		});
+	},
+
+	// return temporary directory for the current phantomas run
+	// passed as PHANTOMAS_TMP_DIR environment variable by phantomas' node.js runner
+	tmpdir: function() {
+		// example: /tmp/phantomas/58aea8b5-2c97-48ee-9885-fcd81d38561f/
+		return require('system').env.PHANTOMAS_TMP_DIR;
 	}
 };
 
