@@ -39,6 +39,7 @@
  * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional
  * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional
  */
+/* global document: true, window: true */
 'use strict';
 
 exports.version = '0.3';
@@ -110,5 +111,24 @@ exports.module = function(phantomas) {
 				});
 			});
 		}
+	});
+
+	phantomas.on('report', function() {
+		// get the content of inline CSS (issue #397)
+		var inlineCss = phantomas.evaluate(function() {
+			return (function(phantomas) {
+				var styles = document.getElementsByTagName('style'),
+					content = [];
+
+				for (var i=0, len=styles.length; i<len; i++) {
+					content.push(styles[i].textContent);
+				}
+
+				return content;
+			})(window.__phantomas);
+		});
+
+		phantomas.log('analyzeCss: looking for inline styles, %d found', inlineCss.length);
+		phantomas.log('analyzeCss: inline CSS - %j', inlineCss);
 	});
 };
