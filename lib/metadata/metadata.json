@@ -300,6 +300,12 @@
       "unit": "number",
       "module": "analyzeCss"
     },
+    "cssInlineStyles": {
+      "desc": "number of inline styles",
+      "optional": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
     "htmlCount": {
       "desc": "number of HTML responses",
       "offenders": true,
@@ -904,7 +910,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 152,
+  "metricsCount": 153,
   "modulesCount": 31,
   "version": "1.7.0"
 }
