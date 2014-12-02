@@ -50,6 +50,9 @@ exports.module = function(phantomas) {
 		return;
 	}
 
+	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
+	phantomas.setMetric('cssInlineStyles'); // @desc number of inline styles @optional
+
 	function ucfirst(str) {
 		// http://kevin.vanzonneveld.net
 		// +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -108,8 +111,6 @@ exports.module = function(phantomas) {
 		});
 	}
 
-	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
-
 	phantomas.on('recv', function(entry, res) {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
@@ -117,7 +118,7 @@ exports.module = function(phantomas) {
 		}
 	});
 
-	phantomas.on('report', function() {
+	phantomas.on('loadFinished', function() {
 		var fs = require('fs');
 
 		// get the content of inline CSS (issue #397)
@@ -140,6 +141,7 @@ exports.module = function(phantomas) {
 		}
 
 		phantomas.log('analyzeCss: found %d inline styles', inlineCss.length);
+		phantomas.setMetric('cssInlineStyles', inlineCss.length);
 
 		// create the temporary directory
 		fs.makeTree(phantomas.tmpdir());
