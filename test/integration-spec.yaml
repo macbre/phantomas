@@ -80,6 +80,7 @@
     cssLength: 106
     cssRules: 3
     cssImportants: 1
+    DOMqueries: 0
 # analyze-css fails to parse a file (#404)
 - url: "/broken-css.html"
   options:

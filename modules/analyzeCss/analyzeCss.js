@@ -124,6 +124,8 @@ exports.module = function(phantomas) {
 		// get the content of inline CSS (issue #397)
 		var inlineCss = phantomas.evaluate(function() {
 			return (function(phantomas) {
+				phantomas.spyEnabled(false, 'looking for inline styles');
+
 				var styles = document.getElementsByTagName('style'),
 					content = [];
 
@@ -131,6 +133,7 @@ exports.module = function(phantomas) {
 					content.push(styles[i].textContent);
 				}
 
+				phantomas.spyEnabled(true);
 				return content;
 			})(window.__phantomas);
 		});
