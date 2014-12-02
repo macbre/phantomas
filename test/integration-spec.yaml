@@ -69,6 +69,17 @@
   options:
     "assert-requests": 0
   exitCode: 1 # one assert not met
+# inline styles (#397)
+- url: "/inline-css.html"
+  options:
+    "analyze-css": true
+  metrics:
+    requests: 2
+    cssParsingErrors: 0
+    cssInlineStyles: 2
+    cssLength: 106
+    cssRules: 3
+    cssImportants: 1
 # analyze-css fails to parse a file (#404)
 - url: "/broken-css.html"
   options:
