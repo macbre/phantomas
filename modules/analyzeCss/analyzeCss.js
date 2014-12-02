@@ -42,15 +42,13 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.3';
+exports.version = '0.4';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
 		phantomas.log('To enable CSS in-depth metrics please run phantomas with --analyze-css option');
 		return;
 	}
-
-	//phantomas.log('analyzeCss: temporary directory - %s', phantomas.tmpdir());
 
 	function ucfirst(str) {
 		// http://kevin.vanzonneveld.net
@@ -64,63 +62,71 @@ exports.module = function(phantomas) {
 		return f + str.substr(1);
 	}
 
-	var isWindows = (require('system').os.name === 'windows'),
-		binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
+	// run analyze-css "binary" installed by npm
+	function analyzeCss(options) {
+		var isWindows = (require('system').os.name === 'windows'),
+			binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
+
+		// force JSON output format
+		options.push('--json');
+
+		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
+			if (err !== null) {
+				phantomas.log('analyzeCss: sub-process failed!');
+
+				// report failed CSS parsing (issue #494(
+				var offender = (options[0] === '--url') ? options[1] : '<inline CSS>';
+				if (err.indexOf('CSS parsing failed') > 0) {
+					offender += ' (' + err.trim() + ')';
+				} else if (err.indexOf('Empty CSS was provided') > 0) {
+					offender += ' (Empty CSS was provided)';
+				}
+
+				phantomas.incrMetric('cssParsingErrors');
+				phantomas.addOffender('cssParsingErrors', offender);
+				return;
+			}
+
+			phantomas.log('analyzeCss: using ' + results.generator);
+
+			var metrics = results.metrics || {},
+				offenders = results.offenders || {};
+
+			Object.keys(metrics).forEach(function(metric) {
+				var metricPrefixed = 'css' + ucfirst(metric);
+
+				// increase metrics
+				phantomas.incrMetric(metricPrefixed, metrics[metric]);
+
+				// and add offenders
+				if (typeof offenders[metric] !== 'undefined') {
+					offenders[metric].forEach(function(msg) {
+						phantomas.addOffender(metricPrefixed, msg);
+					});
+				}
+			});
+		});
+	}
 
 	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
 
 	phantomas.on('recv', function(entry, res) {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
-
-			// run analyze-css "binary" installed by npm
-			phantomas.runScript('node_modules/.bin/' + binary, ['--url', entry.url, '--json'], function(err, results) {
-				if (err !== null) {
-					phantomas.log('analyzeCss: sub-process failed!');
-
-					// report failed CSS parsing (issue #494(
-					var offender = entry.url;
-					if (err.indexOf('CSS parsing failed') > 0) {
-						offender += ' (' + err.trim() + ')';
-					} else if (err.indexOf('Empty CSS was provided') > 0) {
-						offender += ' (Empty CSS was provided)';
-					}
-
-					phantomas.incrMetric('cssParsingErrors');
-					phantomas.addOffender('cssParsingErrors', offender);
-					return;
-				}
-
-				phantomas.log('analyzeCss: using ' + results.generator);
-
-				var metrics = results.metrics || {},
-					offenders = results.offenders || {};
-
-				Object.keys(metrics).forEach(function(metric) {
-					var metricPrefixed = 'css' + ucfirst(metric);
-
-					// increase metrics
-					phantomas.incrMetric(metricPrefixed, metrics[metric]);
-
-					// and add offenders
-					if (typeof offenders[metric] !== 'undefined') {
-						offenders[metric].forEach(function(msg) {
-							phantomas.addOffender(metricPrefixed, msg);
-						});
-					}
-				});
-			});
+			analyzeCss(['--url', entry.url]);
 		}
 	});
 
 	phantomas.on('report', function() {
+		var fs = require('fs');
+
 		// get the content of inline CSS (issue #397)
 		var inlineCss = phantomas.evaluate(function() {
 			return (function(phantomas) {
 				var styles = document.getElementsByTagName('style'),
 					content = [];
 
-				for (var i=0, len=styles.length; i<len; i++) {
+				for (var i = 0, len = styles.length; i < len; i++) {
 					content.push(styles[i].textContent);
 				}
 
@@ -128,7 +134,25 @@ exports.module = function(phantomas) {
 			})(window.__phantomas);
 		});
 
-		phantomas.log('analyzeCss: looking for inline styles, %d found', inlineCss.length);
-		phantomas.log('analyzeCss: inline CSS - %j', inlineCss);
+		// no inline styles found, leave
+		if (inlineCss.length === 0) {
+			return;
+		}
+
+		phantomas.log('analyzeCss: found %d inline styles', inlineCss.length);
+
+		// create the temporary directory
+		fs.makeTree(phantomas.tmpdir());
+
+		inlineCss.forEach(function(cssContent, idx) {
+			var path = phantomas.tmpdir() + 'inline-' + idx + '.css';
+
+			phantomas.log('analyzeCss: saving inline CSS #%d to %s (%d bytes)...', (idx + 1), path, cssContent.length);
+
+			// save CSS to the file
+			fs.write(path, cssContent, 'w');
+
+			analyzeCss(['--file', path]);
+		});
 	});
 };
