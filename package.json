@@ -27,7 +27,7 @@
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.4",
     "async": "~0.9.0",
-    "csv-string": "~2.1.1",
+    "csv-string": "~2.2.2",
     "debug": "~2.1.0",
     "elasticsearch": "~1.5.14",
     "js-yaml": "^3.1.0",
