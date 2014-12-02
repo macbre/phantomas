@@ -7,6 +7,9 @@
  * --elasticsearch-index "myapp"
  * --elasticsearch-type "phantomas-report"
  *
+ * Debugging:
+ *  curl -s -XGET 'http://localhost:9200/phantomas/report/<id>/_source'
+ *
  * Options:
  *  <host>:<port>:<index>:<type>
  */
@@ -26,8 +29,8 @@ module.exports = function(results, reporterOptions, options) {
 
 	params = {
 		host: (options['elasticsearch-host'] || 'localhost') + ':' + (options['elasticsearch-port'] || 9200),
-		type: (options['elasticsearch-type'] || 'phantomas-report'),
-		index: (options['elasticsearch-index'] || 'phantomas_results')
+		type: (options['elasticsearch-type'] || 'report'),
+		index: (options['elasticsearch-index'] || 'phantomas')
 	};
 
 	debug('Parameters: %j', params);
@@ -60,9 +63,11 @@ module.exports = function(results, reporterOptions, options) {
 					type: params.type,
 					id: '',
 					body: documentBody
-				}, function(error) {
+				}, function(error, data) {
 					if (typeof error != "undefined") {
-						debug('Indexing error : %s ', error);
+						debug('Indexing error: %s ', error);
+					} else {
+						debug('Stored under id %s', data._id);
 					}
 					done();
 				});
@@ -100,12 +105,12 @@ module.exports = function(results, reporterOptions, options) {
 									if (typeof(err) == "undefined") {
 										indexReport(documentBody);
 									} else {
-										debug('create mapping error : %s ', err);
+										debug('create mapping error: %s ', err);
 										done();
 									}
 								});
 							} else {
-								debug('create index error : %s ', err);
+								debug('create index error: %s ', err);
 								done();
 							}
 						});
@@ -113,7 +118,7 @@ module.exports = function(results, reporterOptions, options) {
 						indexReport(documentBody);
 					}
 				} else {
-					debug('index exists error : %s ', err);
+					debug('index exists error: %s ', err);
 					done();
 				}
 			});
