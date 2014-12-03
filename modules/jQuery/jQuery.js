@@ -18,10 +18,7 @@ exports.module = function(phantomas) {
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
-				var jQuery;
-
-				// TODO: create a helper - phantomas.spyGlobalVar() ?
-				window.__defineSetter__('jQuery', function(val) {
+				phantomas.spyGlobalVar('jQuery', function(val) {
 					var version;
 
 					if (!val || !val.fn) {
@@ -30,7 +27,6 @@ exports.module = function(phantomas) {
 					}
 
 					version = val.fn.jquery;
-					jQuery = val;
 
 					phantomas.log('jQuery: loaded v' + version);
 					phantomas.setMetric('jQueryVersion', version);
@@ -48,10 +44,6 @@ exports.module = function(phantomas) {
 						phantomas.incrMetric('jQuerySizzleCalls');
 						phantomas.addOffender('jQuerySizzleCalls', '%s (in %s)', selector, (phantomas.getDOMPath(context) || 'unknown'));
 					}) || phantomas.log('jQuery: can not measure jQuerySizzleCalls (jQuery used on the page is too old)!');
-				});
-
-				window.__defineGetter__('jQuery', function() {
-					return jQuery;
 				});
 			})(window.__phantomas);
 		});
