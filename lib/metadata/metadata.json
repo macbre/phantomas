@@ -714,11 +714,13 @@
     },
     "jQueryOnDOMReadyFunctions": {
       "desc": "number of functions bound to onDOMReady event",
+      "offenders": true,
       "unit": "number",
       "module": "jQuery"
     },
     "jQuerySizzleCalls": {
       "desc": "number of calls to Sizzle (including those that will be resolved using querySelectorAll)",
+      "offenders": true,
       "unit": "number",
       "module": "jQuery"
     },
@@ -912,5 +914,5 @@
   },
   "metricsCount": 153,
   "modulesCount": 31,
-  "version": "1.7.0"
+  "version": "1.8.0"
 }
