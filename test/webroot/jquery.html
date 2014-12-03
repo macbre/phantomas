@@ -1,0 +1,29 @@
+<body>
+	<div id="foo">
+		<span class="bar">test</span>
+	</div>
+
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script>
+		$(function() {
+			var $node = $('#foo .bar');
+
+			$node.
+				// DOM write
+				css({
+					color: 'red',
+					background: 'green'
+				}).
+				// event bind
+				click(function() {
+					$(this).parent().css({'background-color': 'blue'});
+				});
+
+			// DOM read
+			console.log($node.css('color'));
+
+			// event trigger
+			$node.trigger('click');
+	});
+	</script>
+</body>
