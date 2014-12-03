@@ -102,4 +102,5 @@
     jQueryVersion: "2.1.1"
     jQueryOnDOMReadyFunctions: 1
     jQuerySizzleCalls: 1
+    jQueryEventTriggers: 2
 

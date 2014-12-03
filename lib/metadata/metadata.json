@@ -724,6 +724,12 @@
       "unit": "number",
       "module": "jQuery"
     },
+    "jQueryEventTriggers": {
+      "desc": "number of jQuery event triggers",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
     "documentWriteCalls": {
       "desc": "number of calls to either document.write or document.writeln",
       "unit": "number",
@@ -912,7 +918,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 153,
+  "metricsCount": 154,
   "modulesCount": 31,
   "version": "1.8.0"
 }
