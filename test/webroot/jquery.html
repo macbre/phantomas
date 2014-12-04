@@ -22,8 +22,11 @@
 			// DOM read
 			console.log($node.css('color'));
 
-			// event trigger
+			// trigger an event (via jQuery)
 			$node.trigger('click');
+
+			// trigger an event (via core JS)
+			$node[0].dispatchEvent(new Event('click'));
 	});
 	</script>
 </body>
