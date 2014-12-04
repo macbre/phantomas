@@ -130,7 +130,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 117_
+_Current number of metrics: 119_
 
 Units:
 
@@ -252,6 +252,7 @@ Units:
 ### Event listeners
 
 * eventsBound: number of ``EventTarget.addEventListener`` calls
+* eventsDispatched: number of ``EventTarget.dispatchEvent`` calls
 
 ### Window performance
 
@@ -297,6 +298,7 @@ Units:
 * jQueryVersion: version of jQuery framework (if loaded)
 * jQueryOnDOMReadyFunctions: number of functions bound to onDOMReady event
 * jQuerySizzleCalls: number of calls to [Sizzle](http://sizzlejs.com/) (including those that will be resolved using ``querySelectorAll``)
+* jQueryEventTriggers: number of jQuery event triggers
 
 ### Static assets
 

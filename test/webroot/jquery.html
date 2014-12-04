@@ -1,0 +1,35 @@
+<body>
+	<div id="foo">
+		<span class="bar">test</span>
+	</div>
+
+	<script src="/static/jquery-2.1.1.min.js"></script>
+	<script>
+		$(function() {
+			var $node = $('#foo .bar');
+
+			$node.
+				// DOM write
+				css({
+					color: 'red',
+					background: 'green'
+				}).
+				// event bind
+				click(function() {
+					$(this).parent().css({'background-color': 'blue'});
+				});
+
+			// DOM read
+			console.log($node.css('color'));
+
+			// trigger an event (via jQuery)
+			$node.trigger('click');
+
+			// trigger an event (via core JS)
+			// @see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill
+			var ev = document.createEvent('CustomEvent');
+			ev.initCustomEvent('click');
+			$node[0].dispatchEvent(ev);
+	});
+	</script>
+</body>

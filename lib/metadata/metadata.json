@@ -657,7 +657,13 @@
       "desc": "number of EventTarget.addEventListener calls",
       "offenders": true,
       "unit": "number",
-      "module": "eventListeners"
+      "module": "events"
+    },
+    "eventsDispatched": {
+      "desc": "number of EventTarget.dispatchEvent calls",
+      "offenders": true,
+      "unit": "number",
+      "module": "events"
     },
     "globalVariables": {
       "desc": "number of JS globals variables",
@@ -714,11 +720,19 @@
     },
     "jQueryOnDOMReadyFunctions": {
       "desc": "number of functions bound to onDOMReady event",
+      "offenders": true,
       "unit": "number",
       "module": "jQuery"
     },
     "jQuerySizzleCalls": {
       "desc": "number of calls to Sizzle (including those that will be resolved using querySelectorAll)",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
+    "jQueryEventTriggers": {
+      "desc": "number of jQuery event triggers",
+      "offenders": true,
       "unit": "number",
       "module": "jQuery"
     },
@@ -910,7 +924,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 153,
+  "metricsCount": 155,
   "modulesCount": 31,
-  "version": "1.7.0"
+  "version": "1.8.0"
 }

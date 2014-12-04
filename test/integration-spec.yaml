@@ -6,7 +6,7 @@
     requests: 3
     cssCount: 1
     jsCount: 1
-    domains: 2
+    domains: 1
     DOMqueries: 18
     DOMqueriesById: 7
     DOMqueriesByClassName: 1
@@ -26,7 +26,7 @@
     requests: 3
     cssCount: 1
     jsCount: 1
-    domains: 2
+    domains: 1
     DOMqueries: 18
     DOMqueriesById: 7
     DOMqueriesByClassName: 1
@@ -96,4 +96,13 @@
     cssParsingErrors: 0
     cssLength: 22
     cssRules: 1
+# jQuery and events (issue #440)
+- url: "/jquery.html"
+  metrics:
+    jQueryVersion: "2.1.1"
+    jQueryOnDOMReadyFunctions: 1
+    jQuerySizzleCalls: 1
+    jQueryEventTriggers: 2
+    eventsBound: 3
+    eventsDispatched: 1
 

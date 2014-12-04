@@ -200,7 +200,7 @@
 				return false;
 			}
 
-			phantomas.log('Attaching a spy to "' + fn + '" function%s...', (reportResults ? ' with results reporting' : ''));
+			phantomas.log('spy: attaching to "%s" function%s', fn, (reportResults ? ' with results reporting' : ''));
 
 			obj[fn] = function() {
 				var args = Array.prototype.slice.call(arguments),
@@ -223,8 +223,29 @@
 			return true;
 		}
 
+		var spiedGlobals = {};
+
+		// call given callback when "varName" global variable is being defined
+		// used by jQuery module
+		function spyGlobalVar(varName, callback) {
+			phantomas.log('spy: attaching to %s global variable', varName);
+
+			window.__defineSetter__(varName, function(val) {
+				phantomas.log('spy: %s global variable has been defined', varName);
+
+				spiedGlobals[varName] = val;
+				callback(val);
+			});
+
+			window.__defineGetter__(varName, function() {
+				return spiedGlobals[varName];
+			});
+
+		}
+
 		// exports
 		phantomas.spy = spy;
+		phantomas.spyGlobalVar = spyGlobalVar;
 		phantomas.spyEnabled = spyEnabled;
 	})();
 
