@@ -689,6 +689,7 @@ phantomas.prototype = {
 	},
 
 	onError: function(msg, trace) {
+		this.log('JS error: %s', msg);
 		this.emitInternal('jserror', msg, trace); // @desc JS error occured
 	},
 
