@@ -55,7 +55,7 @@
   "preferGlobal": true,
   "scripts": {
     "test": "vows --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/ lib/*.js lib/metadata/*.js reporters/",
+    "lint": "jshint --verbose core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
     "metadata": "DEBUG=* node lib/metadata/generate.js"
   },
