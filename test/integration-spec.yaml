@@ -96,11 +96,13 @@
     cssParsingErrors: 0
     cssLength: 22
     cssRules: 1
-# jQuery (issue #440)
+# jQuery and events (issue #440)
 - url: "/jquery.html"
   metrics:
     jQueryVersion: "2.1.1"
     jQueryOnDOMReadyFunctions: 1
     jQuerySizzleCalls: 1
     jQueryEventTriggers: 2
+    eventsBound: 3
+    eventsDispatched: 1
 

@@ -26,7 +26,10 @@
 			$node.trigger('click');
 
 			// trigger an event (via core JS)
-			$node[0].dispatchEvent(new Event('click'));
+			// @see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Polyfill
+			var ev = document.createEvent('CustomEvent');
+			ev.initCustomEvent('click');
+			$node[0].dispatchEvent(ev);
 	});
 	</script>
 </body>
