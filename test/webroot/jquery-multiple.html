@@ -1,0 +1,21 @@
+<body>
+	<!-- the same versions -->
+	<script src="/static/jquery-2.1.1.min.js"></script>
+	<script src="//code.jquery.com/jquery-2.1.1.js"></script>
+
+	<!-- older one -->
+	<script src="//code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+		// use the old version
+		console.log('jQuery v%s', $.fn.jquery);
+
+		// and now the new one
+		$.noConflict();
+		console.log('$.noConflict() called...');
+		console.log('jQuery v%s', $.fn.jquery);
+
+		$(function() {
+			console.log('DOM ready!');
+		});
+	</script>
+</body>
