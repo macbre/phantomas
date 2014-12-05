@@ -105,4 +105,10 @@
     jQueryEventTriggers: 2
     eventsBound: 3
     eventsDispatched: 1
+# multiple jQuery "instances" (issue #435)
+- url: "/jquery-multiple.html"
+  metrics:
+    jQueryVersion: "1.11.1" # the last loaded version
+    jQueryVersionsLoaded: 3
+    jQueryOnDOMReadyFunctions: 1
 
