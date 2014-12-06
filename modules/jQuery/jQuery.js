@@ -10,7 +10,10 @@
 exports.version = '0.2';
 
 exports.module = function(phantomas) {
+	var lastUrl;
+
 	phantomas.setMetric('jQueryVersion', ''); // @desc version of jQuery framework (if loaded) [string]
+	phantomas.setMetric('jQueryVersionsLoaded'); // @desc number of loaded jQuery "instances" (even in the same version)
 	phantomas.setMetric('jQueryOnDOMReadyFunctions'); // @desc number of functions bound to onDOMReady event
 	phantomas.setMetric('jQuerySizzleCalls'); // @desc number of calls to Sizzle (including those that will be resolved using querySelectorAll)
 	phantomas.setMetric('jQueryEventTriggers'); // @desc number of jQuery event triggers
@@ -28,9 +31,7 @@ exports.module = function(phantomas) {
 					}
 
 					version = jQuery.fn.jquery;
-
-					phantomas.log('jQuery: loaded v' + version);
-					phantomas.setMetric('jQueryVersion', version);
+					phantomas.emit('jQueryLoaded', version);
 
 					// jQuery.ready.promise
 					// works for jQuery 1.8.0+ (released Aug 09 2012)
@@ -59,5 +60,20 @@ exports.module = function(phantomas) {
 				});
 			})(window.__phantomas);
 		});
+	});
+
+	// store the last resource that was received
+	// try to report where given jQuery version was loaded from
+	phantomas.on('recv', function(entry) {
+		lastUrl = entry.url;
+	});
+
+	phantomas.on('jQueryLoaded', function(version) {
+		phantomas.log('jQuery: loaded v' + version);
+		phantomas.setMetric('jQueryVersion', version);
+
+		// report multiple jQuery "instances" (issue #435)
+		phantomas.incrMetric('jQueryVersionsLoaded');
+		phantomas.addOffender('jQueryVersionsLoaded', 'jQuery v%s loaded from <%s>', version, lastUrl);
 	});
 };

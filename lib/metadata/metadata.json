@@ -718,6 +718,12 @@
       "unit": "string",
       "module": "jQuery"
     },
+    "jQueryVersionsLoaded": {
+      "desc": "number of loaded jQuery \"instances\" (even in the same version)",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
     "jQueryOnDOMReadyFunctions": {
       "desc": "number of functions bound to onDOMReady event",
       "offenders": true,
@@ -924,7 +930,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 155,
+  "metricsCount": 156,
   "modulesCount": 31,
   "version": "1.8.0"
 }
