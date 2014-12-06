@@ -28,7 +28,7 @@ exports.module = function(phantomas) {
 		phantomas.log('Performance timing: responseEnd = %d', responseEndTime);
 	});
 
-	phantomas.on('init', function() {
+	phantomas.once('init', function() {
 		phantomas.evaluate(function(responseEndTime) {
 			(function(phantomas) {
 				phantomas.spyEnabled(false, 'installing window.performance metrics');
