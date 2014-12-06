@@ -22,7 +22,7 @@
     "node": ">=0.10"
   },
   "dependencies": {
-    "analyze-css": "0.8.x",
+    "analyze-css": "0.9.x",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.4",
@@ -43,10 +43,10 @@
     "travis-fold": ">=0.1.2"
   },
   "devDependencies": {
-    "glob": "^4.0.6",
-    "http-server": "^0.6.1",
+    "glob": "^4.3.1",
+    "http-server": "^0.7.2",
     "js-beautify": "^1.5.4",
-    "jshint": "^2.5.6",
+    "jshint": "^2.5.10",
     "mockery": "^1.4.0",
     "vows": "^0.7.0"
   },
