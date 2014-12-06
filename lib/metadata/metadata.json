@@ -101,6 +101,7 @@
     },
     "cssColors": {
       "desc": "number of unique colors used in CSS",
+      "optional": true,
       "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
@@ -190,6 +191,7 @@
     },
     "cssMultiClassesSelectors": {
       "desc": "number of selectors with multiple classes (e.g. span.foo.bar)",
+      "optional": true,
       "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
