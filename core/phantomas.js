@@ -125,6 +125,7 @@ var phantomas = function(params) {
 
 	// load core modules
 	this.log('Loading: core modules...');
+	this.addCoreModule('navigationTiming');
 	this.addCoreModule('requestsMonitor');
 	this.addCoreModule('timeToFirstByte');
 
