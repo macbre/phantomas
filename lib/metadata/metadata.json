@@ -99,6 +99,12 @@
       "unit": "number",
       "module": "analyzeCss"
     },
+    "cssColors": {
+      "desc": "number of unique colors used in CSS",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
     "cssComments": {
       "desc": "number of comments in CSS source",
       "optional": true,
@@ -178,6 +184,12 @@
     "cssMediaQueries": {
       "desc": "number of media queries (e.g. @media screen and (min-width: 1370px))",
       "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssMultiClassesSelectors": {
+      "desc": "number of selectors with multiple classes (e.g. span.foo.bar)",
       "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
@@ -930,7 +942,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 156,
+  "metricsCount": 158,
   "modulesCount": 32,
   "version": "1.8.0"
 }

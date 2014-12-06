@@ -8,6 +8,7 @@
  * setMetric('cssBase64Length') @desc total length of base64-encoded data in CSS source (will warn about base64-encoded data bigger than 4 kB) @optional @offenders
  * setMetric('cssRedundantBodySelectors') @desc number of redundant body selectors (e.g. body .foo, section body h2, but not body > h1) @optional @offenders
  * setMetric('redundantChildNodesSelectors') @desc number of redundant child nodes selectors @optional @offenders
+ * setMetric('cssColors') @desc number of unique colors used in CSS @offenders
  * setMetric('cssComments') @desc number of comments in CSS source @optional @offenders
  * setMetric('cssCommentsLength') @desc length of comments content in CSS source @optional
  * setMetric('cssComplexSelectors') @desc number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo) @optional @offenders
@@ -20,6 +21,7 @@
  * setMetric('cssImports') @desc number of @import rules @optional @offenders
  * setMetric('cssImportants') @desc number of properties with value forced by !important @optional @offenders
  * setMetric('cssMediaQueries') @desc number of media queries (e.g. @media screen and (min-width: 1370px)) @optional @offenders
+ * setMetric('cssMultiClassesSelectors') @desc number of selectors with multiple classes (e.g. span.foo.bar) @offenders
  * setMetric('cssOldPropertyPrefixes') @desc number of properties with no longer needed vendor prefix, powered by data provided by autoprefixer (e.g. --moz-border-radius) @optional @offenders
  * setMetric('cssQualifiedSelectors') @desc number of qualified selectors (e.g. header#nav, .foo#bar, h1.title) @optional @offenders
  * setMetric('cssSpecificityIdAvg') @desc average specificity for ID @optional
