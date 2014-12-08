@@ -10,7 +10,7 @@
 		console.log('jQuery v%s', $.fn.jquery);
 
 		// and now the new one
-		$.noConflict();
+		$.noConflict(true); // deep = true - reset window.jQuery
 		console.log('$.noConflict() called...');
 		console.log('jQuery v%s', $.fn.jquery);
 
