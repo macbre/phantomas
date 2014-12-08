@@ -30,6 +30,15 @@ exports.module = function(phantomas) {
 						return;
 					}
 
+					// Tag the current version of jQuery to avoid multiple reports of jQuery being loaded
+					// when it's actually only restored via $.noConflict(true) - see comments in #435
+					if (jQuery.__phantomas === true) {
+						phantomas.log('jQuery: this instance has already been seen by phantomas');
+						return;
+					}
+					jQuery.__phantomas = true;
+
+					// report the version of jQuery
 					version = jQuery.fn.jquery;
 					phantomas.emit('jQueryLoaded', version);
 
@@ -65,7 +74,9 @@ exports.module = function(phantomas) {
 	// store the last resource that was received
 	// try to report where given jQuery version was loaded from
 	phantomas.on('recv', function(entry) {
-		lastUrl = entry.url;
+		if (entry.isJS) {
+			lastUrl = entry.url;
+		}
 	});
 
 	phantomas.on('jQueryLoaded', function(version) {
