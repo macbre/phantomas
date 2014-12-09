@@ -32,7 +32,7 @@ exports.module = function(phantomas) {
 
 					function report(type, funcName, context, args) {
 						var caller = phantomas.getCaller(1),
-							contextPath = phantomas.getDOMPath(context),
+							contextPath = phantomas.getDOMPath(context);
 
 						args = (typeof args !== 'undefined') ? Array.prototype.slice.apply(args) : undefined;
 
