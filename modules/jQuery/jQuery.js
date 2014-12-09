@@ -85,6 +85,8 @@ exports.module = function(phantomas) {
 
 		// report multiple jQuery "instances" (issue #435)
 		phantomas.incrMetric('jQueryVersionsLoaded');
-		phantomas.addOffender('jQueryVersionsLoaded', 'jQuery v%s loaded from <%s>', version, lastUrl);
+		phantomas.addOffender('jQueryVersionsLoaded', 'v%s', version);
+
+		phantomas.log('jQuery: v%s (probably loaded from <%s>)', version, lastUrl);
 	});
 };
