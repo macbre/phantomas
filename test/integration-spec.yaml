@@ -111,4 +111,10 @@
     jQueryVersion: "1.11.1" # the last loaded version
     jQueryVersionsLoaded: 3
     jQueryOnDOMReadyFunctions: 1
+# jQuery read & write operations (issue #436)
+- url: "/jquery-reads-writes.html"
+  metrics:
+    jQueryDOMReads: 5
+    jQueryDOMWrites: 20
+    jQueryDOMWriteReadSwitches: 4
 
