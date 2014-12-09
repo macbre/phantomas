@@ -12,13 +12,17 @@
 			list = $('#list'),
 			i, item;
 
-		for (i = 0; i < 20; i++) {
+		for (i = 0; i < 5; i++) {
 			item = $('<li>').
 				height(div.height()). // read & write
 				text(i).
 				css('color', 'red');
 
 			list.append(item);
+
+			item.
+				addClass('foo').
+				show();
 		}
 
 		console.timeEnd('op');
