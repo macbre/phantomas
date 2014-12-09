@@ -7,7 +7,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '1.0';
 
 exports.module = function(phantomas) {
 	var lastUrl;
@@ -17,11 +17,84 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('jQueryOnDOMReadyFunctions'); // @desc number of functions bound to onDOMReady event
 	phantomas.setMetric('jQuerySizzleCalls'); // @desc number of calls to Sizzle (including those that will be resolved using querySelectorAll)
 	phantomas.setMetric('jQueryEventTriggers'); // @desc number of jQuery event triggers
+	phantomas.setMetric('jQueryDOMReads'); // @desc number of DOM read operations
+	phantomas.setMetric('jQueryDOMWrites'); // @desc number of DOM write operations
+	phantomas.setMetric('jQueryDOMWriteReadSwitches'); // @desc number of read operations that follow a series of write operations (will cause repaint and can cause reflow)
 
 	// spy calls to jQuery functions
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
+				// read & write DOM operations (issue #436)
+				function spyReadsAndWrites(jQuery) {
+					var TYPE_SET = 'write',
+						TYPE_GET = 'read';
+
+					function report(type, funcName, context, args) {
+						var caller = phantomas.getCaller(1),
+							contextPath = phantomas.getDOMPath(context);
+
+						args = (typeof args !== 'undefined') ? Array.prototype.slice.apply(args) : undefined;
+
+						phantomas.emit('jQueryOp', type, funcName, args, contextPath, caller);
+					}
+
+					// "complex" getters and setters
+					[
+						'attr',
+						'css',
+						'prop',
+					].forEach(function(funcName) {
+						phantomas.spy(jQuery.fn, funcName, function(propName, val) {
+							// setter when called with two arguments or provided with key/value set
+							var isSet = (typeof val !== 'undefined') || (propName.toString() === '[object Object]');
+							report(isSet ? TYPE_SET : TYPE_GET, funcName, this[0], arguments);
+						});
+					});
+
+					// simple getters and setters
+					[
+						'height',
+						'innerHeight',
+						'innerWidth',
+						'offset',
+						'outerHeight',
+						'outerWidth',
+						'text',
+						'width',
+						'scrollLeft',
+						'scrollTop'
+					].forEach(function(funcName) {
+						phantomas.spy(jQuery.fn, funcName, function(val) {
+							// setter when called with an argument
+							var isSet = (typeof val !== 'undefined');
+							report(isSet ? TYPE_SET : TYPE_GET, funcName, this[0], arguments);
+						});
+					});
+
+					// setters
+					[
+						'addClass',
+						'removeAttr',
+						'removeClass',
+						'removeProp',
+						'toggleClass',
+					].forEach(function(funcName) {
+						phantomas.spy(jQuery.fn, funcName, function(val) {
+							report(TYPE_SET, funcName, this[0], [val]);
+						});
+					});
+					// getters
+					[
+						'hasClass',
+						'position',
+					].forEach(function(funcName) {
+						phantomas.spy(jQuery.fn, funcName, function(val) {
+							report(TYPE_GET, funcName, this[0], arguments);
+						});
+					});
+				}
+
 				phantomas.spyGlobalVar('jQuery', function(jQuery) {
 					var version;
 
@@ -66,6 +139,8 @@ exports.module = function(phantomas) {
 						phantomas.incrMetric('jQueryEventTriggers');
 						phantomas.addOffender('jQueryEventTriggers', '"%s" on "%s"', type, path);
 					});
+
+					spyReadsAndWrites(jQuery);
 				});
 			})(window.__phantomas);
 		});
@@ -88,5 +163,31 @@ exports.module = function(phantomas) {
 		phantomas.addOffender('jQueryVersionsLoaded', 'v%s', version);
 
 		phantomas.log('jQuery: v%s (probably loaded from <%s>)', version, lastUrl);
+	});
+
+	// jQuery read & write operations (issue #436)
+	var lastOp;
+
+	phantomas.on('jQueryOp', function (type, funcName, args, contextPath, caller) {
+		phantomas.log('jQuery: %s op from $.%s(%j) on "%s" - %s', type, funcName, args, contextPath, caller);
+
+		if (type === 'read') {
+			phantomas.incrMetric('jQueryDOMReads');
+			phantomas.addOffender('jQueryDOMReads', '$.%s(%j) on "%s"', funcName, args, contextPath);
+
+			// This read operation may follow a write operation
+			// In this case browser needs to perform all buffered write operations
+			// in order to update the DOM - this can cause repaints and reflows
+			if (lastOp === 'write') {
+				phantomas.incrMetric('jQueryDOMWriteReadSwitches');
+				phantomas.addOffender('jQueryDOMWriteReadSwitches', 'before $.%s(%j) on "%s"', funcName, args, contextPath);
+			}
+		}
+		else {
+			phantomas.incrMetric('jQueryDOMWrites');
+			phantomas.addOffender('jQueryDOMWrites', '$.%s(%j) on "%s"', funcName, args, contextPath);
+		}
+
+		lastOp = type;
 	});
 };

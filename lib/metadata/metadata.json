@@ -756,6 +756,24 @@
       "unit": "number",
       "module": "jQuery"
     },
+    "jQueryDOMReads": {
+      "desc": "number of DOM read operations",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
+    "jQueryDOMWrites": {
+      "desc": "number of DOM write operations",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
+    "jQueryDOMWriteReadSwitches": {
+      "desc": "number of read operations that follow a series of write operations (will cause repaint and can cause reflow)",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
     "documentWriteCalls": {
       "desc": "number of calls to either document.write or document.writeln",
       "unit": "number",
@@ -944,7 +962,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 158,
+  "metricsCount": 161,
   "modulesCount": 32,
   "version": "1.8.0"
 }

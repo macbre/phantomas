@@ -1,0 +1,31 @@
+<body>
+	<h1 id="master">foo</h1>
+	<ul id="list"></ul>
+
+	<script src="/static/jquery-2.1.1.min.js"></script>
+	<script>
+		console.profile();
+		console.time('op');
+
+		// based on http://browserdiet.com/en/#repaints-and-reflows
+		var div = $("#master"),
+			list = $('#list'),
+			i, item;
+
+		for (i = 0; i < 5; i++) {
+			item = $('<li>').
+				height(div.height()). // read & write
+				text(i).
+				css('color', 'red');
+
+			list.append(item);
+
+			item.
+				addClass('foo').
+				show();
+		}
+
+		console.timeEnd('op');
+		console.profileEnd();
+	</script>
+</body>

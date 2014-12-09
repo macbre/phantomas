@@ -130,7 +130,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 120_
+_Current number of metrics: 123_
 
 Units:
 
@@ -300,6 +300,9 @@ Units:
 * jQueryOnDOMReadyFunctions: number of functions bound to onDOMReady event
 * jQuerySizzleCalls: number of calls to [Sizzle](http://sizzlejs.com/) (including those that will be resolved using ``querySelectorAll``)
 * jQueryEventTriggers: number of jQuery event triggers
+* jQueryDOMReads: number of DOM read operations
+* jQueryDOMWrites: number of DOM write operations
+* jQueryDOMWriteReadSwitches: number of read operations that follow a series of write operations (will cause repaint and can cause reflow)
 
 ### Static assets
 
