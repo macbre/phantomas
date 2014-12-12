@@ -117,4 +117,13 @@
     jQueryDOMReads: 5
     jQueryDOMWrites: 20
     jQueryDOMWriteReadSwitches: 4
+# --wait-for-selector
+- url: "/"
+  label: "/ (--wait-for-selector)"
+  options:
+    timeout: 1
+    'wait-for-selector': "#foo"
+  metrics:
+    DOMqueries: 0 # no queries should be reported despite DOM being polled by waitForSelector module
+  exitCode: 252 # timeout
 

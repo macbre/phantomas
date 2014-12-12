@@ -4,15 +4,23 @@
 /* global document: true */
 'use strict';
 
-exports.version = '0.1';
+exports.version = '0.2';
 
 function checkSelector(phantomas, selector) {
 	var res = phantomas.evaluate(function(selector) {
-		try {
-			return document.querySelector(selector) !== null;
-		} catch (ex) {
-			return ex.toString();
-		}
+		(function(phantomas) {
+			try {
+				var result;
+
+				phantomas.spyEnabled(false, 'checking the selector');
+				result = (document.querySelector(selector) !== null);
+				phantomas.spyEnabled(true);
+
+				return result;
+			} catch (ex) {
+				return ex.toString();
+			}
+		}(window.__phantomas));
 	}, selector);
 
 	phantomas.log('Selector: query for "%s" returned %j', selector, res);
