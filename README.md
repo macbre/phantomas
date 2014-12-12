@@ -477,16 +477,27 @@ sudo aptitude install xvfb libasound2 libgtk2.0-0
 * [Planet Performance](http://www.perfplanet.com/) - news and views from the web performance blogosphere
 * [Performance of 3rd Party Content](http://stevesouders.com/p3pc/) (by Steve Souders)
 * [Profiling CSS for fun and profit. Optimization notes.](http://perfectionkills.com/profiling-css-for-fun-and-profit-optimization-notes/)
-* [phantomas – PhantomJS based, modular web performance metrics generator](http://calendar.perfplanet.com/2013/phantomas/) (an article for Performance Calendar)
-* [How to Measure Frontend Performance With Grunt](http://4waisenkinder.de/blog/2013/12/22/how-to-measure-frontend-performance-with-phantomas-and-grunt/)
-* [MaxCDN Blog - Behind The Scenes: tools.maxcdn.com](http://blog.maxcdn.com/behind-scenes-tools-maxcdn-com/)
 
 ### Slides
 
 * [Know Your Engines: How to Make Your JavaScript Fast](http://cdn.oreillystatic.com/en/assets/1/event/60/Know%20Your%20Engines_%20How%20to%20Make%20Your%20JavaScript%20Fast%20Presentation%201.pdf) (by David Mandelin from Mozilla)
 * [Velocity Conf 2013 Workshop: Avoiding Web Performance Regression](http://www.slideshare.net/marcelduran/velocity-conf-2013) (by Marcel Duran from Twitter)
 
-## Videos
+## Blogosphere
+
+Introductions to phantomas and use cases:
+
+* [phantomas – PhantomJS based, modular web performance metrics generator](http://calendar.perfplanet.com/2013/phantomas/) (an article for Performance Calendar)
+* [How to Measure Frontend Performance With Grunt](http://4waisenkinder.de/blog/2013/12/22/how-to-measure-frontend-performance-with-phantomas-and-grunt/)
+* [MaxCDN Blog - Behind The Scenes: tools.maxcdn.com](http://blog.maxcdn.com/behind-scenes-tools-maxcdn-com/)
+* [Measuring frontend performance](http://www.nephila.it/en/blog/2014/10/24/measuring-frontend-performance/)
+* [Performance Budgets with Phantomas and Jenkins](http://fairl.es/2014/02/02/phantomas-performance-testing-and-jenkins/)
+* [phantomas introduced at npmawesome.com](http://npmawesome.com/posts/2014-12-01-phantomas/)
+* [Grunt.js for the Enterprise - Vol.1: Frontend Performance with Phantomas](http://www.slideshare.net/DavidAm/grunt-js-for-the-enterprise) (by David Amend)
+* [Automated Frontend Testing at DrupalCon Austin 2014](https://austin2014.drupal.org/session/automated-frontend-testing) (+video)
+
+### Videos
+
 * [Sebastian Golasch: The Glitch in the Game (Front End Ops Conference 2014)](http://youtu.be/B_kwo5V6m_w?t=12m25s)
 
 ## Utilities
