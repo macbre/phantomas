@@ -61,6 +61,7 @@ program
 	.describe('verbose', 'writes debug messages to the console').boolean('verbose').alias('verbose', 'v')
 	.describe('debug', 'run PhantomJS in debug mode').default('debug')
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
+	.describe('wait-for-event', 'wait for a given phantomas event before generating a report')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
 	.describe('film-strip', 'register film strip when page is loading (a comma separated list of milliseconds can be passed)').boolean('film-strip')

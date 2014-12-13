@@ -1,0 +1,17 @@
+<body>
+	<script>
+		(function(phantomas) {
+			if (typeof phantomas === 'undefined') {
+				console.log('window.__phantomas is undefined');
+				return;
+			}
+
+			setTimeout(function() {
+				phantomas.setMetric('testFooBar', 123);
+				phantomas.addOffender('testFooBar', 'I\'m done!');
+
+				phantomas.emit('done');
+			}, 2000);
+		})(window.__phantomas);
+	</script>
+</body>
