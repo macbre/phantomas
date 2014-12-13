@@ -126,4 +126,11 @@
   metrics:
     DOMqueries: 0 # no queries should be reported despite DOM being polled by waitForSelector module
   exitCode: 252 # timeout
+# --wait-for-event (issue #453)
+- url: "/wait-for-event.html"
+  options:
+    timeout: 4
+    'wait-for-event': "done"
+  metrics:
+    testFooBar: 123 # a metric set just before event trigger
 
