@@ -496,6 +496,7 @@ Introductions to phantomas and use cases:
 * [phantomas introduced at npmawesome.com](http://npmawesome.com/posts/2014-12-01-phantomas/)
 * [Grunt.js for the Enterprise - Vol.1: Frontend Performance with Phantomas](http://www.slideshare.net/DavidAm/grunt-js-for-the-enterprise) (by David Amend)
 * [Automated Frontend Testing at DrupalCon Austin 2014](https://austin2014.drupal.org/session/automated-frontend-testing) (+video)
+* [Phantomas: Fais-moi un strip !](https://wooster.checkmy.ws/2014/01/phantomas-performance-website/) (in French)
 
 ### Videos
 
