@@ -87,14 +87,27 @@ exports.module = function(phantomas) {
 
 							// images
 							if (node.nodeName === 'IMG') {
-								if (!node.hasAttribute('width') || !node.hasAttribute('height')) {
+								var imgWidth = node.hasAttribute('width') ? node.getAttribute('width') : false,
+									imgHeight = node.hasAttribute('height') ? node.getAttribute('height') : false,
+									nodeStyle;
+
+								// get dimensions from inline CSS (issue #399)
+								if (imgWidth === false || imgHeight === false) {
+									nodeStyle = node.style;
+
+									imgWidth = parseInt(node.style.width, 10) || false;
+									imgHeight = parseInt(node.style.height, 10) || false;
+								}
+
+								if (imgWidth === false || imgHeight === false) {
 									phantomas.incrMetric('imagesWithoutDimensions');
 									phantomas.addOffender('imagesWithoutDimensions', '%s <%s>', path, node.src);
 								}
-								if (node.naturalHeight && node.naturalWidth && node.height && node.width) {
-									if (node.naturalHeight > node.height || node.naturalWidth > node.width) {
+
+								if (node.naturalHeight && node.naturalWidth && imgHeight && imgWidth) {
+									if (node.naturalHeight > imgHeight || node.naturalWidth > imgWidth) {
 										phantomas.incrMetric('imagesScaledDown');
-										phantomas.addOffender('imagesScaledDown', '%s (%dx%d -> %dx%d)', node.src, node.naturalWidth, node.naturalHeight, node.width, node.height);
+										phantomas.addOffender('imagesScaledDown', '%s (%dx%d -> %dx%d)', node.src, node.naturalWidth, node.naturalHeight, imgWidth, imgHeight);
 									}
 								}
 							}
