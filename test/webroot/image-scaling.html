@@ -1,7 +1,17 @@
+<head>
+	<style>
+		.img {
+			height: 50px;
+			width: 50px;
+		}
+	</style>
+</head>
 <body>
 	<img src="/static/mdn.png" /><!-- missing dimensions / ignore -->
 	<img src="/static/mdn.png" height="265" width="300" /><!-- scaled down -->
 	<img src="/static/mdn.png" height="529" width="600" />
 	<img src="/static/blank.gif" /><!-- missing dimensions / ignore -->
 	<img src="/static/blank.gif" alt="foo" height=10 width=10 /><!-- scaled up / ignore -->
+	<img src="/static/mdn.png" style="height: 50px; width: 50px" /><!-- CSS inlined + scaled down -->
+	<img src="/static/blank.gif" class="img" /><!-- missing inline dimensions, but get them via CSS class (will still be reported as having no dimensions defined) -->
 </body>

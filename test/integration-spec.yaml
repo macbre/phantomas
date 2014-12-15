@@ -57,8 +57,8 @@
 # image scaling (issue #390)
 - url: "/image-scaling.html"
   metrics:
-    imagesScaledDown: 1
-    imagesWithoutDimensions: 2
+    imagesScaledDown: 2
+    imagesWithoutDimensions: 3
 # duplicated ID (issue #392)
 - url: "/dom-id.html"
   metrics:
