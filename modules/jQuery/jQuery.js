@@ -168,7 +168,7 @@ exports.module = function(phantomas) {
 	// jQuery read & write operations (issue #436)
 	var lastOp;
 
-	phantomas.on('jQueryOp', function (type, funcName, args, contextPath, caller) {
+	phantomas.on('jQueryOp', function(type, funcName, args, contextPath, caller) {
 		phantomas.log('jQuery: %s op from $.%s(%j) on "%s" - %s', type, funcName, args, contextPath, caller);
 
 		if (type === 'read') {
@@ -182,8 +182,7 @@ exports.module = function(phantomas) {
 				phantomas.incrMetric('jQueryDOMWriteReadSwitches');
 				phantomas.addOffender('jQueryDOMWriteReadSwitches', 'before $.%s(%j) on "%s"', funcName, args, contextPath);
 			}
-		}
-		else {
+		} else {
 			phantomas.incrMetric('jQueryDOMWrites');
 			phantomas.addOffender('jQueryDOMWrites', '$.%s(%j) on "%s"', funcName, args, contextPath);
 		}

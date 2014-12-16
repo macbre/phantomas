@@ -547,6 +547,13 @@ phantomas.prototype = {
 			return;
 		}
 
+		// prevent multiple triggers in PhantomJS
+		if (this.initTriggered) {
+			this.log('onInit: was already triggered');
+			return;
+		}
+		this.initTriggered = true;
+
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
 			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
