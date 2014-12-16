@@ -866,6 +866,16 @@
       "unit": "ms",
       "module": "requestsStats"
     },
+    "requestsToDomContentLoaded": {
+      "desc": "number of HTTP requests it took to make the page reach DomContentLoaded state",
+      "unit": "number",
+      "module": "requestsTo"
+    },
+    "requestsToDomComplete": {
+      "desc": "number of HTTP requests it took to make the page reach DomComplete state",
+      "unit": "number",
+      "module": "requestsTo"
+    },
     "assetsNotGzipped": {
       "desc": "number of static assets that were not gzipped",
       "unreliable": true,
@@ -962,7 +972,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 161,
-  "modulesCount": 32,
+  "metricsCount": 163,
+  "modulesCount": 33,
   "version": "1.8.0"
 }
