@@ -133,4 +133,10 @@
     'wait-for-event': "done"
   metrics:
     testFooBar: 123 # a metric set just before event trigger
+# requests to (issue #438)
+- url: "/timing.html"
+  metrics:
+    requests: 4
+    requestsToDomContentLoaded: 4
+    requestsToDomComplete: 4
 

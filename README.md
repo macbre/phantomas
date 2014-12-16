@@ -131,7 +131,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 123_
+_Current number of metrics: 125_
 
 Units:
 
@@ -281,6 +281,11 @@ Units:
 * biggestLatency: the time to the first byte of the slowest response
 * medianResponse: median value of time to the last byte for all responses
 * medianLatency: median value of time to the first byte for all responses
+
+### Requests to
+
+* requestsToDomContentLoaded: number of HTTP requests it took to make the page reach `DomContentLoaded` state
+* requestsToDomComplete: number of HTTP requests it took to make the page reach `DomComplete` state
 
 ### keepAlive
 
