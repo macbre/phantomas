@@ -92,7 +92,8 @@ exports.module = function(phantomas) {
 			return;
 		}
 
-		// proceed
+		phantomas.log('req: <%s>', entry.url);
+
 		phantomas.emitInternal('send', entry, res); // @desc request has been sent
 	});
 
@@ -302,6 +303,7 @@ exports.module = function(phantomas) {
 					phantomas.emitInternal('base64recv', entry, res); // @desc base64-encoded "response" has been received
 				}
 				else {
+					phantomas.log('recv: HTTP %d <%s> [%s]', entry.status, entry.url, entry.contentType);
 					phantomas.emitInternal('recv' , entry, res); // @desc response has been received
 				}
 				break;
