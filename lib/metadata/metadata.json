@@ -818,6 +818,19 @@
       "unit": "ms",
       "module": "redirects"
     },
+    "repaints": {
+      "desc": "number of repaints of the current document",
+      "gecko": true,
+      "unit": "number",
+      "module": "repaints"
+    },
+    "firstPaint": {
+      "desc": "time it took to perform the first paint",
+      "unreliable": true,
+      "gecko": true,
+      "unit": "ms",
+      "module": "repaints"
+    },
     "smallestResponse": {
       "desc": "the size of the smallest response",
       "offenders": true,
@@ -972,7 +985,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 163,
-  "modulesCount": 33,
+  "metricsCount": 165,
+  "modulesCount": 34,
   "version": "1.8.0"
 }
