@@ -131,7 +131,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 125_
+_Current number of metrics: 127_
 
 Units:
 
@@ -265,6 +265,13 @@ Units:
 * domComplete: time it took to load all page resources, the loading spinner has stopped spinning
 * timeBackend: time to the first byte compared to the total loading time (in %)
 * timeFrontend: time to window on load compared to the total loading time (in %)
+
+### Repaints
+
+> These metrics are only available when running phantomas using **Gecko engine** (``--engine=gecko``)
+
+* repaints: [number of repaints](https://developer.mozilla.org/en-US/docs/Web/API/Window.mozPaintCount) of the current document
+* firstPaint: time it took to perform the first paint (time is relative to ``responseEnd`` event)
 
 ### Requests statistics
 
