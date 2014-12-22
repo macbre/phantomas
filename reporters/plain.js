@@ -7,10 +7,16 @@
 'use strict';
 
 var colors = require('../lib/ansicolors'),
+	metrics = require('../lib/index').metadata.metrics,
 	fold = require('travis-fold'),
 	rpad = require('../core/pads').rpad,
 	OK = '✓',
 	ERR = '✗';
+
+function getMetricUnit(metricName) {
+	var entry = metrics[metricName];
+	return (typeof entry !== 'undefined' && entry.unit !== 'number' && entry.unit !== 'string') ? entry.unit : false;
+}
 
 module.exports = function(results, reporterOptions) {
 	var isMultiple = Array.isArray(results),
@@ -31,7 +37,12 @@ module.exports = function(results, reporterOptions) {
 		fold.pushStart(res, 'metrics');
 
 		results.getMetricsNames().forEach(function(metric) {
-			var line = ' ' + metric + ': ' + results.getMetric(metric);
+			var line = ' ' + metric + ': ' + results.getMetric(metric),
+				unit = getMetricUnit(metric);
+
+			if (unit !== false) {
+				line += ' ' + colors.brightBlack(unit);
+			}
 
 			// check asserts
 			if (results.hasAssertion(metric)) {
@@ -111,9 +122,15 @@ module.exports = function(results, reporterOptions) {
 		// generate rows (one for each metric)
 		stats.getMetrics().forEach(function(metricName) {
 			var row = [],
-				metricStats = stats.getMetricStats(metricName);
+				metricStats = stats.getMetricStats(metricName),
+				unit = getMetricUnit(metricName),
+				heading = metricName;
 
-			row.push(metricName);
+			if (unit !== false) {
+				heading += ' [' + unit + ']';
+			}
+
+			row.push(heading);
 
 			Object.keys(metricStats).forEach(function(stat) {
 				row.push(metricStats[stat]);
