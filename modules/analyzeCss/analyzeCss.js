@@ -76,11 +76,13 @@ exports.module = function(phantomas) {
 		options.push('--json');
 
 		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
+			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
+
 			if (err !== null) {
 				phantomas.log('analyzeCss: sub-process failed!');
 
 				// report failed CSS parsing (issue #494(
-				var offender = (options[0] === '--url') ? options[1] : '<inline CSS>';
+				var offender = offenderSrc;
 				if (err.indexOf('CSS parsing failed') > 0) {
 					offender += ' (' + err.trim() + ')';
 				} else if (err.indexOf('Empty CSS was provided') > 0) {
@@ -106,6 +108,14 @@ exports.module = function(phantomas) {
 				// and add offenders
 				if (typeof offenders[metric] !== 'undefined') {
 					offenders[metric].forEach(function(msg) {
+						var re = / @ \d+:\d+$/;
+
+						// add the file name to offenders (issue #442)
+						// the message ends with something similar to " @ 25:1"
+						if (re.test(msg)) {
+							msg = msg.replace(re, ' ' + offenderSrc + '$&');
+						}
+
 						phantomas.addOffender(metricPrefixed, msg);
 					});
 				}
