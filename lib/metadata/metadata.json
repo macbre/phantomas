@@ -744,6 +744,12 @@
       "unit": "number",
       "module": "jQuery"
     },
+    "jQueryWindowOnLoadFunctions": {
+      "desc": "number of functions bound to windowOnLoad event",
+      "offenders": true,
+      "unit": "number",
+      "module": "jQuery"
+    },
     "jQuerySizzleCalls": {
       "desc": "number of calls to Sizzle (including those that will be resolved using querySelectorAll)",
       "offenders": true,
@@ -985,7 +991,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 165,
+  "metricsCount": 166,
   "modulesCount": 34,
   "version": "1.8.0"
 }
