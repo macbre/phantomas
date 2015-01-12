@@ -17,6 +17,9 @@
 				// event bind
 				click(function() {
 					$(this).parent().css({'background-color': 'blue'});
+				}).
+				load(function() {
+					// foo
 				});
 
 			// DOM read
@@ -30,6 +33,10 @@
 			var ev = document.createEvent('CustomEvent');
 			ev.initCustomEvent('click');
 			$node[0].dispatchEvent(ev);
-	});
+		});
+
+		$(window).load(function() {
+			console.log('window loaded');
+		});
 	</script>
 </body>
