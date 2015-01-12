@@ -15,6 +15,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('jQueryVersion', ''); // @desc version of jQuery framework (if loaded) [string]
 	phantomas.setMetric('jQueryVersionsLoaded'); // @desc number of loaded jQuery "instances" (even in the same version)
 	phantomas.setMetric('jQueryOnDOMReadyFunctions'); // @desc number of functions bound to onDOMReady event
+	phantomas.setMetric('jQueryWindowOnLoadFunctions'); // @desc number of functions bound to windowOnLoad event
 	phantomas.setMetric('jQuerySizzleCalls'); // @desc number of calls to Sizzle (including those that will be resolved using querySelectorAll)
 	phantomas.setMetric('jQueryEventTriggers'); // @desc number of jQuery event triggers
 	phantomas.setMetric('jQueryDOMReads'); // @desc number of DOM read operations
@@ -138,6 +139,14 @@ exports.module = function(phantomas) {
 
 						phantomas.incrMetric('jQueryEventTriggers');
 						phantomas.addOffender('jQueryEventTriggers', '"%s" on "%s"', type, path);
+					});
+
+					// jQuery events bound to window' onLoad event (#451)
+					phantomas.spy(jQuery.fn, 'on', function(eventName) {
+						if ( (eventName === 'load') && (this[0] === window) ) {
+							phantomas.incrMetric('jQueryWindowOnLoadFunctions');
+							phantomas.addOffender('jQueryWindowOnLoadFunctions', phantomas.getCaller(2));
+						}
 					});
 
 					spyReadsAndWrites(jQuery);
