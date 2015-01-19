@@ -282,7 +282,7 @@
 			}
 			// div#foo.bar.test
 			else if (typeof node.className === 'string' && node.className !== '') {
-				entry += '.' + node.className.trim().replace(/ +/g, '.');
+				entry += '.' + node.className.trim().replace(/\s+/g, '.');
 			}
 			// div[0] <- index of child node
 			else if (node.parentNode instanceof Node) {
