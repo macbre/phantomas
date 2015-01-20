@@ -143,7 +143,7 @@ exports.module = function(phantomas) {
 
 					// jQuery events bound to window' onLoad event (#451)
 					phantomas.spy(jQuery.fn, 'on', function(eventName) {
-						if ( (eventName === 'load') && (this[0] === window) ) {
+						if ((eventName === 'load') && (this[0] === window)) {
 							phantomas.incrMetric('jQueryWindowOnLoadFunctions');
 							phantomas.addOffender('jQueryWindowOnLoadFunctions', phantomas.getCaller(2));
 						}

@@ -14,7 +14,7 @@ exports.module = function(phantomas) {
 		// false means "no caching"
 		var ttl = false,
 			headerName,
-	   		now = new Date(),
+			now = new Date(),
 			headerDate;
 
 		for (headerName in headers) {
@@ -42,7 +42,7 @@ exports.module = function(phantomas) {
 					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
 					phantomas.addOffender('oldCachingHeaders', url + ' - ' + headerName + ': ' + value);
 					headerDate = Date.parse(value);
-					if (headerDate) ttl = (headerDate - now) / 1000;   
+					if (headerDate) ttl = (headerDate - now) / 1000;
 					break;
 			}
 		}
