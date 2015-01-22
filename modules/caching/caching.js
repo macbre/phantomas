@@ -42,7 +42,7 @@ exports.module = function(phantomas) {
 					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
 					phantomas.addOffender('oldCachingHeaders', url + ' - ' + headerName + ': ' + value);
 					headerDate = Date.parse(value);
-					if (headerDate) ttl = (headerDate - now) / 1000;
+					if (headerDate) ttl = Math.round((headerDate - now) / 1000);
 					break;
 			}
 		}
