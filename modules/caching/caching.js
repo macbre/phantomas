@@ -42,7 +42,7 @@ exports.module = function(phantomas) {
 					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
 					phantomas.addOffender('oldCachingHeaders', url + ' - ' + headerName + ': ' + value);
 					headerDate = Date.parse(value);
-					if (headerDate) ttl = (headerDate - now) / 1000;
+					if (headerDate) ttl = Math.round((headerDate - now) / 1000);
 					break;
 			}
 		}
@@ -66,7 +66,7 @@ exports.module = function(phantomas) {
 			if (ttl === false) {
 				phantomas.incrMetric('cachingNotSpecified');
 				phantomas.addOffender('cachingNotSpecified', entry.url);
-			} else if (ttl === 0) {
+			} else if (ttl <= 0) {
 				phantomas.incrMetric('cachingDisabled');
 				phantomas.addOffender('cachingDisabled', entry.url);
 			} else if (ttl < 7 * 86400) {
