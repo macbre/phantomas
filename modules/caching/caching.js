@@ -66,7 +66,7 @@ exports.module = function(phantomas) {
 			if (ttl === false) {
 				phantomas.incrMetric('cachingNotSpecified');
 				phantomas.addOffender('cachingNotSpecified', entry.url);
-			} else if (ttl === 0) {
+			} else if (ttl <= 0) {
 				phantomas.incrMetric('cachingDisabled');
 				phantomas.addOffender('cachingDisabled', entry.url);
 			} else if (ttl < 7 * 86400) {
