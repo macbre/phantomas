@@ -286,7 +286,7 @@
 			}
 			// div[0] <- index of child node
 			else if (node.parentNode instanceof Node) {
-				entry += '[' + Array.prototype.indexOf.call(node.parentNode.childNodes, node) + ']';
+				entry += '[' + Array.prototype.indexOf.call(node.parentNode.children, node) + ']';
 			}
 
 			path.push(entry);
