@@ -22,8 +22,18 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
 
 	// images
+	// TODO: move to a separate module
 	phantomas.setMetric('imagesScaledDown'); // @desc number of <img> nodes that have images scaled down in HTML @offenders
 	phantomas.setMetric('imagesWithoutDimensions'); // @desc number of <img> nodes without both width and height attribute @offenders
+
+	// keep the track of SVG graphics (#479)
+	var svgResources = [];
+	phantomas.on('recv', function(entry) {
+		if (entry.isImage && entry.contentType.indexOf('image/svg') === 0) {
+			svgResources.push(entry.url);
+			phantomas.log('imagesScaledDown: will ignore <%s> [%s]', entry.url, entry.contentType);
+		}
+	});
 
 	// duplicated ID (issue #392)
 	phantomas.setMetric('DOMidDuplicated'); // @desc number of duplicated IDs found in DOM
@@ -41,7 +51,11 @@ exports.module = function(phantomas) {
 			return document.body && document.body.innerHTML.length || 0;
 		});
 
-		phantomas.evaluate(function() {
+		var scope = {
+			svgResources: svgResources
+		};
+
+		phantomas.evaluate(function(scope) {
 			(function(phantomas) {
 				var runner = new phantomas.nodeRunner(),
 					whitespacesRegExp = /^\s+$/,
@@ -106,8 +120,12 @@ exports.module = function(phantomas) {
 
 								if (node.naturalHeight && node.naturalWidth && imgHeight && imgWidth) {
 									if (node.naturalHeight > imgHeight || node.naturalWidth > imgWidth) {
-										phantomas.incrMetric('imagesScaledDown');
-										phantomas.addOffender('imagesScaledDown', '%s (%dx%d -> %dx%d)', node.src, node.naturalWidth, node.naturalHeight, imgWidth, imgHeight);
+										if (scope.svgResources.indexOf(node.src) === -1) {
+											phantomas.incrMetric('imagesScaledDown');
+											phantomas.addOffender('imagesScaledDown', '%s (%dx%d -> %dx%d)', node.src, node.naturalWidth, node.naturalHeight, imgWidth, imgHeight);
+										} else {
+											phantomas.log('imagesScaledDown: ignored <%s> (is SVG)', node.src);
+										}
 									}
 								}
 							}
@@ -138,7 +156,7 @@ exports.module = function(phantomas) {
 				phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length); // @desc number of iframe nodes
 				phantomas.spyEnabled(true);
 			}(window.__phantomas));
-		});
+		}, scope);
 
 		DOMids.sort().forEach(function(id, cnt) {
 			if (cnt > 1) {

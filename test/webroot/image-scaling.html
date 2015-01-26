@@ -14,4 +14,5 @@
 	<img src="/static/blank.gif" alt="foo" height=10 width=10 /><!-- scaled up / ignore -->
 	<img src="/static/mdn.png" style="height: 50px; width: 50px" /><!-- CSS inlined + scaled down -->
 	<img src="/static/blank.gif" class="img" /><!-- missing inline dimensions, but get them via CSS class (will still be reported as having no dimensions defined) -->
+	<img src="/static/example.svg" height="50" width="50" /><!-- SVG  (ignore - ticket #479)-->
 </body>
