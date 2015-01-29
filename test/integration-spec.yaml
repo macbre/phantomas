@@ -1,5 +1,21 @@
 # Defines spec to be run by integration-test.js
 
+# phantomas scope helper functions
+- url: "/phantomas-scope.html"
+  label: "/phantomas-scope.html (using PhantomJS)"
+  options:
+    engine: "webkit"
+  metrics:
+    jsErrors: 0
+    asserts: 10
+- url: "/phantomas-scope.html"
+  label: "/phantomas-scope.html (using SlimerJS)"
+  options:
+    engine: "gecko"
+  metrics:
+    jsErrors: 0
+    asserts: 10
+
 # DOM operations
 - url: "/dom-operations.html"
   metrics:
