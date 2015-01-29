@@ -194,7 +194,7 @@
 		// pass reportResults = true to prepend arguments passed to callback
 		// with the result of call to the original function - issue #420
 		function spy(obj, fn, callback, reportResults) {
-			var origFn = obj[fn];
+			var origFn = obj && obj[fn];
 
 			if (typeof origFn !== 'function') {
 				return false;
