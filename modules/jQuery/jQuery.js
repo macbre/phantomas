@@ -139,7 +139,7 @@ exports.module = function(phantomas) {
 
 						phantomas.incrMetric('jQueryEventTriggers');
 						phantomas.addOffender('jQueryEventTriggers', '"%s" on "%s"', type, path);
-					});
+					}) || phantomas.log('jQuery: can not measure jQueryEventTriggers (jQuery used on the page is too old)!');
 
 					// jQuery events bound to window' onLoad event (#451)
 					phantomas.spy(jQuery.fn, 'on', function(eventName) {
@@ -147,7 +147,7 @@ exports.module = function(phantomas) {
 							phantomas.incrMetric('jQueryWindowOnLoadFunctions');
 							phantomas.addOffender('jQueryWindowOnLoadFunctions', phantomas.getCaller(2));
 						}
-					});
+					}) || phantomas.log('jQuery: can not measure jQueryWindowOnLoadFunctions (jQuery used on the page is too old)!');
 
 					spyReadsAndWrites(jQuery);
 				});
