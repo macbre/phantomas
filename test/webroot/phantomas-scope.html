@@ -1,0 +1,58 @@
+<body>
+
+	<ul id="list">
+		<li>a</li>
+		<li>b</li>
+		<li class="foo
+		bar  test">c</li>
+	</ul>
+
+	<script>
+		(function(phantomas) {
+			var asserts = 0;
+
+			function assert(actual, expected, msg) {
+				asserts++;
+
+				if (actual !== expected) {
+					console.log('"%s" !== "%s" (%s)', actual, expected, msg);
+					throw 'Assertion # ' + asserts + ' failed: ' + msg;
+				}
+
+				console.log('Assertion #%s: %s', asserts, msg);
+			}
+
+			// asserts to follow
+			assert(typeof phantomas, 'object', 'phantomas scope is available');
+
+			(function testGetDomPath() {
+				var fragment, node;
+
+				assert(phantomas.getDOMPath('foo'), false, 'phantomas.getDomPath("foo")');
+
+				assert(phantomas.getDOMPath(window), 'window', 'phantomas.getDomPath(window)');
+				assert(phantomas.getDOMPath(document), '#document', 'phantomas.getDomPath(document)');
+				assert(phantomas.getDOMPath(document.body), 'body', 'phantomas.getDomPath(body)');
+
+				node = document.getElementsByTagName('li')[1];
+				assert(phantomas.getDOMPath(node), 'body > ul#list > li[1]', 'phantomas.getDomPath(li[1])');
+
+				// issue #472
+				node = document.getElementsByTagName('li')[2];
+				assert(phantomas.getDOMPath(node), 'body > ul#list > li.foo.bar.test', 'phantomas.getDomPath(#last)');
+				assert(phantomas.getDOMPath(node, true /* dontGoUpTheDom  */), 'li.foo.bar.test', 'phantomas.getDomPath(#last, true)');
+
+				node = document.createElement('foo');
+				assert(phantomas.getDOMPath(node), 'foo', 'phantomas.getDomPath(foo)');
+
+				fragment = document.createDocumentFragment();
+				fragment.appendChild(node);
+
+				assert(phantomas.getDOMPath(node), 'DocumentFragment > foo[0]', 'phantomas.getDomPath(DocumentFragment > foo)');
+			})();
+
+			// report the number of asserts
+			phantomas.setMetric('asserts', asserts);
+		})(window.__phantomas);
+	</script>
+</body>
