@@ -1,0 +1,15 @@
+<body>
+	<div id="foo">
+		<span class="bar">test</span>
+	</div>
+
+	<script src="/static/jquery-1.4.4.min.js"></script>
+	<script>
+		$(function() {
+			var $node = $('#foo .bar');
+
+			// jQuery v1.4.4 has problems with spying event triggers (#478)
+			$node.trigger('click');
+		});
+	</script>
+</body>
