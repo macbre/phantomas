@@ -118,6 +118,13 @@
     jQueryDOMReads: 5
     jQueryDOMWrites: 20
     jQueryDOMWriteReadSwitches: 4
+# jQuery module should not throw any error when run agains an old version (issue #478)
+- url: "/jquery-old-version.html"
+  metrics:
+    jsErrors: 0
+    jQueryVersion: "1.4.4"
+    jQuerySizzleCalls: 0
+    jQueryEventTriggers: 0
 # --wait-for-selector
 - url: "/"
   label: "/ (--wait-for-selector)"
