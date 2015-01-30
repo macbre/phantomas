@@ -476,7 +476,7 @@ Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
 ## Engines
 
-phantomas can be run using PhantomJS (WebKit-powered headless browser) or SlimerJS (Gecko-bease non headless browser, run using xfvb). Use either ``--engine=[webkit|gecko]`` or ``--webkit`` / ``--gecko`` parameters to choose one. Please note that **support for SlimerJS is experimental at this point**.
+phantomas can be run using PhantomJS (WebKit-powered headless browser) or SlimerJS (Gecko-based non headless browser, run using xfvb). Use either ``--engine=[webkit|gecko]`` or ``--webkit`` / ``--gecko`` parameters to choose one. Please note that **support for SlimerJS is experimental at this point**.
 
 ### PhantomJS
 
