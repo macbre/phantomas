@@ -36,7 +36,7 @@ exports.module = function(phantomas) {
 		SCREENSHOTS_MIN_INTERVAL = 75,
 		lastScreenshot = 0,
 		start = Date.now(),
-		startFormatted = (new Date()).toJSON().substr(0, 19), // 2014-05-18T13:08:13
+		startFormatted = (new Date()).toJSON().substr(0, 19).replace(/:/g, '-'), // be M$ Windows compatible (issue #498) (2014-05-18T13:08:13 converts to 2014-05-18T13-08-13)
 		// stats
 		timeTotal = 0,
 		screenshots = [];
