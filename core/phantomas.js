@@ -382,8 +382,8 @@ phantomas.prototype = {
 
 		this.start = Date.now();
 
-		// setup viewport / --viewport=1280x1024
-		var parsedViewport = this.getParam('viewport', '1280x1024', 'string').split('x');
+		// setup viewport / --viewport=1366x768
+		var parsedViewport = this.getParam('viewport', '1366x768', 'string').split('x');
 
 		if (parsedViewport.length === 2) {
 			this.page.viewportSize = {
