@@ -782,11 +782,13 @@
     },
     "documentWriteCalls": {
       "desc": "number of calls to either document.write or document.writeln",
+      "offenders": true,
       "unit": "number",
       "module": "javaScriptBottlenecks"
     },
     "evalCalls": {
       "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
+      "offenders": true,
       "unit": "number",
       "module": "javaScriptBottlenecks"
     },
@@ -993,5 +995,5 @@
   },
   "metricsCount": 166,
   "modulesCount": 34,
-  "version": "1.8.0"
+  "version": "1.9.0"
 }
