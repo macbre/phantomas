@@ -163,4 +163,16 @@
     requests: 4
     requestsToDomContentLoaded: 4
     requestsToDomComplete: 4
+# JS bottlenecks (#467)
+- url: "/bottlenecks.html"
+  label: "/bottlenecks.html (--spy-eval)"
+  options:
+    "spy-eval": true
+  metrics:
+    documentWriteCalls: 1
+    evalCalls: 2 # via eval() and setTimeout()
+- url: "/bottlenecks.html"
+  metrics:
+    documentWriteCalls: 1
+    evalCalls: 1 # via setTimeout() only
 

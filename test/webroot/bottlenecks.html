@@ -1,0 +1,12 @@
+<script>
+	var a = 1;
+
+	function foo() {
+		console.log('test');
+	}
+
+	eval('a += 2');
+	setTimeout('foo()', 0);
+
+	document.write('hello: a = ' + a);
+</script>
