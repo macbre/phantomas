@@ -55,6 +55,7 @@ program
 	.describe('har', 'save HAR to a given file')
 	.describe('silent', 'don\'t write anything to the console').boolean('silent')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
+	.describe('spy-eval', 'report calls to eval()').boolean('spy-eval')
 	.describe('tablet', 'force viewport and user agent of a tablet')
 	.describe('timeout', 'timeout for phantomas run').default('timeout', 15)
 	.describe('user-agent', 'provide a custom user agent')

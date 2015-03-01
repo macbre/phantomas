@@ -131,6 +131,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--proxy-type=[http|socks5|none]` specifies the type of the proxy server (default is http)
 * `--phone` force viewport and user agent of a mobile phone
 * `--tablet` force viewport and user agent of a tablet
+* `--spy-eval` report calls to eval()
 
 ### Multiple runs
 
