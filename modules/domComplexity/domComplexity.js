@@ -90,7 +90,7 @@ exports.module = function(phantomas) {
 							}
 
 							// report duplicated ID (issue #392)
-							if (node.id) {
+							if (typeof node.id === 'string' && node.id !== '') {
 								phantomas.emit('domId', node.id);
 							}
 
