@@ -497,6 +497,16 @@ sudo aptitude install xvfb libasound2 libgtk2.0-0
 * Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
 * Description of [helper functions available to the browser in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope)
 
+## Custom modules
+
+You can load your own, custom phantomas modules using `--include-dirs` option:
+
+```
+phantomas --include-dirs /my/path/to/custom/modules/ --url http://example.com
+```
+
+> `/my/path/to/custom/modules/` directory should contain custom modules, **each in its own directory**, e.g. `/my/path/to/custom/modules/fooBar/fooBar.js`.
+
 ## Let's make Web a bit faster!
 
 * [Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) (by Yahoo!)
