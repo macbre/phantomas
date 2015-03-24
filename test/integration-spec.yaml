@@ -102,8 +102,8 @@
   options:
     "analyze-css": true
   metrics:
-    cssParsingErrors: 1
-    cssLength: 22
+    cssParsingErrors: 3
+    cssLength: 39
     cssRules: 1
 - url: "/dom-operations.html"
   options:
