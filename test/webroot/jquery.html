@@ -1,4 +1,10 @@
 <body>
+	<style>
+		#foo {
+			margin-bottom: 3000px;
+		}
+	</style>
+
 	<div id="foo">
 		<span class="bar">test</span>
 	</div>
@@ -33,6 +39,11 @@
 			var ev = document.createEvent('CustomEvent');
 			ev.initCustomEvent('click');
 			$node[0].dispatchEvent(ev);
+
+			// scroll event
+			$(window).scroll(function(ev) {
+				console.log(ev);
+			});
 		});
 
 		$(window).load(function() {
