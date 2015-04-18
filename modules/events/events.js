@@ -4,11 +4,12 @@
 /* global Document: true, Element: true, window: true */
 'use strict';
 
-exports.version = '0.3';
+exports.version = '0.4';
 
 exports.module = function(phantomas) {
 	phantomas.setMetric('eventsBound'); // @desc number of EventTarget.addEventListener calls
 	phantomas.setMetric('eventsDispatched'); // @desc number of EventTarget.dispatchEvent calls
+	phantomas.setMetric('eventsScrollBound'); // @desc number of scroll event bounds
 
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {
@@ -22,6 +23,12 @@ exports.module = function(phantomas) {
 
 					phantomas.incrMetric('eventsBound');
 					phantomas.addOffender('eventsBound', '"%s" bound to "%s"', eventType, path);
+
+					// count window.addEventListener('scroll', ...) - issue #508
+					if (eventType === 'scroll' && path === 'window') {
+						phantomas.incrMetric('eventsScrollBound');
+						phantomas.addOffender('eventsScrollBound', 'bound by %s', phantomas.getBacktrace());
+					}
 				}
 
 				phantomas.spy(Element.prototype, 'addEventListener', eventSpy);
