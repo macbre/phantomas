@@ -679,6 +679,12 @@
       "unit": "number",
       "module": "events"
     },
+    "eventsScrollBound": {
+      "desc": "number of scroll event bounds",
+      "offenders": true,
+      "unit": "number",
+      "module": "events"
+    },
     "globalVariables": {
       "desc": "number of JS globals variables",
       "offenders": true,
@@ -993,7 +999,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 166,
+  "metricsCount": 167,
   "modulesCount": 34,
-  "version": "1.9.0"
+  "version": "1.10.0"
 }
