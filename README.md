@@ -145,7 +145,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 128_
+_Current number of metrics: 129_
 
 Units:
 
@@ -268,6 +268,7 @@ Units:
 
 * eventsBound: number of ``EventTarget.addEventListener`` calls
 * eventsDispatched: number of ``EventTarget.dispatchEvent`` calls
+* eventsScrollBound: number of `scroll` event bounds to `window`
 
 ### Window performance
 

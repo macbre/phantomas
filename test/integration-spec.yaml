@@ -120,8 +120,9 @@
     jQueryWindowOnLoadFunctions: 1
     jQuerySizzleCalls: 1
     jQueryEventTriggers: 2
-    eventsBound: 5
+    eventsBound: 6
     eventsDispatched: 1
+    eventsScrollBound: 1
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
   metrics:
