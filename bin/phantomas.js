@@ -136,7 +136,10 @@ if (!process.stdout.isTTY && (options.colors !== true)) {
 function task(callback) {
 	// spawn phantomas process
 	var child = phantomas(url, options, function(err, data, results) {
-		callback(err === 0 ? null : err, results);
+		callback(
+			null, // pass null even in case of an error to continue async.series processing (issue #380)
+			err ? new Error(err) : results
+		);
 	});
 
 	child.on('progress', function(progress, inc) {
@@ -165,13 +168,22 @@ async.series(
 			reporter,
 			res;
 
-		debug('err: %j', err);
 		debug('results [%d]: %j', results.length, results);
 
 		// filter out "broken" results (issue #366)
-		results = results.filter(function(item) {
+		results = results.filter(function(item, idx) {
+			if (item instanceof Error) {
+				// detect errors in run results (issue #380)
+				debug('Run #%d did not complete - err #%d', idx + 1, item.message);
+				err = item.message;
+
+				return false;
+			}
+
 			return typeof item !== 'undefined';
 		});
+
+		debug('err: %j', err);
 
 		// this function is called when phantomas is done with all runs
 		function doneFn() {
@@ -181,8 +193,16 @@ async.series(
 		}
 
 		if (typeof results[0] !== 'undefined') {
+			// we have at least one result - reset the error flag
+			err = null;
+
 			// process JSON results by reporters
 			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err || 0);
+
+			// normalize results in a single run mode
+			if (runs === 1) {
+				results = results[0];
+			}
 
 			reporter = require('../core/reporter')(results, options);
 
