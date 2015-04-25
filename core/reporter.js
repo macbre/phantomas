@@ -30,15 +30,9 @@ module.exports = function(results, options) {
 
 	debug('Setting up %s reporter (options: %j)...', reporterName, reporterOptions);
 
-	// make the results "flat" - i.e. single run mode
 	if (Array.isArray(results)) {
-		if (results.length === 1) {
-			debug('Single run mode');
-			results = results[0];
-		} else {
-			debug('Multiple runs mode');
-			inMultipleMode = true;
-		}
+		debug('Multiple runs mode');
+		inMultipleMode = true;
 	}
 
 	// load the reporter
