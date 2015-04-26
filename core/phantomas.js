@@ -386,10 +386,19 @@ phantomas.prototype = {
 		var parsedViewport = this.getParam('viewport', '1366x768', 'string').split('x');
 
 		if (parsedViewport.length === 2) {
-			this.page.viewportSize = {
-				width: parseInt(parsedViewport[0], 10) || 1280,
-				height: parseInt(parsedViewport[1], 10) || 1024
+			var viewportSize = {
+				width: parseInt(parsedViewport[0], 10) || 1366,
+				height: parseInt(parsedViewport[1], 10) || 768
 			};
+			
+			this.page.viewportSize = viewportSize;
+
+			var self = this;
+			this.on('init', function() {
+				self.page.evaluate(function(viewportSize) {
+					window.screen = viewportSize;
+				}, viewportSize);
+			});
 		}
 
 		// setup user agent /  --user-agent=custom-agent
