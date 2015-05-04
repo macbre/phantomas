@@ -1,0 +1,16 @@
+<body>
+	<script>
+		window.onload = function() {
+			
+			// The --wait-for-selector option is set to: ".bar:nth-child(4):last-child".
+			// The following script creates a new div every 0.5 second. When the third div is
+			// created, Phantomas should stop waiting (the script element counts as one child)
+
+			setInterval(function() {
+				var div = document.createElement('div');
+				div.className = 'bar';
+				document.body.appendChild(div);
+			}, 500);
+		};
+	</script>
+</body>
