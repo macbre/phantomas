@@ -381,15 +381,38 @@ phantomas.prototype = {
 		}
 
 		this.start = Date.now();
+		
+		var self = this;
 
 		// setup viewport / --viewport=1366x768
 		var parsedViewport = this.getParam('viewport', '1366x768', 'string').split('x');
 
 		if (parsedViewport.length === 2) {
-			this.page.viewportSize = {
-				width: parseInt(parsedViewport[0], 10) || 1280,
-				height: parseInt(parsedViewport[1], 10) || 1024
+			var viewportSize = {
+				width: parseInt(parsedViewport[0], 10) || 1366,
+				height: parseInt(parsedViewport[1], 10) || 768
 			};
+			
+			this.page.viewportSize = viewportSize;
+
+			this.on('init', function() {
+				self.page.evaluate(function(viewportSize) {
+					try {
+						window.screen = {
+							width: viewportSize.width,
+							height: viewportSize.height,
+							availWidth: viewportSize.width,
+							availHeight: viewportSize.height,
+							availLeft: 0,
+							availTop: 0,
+							colorDepth: 24,
+							pixelDepth: 24
+						};
+					} catch (ex) {
+						// SlimmerJS complains: "Error: setting a property that has only a getter"
+					}
+				}, viewportSize);
+			});
 		}
 
 		// setup user agent /  --user-agent=custom-agent
@@ -425,8 +448,6 @@ phantomas.prototype = {
 
 		// observe HTTP requests
 		// finish when the last request is completed + one second timeout
-		var self = this;
-
 		this.reportQueue.push(function(done) {
 			var currentRequests = 0,
 				requestsUrls = {},
