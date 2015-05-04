@@ -396,16 +396,20 @@ phantomas.prototype = {
 			var self = this;
 			this.on('init', function() {
 				self.page.evaluate(function(viewportSize) {
-					window.screen = {
-						width: viewportSize.width,
-						height: viewportSize.height,
-						availWidth: viewportSize.width,
-						availHeight: viewportSize.height,
-						availLeft: 0,
-						availTop: 0,
-						colorDepth: 24,
-						pixelDepth: 24
-					};
+					try {
+						window.screen = {
+							width: viewportSize.width,
+							height: viewportSize.height,
+							availWidth: viewportSize.width,
+							availHeight: viewportSize.height,
+							availLeft: 0,
+							availTop: 0,
+							colorDepth: 24,
+							pixelDepth: 24
+						};
+					} catch (ex) {
+						// SlimmerJS complains: "Error: setting a property that has only a getter"
+					}
 				}, viewportSize);
 			});
 		}
