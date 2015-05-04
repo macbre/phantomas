@@ -8,7 +8,7 @@ exports.version = '0.2';
 
 function checkSelector(phantomas, selector) {
 	var res = phantomas.evaluate(function(selector) {
-		(function(phantomas) {
+		return (function(phantomas) {
 			try {
 				var result;
 
