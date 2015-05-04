@@ -381,6 +381,8 @@ phantomas.prototype = {
 		}
 
 		this.start = Date.now();
+		
+		var self = this;
 
 		// setup viewport / --viewport=1366x768
 		var parsedViewport = this.getParam('viewport', '1366x768', 'string').split('x');
@@ -393,7 +395,6 @@ phantomas.prototype = {
 			
 			this.page.viewportSize = viewportSize;
 
-			var self = this;
 			this.on('init', function() {
 				self.page.evaluate(function(viewportSize) {
 					try {
@@ -447,8 +448,6 @@ phantomas.prototype = {
 
 		// observe HTTP requests
 		// finish when the last request is completed + one second timeout
-		var self = this;
-
 		this.reportQueue.push(function(done) {
 			var currentRequests = 0,
 				requestsUrls = {},
