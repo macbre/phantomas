@@ -25,7 +25,7 @@ exports.module = function(phantomas) {
 					phantomas.addOffender('eventsBound', '"%s" bound to "%s"', eventType, path);
 
 					// count window.addEventListener('scroll', ...) - issue #508
-					if (eventType === 'scroll' && path === 'window') {
+					if (eventType === 'scroll' && (path === 'window' || path === '#document')) {
 						phantomas.incrMetric('eventsScrollBound');
 						phantomas.addOffender('eventsScrollBound', 'bound by %s', phantomas.getBacktrace());
 					}
