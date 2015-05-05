@@ -40,8 +40,8 @@
 			ev.initCustomEvent('click');
 			$node[0].dispatchEvent(ev);
 
-			// scroll event
-			$(window).scroll(function(ev) {
+			// scroll events
+			$(window).add(document).scroll(function(ev) {
 				console.log(ev);
 			});
 		});

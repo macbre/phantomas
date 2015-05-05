@@ -268,7 +268,7 @@ Units:
 
 * eventsBound: number of ``EventTarget.addEventListener`` calls
 * eventsDispatched: number of ``EventTarget.dispatchEvent`` calls
-* eventsScrollBound: number of `scroll` event bounds to `window`
+* eventsScrollBound: number of `scroll` event bounds to `window` or `document`
 
 ### Window performance
 
