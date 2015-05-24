@@ -183,4 +183,16 @@
   metrics:
     documentWriteCalls: 1
     evalCalls: 1 # via setTimeout() only
-
+# stop-at-onload (#513)
+- url: "/after-onload.html"
+  label: "/after-onload.html (--stop-at-onload)"
+  options:
+    "stop-at-onload": true
+  metrics:
+    imageCount: 1
+    requests: 2
+- url: "/after-onload.html"
+  label: "/after-onload.html"
+  metrics:
+    imageCount: 2
+    requests: 3
