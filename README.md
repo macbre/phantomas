@@ -122,6 +122,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--har=[file name]` save HAR to a given file
 * `--wait-for-event=[phantomas event name]` wait for a given phantomas event before generating a report, timeout setting still applies (e.g. ``--wait-for-event "done"``)
 * `--wait-for-selector=[CSS selector]` wait for an element matching given CSS selector before generating a report, timeout setting still applies (e.g. ``--wait-for-selector "body.loaded"``)
+* `--stop-at-onload` stop phantomas **immediately after `onload` event**
 * `--scroll` scroll down the page when it''s loaded
 * `--post-load-delay=[seconds]` wait X seconds before generating a report, timeout setting still applies
 * `--ignore-ssl-errors` ignores SSL errors, such as expired or self-signed certificate errors
