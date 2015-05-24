@@ -381,7 +381,7 @@ phantomas.prototype = {
 		}
 
 		this.start = Date.now();
-		
+
 		var self = this;
 
 		// setup viewport / --viewport=1366x768
@@ -392,7 +392,7 @@ phantomas.prototype = {
 				width: parseInt(parsedViewport[0], 10) || 1366,
 				height: parseInt(parsedViewport[1], 10) || 768
 			};
-			
+
 			this.page.viewportSize = viewportSize;
 
 			this.on('init', function() {
@@ -446,39 +446,44 @@ phantomas.prototype = {
 
 		this.initLoadingProgress();
 
-		// observe HTTP requests
-		// finish when the last request is completed + one second timeout
-		this.reportQueue.push(function(done) {
-			var currentRequests = 0,
-				requestsUrls = {},
-				onFinished = function(entry) {
-					currentRequests--;
-					delete requestsUrls[entry.url];
+		// do not wait for any requests, stop immediately after onload event (issue #513)
+		if (this.getParam('stop-at-onload', false) === true) {
+			this.log('stop-at-onload: --stop-at-onload passed, will stop immediately after onload event');
+		} else {
+			// observe HTTP requests
+			// finish when the last request is completed + one second timeout
+			this.reportQueue.push(function(done) {
+				var currentRequests = 0,
+					requestsUrls = {},
+					onFinished = function(entry) {
+						currentRequests--;
+						delete requestsUrls[entry.url];
 
-					if (currentRequests < 1) {
-						timeoutId = setTimeout(function() {
-							done();
-						}, 1000);
-					}
-				},
-				timeoutId;
+						if (currentRequests < 1) {
+							timeoutId = setTimeout(function() {
+								done();
+							}, 1000);
+						}
+					},
+					timeoutId;
 
-			// update HTTP requests counter
-			self.on('send', function(entry) {
-				clearTimeout(timeoutId);
+				// update HTTP requests counter
+				self.on('send', function(entry) {
+					clearTimeout(timeoutId);
 
-				currentRequests++;
-				requestsUrls[entry.url] = true;
+					currentRequests++;
+					requestsUrls[entry.url] = true;
+				});
+
+				self.on('recv', onFinished);
+				self.on('abort', onFinished);
+
+				// add debug info about pending responses (issue #216)
+				self.on('timeout', function() {
+					self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, Object.keys(requestsUrls).join('>, <'));
+				});
 			});
-
-			self.on('recv', onFinished);
-			self.on('abort', onFinished);
-
-			// add debug info about pending responses (issue #216)
-			self.on('timeout', function() {
-				self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, Object.keys(requestsUrls).join('>, <'));
-			});
-		});
+		}
 
 		this.reportQueue.push(function(done) {
 			self.on('loadFinished', done);

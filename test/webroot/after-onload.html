@@ -1,0 +1,16 @@
+<body>
+	<img src="/static/blank.gif" id="image" width=100>
+
+	<script>
+		var img = document.getElementById('image');
+
+		// image will be lazy loaded after window.onload event
+		setTimeout(function() {
+			console.log('Delayed loading of an image');
+			img.onload = function() {
+				console.log('Done');
+			};
+			img.src = '/static/mdn.png';
+		}, 500);
+	</script>
+</body>

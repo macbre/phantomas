@@ -64,6 +64,7 @@ program
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('wait-for-event', 'wait for a given phantomas event before generating a report')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
+	.describe('stop-at-onload', 'stop phantomas immediately after onload event').boolean('stop-at-onload')
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
 	.describe('film-strip', 'register film strip when page is loading (a comma separated list of milliseconds can be passed)').boolean('film-strip')
 	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory)')
