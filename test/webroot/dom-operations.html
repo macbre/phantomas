@@ -31,6 +31,9 @@
 			var nodeToRemove = document.getElementById('delete');
 			document.body.removeChild(nodeToRemove);
 
+			var detachedDiv1 = document.createElement('div');
+			var detachedDiv2 = document.createElement('div');
+
 			var nodes = [
 				document.querySelector('#foo'),
 				document.querySelector('ol li'), // DOMqueriesWithoutResults++
@@ -42,6 +45,8 @@
 				document.getElementById('list1').getElementsByTagName('li'),
 				document.getElementById('list2').getElementsByTagName('li'),
 				document.getElementById('foobar'), // DOMqueriesWithoutResults++
+				detachedDiv1.getElementsByTagName('a'),
+				detachedDiv2.getElementsByTagName('a'),// should not be counted as duplicated query
 			];
 
 			console.log(nodes);
