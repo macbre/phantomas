@@ -126,7 +126,15 @@ exports.module = function(phantomas) {
 		phantomas.log('DOM query: by %s - "%s" (using %s) in %s', type, query, fnName, context);
 		phantomas.incrMetric('DOMqueries');
 
-		DOMqueries.push(type + ' "' + query + '" (in ' + context + ')');
+		// Don't count document fragments or not yet inserted elements inside duplicated queries
+		if (context && (
+                context.indexOf('html') === 0 ||
+                context.indexOf('body') === 0 ||
+                context.indexOf('head') === 0 ||
+                context.indexOf('#document') === 0
+            )) {
+			DOMqueries.push(type + ' "' + query + '" (in ' + context + ')');
+		}
 	});
 
 	phantomas.on('report', function() {
