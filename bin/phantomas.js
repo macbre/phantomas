@@ -39,8 +39,6 @@ program
 	// optional params
 
 	.header('Client options')
-	// --engine=[webkit|gecko]
-	.describe('engine', 'select engine used to run the phantomas [webkit|gecko]  - EXPERIMENTAL').string('engine')
 	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('tablet', 'force viewport and user agent of a tablet')
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
@@ -86,6 +84,8 @@ program
 	.header('Experimental')
 	// experimental features
 	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
+	// --engine=[webkit|gecko]
+	.describe('engine', 'select engine used to run the phantomas [webkit|gecko]  - EXPERIMENTAL').string('engine')
 	.describe('page-source', 'save page source to file - EXPERIMENTAL').boolean('page-source')
 	.describe('page-source-dir', 'folder path to output page source (default is ./html directory) - EXPERIMENTAL')
 	.describe('socket', 'use provided UNIX socket for IPC - EXPERIMENTAL');
