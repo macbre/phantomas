@@ -128,11 +128,11 @@ exports.module = function(phantomas) {
 
 		// Don't count document fragments or not yet inserted elements inside duplicated queries
 		if (context && (
-                context.indexOf('html') === 0 ||
-                context.indexOf('body') === 0 ||
-                context.indexOf('head') === 0 ||
-                context.indexOf('#document') === 0
-            )) {
+				context.indexOf('html') === 0 ||
+				context.indexOf('body') === 0 ||
+				context.indexOf('head') === 0 ||
+				context.indexOf('#document') === 0
+			)) {
 			DOMqueries.push(type + ' "' + query + '" (in ' + context + ')');
 		}
 	});
