@@ -29,7 +29,7 @@ exports.module = function(phantomas) {
 	// keep the track of SVG graphics (#479)
 	var svgResources = [];
 	phantomas.on('recv', function(entry) {
-		if (entry.isImage && entry.contentType.indexOf('image/svg') === 0) {
+		if (entry.isSVG) {
 			svgResources.push(entry.url);
 			phantomas.log('imagesScaledDown: will ignore <%s> [%s]', entry.url, entry.contentType);
 		}
