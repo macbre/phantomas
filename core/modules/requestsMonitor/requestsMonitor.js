@@ -179,6 +179,11 @@ exports.module = function(phantomas) {
 									entry.isHTML = true;
 									break;
 
+								case 'text/xml':
+									entry.type = 'xml';
+									entry.isXML = true;
+									break;
+
 								case 'text/css':
 									entry.type = 'css';
 									entry.isCSS = true;
@@ -203,6 +208,10 @@ exports.module = function(phantomas) {
 								case 'image/webp':
 									entry.type = 'image';
 									entry.isImage = true;
+
+									if (value === 'image/svg+xml') {
+										entry.isSVG = true;
+									}
 									break;
 
 								case 'video/webm':
@@ -223,6 +232,10 @@ exports.module = function(phantomas) {
 								case 'font/woff':
 									entry.type = 'webfont';
 									entry.isWebFont = true;
+
+									if (/ttf|truetype$/.test(value)) {
+										entry.isTTF = true;
+									}
 									break;
 
 								case 'application/octet-stream':
@@ -235,6 +248,12 @@ exports.module = function(phantomas) {
 											entry.isWebFont = true;
 											break;
 									}
+									break;
+
+								case 'image/x-icon':
+								case 'image/vnd.microsoft.icon':
+									entry.type = 'favicon';
+									entry.isFavicon = true;
 									break;
 
 								default:
