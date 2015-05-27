@@ -45,8 +45,8 @@ exports.module = function(phantomas) {
 			}
 		}
 
-		// check for not-gzipped CSS / JS / HTML files
-		if (entry.isJS || entry.isCSS || entry.isHTML) {
+		// check for not-gzipped assets (issue #515)
+		if (entry.isJS || entry.isCSS || entry.isHTML || entry.isJSON || entry.isSVG || entry.isTTF || entry.isXML || entry.isFavicon) {
 			if (!entry.gzip && isContent) {
 				phantomas.incrMetric('assetsNotGzipped');
 				phantomas.addOffender('assetsNotGzipped', entry.url + ' (' + entry.type.toUpperCase() + ')');
