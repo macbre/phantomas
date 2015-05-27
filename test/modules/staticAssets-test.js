@@ -7,7 +7,7 @@ var vows = require('vows'),
 
 var URL = 'http://example.com/';
 
-vows.describe('staticAssets').
+var suite = vows.describe('staticAssets').
 addBatch({
 	'no-op': mock.getContext('staticAssets', function(phantomas) {
 		return phantomas.recvRequest().report();
@@ -19,16 +19,6 @@ addBatch({
 		'smallCssFiles': 0,
 		'smallJsFiles': 0,
 		'multipleRequests': 0
-	}),
-	'no gzip': mock.getContext('staticAssets', function(phantomas) {
-		return phantomas.recv({
-			url: URL,
-			status: 200,
-			isCSS: true,
-			type: 'css'
-		}).report();
-	}, {
-		'assetsNotGzipped': 1,
 	}),
 	'with query string': mock.getContext('staticAssets', function(phantomas) {
 		return phantomas.recv({
@@ -107,5 +97,35 @@ addBatch({
 	}, {
 		'smallJsFiles': 1,
 	}),
-}).
-export(module);
+});
+
+// cases for "assetsNotGzipped" metric (issue #515)
+var batch = {};
+
+[
+	'isJS',
+	'isCSS',
+	'isHTML',
+	'isJSON',
+	'isSVG',
+	'isTTF',
+	'isXML',
+	'isFavicon',
+].forEach(function(field) {
+	batch[field.substr(2) + ' should be gzipped'] = mock.getContext('staticAssets', function(phantomas) {
+		var arg = {
+			url: URL,
+			status: 200,
+			type: 'foo',
+		};
+		arg[field] = true;
+
+		return phantomas.recv(arg).report();
+	}, {
+		'assetsNotGzipped': 1,
+	});
+});
+
+suite.addBatch(batch);
+
+suite.export(module);
