@@ -810,6 +810,12 @@
       "unit": "number",
       "module": "keepAlive"
     },
+    "lazyLoadableImages": {
+      "desc": "number of images that can be lazy-loaded",
+      "offenders": true,
+      "unit": "number",
+      "module": "lazyLoadableImages"
+    },
     "localStorageEntries": {
       "desc": "number of entries in local storage",
       "offenders": true,
@@ -999,7 +1005,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 167,
-  "modulesCount": 34,
-  "version": "1.10.0"
+  "metricsCount": 168,
+  "modulesCount": 35,
+  "version": "1.10.2"
 }

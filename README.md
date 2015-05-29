@@ -146,7 +146,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 129_
+_Current number of metrics: 130_
 
 Units:
 
@@ -389,6 +389,12 @@ Units:
 ### Document height
 
 * [documentHeight](http://www.stevesouders.com/blog/2014/06/08/http-archive-new-stuff/): the page height in pixels
+
+### Lazy-loadable images
+
+> Images rendered under the fold should be lazy loaded
+
+* lazyLoadableImages: number of images that can be lazy-loaded
 
 ### Optional metrics
 
