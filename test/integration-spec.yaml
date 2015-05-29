@@ -196,3 +196,7 @@
   metrics:
     imageCount: 2
     requests: 3
+# lazy-loadable-images.html (#494)
+- url: "/lazy-loadable-images.html"
+  metrics:
+    lazyLoadableImages: 2
