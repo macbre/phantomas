@@ -1,0 +1,33 @@
+<head>
+	<style>
+		article {
+			height: 1500px;
+		}
+
+		#dot {
+			position: absolute;
+			top: 900px;
+		}
+
+		footer {
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<img src="/static/blank.gif" id="dot" />
+	<article>
+		<h1>Issue #494</h1>
+		<img src="/static/mdn.png" width=250>
+		Foo bar
+	</article>
+
+	<!-- footer is below the fold -->
+	<footer>
+		<hr>
+		&copy; phantomas 2015
+		<img src="/static/mdn.png" width=25><!-- the same image was above the fold - ignore -->
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D"><!-- ignore base6-encoded images -->
+		<img src="/static/example.svg" height="50" width="50">
+	</footer>
+</body>
