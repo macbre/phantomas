@@ -119,6 +119,10 @@
 			**/
 
 			try {
+				// Prototype 1.6 (and Mootools 1.2 too) creates an Array.prototype.toJSON - issue #482
+				// @see http://stackoverflow.com/questions/710586/json-stringify-array-bizarreness-with-prototype-js
+				Array.prototype.toJSON = undefined;
+
 				origConsoleLog.call(console, 'msg:' + stringify({
 					type: type || false,
 					data: data || false
