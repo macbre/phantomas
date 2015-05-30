@@ -9,6 +9,12 @@
 	// create a scope
 	var phantomas = (scope.__phantomas = scope.__phantomas || {});
 
+	// keep the original JSON functions (#482)
+	phantomas.JSON = {
+		parse: JSON.parse,
+		stringify: JSON.stringify
+	};
+
 	// NodeRunner
 	var nodeRunner = function() {
 		// "Beep, Beep"
