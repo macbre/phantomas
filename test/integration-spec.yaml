@@ -165,12 +165,14 @@
     'wait-for-event': "done"
   metrics:
     testFooBar: 123 # a metric set just before event trigger
-# requests to (issue #438)
+# requests to (#438 / #486)
 - url: "/timing.html"
   metrics:
     requests: 4
     requestsToDomContentLoaded: 4
+    domainsToDomContentLoaded: 1
     requestsToDomComplete: 4
+    domainsToDomComplete: 1
 # JS bottlenecks (#467)
 - url: "/bottlenecks.html"
   label: "/bottlenecks.html (--spy-eval)"
