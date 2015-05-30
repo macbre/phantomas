@@ -202,3 +202,8 @@
 - url: "/lazy-loadable-images.html"
   metrics:
     lazyLoadableImagesBelowTheFold: 2
+# JS globals (#482)
+- url: "/js-globals.html"
+  metrics:
+    globalVariables: 3
+    globalVariablesFalsy: 1
