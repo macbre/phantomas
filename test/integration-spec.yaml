@@ -199,4 +199,4 @@
 # lazy-loadable-images.html (#494)
 - url: "/lazy-loadable-images.html"
   metrics:
-    lazyLoadableImages: 2
+    lazyLoadableImagesBelowTheFold: 2

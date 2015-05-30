@@ -810,8 +810,8 @@
       "unit": "number",
       "module": "keepAlive"
     },
-    "lazyLoadableImages": {
-      "desc": "number of images that can be lazy-loaded",
+    "lazyLoadableImagesBelowTheFold": {
+      "desc": "number of images displayed below the fold that can be lazy-loaded",
       "offenders": true,
       "unit": "number",
       "module": "lazyLoadableImages"

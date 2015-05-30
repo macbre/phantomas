@@ -392,9 +392,7 @@ Units:
 
 ### Lazy-loadable images
 
-> Images rendered under the fold should be lazy loaded
-
-* lazyLoadableImages: number of images that can be lazy-loaded
+* lazyLoadableImagesBelowTheFold: number of images displayed below the fold that can be lazy-loaded
 
 ### Optional metrics
 

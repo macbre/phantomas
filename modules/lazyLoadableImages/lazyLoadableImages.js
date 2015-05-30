@@ -9,7 +9,7 @@
 exports.version = '1.0';
 
 exports.module = function(phantomas) {
-	phantomas.setMetric('lazyLoadableImages'); // @desc number of images that can be lazy-loaded
+	phantomas.setMetric('lazyLoadableImagesBelowTheFold'); // @desc number of images displayed below the fold that can be lazy-loaded
 
 	phantomas.on('report', function() {
 		phantomas.log('lazyLoadableImages: analyzing which images can be lazy-loaded...');
@@ -54,8 +54,8 @@ exports.module = function(phantomas) {
 					if (offset > viewportHeight) {
 						phantomas.log('lazyLoadableImages: <%s> image is below the fold (at %dpx)', src, offset);
 
-						phantomas.incrMetric('lazyLoadableImages');
-						phantomas.addOffender('lazyLoadableImages', src);
+						phantomas.incrMetric('lazyLoadableImagesBelowTheFold');
+						phantomas.addOffender('lazyLoadableImagesBelowTheFold', src);
 					}
 				});
 
