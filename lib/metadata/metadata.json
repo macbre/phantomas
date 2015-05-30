@@ -899,13 +899,38 @@
       "unit": "ms",
       "module": "requestsStats"
     },
+    "requestsToFirstPaint": {
+      "desc": "number of HTTP requests it took to make the first paint",
+      "gecko": true,
+      "unit": "number",
+      "module": "requestsTo"
+    },
+    "domainsToFirstPaint": {
+      "desc": "number of domains used to make the first paint   @offenders",
+      "offenders": true,
+      "gecko": true,
+      "unit": "number",
+      "module": "requestsTo"
+    },
     "requestsToDomContentLoaded": {
       "desc": "number of HTTP requests it took to make the page reach DomContentLoaded state",
       "unit": "number",
       "module": "requestsTo"
     },
+    "domainsToDomContentLoaded": {
+      "desc": "number of domains used to make the page reach DomContentLoaded state",
+      "offenders": true,
+      "unit": "number",
+      "module": "requestsTo"
+    },
     "requestsToDomComplete": {
       "desc": "number of HTTP requests it took to make the page reach DomComplete state",
+      "unit": "number",
+      "module": "requestsTo"
+    },
+    "domainsToDomComplete": {
+      "desc": "number of domains used to make the page reach DomComplete state",
+      "offenders": true,
       "unit": "number",
       "module": "requestsTo"
     },
@@ -1005,7 +1030,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 168,
+  "metricsCount": 172,
   "modulesCount": 35,
   "version": "1.10.2"
 }

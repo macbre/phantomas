@@ -146,7 +146,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 130_
+_Current number of metrics: 134_
 
 Units:
 
@@ -307,8 +307,12 @@ Units:
 
 ### Requests to
 
+* requestsToFirstPaint: number of HTTP requests it took to make the first paint
+* domainsToFirstPaint: number of domains used to make the first paint
 * requestsToDomContentLoaded: number of HTTP requests it took to make the page reach `DomContentLoaded` state
+* domainsToDomContentLoaded: number of domains used to make the page reach DomContentLoaded state
 * requestsToDomComplete: number of HTTP requests it took to make the page reach `DomComplete` state
+* domainsToDomComplete: number of domains used to make the page reach DomComplete state
 
 ### keepAlive
 
