@@ -24,7 +24,7 @@ exports.module = function(phantomas) {
 					offset,
 					processedImages = {},
 					src,
-					viewportHeight = document.body.clientHeight;
+					viewportHeight = window.innerHeight;
 
 				phantomas.log('lazyLoadableImages: %d image(s) found, assuming %dpx offset to be the fold', len, viewportHeight);
 
