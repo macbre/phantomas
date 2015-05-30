@@ -53,7 +53,7 @@ exports.module = function(phantomas) {
 
 					if ([false, null].indexOf(window[varName]) > -1) {
 						phantomas.incrMetric('globalVariablesFalsy');
-						phantomas.addOffender('globalVariablesFalsy', varName + ' = ' + JSON.stringify(window[varName]));
+						phantomas.addOffender('globalVariablesFalsy', '%s = %j', varName, window[varName]);
 					}
 				}
 

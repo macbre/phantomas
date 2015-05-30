@@ -514,6 +514,11 @@ phantomas.prototype = {
 
 	// called when all HTTP requests are completed
 	report: function() {
+		// restote the native JSON.parse (just in case, see #482)
+		this.page.evaluate(function() {
+			JSON.parse = window.__phantomas && window.__phantomas.JSON.parse;
+		});
+
 		this.emitInternal('report'); // @desc the report is about to be generated
 
 		var time = Date.now() - this.start;

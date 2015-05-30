@@ -1,0 +1,17 @@
+<body>
+	<script>
+		var a_global = 1,
+			falsy = false;
+
+		function foo() {
+			console.log('bar');
+		}
+
+		// overwrite some core objects (#482)
+		window.JSON = {
+			foo: 'bar'
+		};
+
+		Array.prototype.toJSON = foo;
+	</script>
+</body>
