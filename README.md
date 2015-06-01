@@ -54,21 +54,19 @@ pip install phantomas
 
 ## Contributors
 
+> All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
+
 * [macbre](https://github.com/macbre)
-* [jmervine](https://github.com/jmervine)
-* [jmosney](https://github.com/jmosney)
-* [umaar](https://github.com/umaar)
 * [sjhcockrell](https://github.com/sjhcockrell)
-* [cphoover](https://github.com/cphoover)
-* [LaurentGoderre](https://github.com/LaurentGoderre)
-* [kennydee](https://github.com/kennydee)
-* [iNem0o](https://github.com/iNem0o)
-* [stefanjudis](https://github.com/stefanjudis)
-* [vgangan](https://github.com/vgangan)
+* [jgonera](https://github.com/jgonera)
 * [william-p](https://github.com/william-p)
-* [cvan](https://github.com/cvan)
+* [gmetais](https://github.com/gmetais)
+* [vgangan](https://github.com/vgangan)
+* [cphoover](https://github.com/cphoover)
+* [wladekb](https://github.com/wladekb)
+* [iNem0o](https://github.com/iNem0o)
 * [gomezd](https://github.com/gomezd)
-* All the [contributors](https://github.com/macbre/phantomas/graphs/contributors)
+* [stefanjudis](https://github.com/stefanjudis)
 
 ## Usage
 
