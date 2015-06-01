@@ -39,6 +39,8 @@ program
 	// optional params
 
 	.header('Client options')
+	// --engine=[webkit|gecko]
+	.describe('engine', '[experimental] select engine used to run the phantomas [webkit|gecko]').string('engine')
 	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('tablet', 'force viewport and user agent of a tablet')
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
@@ -69,26 +71,21 @@ program
 	.describe('wait-for-event', 'wait for a given phantomas event before generating a report')
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
+	.describe('socket', '[experimental] use provided UNIX socket for IPC')
 
 	.header('Output and reporting')
+	.describe('analyze-css', '[experimental] emit in-depth CSS metrics').boolean('analyze-css')
 	.describe('colors', 'forces ANSI colors even when output is piped').boolean('colors')
 	.describe('film-strip', 'register film strip when page is loading (a comma separated list of milliseconds can be passed)').boolean('film-strip')
 	.describe('film-strip-dir', 'folder path to output film strip (default is ./filmstrip directory)')
 	.describe('har', 'save HAR to a given file')
 	.describe('log', 'log to a given file')
+	.describe('page-source', '[experimental] save page source to file').boolean('page-source')
+	.describe('page-source-dir', '[experimental] folder path to output page source (default is ./html directory)')
 	.describe('progress', 'shows page loading progress bar (disables verbose mode)').boolean('progress')
 	.describe('reporter', 'output format / reporter').default('reporter', 'plain').alias('reporter', 'R').alias('reporter', 'format')
 	.describe('screenshot', 'render fully loaded page to a given file')
-	.describe('silent', 'don\'t write anything to the console').boolean('silent')
-
-	.header('Experimental')
-	// experimental features
-	.describe('analyze-css', 'emit in-depth CSS metrics - EXPERIMENTAL').boolean('analyze-css')
-	// --engine=[webkit|gecko]
-	.describe('engine', 'select engine used to run the phantomas [webkit|gecko]  - EXPERIMENTAL').string('engine')
-	.describe('page-source', 'save page source to file - EXPERIMENTAL').boolean('page-source')
-	.describe('page-source-dir', 'folder path to output page source (default is ./html directory) - EXPERIMENTAL')
-	.describe('socket', 'use provided UNIX socket for IPC - EXPERIMENTAL');
+	.describe('silent', 'don\'t write anything to the console').boolean('silent');
 
 // handle --config (issue #209)
 program.setConfigFile('config');
