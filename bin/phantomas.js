@@ -32,7 +32,7 @@ program
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
 	.describe('include-dirs', 'load modules from specified directories [dirOne],[dirTwo],...')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
-	.describe('config','uses JSON or YAML-formatted config file to set parameters').string('config')
+	.describe('config', 'uses JSON or YAML-formatted config file to set parameters').string('config')
 	// optional params
 	.header('Client options')
 	// --engine=[webkit|gecko]
