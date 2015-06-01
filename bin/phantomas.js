@@ -29,15 +29,11 @@ program
 	.describe('help', 'This help text').boolean('help').alias('help', 'h')
 	.describe('verbose', 'print debug messages to the console').boolean('verbose').alias('verbose', 'v')
 	.describe('debug', 'run PhantomJS in debug mode').default('debug')
-
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
 	.describe('include-dirs', 'load modules from specified directories [dirOne],[dirTwo],...')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
-
 	.describe('config','uses JSON or YAML-formatted config file to set parameters').string('config')
-
 	// optional params
-
 	.header('Client options')
 	// --engine=[webkit|gecko]
 	.describe('engine', '[experimental] select engine used to run the phantomas [webkit|gecko]').string('engine')
@@ -45,7 +41,6 @@ program
 	.describe('tablet', 'force viewport and user agent of a tablet')
 	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('user-agent', 'provide a custom user agent')
-
 	.header('HTTP options')
 	.describe('auth-user', 'sets the user name used for HTTP authentication')
 	.describe('auth-pass', 'sets the password used for HTTP authentication')
@@ -56,7 +51,6 @@ program
 	.describe('proxy-auth', 'specifies the authentication information for the proxy (e.g. --proxy-auth=username:password)')
 	.describe('proxy-type', 'specifies the type of the proxy server [http|socks5|none]')
 	.describe('ssl-protocol', 'sets the SSL protocol for secure connections [sslv3|sslv2|tlsv1|any]').default('ssl-protocol', 'any')
-
 	.header('Runtime options')
 	.describe('allow-domain', 'allow requests to given domain(s) - aka whitelist [domain],[domain],...')
 	.describe('block-domain', 'disallow requests to given domain(s) - aka blacklist [domain],[domain],...')
@@ -72,7 +66,6 @@ program
 	.describe('wait-for-selector', 'wait for an element matching given CSS selector before generating a report')
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
 	.describe('socket', '[experimental] use provided UNIX socket for IPC')
-
 	.header('Output and reporting')
 	.describe('analyze-css', '[experimental] emit in-depth CSS metrics').boolean('analyze-css')
 	.describe('colors', 'forces ANSI colors even when output is piped').boolean('colors')
