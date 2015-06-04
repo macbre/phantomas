@@ -79,11 +79,13 @@
 - url: "/dom-id.html"
   metrics:
     DOMidDuplicated: 2 # foo and bar
-# assertions & exit codes (#382)
+# assertions & exit codes (#382 / #528)
 - url: "/dom-id.html"
   label: "Assertions and exit code"
   options:
     "assert-requests": 0
+  metrics:
+    requests: 1
   exitCode: 1 # one assert not met
 # inline styles (#397)
 - url: "/inline-css.html"
