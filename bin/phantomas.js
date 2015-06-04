@@ -208,6 +208,11 @@ async.series(
 		}
 
 		if (typeof results[0] !== 'undefined') {
+			// we have at least one result - reset the error flag when in multiple runs mode (#380)
+			if (err > 250 && runs > 1) {
+				err = null;
+			}
+
 			// process JSON results by reporters
 			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err || 0);
 
