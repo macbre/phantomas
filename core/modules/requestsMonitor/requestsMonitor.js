@@ -106,7 +106,7 @@ exports.module = function(phantomas) {
 			if (entry.isBlocked) {
 				return;
 			} else if (!entry.isBase64) {
-				phantomas.log('Blocked request by phantomjs: <' + entry.url + '>');
+				phantomas.log('Got a response with no status set: <%s> (%j)', res.url, res);
 				phantomas.emitInternal('abort', entry, res); // @desc request has been blocked
 			}
 		}
