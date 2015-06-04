@@ -145,7 +145,7 @@ function task(callback) {
 	var child = phantomas(url, options, function(err, data, results) {
 		callback(
 			null, // pass null even in case of an error to continue async.series processing (issue #380)
-			err ? new Error(err) : results
+			[err && new Error(err), results]
 		);
 	});
 
@@ -175,18 +175,26 @@ async.series(
 			reporter,
 			res;
 
+		// results is a collection of the following entries:
+		// [ Error from the run, Results object]
 		debug('results [%d]: %j', results.length, results);
 
-		// filter out "broken" results (issue #366)
-		results = results.filter(function(item, idx) {
-			if (item instanceof Error) {
-				// detect errors in run results (issue #380)
-				debug('Run #%d did not complete - err #%d', idx + 1, item.message);
-				err = item.message;
+		results = results.map(function(item, idx) {
+			var error = item[0],
+				result = item[1];
 
-				return false;
+			// detect errors in run results (issue #380)
+			if (error instanceof Error) {
+				debug('Run #%d did not complete - err #%d', idx + 1, error.message);
+				err = error.message;
 			}
 
+			// return results wrapper (if possible) - #528
+			return result;
+		});
+
+		// filter out "broken" results (issue #366)
+		results = results.filter(function(item) {
 			return typeof item !== 'undefined';
 		});
 
@@ -200,8 +208,10 @@ async.series(
 		}
 
 		if (typeof results[0] !== 'undefined') {
-			// we have at least one result - reset the error flag
-			err = null;
+			// we have at least one result - reset the error flag when in multiple runs mode (#380)
+			if (err > 250 && runs > 1) {
+				err = null;
+			}
 
 			// process JSON results by reporters
 			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err || 0);
