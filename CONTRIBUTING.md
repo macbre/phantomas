@@ -20,5 +20,5 @@ Please fork from ``devel`` branch when proposing changes to phantomas.
 
 * register a metric using ``phantomas.setMetric('fooName')`` at the top of the module to keep metrics in the same order between runs
 * consider adding offenders to give more details (``phantomas.addOffender('fooName', assetURL)``)
-* run ``lib/metadata/generate.js`` script to regenerate JSON with metrics metadata
+* run ``npm run metadata`` script to regenerate JSON with metrics metadata
 * update README.md
