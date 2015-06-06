@@ -1,8 +1,6 @@
 /**
  * Analyzes DOM changes via MutationObserver API
  *
- * These metrics are only available when running phantomas using Gecko engine (--engine=gecko)
- *
  * @see http://dev.opera.com/articles/mutation-observers-tutorial/
  */
 /* global window: true, document: true, MutationObserver: true */
@@ -12,9 +10,9 @@ exports.version = '0.1';
 
 exports.module = function(phantomas) {
 	// SlimerJS only metrics
-	phantomas.setMetric('DOMmutationsInserts'); // @desc number of <body> node inserts @gecko
-	phantomas.setMetric('DOMmutationsRemoves'); // @desc number of <body> node removes @gecko
-	phantomas.setMetric('DOMmutationsAttributes'); // @desc number of DOM nodes attributes changes @gecko
+	phantomas.setMetric('DOMmutationsInserts'); // @desc number of <body> node inserts
+	phantomas.setMetric('DOMmutationsRemoves'); // @desc number of <body> node removes
+	phantomas.setMetric('DOMmutationsAttributes'); // @desc number of DOM nodes attributes changes
 
 	phantomas.once('init', function() {
 		phantomas.evaluate(function() {

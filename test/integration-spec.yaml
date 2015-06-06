@@ -2,42 +2,13 @@
 
 # phantomas scope helper functions
 - url: "/phantomas-scope.html"
-  label: "/phantomas-scope.html (using PhantomJS)"
-  options:
-    engine: "webkit"
-  metrics:
-    jsErrors: 0
-    asserts: 10
-- url: "/phantomas-scope.html"
-  label: "/phantomas-scope.html (using SlimerJS)"
-  options:
-    engine: "gecko"
+  label: "/phantomas-scope.html"
   metrics:
     jsErrors: 0
     asserts: 10
 
 # DOM operations
 - url: "/dom-operations.html"
-  metrics:
-    requests: 3
-    cssCount: 1
-    jsCount: 1
-    domains: 1
-    DOMqueries: 20
-    DOMqueriesById: 7
-    DOMqueriesByClassName: 1
-    DOMqueriesByTagName: 9
-    DOMqueriesByQuerySelectorAll: 3
-    DOMinserts: 2
-    DOMmutationsInserts: 0
-    DOMqueriesDuplicated: 2
-    DOMqueriesAvoidable: 3
-    DOMqueriesWithoutResults: 4
-# DOM operations (in SlimerJS)
-- url: "/dom-operations.html"
-  label: "/dom-operations.html (using SlimerJS)"
-  options:
-    engine: "gecko"
   metrics:
     requests: 3
     cssCount: 1
