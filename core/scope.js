@@ -292,7 +292,7 @@
 			}
 			// div[0] <- index of child node
 			else if (node.parentNode instanceof Node) {
-				entry += '[' + Math.max(0, Array.prototype.indexOf.call(node.parentNode.children, node)) + ']';
+				entry += '[' + Math.max(0, Array.prototype.indexOf.call(node.parentNode.children || node.parentNode.childNodes, node)) + ']';
 			}
 
 			path.push(entry);
