@@ -22,6 +22,7 @@ exports.module = function(phantomas) {
 					i,
 					len = images.length,
 					offset,
+					path,
 					processedImages = {},
 					src,
 					viewportHeight = window.innerHeight;
@@ -38,21 +39,32 @@ exports.module = function(phantomas) {
 						continue;
 					}
 
+					path = phantomas.getDOMPath(images[i]);
+
 					// get the most top position for a given image (deduplicate by src)
 					if (typeof processedImages[src] === 'undefined') {
-						processedImages[src] = offset;
-					} else {
-						processedImages[src] = Math.min(processedImages[src], offset);
+						processedImages[src] = {
+							offset: offset,
+							path: path
+						};
+					}
+
+					// maybe there's the same image loaded above the fold?
+					if (offset < processedImages[src].offset) {
+						processedImages[src] = {
+							offset: offset,
+							path: path
+						};
 					}
 				}
 
 				phantomas.log('lazyLoadableImages: checking %d unique image(s)', Object.keys(processedImages).length);
 
 				Object.keys(processedImages).forEach(function(src) {
-					var offset = processedImages[src];
+					var img = processedImages[src];
 
-					if (offset > viewportHeight) {
-						phantomas.log('lazyLoadableImages: <%s> image is below the fold (at %dpx)', src, offset);
+					if (img.offset > viewportHeight) {
+						phantomas.log('lazyLoadableImages: <%s> image (%s) is below the fold (at %dpx)', src, img.path, img.offset);
 
 						phantomas.incrMetric('lazyLoadableImagesBelowTheFold');
 						phantomas.addOffender('lazyLoadableImagesBelowTheFold', src);
