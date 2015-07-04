@@ -102,6 +102,15 @@
     jQueryVersion: "1.11.1" # the last loaded version
     jQueryVersionsLoaded: 3
     jQueryOnDOMReadyFunctions: 1
+# --no-externals handling (issue #535)
+- url: "/jquery-multiple.html"
+  label: "/jquery-multiple.html (with --no-externals)"
+  options:
+    "no-externals": true
+  metrics:
+    blockedRequests: 2
+    domains: 1
+    jsCount: 1
 # jQuery read & write operations (issue #436)
 - url: "/jquery-reads-writes.html"
   metrics:
