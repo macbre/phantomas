@@ -157,8 +157,8 @@
 - url: "/timing.html"
   metrics:
     requests: 4
-    requestsToDomContentLoaded: 4
-    domainsToDomContentLoaded: 1
+#    requestsToDomContentLoaded: 4
+#    domainsToDomContentLoaded: 1
     requestsToDomComplete: 4
     domainsToDomComplete: 1
 # JS bottlenecks (#467)
