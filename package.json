@@ -37,6 +37,7 @@
     "node-uuid": "~1.4.1",
     "optimist": "0.6.x",
     "phantomjs": "^1.9.15",
+    "phantomjs2": "macbre/phantomjs2-npm#version-2.0",
     "progress": "~1.1.4",
     "q": "^1.4.1",
     "slimerjs": "^0.9.5",
@@ -56,7 +57,7 @@
   "bin": "./bin/phantomas.js",
   "preferGlobal": true,
   "scripts": {
-    "test": "vows --spec",
+    "test": "PHANTOMAS_ENGINE=webkit vows --spec && PHANTOMAS_ENGINE=webkit2 vows --spec",
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "jshint --verbose core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",

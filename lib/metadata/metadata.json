@@ -579,21 +579,18 @@
     },
     "DOMmutationsInserts": {
       "desc": "number of <body> node inserts",
-      "gecko": true,
       "offenders": true,
       "unit": "number",
       "module": "domMutations"
     },
     "DOMmutationsRemoves": {
       "desc": "number of <body> node removes",
-      "gecko": true,
       "offenders": true,
       "unit": "number",
       "module": "domMutations"
     },
     "DOMmutationsAttributes": {
       "desc": "number of DOM nodes attributes changes",
-      "gecko": true,
       "offenders": true,
       "unit": "number",
       "module": "domMutations"

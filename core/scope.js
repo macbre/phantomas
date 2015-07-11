@@ -111,10 +111,6 @@
 			} catch (e) {}
 		};
 
-		// now "freeze" the console object (issue #230)
-		// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
-		Object.freeze(console);
-
 		function sendMsg(type, data) {
 			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
 			// Stability: EXPERIMENTAL - see issue #62
@@ -296,7 +292,7 @@
 			}
 			// div[0] <- index of child node
 			else if (node.parentNode instanceof Node) {
-				entry += '[' + Math.max(0, Array.prototype.indexOf.call(node.parentNode.children, node)) + ']';
+				entry += '[' + Math.max(0, Array.prototype.indexOf.call(node.parentNode.children || node.parentNode.childNodes, node)) + ']';
 			}
 
 			path.push(entry);
