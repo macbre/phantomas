@@ -1,5 +1,8 @@
 language: node_js
-node_js: "0.10"
+node_js:
+  - "0.12"
+  - "0.10"
+sudo: false
 before_script:
   - sh test/server-start.sh &
   - sleep 1
