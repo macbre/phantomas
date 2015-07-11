@@ -44,8 +44,7 @@ spec.forEach(function(test) {
 			topic: 'foo',
 			'should be skipped': function() {}
 		};
-	}
-	else {
+	} else {
 		batch[batchName] = {
 			topic: function() {
 				phantomas(WEBROOT + test.url, test.options || {}, this.callback);
