@@ -9,11 +9,11 @@ var vows = require('vows'),
 	yaml = require('js-yaml'),
 	phantomas = require('..');
 
-// see start-server.sh
-var WEBROOT = 'http://127.0.0.1:8888';
+var WEBROOT = 'http://127.0.0.1:8888', // see start-server.sh
+	ENGINE = process.env.PHANTOMAS_ENGINE; // currently used engine (either PhantomJS or SlimerJS)
 
 // run the test
-var suite = vows.describe('Integration tests').addBatch({
+var suite = vows.describe('Integration tests - ' + ENGINE).addBatch({
 	'test server': {
 		topic: function() {
 			var http = require('http'),
@@ -36,22 +36,31 @@ var raw = fs.readFileSync(__dirname + '/integration-spec.yaml').toString(),
 
 spec.forEach(function(test) {
 	var batch = {},
-		batchName = test.label || test.url;
+		batchName = test.label || test.url,
+		shouldSkip = test.skip && (test.skip === ENGINE);
 
-	batch[batchName] = {
-		topic: function() {
-			phantomas(WEBROOT + test.url, test.options || {}, this.callback);
-		},
-		'should be generated': function(err, data, results) {
-			assert.equal(err, test.exitCode || null, 'Exit code matches the expected value');
-		},
-	};
-
-	Object.keys(test.metrics || {}).forEach(function(name) {
-		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
-			assert.strictEqual(results.getMetric(name), test.metrics[name]);
+	if (shouldSkip) {
+		batch[batchName] = {
+			topic: 'foo',
+			'should be skipped': function() {}
 		};
-	});
+	}
+	else {
+		batch[batchName] = {
+			topic: function() {
+				phantomas(WEBROOT + test.url, test.options || {}, this.callback);
+			},
+			'should be generated': function(err, data, results) {
+				assert.equal(err, test.exitCode || null, 'Exit code matches the expected value');
+			},
+		};
+
+		Object.keys(test.metrics || {}).forEach(function(name) {
+			batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
+				assert.strictEqual(results.getMetric(name), test.metrics[name]);
+			};
+		});
+	}
 
 	suite.addBatch(batch);
 });

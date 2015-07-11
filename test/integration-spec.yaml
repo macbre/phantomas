@@ -20,10 +20,16 @@
     DOMqueriesByTagName: 9
     DOMqueriesByQuerySelectorAll: 3
     DOMinserts: 2 # "div" appended to "html" (from jQuery) and the one below
-    DOMmutationsInserts: 1 # DocumentFragment > b[0]" appended to "body > p#foo"
     DOMqueriesDuplicated: 2
     DOMqueriesAvoidable: 3
     DOMqueriesWithoutResults: 4
+
+# DOM mutations
+- url: "/dom-operations.html"
+  skip: "webkit" # do not run using PhantomJS 1.9.x as it doesn't support DOM mutations API
+  metrics:
+    DOMmutationsInserts: 1 # DocumentFragment > b[0]" appended to "body > p#foo"
+
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
