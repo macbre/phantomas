@@ -75,6 +75,12 @@ exports.module = function(phantomas) {
 		// force JSON output format
 		options.push('--json');
 
+		// set basic auth if needed
+		if (phantomas.getParam('auth-user') && phantomas.getParam('auth-pass')) {
+			options.push('--auth-user', phantomas.getParam('auth-user'));
+			options.push('--auth-pass', phantomas.getParam('auth-pass'));
+		}
+
 		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
 			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
 
