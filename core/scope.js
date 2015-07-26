@@ -244,7 +244,7 @@
 			});
 
 			window.__defineGetter__(varName, function() {
-				return spiedGlobals[varName];
+				return spiedGlobals[varName] || undefined;
 			});
 
 		}
