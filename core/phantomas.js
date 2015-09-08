@@ -480,7 +480,16 @@ phantomas.prototype = {
 
 				// add debug info about pending responses (issue #216)
 				self.on('timeout', function() {
-					self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, Object.keys(requestsUrls).join('>, <'));
+					var timedOutRequests = Object.keys(requestsUrls);
+
+					self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, timedOutRequests.join('>, <'));
+
+					// emit timed out requests as a fake metric (#539)
+					self.results.setMetric('requestsWithTimeout', timedOutRequests.length);
+
+					timedOutRequests.forEach(function(url) {
+						self.results.addOffender('requestsWithTimeout', url);
+					});
 				});
 			});
 		}
