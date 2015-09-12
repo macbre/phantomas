@@ -8,7 +8,12 @@
 <body>
 	<!-- 123 -->
 	<p id="foo" class="bar" style="color: blue">foo</p>
-	<span class="hidden"><b>123</b></span>
+	<span class="hidden">
+		<b>123</b>
+		<img src="/static/mdn.png" width=600 height=529 />
+		<img src="/static/blank.gif" alt="foo" width=1 height=1 />
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D"><!-- ignore base6-encoded images -->
+	</span>
 	<img src="/static/blank.gif" alt="foo" />
 	<img src="/static/blank.gif" alt="foo" height=1 />
 	<img src="/static/blank.gif" alt="foo" height=1 width=1 />
