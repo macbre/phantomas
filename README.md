@@ -26,6 +26,15 @@ npm install --global phantomas
 
 You may need to install libfontconfig by running ``sudo apt-get install libfontconfig1``.
 
+### Development version
+
+To get the latest development version of phantomas (and install all required dependencies):
+
+```
+git clone git@github.com:macbre/phantomas.git
+npm install
+```
+
 ## Libraries
 
 phantomas is written in JavaScript, but you can experience it in different languages as well ;)
@@ -92,7 +101,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--verbose` writes debug messages to the console
 * `--debug` run PhantomJS in debug mode
 * `--engine` select engine used to run the phantomas ``[webkit|gecko]`` **experimental**
-* `--colors` forces ANSI colors even when output is piped (eg. via ``less -r``)
+* `--colors` forces ANSI colors even when output is piped (e,g. via ``less -r``)
 * `--silent` don't write anything to the console
 * `--progress` shows page loading progress bar (disables verbose mode)
 * `--log=[log file]` log to a given file
@@ -485,7 +494,14 @@ Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
 ## Engines
 
-phantomas can be run using PhantomJS (WebKit-powered headless browser) or SlimerJS (Gecko-based non headless browser, run using xfvb). Use either ``--engine=[webkit|gecko]`` or ``--webkit`` / ``--gecko`` parameters to choose one. Please note that **support for SlimerJS is experimental at this point**.
+phantomas can be run using [PhantomJS](http://phantomjs.org/) 1.x and [2.0](https://github.com/macbre/phantomas/pull/531) (WebKit-powered headless browser) or [SlimerJS](https://slimerjs.org/) (Gecko-based non headless browser, run using [`xfvb`](http://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml)).
+
+You can choose the engine by using either:
+
+* cli option: ``--engine=[webkit|webkit2|gecko]`` or ``--webkit`` / ``--webkit2`` / ``--gecko``
+* `PHANTOMAS_ENGINE` environmental variable: e.g. `PHANTOMAS_ENGINE=webkit2`
+
+> Please note that **support for SlimerJS is experimental at this point**.
 
 ### PhantomJS
 
