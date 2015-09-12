@@ -577,6 +577,12 @@
       "unit": "bytes",
       "module": "domHiddenContent"
     },
+    "hiddenImages": {
+      "desc": "number of hidden images that can be lazy-loaded",
+      "offenders": true,
+      "unit": "number",
+      "module": "domHiddenContent"
+    },
     "DOMmutationsInserts": {
       "desc": "number of <body> node inserts",
       "offenders": true,
@@ -1027,7 +1033,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 172,
+  "metricsCount": 173,
   "modulesCount": 35,
-  "version": "1.10.2"
+  "version": "1.11.0"
 }

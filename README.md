@@ -153,7 +153,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 134_
+_Current number of metrics: 135_
 
 Units:
 
@@ -242,7 +242,6 @@ Units:
 * globalVariablesFalsy: number of JS global variables that cast to false
 * bodyHTMLSize: the size of body tag content (``document.body.innerHTML.length``)
 * commentsSize: the size of HTML comments on the page
-* hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
 * whiteSpacesSize: the size of text nodes with whitespaces only
 * DOMelementsCount: total number of HTML element nodes
 * DOMelementMaxDepth: maximum level on nesting of HTML element node
@@ -251,6 +250,11 @@ Units:
 * nodesWithInlineCSS: number of nodes with inline CSS styling (with `style` attribute)
 * imagesScaledDown: number of <img> nodes that have images scaled down in HTML
 * imagesWithoutDimensions: number of ``<img>`` nodes without both ``width`` and ``height`` attribute
+
+### DOM hidden content
+
+* hiddenContentSize: the size of content of hidden elements on the page (with CSS ``display: none``)
+* hiddenImages: number of hidden images that can be lazy-loaded
 
 ### DOM queries
 
