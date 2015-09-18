@@ -39,22 +39,25 @@ exports.module = function(phantomas) {
 								}
 
 								// count hidden images that can be lazy loaded (issue #524)
-								if (typeof node.querySelectorAll === 'function') {
-									var images = node.querySelectorAll('img') || [];
+								var images = [];
+								if (node.tagName === 'IMG') {
+									images = [node];
+								} else if (typeof node.querySelectorAll === 'function') {
+									images = node.querySelectorAll('img') || [];
+								}
 
-									for (var i = 0, len = images.length; i < len; i++) {
-										var src = images[i].src,
-											path;
+								for (var i = 0, len = images.length; i < len; i++) {
+									var src = images[i].src,
+										path;
 
-										if (src === '' || src.indexOf('data:image') === 0) continue;
+									if (src === '' || src.indexOf('data:image') === 0) continue;
 
-										if (!lazyLoadableImages[src]) {
-											path = phantomas.getDOMPath(images[i]);
+									if (!lazyLoadableImages[src]) {
+										path = phantomas.getDOMPath(images[i]);
 
-											lazyLoadableImages[src] = {
-												path: path
-											};
-										}
+										lazyLoadableImages[src] = {
+											path: path
+										};
 									}
 								}
 
