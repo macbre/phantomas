@@ -46,7 +46,7 @@ exports.module = function(phantomas) {
 										var src = images[i].src,
 											path;
 
-										if (src.indexOf('data:image') === 0) return;
+										if (src.indexOf('data:image') === 0) continue;
 
 										if (!lazyLoadableImages[src]) {
 											path = phantomas.getDOMPath(images[i]);
