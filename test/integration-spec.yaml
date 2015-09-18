@@ -33,17 +33,17 @@
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
-    bodyHTMLSize: 524
-    commentsSize: 48
-    DOMelementsCount: 9
+    bodyHTMLSize: 626
+    commentsSize: 85
+    DOMelementsCount: 10
     DOMelementMaxDepth: 2
     DOMidDuplicated: 0
-    hiddenContentSize: 270
+    hiddenContentSize: 372
     imagesScaledDown: 0
     imagesWithoutDimensions: 3
     hiddenImages: 2
     nodesWithInlineCSS: 1
-    whiteSpacesSize: 28
+    whiteSpacesSize: 31
 # document height
 - url: "/document-height.html"
   metrics:
