@@ -35,7 +35,7 @@ exports.module = function(phantomas) {
 					src = images[i].src;
 
 					// ignore base64-encoded images
-					if (/^data:/.test(src)) {
+					if (src === '' || /^data:/.test(src)) {
 						continue;
 					}
 
