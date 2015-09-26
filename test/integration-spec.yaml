@@ -197,3 +197,9 @@
     globalVariables: 3
     globalVariablesFalsy: 1
     jsErrors: 0
+# JS redirects (#550)
+- url: "/js-redirect.html"
+  metrics:
+    requests: 2
+    htmlCount: 2
+    jsErrors: 0
