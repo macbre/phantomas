@@ -587,12 +587,15 @@ phantomas.prototype = {
 			return;
 		}
 
+		var currentUrl = this.page.url;
+
 		// prevent multiple triggers in PhantomJS
-		if (this.initTriggered) {
-			this.log('onInit: was already triggered');
+		// but only on the same page (issue #550)
+		if (this.initTriggered === currentUrl) {
+			this.log('onInit: was already triggered for <%s>', currentUrl);
 			return;
 		}
-		this.initTriggered = true;
+		this.initTriggered = currentUrl;
 
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
