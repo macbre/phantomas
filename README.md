@@ -35,6 +35,10 @@ git clone git@github.com:macbre/phantomas.git
 npm install
 ```
 
+## Having problems?
+
+Please refer to **[/Troubleshooting.md](https://github.com/macbre/phantomas/blob/devel/Troubleshooting.md)**
+
 ## Libraries
 
 phantomas is written in JavaScript, but you can experience it in different languages as well ;)
