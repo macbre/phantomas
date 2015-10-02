@@ -6,7 +6,7 @@ Troubleshooting
 Before reporting an issue please run phantomas in verbose and debug mode:
 
 ```
-DEBUG=1 phantomas "http://example.com" --verbose
+DEBUG=* phantomas "http://example.com" --verbose
 ```
 
 and provide the output via gist link.
