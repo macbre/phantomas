@@ -10,7 +10,8 @@ console.log('phantomas v%s loaded from %s', phantomas.version, phantomas.path);
 
 run = phantomas('http://google.is', {
 	'analyze-css': true,
-	'assert-requests': 1
+	'assert-requests': 1,
+	engine: 'webkit2'
 });
 
 console.log('Running phantomas: pid %d', run.pid);
@@ -37,6 +38,10 @@ done();
 // events handling
 run.on('milestone', function(milestone) {
 	console.log('Milestone reached: %s', milestone);
+});
+
+run.on('recv', function(response) {
+	console.log('Response #%d: %s %s [HTTP %d]', response.id, response.method, response.url, response.status);
 });
 
 // including the custom once emitted by phantomas modules
