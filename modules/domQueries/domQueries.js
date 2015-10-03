@@ -86,6 +86,11 @@ exports.module = function(phantomas) {
 					var destNodePath = phantomas.getDOMPath(this),
 						appendedNodePath = phantomas.getDOMPath(child);
 
+					// skip undefined nodes (issue #560)
+					if (destNodePath === false) {
+						return;
+					}
+
 					// don't count elements added to fragments as a DOM inserts (issue #350)
 					// DocumentFragment > div[0]
 					if (destNodePath.indexOf('DocumentFragment') === 0) {
