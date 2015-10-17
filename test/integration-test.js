@@ -50,7 +50,13 @@ spec.forEach(function(test) {
 				phantomas(WEBROOT + test.url, test.options || {}, this.callback);
 			},
 			'should be generated': function(err, data, results) {
-				assert.equal(err, test.exitCode || null, 'Exit code matches the expected value');
+				if (test.exitCode) {
+					assert.ok(err instanceof Error);
+					assert.strictEqual(err.message, test.exitCode.toString(), 'Exit code matches the expected value');
+				}
+				else {
+					assert.equal(err, null, 'Exit code matches the expected value');
+				}
 			},
 		};
 
