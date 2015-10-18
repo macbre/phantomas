@@ -3,11 +3,16 @@
  *
  * @see http://w3c-test.org/webperf/specs/NavigationTiming/#dom-performancetiming-domloading
  * @see https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp
+ *
+ * Use Resource Timing API to measure time spent on DNS and TCP connection
+ *
+ * @see http://www.w3.org/TR/navigation-timing/
+ * @see http://www.stevesouders.com/blog/2014/08/21/resource-timing-practical-tips/
  */
-/* global document: true, window: true */
+/* global document: true, window: true, PerformanceTiming: true */
 'use strict';
 
-exports.version = '1.0';
+exports.version = '1.1';
 
 exports.module = function(phantomas) {
 	// times below are calculated relative to performance.timing.responseEnd (#117)
@@ -19,6 +24,13 @@ exports.module = function(phantomas) {
 	// backend vs frontend time
 	phantomas.setMetric('timeBackend'); // @desc time to the first byte compared to the total loading time [%]
 	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
+
+	// get values from Resource Timing API (issue #477)
+	// set initial values to -1 as we expect the worst to happen ;)
+	phantomas.setMetric('performanceTimingConnect', -1); // @desc time it took to connect to the server before making the first HTTP request
+	phantomas.setMetric('performanceTimingDNS', -1); // @desc time it took to resolve the domain before making the first HTTP request
+	phantomas.setMetric('performanceTimingPageLoad', -1); // @desc time it took to fully load the page
+	phantomas.setMetric('performanceTimingTTFB', -1); // @desc time it took to receive the first byte of the first HTTP response
 
 	// measure dom... metrics from the moment HTML response was fully received
 	var responseEndTime = Date.now();
@@ -114,7 +126,8 @@ exports.module = function(phantomas) {
 		var backendTime = parseInt(phantomas.getMetric('timeToFirstByte'), 10),
 			frontendTime = parseInt(phantomas.getMetric('domComplete'), 10),
 			totalTime = backendTime + frontendTime,
-			backendTimePercentage;
+			backendTimePercentage,
+			timing;
 
 		if (totalTime === 0) {
 			return;
@@ -126,5 +139,21 @@ exports.module = function(phantomas) {
 		phantomas.setMetric('timeFrontend', 100 - backendTimePercentage);
 
 		phantomas.log('Performance timing: backend vs frontend time - %d% / %d%', backendTimePercentage, 100 - backendTimePercentage);
+
+		// try to take performance metrics from PerformanceTiming (issue #477)
+		if (!window.performance || ! (window.performance.timing instanceof PerformanceTiming) ) {
+			phantomas.log('performanceTiming: PerformanceTiming API not available!');
+			return;
+		}
+
+		phantomas.log('performanceTiming: data %j', window.performance.timing);
+
+		// @see http://www.stevesouders.com/blog/2014/08/21/resource-timing-practical-tips/
+		timing = window.performance.timing;
+
+		phantomas.setMetric('performanceTimingConnect', timing.connectEnd - timing.connectStart);
+		phantomas.setMetric('performanceTimingDNS', timing.domainLookupEnd - timing.domainLookupStart);
+		phantomas.setMetric('performanceTimingPageLoad', timing.loadEventStart - timing.navigationStart);
+		phantomas.setMetric('performanceTimingTTFB', timing.responseStart - timing.navigationStart);
 	});
 };
