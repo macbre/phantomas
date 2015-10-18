@@ -141,7 +141,7 @@ exports.module = function(phantomas) {
 		phantomas.log('Performance timing: backend vs frontend time - %d% / %d%', backendTimePercentage, 100 - backendTimePercentage);
 
 		// try to take performance metrics from PerformanceTiming (issue #477)
-		if (!window.performance || ! (window.performance.timing instanceof PerformanceTiming) ) {
+		if (!window.performance || !(window.performance.timing instanceof PerformanceTiming)) {
 			phantomas.log('performanceTiming: PerformanceTiming API not available!');
 			return;
 		}
