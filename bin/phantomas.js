@@ -145,7 +145,7 @@ function task(callback) {
 	var child = phantomas(url, options, function(err, data, results) {
 		callback(
 			null, // pass null even in case of an error to continue async.series processing (issue #380)
-			[err && new Error(err), results]
+			[err, results]
 		);
 	});
 
