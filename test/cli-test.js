@@ -18,6 +18,14 @@ function runPhantomasCLI(url, opts, callback) {
 
 // run the test
 vows.describe('CLI command').addBatch({
+	'should return zero exit code when everything is fine': {
+		topic: function() {
+			runPhantomasCLI('http://example.com', '', this.callback);
+		},
+		'should return exit code 0': function(err, stdout) {
+			assert.equal(err, null);
+		}
+	},
 	'should pass error code with loading error': {
 		topic: function() {
 			runPhantomasCLI('http://foo.bar.test', '', this.callback);
