@@ -14,7 +14,8 @@ vows.describe('CommonJS module').addBatch({
 			phantomas(false, this.callback);
 		},
 		'should fail with err #255': function(err, stats) {
-			assert.equal(err, 255);
+			assert.ok(err instanceof Error);
+			assert.strictEqual(err.message, '255');
 		}
 	},
 	'when timed out': {
@@ -24,7 +25,8 @@ vows.describe('CommonJS module').addBatch({
 			}, this.callback);
 		},
 		'should fail with err #252': function(err, stats) {
-			assert.equal(err, 252);
+			assert.ok(err instanceof Error);
+			assert.strictEqual(err.message, '252');
 		}
 	},
 	'for a valid URL': {

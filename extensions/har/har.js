@@ -109,7 +109,8 @@ function createHAR(page, creator) {
 exports.module = function(phantomas) {
 
 	var param = phantomas.getParam('har'),
-		path = '';
+		path = '',
+		timeToLastByte = undefined;
 
 	var page = {
 		origin: undefined,
@@ -170,6 +171,7 @@ exports.module = function(phantomas) {
 	phantomas.on('recv', function(entry, res) {
 		page.resources[res.id].response = res;
 		page.resources[res.id].entry = entry;
+		timeToLastByte = entry.timeToLastByte;
 	});
 
 	phantomas.on('metric', function(name, value) {
@@ -194,6 +196,10 @@ exports.module = function(phantomas) {
 		// If metric 'windowOnLoadTime' hasn't been fired, compute it
 		if (!page.windowOnLoadTime)
 			page.windowOnLoadTime = page.endTime.getTime() - page.startTime.getTime();
+
+		// If metric 'timeToLastByte' hasn't been fired, use last entry
+		if (!page.timeToLastByte)
+			page.timeToLastByte = timeToLastByte;
 
 		page.address = page.origin.url;
 		page.title = page.origin.title;

@@ -32,10 +32,10 @@ exports.module = function(phantomas) {
 				for (i = 0; i < len; i++) {
 					// @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 					offset = images[i].getBoundingClientRect().top;
-					src = images[i].src;
+					src = images[i].getAttribute('src');
 
 					// ignore base64-encoded images
-					if (/^data:/.test(src)) {
+					if (src === null || src === '' || /^data:/.test(src)) {
 						continue;
 					}
 

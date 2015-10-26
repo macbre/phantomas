@@ -480,7 +480,16 @@ phantomas.prototype = {
 
 				// add debug info about pending responses (issue #216)
 				self.on('timeout', function() {
-					self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, Object.keys(requestsUrls).join('>, <'));
+					var timedOutRequests = Object.keys(requestsUrls);
+
+					self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, timedOutRequests.join('>, <'));
+
+					// emit timed out requests as a fake metric (#539)
+					self.results.setMetric('requestsWithTimeout', timedOutRequests.length);
+
+					timedOutRequests.forEach(function(url) {
+						self.results.addOffender('requestsWithTimeout', url);
+					});
 				});
 			});
 		}
@@ -578,12 +587,15 @@ phantomas.prototype = {
 			return;
 		}
 
+		var currentUrl = this.page.url;
+
 		// prevent multiple triggers in PhantomJS
-		if (this.initTriggered) {
-			this.log('onInit: was already triggered');
+		// but only on the same page (issue #550)
+		if (this.initTriggered === currentUrl) {
+			this.log('onInit: was already triggered for <%s>', currentUrl);
 			return;
 		}
-		this.initTriggered = true;
+		this.initTriggered = currentUrl;
 
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {

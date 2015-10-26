@@ -33,16 +33,17 @@
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
-    bodyHTMLSize: 264
-    commentsSize: 12
-    DOMelementsCount: 6
+    bodyHTMLSize: 709
+    commentsSize: 85
+    DOMelementsCount: 11
     DOMelementMaxDepth: 2
     DOMidDuplicated: 0
-    hiddenContentSize: 10
+    hiddenContentSize: 373
     imagesScaledDown: 0
-    imagesWithoutDimensions: 2
+    imagesWithoutDimensions: 3
+    hiddenImages: 3
     nodesWithInlineCSS: 1
-    whiteSpacesSize: 14 # 7 lines of HTML - "\n\t" each
+    whiteSpacesSize: 33
 # document height
 - url: "/document-height.html"
   metrics:
@@ -195,4 +196,10 @@
   metrics:
     globalVariables: 3
     globalVariablesFalsy: 1
+    jsErrors: 0
+# JS redirects (#550)
+- url: "/js-redirect.html"
+  metrics:
+    requests: 2
+    htmlCount: 2
     jsErrors: 0

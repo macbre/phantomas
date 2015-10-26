@@ -94,7 +94,7 @@ exports.module = function(phantomas) {
 
 		phantomas.log('req: <%s>', entry.url);
 
-		phantomas.emitInternal('send', entry, res); // @desc request has been sent
+		phantomas.emit('send', entry, res); // @desc request has been sent
 	});
 
 	phantomas.on('onResourceReceived', function(res) {
@@ -320,11 +320,11 @@ exports.module = function(phantomas) {
 				}
 
 				if (entry.isBase64) {
-					phantomas.emitInternal('base64recv', entry, res); // @desc base64-encoded "response" has been received
+					phantomas.emit('base64recv', entry, res); // @desc base64-encoded "response" has been received
 				}
 				else {
 					phantomas.log('recv: HTTP %d <%s> [%s]', entry.status, entry.url, entry.contentType);
-					phantomas.emitInternal('recv' , entry, res); // @desc response has been received
+					phantomas.emit('recv' , entry, res); // @desc response has been received
 				}
 				break;
 		}

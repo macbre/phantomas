@@ -8,8 +8,15 @@
 <body>
 	<!-- 123 -->
 	<p id="foo" class="bar" style="color: blue">foo</p>
-	<span class="hidden"><b>123</b></span>
+	<span class="hidden">
+		<b>123</b>
+		<img src="/static/mdn.png" width=600 height=529 />
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /><!-- ignore base6-encoded images -->
+		<img src="/static/blank.gif" alt="foo" width=1 height=1 />
+		<img lzld-src="/static/lazyloaded.jpg" width=60 height=40 /><!-- ignore images with no source -->
+	</span>
 	<img src="/static/blank.gif" alt="foo" />
 	<img src="/static/blank.gif" alt="foo" height=1 />
 	<img src="/static/blank.gif" alt="foo" height=1 width=1 />
+	<img class="hidden" src="/static/example.svg" alt="foo" height=467 width=462 />
 </body>
