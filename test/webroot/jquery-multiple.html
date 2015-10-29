@@ -9,13 +9,18 @@
 		// use the old version
 		console.log('jQuery v%s', $.fn.jquery);
 
-		// and now the new one
-		$.noConflict(true); // deep = true - reset window.jQuery
-		console.log('$.noConflict() called...');
-		console.log('jQuery v%s', $.fn.jquery);
-
 		$(function() {
 			console.log('DOM ready!');
 		});
+
+		// and now the new one
+		try {
+			$.noConflict(true); // deep = true - reset window.jQuery
+			console.log('$.noConflict() called...');
+			console.log('jQuery v%s', $.fn.jquery);
+		}
+		catch (e) {
+			console.log(e.message);
+		}
 	</script>
 </body>
