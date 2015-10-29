@@ -102,11 +102,12 @@ exports.module = function(phantomas) {
 		var entry = requests[res.id] || {};
 
 		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
-		if (res.status === null ) {
+		// or empty URL (broken in PhantomJS 2.0.1 (PR #573)
+		if (res.status === null || res.url === '' ) {
 			if (entry.isBlocked) {
 				return;
 			} else if (!entry.isBase64) {
-				phantomas.log('Got a response with no status set: <%s> (%j)', res.url, res);
+				phantomas.log('Got a response with no status or URL set: <%s> (%j)', res.url, res);
 				phantomas.emitInternal('abort', entry, res); // @desc request has been blocked
 			}
 		}
