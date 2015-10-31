@@ -45,15 +45,33 @@ vows.describe('CommonJS module').addBatch({
 	},
 	'promise': {
 		topic: function() {
-			phantomas('http://example.com/').then(function(res) {
+			phantomas('http://example.com/', {'assert-requests': 0}).then(function(res) {
 				this.callback(null, res);
 			}.bind(this));
 		},
 		'should be resolved': function(err, res) {
 			assert.equal(typeof res, 'object');
+
 			assert.equal(typeof res.code, 'number');
+			assert.strictEqual(res.code, 1); // one failed assertion (requests)
+
 			assert.equal(typeof res.results, 'object');
 			assert.equal(typeof res.json, 'object');
+		}
+	},
+	'promise (when timed out)': {
+		topic: function() {
+			phantomas('http://phantomjs.org/', {
+				timeout: 1
+			}).then(
+				function() {},
+				function(code, json, results) {
+					this.callback(null, code);
+				}.bind(this)
+			);
+		},
+		'should fail': function(err, code) {
+			assert.strictEqual(code, 252);
 		}
 	}
 }).export(module);
