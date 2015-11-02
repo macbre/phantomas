@@ -157,7 +157,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 139_
+_Current number of metrics: 135_
 
 Units:
 
@@ -296,13 +296,6 @@ Units:
 * domComplete: time it took to load all page resources, the loading spinner has stopped spinning
 * timeBackend: time to the first byte compared to the total loading time (in %)
 * timeFrontend: time to window on load compared to the total loading time (in %)
-
-> Below metrics are taken from [window.performance.timing](http://www.w3.org/TR/navigation-timing/) and require `gecko` or `webkit2` engine to be used
-
-* performanceTimingConnect: time it took to connect to the server before making the first HTTP request
-* performanceTimingDNS: time it took to resolve the domain before making the first HTTP request
-* performanceTimingPageLoad: time it took to fully load the page
-* performanceTimingTTFB: time it took to receive the first byte of the first HTTP response
 
 ### Repaints
 
