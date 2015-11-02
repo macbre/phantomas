@@ -1031,29 +1031,9 @@
       "desc": "time to window.load compared to the total loading time",
       "unit": "%",
       "module": "windowPerformance"
-    },
-    "performanceTimingConnect": {
-      "desc": "time it took to connect to the server before making the first HTTP request",
-      "unit": "ms",
-      "module": "windowPerformance"
-    },
-    "performanceTimingDNS": {
-      "desc": "time it took to resolve the domain before making the first HTTP request",
-      "unit": "ms",
-      "module": "windowPerformance"
-    },
-    "performanceTimingPageLoad": {
-      "desc": "time it took to fully load the page",
-      "unit": "ms",
-      "module": "windowPerformance"
-    },
-    "performanceTimingTTFB": {
-      "desc": "time it took to receive the first byte of the first HTTP response",
-      "unit": "ms",
-      "module": "windowPerformance"
     }
   },
-  "metricsCount": 177,
+  "metricsCount": 173,
   "modulesCount": 35,
-  "version": "1.12.0"
+  "version": "1.11.0"
 }
