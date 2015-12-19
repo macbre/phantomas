@@ -491,6 +491,9 @@ phantomas.prototype = {
 						self.results.addOffender('requestsWithTimeout', url);
 					});
 				});
+
+				// always register the metric (issue #581)
+				self.results.setMetric('requestsWithTimeout', 0);
 			});
 		}
 
