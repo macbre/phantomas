@@ -834,9 +834,15 @@ phantomas.prototype = {
 
 			ctx = execFile(script, args, null, function(err, stdout, stderr) {
 				var time = Date.now() - start;
+				var result = stderr !== "" ? stderr : stdout;
 
 				if (err || stderr) {
 					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+
+					callback(err, result);
+
+					done();
+					return;
 				} else if (!pid) {
 					self.log('runScript: failed running %s %s!', script, args.join(' '));
 
@@ -848,11 +854,13 @@ phantomas.prototype = {
 
 				// (try to) parse JSON-encoded output
 				try {
-					callback(null, JSON.parse(stdout));
+					result = JSON.parse(stdout);
 				} catch (ex) {
-					self.log('runScript: JSON parsing failed!');
-					callback(stderr, stdout);
+					self.log('runScript: JSON parsing failed! - %s', ex);
+					err = ex;
 				}
+
+				callback(err, result);
 
 				done();
 			});
