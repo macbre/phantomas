@@ -84,15 +84,21 @@ exports.module = function(phantomas) {
 		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
 			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
 
-			if (err !== null && err !== "" && results && results.parsingErrors === 0) {
-				phantomas.log('analyzeCss: sub-process failed!');
+			if (err) {
+				phantomas.log('analyzeCss: sub-process failed! - %s', err);
 
 				// report failed CSS parsing (issue #494(
 				var offender = offenderSrc;
-				if (err.indexOf('CSS parsing failed') > 0) {
-					offender += ' (' + err.trim() + ')';
-				} else if (err.indexOf('Empty CSS was provided') > 0) {
-					offender += ' (Empty CSS was provided)';
+				if (err.message) { // Error object returned
+					if (err.message.indexOf('Unable to parse JSON string') > 0) {
+						offender += ' (analyzeCss output error)';
+					}
+				} else { // Error string returned (stderror)
+					if (err.indexOf('CSS parsing failed') > 0) {
+						offender += ' (' + err.trim() + ')';
+					} else if (err.indexOf('Empty CSS was provided') > 0) {
+						offender += ' (Empty CSS was provided)';
+					}
 				}
 
 				phantomas.incrMetric('cssParsingErrors');
