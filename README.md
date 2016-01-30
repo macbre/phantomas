@@ -104,7 +104,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--debug` run PhantomJS in debug mode
-* `--engine` select engine used to run the phantomas ``[webkit|gecko]`` **experimental**
+* `--engine` select engine used to run the phantomas ``[webkit|webkit2|gecko]`` **experimental**
 * `--colors` forces ANSI colors even when output is piped (e,g. via ``less -r``)
 * `--silent` don't write anything to the console
 * `--progress` shows page loading progress bar (disables verbose mode)
@@ -502,7 +502,9 @@ Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
 ## Engines
 
-phantomas can be run using [PhantomJS](http://phantomjs.org/) 1.x and [2.0](https://github.com/macbre/phantomas/pull/531) (WebKit-powered headless browser) or [SlimerJS](https://slimerjs.org/) (Gecko-based non headless browser, run using [`xfvb`](http://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml)).
+phantomas can be run using [PhantomJS](http://phantomjs.org/) 1.9.x (legacy version) and the latest [2.1.x](https://github.com/macbre/phantomas/issues/488) (WebKit-powered headless browser) or [SlimerJS](https://slimerjs.org/) (Gecko-based non headless browser, run using [`xfvb`](http://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml)).
+
+**PhantomJS 2.1.x is now a default engine**.
 
 You can choose the engine by using either:
 
