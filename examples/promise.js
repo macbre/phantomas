@@ -10,8 +10,7 @@ console.log('phantomas v%s loaded from %s', phantomas.version, phantomas.path);
 
 run = phantomas('http://google.is', {
 	'analyze-css': true,
-	'assert-requests': 1,
-	engine: 'webkit2'
+	'assert-requests': 1
 });
 
 console.log('Running phantomas: pid %d', run.pid);
