@@ -468,8 +468,7 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### StatsD
 * ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
 
-
-##### Aws CloudWatch
+##### AWS CloudWatch
 * ``<accessKeyId>:<secretKey>:<region>:<apiVersion>:<namespace>`` - shorthand for ``--aws-access-key-id``, ``--aws-secret-key``, ``--aws-region``, ``--aws-cloudwatch-api-version`` and ``--aws-cloudwatch-namespace`` (only AccessKeyId and SecretKey are required)
 
 #### StatsD integration
