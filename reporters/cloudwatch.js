@@ -46,7 +46,7 @@ function _pushChunkToCW(cloudwatch, namespace, cloudWatchMetricsData) {
 	};
 
 	cloudwatch.putMetricData(cloudWatchMetricSet, function(err, data) {
-		if (err) deferred.reject(err)
+		if (err) deferred.reject(err);
 		else deferred.resolve(data);
 	});
 
