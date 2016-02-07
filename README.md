@@ -99,7 +99,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 
 #### Parameters
 
-* `--reporter=[json|csv|tap|plain|statsd|elasticsearch]` results reporter aka format (``plain`` is the default one)
+* `--reporter=[json|csv|tap|plain|statsd|elasticsearch|cloudwatch]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
@@ -465,6 +465,13 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### TAP
 * ``no-skip`` - don't print out metrics that were skipped
 
+##### StatsD
+* ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
+
+
+##### Aws CloudWatch
+* ``<accessKeyId>:<secretKey>:<region>:<apiVersion>:<namespace>`` - shorthand for ``--aws-access-key-id``, ``--aws-secret-key``, ``--aws-region``, ``--aws-cloudwatch-api-version`` and ``--aws-cloudwatch-namespace`` (only AccessKeyId and SecretKey are required)
+
 #### StatsD integration
 
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:
@@ -499,6 +506,18 @@ $ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metr
 ```
 
 Note: as ``<port>`` option was skipped a default value will be used (``9200``).
+
+#### Send metrics to AWS CloudWatch
+
+##### Parameters
+
+ * --aws-access-key-id  : a valid aws access key id with CloudWatch rights
+ * --aws-secret-key : a corresponding secret key
+ * --aws-region us-east-1 : aws server region (default to 'us-east-1')
+ * --aws-cloudwatch-api-version : aws CloudWatch Api version (default to 'latest')
+ * --aws-cloudwatch-namespace : CloudWatch metric namespace where all the metrics will be saved (default to phantomas)
+
+Or by using reporter options (``<AWSAccessKeyId>:<AWSSecretKey>:<AWSRegion>:<CloudWatchApiVersion>:<CloudWatchNameSpace>``)
 
 ## Engines
 
