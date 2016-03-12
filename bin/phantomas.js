@@ -172,6 +172,7 @@ async.series(
 	series,
 	function(err, results) {
 		var debug = require('debug')('phantomas:runs'),
+			needDrain,
 			reporter,
 			res;
 
@@ -230,8 +231,17 @@ async.series(
 
 			// reporter returned results, otherwise wait for doneFn to be called by reporter
 			if (typeof res !== 'undefined') {
-				process.stdout.write(res);
-				process.stdout.on('drain', doneFn); // issue #596
+				needDrain = !process.stdout.write(res);
+
+				// If a stream.write(chunk) call returns false, then the 'drain' event will indicate when it is appropriate to begin writing more data to the stream.
+				// @see #596
+				if (needDrain) {
+					debug('Need to wait for stdout to be fully flushed...');
+					process.stdout.on('drain', doneFn);
+				}
+				else {
+					doneFn();
+				}
 			} else {
 				debug('Waiting for the results...');
 			}
