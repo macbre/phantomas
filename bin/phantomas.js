@@ -231,7 +231,7 @@ async.series(
 			// reporter returned results, otherwise wait for doneFn to be called by reporter
 			if (typeof res !== 'undefined') {
 				process.stdout.write(res);
-				doneFn();
+				process.stdout.on('drain', doneFn); // issue #596
 			} else {
 				debug('Waiting for the results...');
 			}
