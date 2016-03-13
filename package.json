@@ -40,7 +40,7 @@
     "phantomjs-prebuilt": "^2.1.5",
     "progress": "~1.1.4",
     "q": "^1.4.1",
-    "slimerjs": "^0.9.6",
+    "slimerjs": "^0.906.1",
     "tap": "^0.7.1",
     "tap-eater": ">=0.0.1",
     "travis-fold": ">=0.1.2"
