@@ -816,6 +816,7 @@ phantomas.prototype = {
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
+			osName = require('system').os.name, // linux / windows
 			start = Date.now(),
 			self = this;
 
@@ -827,6 +828,14 @@ phantomas.prototype = {
 		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
 		args = args || [];
 		script = this.dir + script;
+
+		// Windows fix: escape '&' (#587)
+		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt
+		if (osName === 'windows') {
+			args = args.map(function(arg) {
+				return arg.replace(/&/g, '^$&'); // $& - Inserts the matched substring
+			});
+		}
 
 		// always wait for runScript to finish (issue #417)
 		this.reportQueue.push(function(done) {
