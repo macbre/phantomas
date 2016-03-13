@@ -37,11 +37,10 @@
     "node-statsd": "0.1.1",
     "node-uuid": "~1.4.1",
     "optimist": "0.6.x",
-    "phantomjs": "^1.9.15",
-    "phantomjs-prebuilt": "^2.1.3",
+    "phantomjs-prebuilt": "^2.1.5",
     "progress": "~1.1.4",
     "q": "^1.4.1",
-    "slimerjs": "^0.9.6",
+    "slimerjs": "^0.906.1",
     "tap": "^0.7.1",
     "tap-eater": ">=0.0.1",
     "travis-fold": ">=0.1.2"
@@ -58,7 +57,7 @@
   "bin": "./bin/phantomas.js",
   "preferGlobal": true,
   "scripts": {
-    "test": "PHANTOMAS_ENGINE=webkit vows --spec && PHANTOMAS_ENGINE=webkit2 vows --spec",
+    "test": "PHANTOMAS_ENGINE=webkit vows --spec",
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "jshint --verbose core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
