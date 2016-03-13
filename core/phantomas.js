@@ -833,7 +833,7 @@ phantomas.prototype = {
 		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt
 		if (osName === 'windows') {
 			args = args.map(function(arg) {
-				return arg.replace(/&/g, '^$&'); // $& - Inserts the matched substring
+				return arg.replace(/&/g, '^^^$&'); // $& - Inserts the matched substring
 			});
 		}
 
