@@ -600,6 +600,12 @@ phantomas.prototype = {
 		}
 		this.initTriggered = currentUrl;
 
+		// Another multiple triggers case in PhantomJS (issue #606)
+		if (this.page.url === 'about:blank') {
+			this.log('onInit: webpage.url is about:blank, ignoring');
+			return;
+		}
+
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
 			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
