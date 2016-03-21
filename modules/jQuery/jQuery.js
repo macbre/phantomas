@@ -23,7 +23,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('jQueryDOMWriteReadSwitches'); // @desc number of read operations that follow a series of write operations (will cause repaint and can cause reflow)
 
 	// spy calls to jQuery functions
-	phantomas.once('init', function() {
+	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
 				// read & write DOM operations (issue #436)
