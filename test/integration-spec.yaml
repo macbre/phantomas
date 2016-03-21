@@ -123,6 +123,14 @@
     blockedRequests: 2
     domains: 1
     jsErrors: 0
+# accept main domain in allow-domains
+- url: "/jquery-multiple.html"
+  label: "/jquery-multiple.html (with --allow-domain)"
+  options:
+    "allow-domain": "foo.com"
+  metrics:
+    requests: 2
+    blockedRequests: 2
 # jQuery read & write operations (issue #436)
 - url: "/jquery-reads-writes.html"
   metrics:
