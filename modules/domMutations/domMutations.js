@@ -14,7 +14,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('DOMmutationsRemoves'); // @desc number of <body> node removes
 	phantomas.setMetric('DOMmutationsAttributes'); // @desc number of DOM nodes attributes changes
 
-	phantomas.once('init', function() {
+	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
 				if ('MutationObserver' in window) {
