@@ -133,7 +133,7 @@ exports.module = function(phantomas) {
 				}
 				// add more offenders (#578)
 				else {
-					switch(metricPrefixed) {
+					switch (metricPrefixed) {
 						case 'cssLength':
 						case 'cssRules':
 						case 'cssSelectors':
