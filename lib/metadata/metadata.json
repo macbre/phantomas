@@ -63,6 +63,12 @@
       "unit": "number",
       "module": "ajaxRequests"
     },
+    "synchronousXHR": {
+      "desc": "number of synchronous XMLHttpRequest",
+      "offenders": true,
+      "unit": "number",
+      "module": "ajaxRequests"
+    },
     "windowAlerts": {
       "desc": "number of calls to window.alert",
       "unit": "number",
@@ -1033,7 +1039,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 173,
+  "metricsCount": 174,
   "modulesCount": 35,
-  "version": "1.11.0"
+  "version": "1.14.0"
 }

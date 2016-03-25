@@ -157,7 +157,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 135_
+_Current number of metrics: 136_
 
 Units:
 
@@ -182,6 +182,7 @@ Units:
 ### AJAX requests
 
 * ajaxRequests: number of AJAX requests
+* synchronousXHR: number of XMLHttpRequest that are not asynchronous
 
 ### Assets types
 
