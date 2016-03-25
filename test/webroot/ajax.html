@@ -1,9 +1,9 @@
 <script>
 	var asyncXHR = new XMLHttpRequest();
-	asyncXHR.open("GET", "jquery.html", false);
+	asyncXHR.open("GET", "jquery.html", true);
 	asyncXHR.send();
 
 	var SynchronousXHR = new XMLHttpRequest();
-	SynchronousXHR.open("GET", "inline-css.html", true);
+	SynchronousXHR.open("GET", "inline-css.html", false);
 	SynchronousXHR.send();
 </script>
