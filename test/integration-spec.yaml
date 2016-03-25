@@ -216,3 +216,9 @@
     requests: 2
     htmlCount: 2
     jsErrors: 0
+# synchronous XMLHttpRequest
+- url: "/ajax.html"
+  metrics:
+    ajaxRequests: 2
+    synchronousXHR: 1
+    requestsWithTimeout: 0
