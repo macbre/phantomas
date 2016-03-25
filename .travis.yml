@@ -8,3 +8,6 @@ before_script:
   - sh test/server-start.sh &
   - sleep 1
 script: "npm test && npm run-script lint"
+cache:
+  directories:
+    - node_modules
