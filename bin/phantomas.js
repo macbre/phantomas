@@ -238,8 +238,7 @@ async.series(
 				if (needDrain) {
 					debug('Need to wait for stdout to be fully flushed...');
 					process.stdout.on('drain', doneFn);
-				}
-				else {
+				} else {
 					doneFn();
 				}
 			} else {
