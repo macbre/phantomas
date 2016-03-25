@@ -9,6 +9,8 @@
 
 # DOM operations
 - url: "/dom-operations.html"
+  options:
+    cookie: "bar=foo;domain=url"
   metrics:
     requests: 3
     cssCount: 1
