@@ -218,3 +218,8 @@
     requests: 2
     htmlCount: 2
     jsErrors: 0
+# AJAX requests (#622)
+- url: "/jquery-ajax.html"
+  metrics:
+    requests: 4
+    ajaxRequests: 2
