@@ -8,18 +8,18 @@
 
 //convenience function to hide the dirty import logic
 function _requireReporter(reporterName) {
-  var reporter;
-  var reporterPath = 'phantomas-reporter-' + reporterName;
+	var reporter;
+	var reporterPath = 'phantomas-reporter-' + reporterName;
 
-  try {
-    reporter = require(reporterPath);
-  } catch (ex) {
-    //external reporter doesn't exist yet, try as a "local" reporter
-    reporterPath = '../reporters/' + reporterName;
-    reporter = require(reporterPath);
-  }
+	try {
+		reporter = require(reporterPath);
+	} catch (ex) {
+		//external reporter doesn't exist yet, try as a "local" reporter
+		reporterPath = '../reporters/' + reporterName;
+		reporter = require(reporterPath);
+	}
 
-  return reporter;
+	return reporter;
 }
 
 
@@ -52,7 +52,7 @@ module.exports = function(results, options) {
 	}
 
 	try {
-    reporter = new (_requireReporter(reporterName))(results, reporterOptions, options);
+		reporter = new(_requireReporter(reporterName))(results, reporterOptions, options);
 	} catch (ex) {
 		debug('Failed: %s', ex);
 		throw new Error('Reporter "' + reporterName + '" is not supported!');
