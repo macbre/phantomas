@@ -8,8 +8,8 @@
 
 //convenience function to hide the dirty import logic
 function _requireReporter(reporterName) {
-	var reporter;
-	var reporterPath = 'phantomas-reporter-' + reporterName;
+	var reporter,
+	  reporterPath = 'phantomas-reporter-' + reporterName;
 
 	try {
 		reporter = require(reporterPath);
