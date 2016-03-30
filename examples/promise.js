@@ -25,9 +25,9 @@ then(function(res) {
 	console.log('Number of requests: %d', res.results.getMetric('requests'));
 	console.log('Failed asserts: %j', res.results.getFailedAsserts());
 }).
-fail(function(code) {
-	console.log('Exit code #%d', code);
-	process.exit(code);
+fail(function(res) {
+	console.log('Exit code #%d', res.code);
+	process.exit(res.code);
 }).
 progress(function(progress) {
 	console.log('Loading progress: %d%', progress * 100);

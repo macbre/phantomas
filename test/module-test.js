@@ -67,8 +67,8 @@ vows.describe('CommonJS module').addBatch({
 				timeout: 1
 			}).then(
 				function() {},
-				function(code, json, results) {
-					this.callback(null, code);
+				function(res) {
+					this.callback(null, res.code);
 				}.bind(this)
 			);
 		},
