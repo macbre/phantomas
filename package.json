@@ -39,8 +39,7 @@
     "progress": "~1.1.4",
     "q": "^1.4.1",
     "slimerjs": "^0.906.1",
-    "tap": "^0.7.1",
-    "tap-eater": ">=0.0.1",
+    "tap-producer-macbre": "0.0.3",
     "travis-fold": ">=0.1.2"
   },
   "devDependencies": {
