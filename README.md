@@ -468,9 +468,6 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### StatsD
 * ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
 
-##### AWS CloudWatch
-* ``<accessKeyId>:<secretKey>:<region>:<apiVersion>:<namespace>`` - shorthand for ``--aws-access-key-id``, ``--aws-secret-key``, ``--aws-region``, ``--aws-cloudwatch-api-version`` and ``--aws-cloudwatch-namespace`` (only AccessKeyId and SecretKey are required)
-
 #### StatsD integration
 
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:
@@ -506,17 +503,9 @@ $ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metr
 
 Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
-#### Send metrics to AWS CloudWatch
+### 3rd-party reporters
 
-##### Parameters
-
- * --aws-access-key-id  : a valid aws access key id with CloudWatch rights
- * --aws-secret-key : a corresponding secret key
- * --aws-region us-east-1 : aws server region (default to 'us-east-1')
- * --aws-cloudwatch-api-version : aws CloudWatch Api version (default to 'latest')
- * --aws-cloudwatch-namespace : CloudWatch metric namespace where all the metrics will be saved (default to phantomas)
-
-Or by using reporter options (``<AWSAccessKeyId>:<AWSSecretKey>:<AWSRegion>:<CloudWatchApiVersion>:<CloudWatchNameSpace>``)
+* [AWS CloudWatch](https://github.com/EFF/phantomas-reporter-cloudwatch)
 
 ## Engines
 
