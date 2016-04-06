@@ -34,7 +34,6 @@
     "node-statsd": "0.1.1",
     "node-uuid": "~1.4.1",
     "optimist": "0.6.x",
-    "phantomas-reporter-cloudwatch": "^1.0.1",
     "phantomjs-prebuilt": "^2.1.5",
     "progress": "~1.1.4",
     "slimerjs": "^0.906.1",
