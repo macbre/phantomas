@@ -27,7 +27,6 @@
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.8",
     "async": "^2.0.0-rc.2",
-    "aws-sdk": "^2.2.33",
     "csv-string": "^2.3.0",
     "debug": "^2.2.0",
     "elasticsearch": "^10.1.3",
