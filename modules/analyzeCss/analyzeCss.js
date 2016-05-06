@@ -94,7 +94,7 @@ exports.module = function(phantomas) {
 						offender += ' (analyzeCss output error)';
 					}
 				} else { // Error string returned (stderror)
-					if (err.indexOf('CSS parsing failed') > 0) {
+					if (err.indexOf('CSS parsing failed') > 0 || err.indexOf('is an invalid expression') > 0) {
 						offender += ' (' + err.trim() + ')';
 					} else if (err.indexOf('Empty CSS was provided') > 0) {
 						offender += ' (Empty CSS was provided)';

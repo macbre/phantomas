@@ -852,9 +852,10 @@ phantomas.prototype = {
 				var result = stderr !== "" ? stderr : stdout;
 
 				if (err || stderr) {
-					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+					var errMessage = (err || stderr || 'unknown error').trim();
+					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, errMessage, time);
 
-					callback(err, result);
+					callback(errMessage, result);
 
 					done();
 					return;
