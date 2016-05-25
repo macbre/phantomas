@@ -23,7 +23,6 @@ if (!Function.prototype.bind) {
 // exit codes
 var EXIT_SUCCESS = 0,
 	EXIT_TIMED_OUT = 252,
-	EXIT_CONFIG_FAILED = 253,
 	EXIT_LOAD_FAILED = 254,
 	EXIT_ERROR = 255;
 
