@@ -36,15 +36,15 @@
  * setMetric('cssSelectorsByPseudo') @desc number of pseudo-selectors (e,g. :hover) @optional
  * setMetric('cssSelectorsByTag') @desc number of selectors by tag name @optional
  * setMetric('cssUniversalSelectors') @desc number of selectors trying to match every element (e.g. .foo > *) @optional @offenders
- * setMetric('cssLength') @desc length of CSS source (in bytes) @optional
- * setMetric('cssRules') @desc number of rules (e.g. .foo, .bar { color: red } is counted as one rule) @optional
- * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional
- * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional
+ * setMetric('cssLength') @desc length of CSS source (in bytes) @optional @offenders
+ * setMetric('cssRules') @desc number of rules (e.g. .foo, .bar { color: red } is counted as one rule) @optional @offenders
+ * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional @offenders
+ * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional @offenders
  */
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.4';
+exports.version = '0.5';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
@@ -94,7 +94,7 @@ exports.module = function(phantomas) {
 						offender += ' (analyzeCss output error)';
 					}
 				} else { // Error string returned (stderror)
-					if (err.indexOf('CSS parsing failed') > 0) {
+					if (err.indexOf('CSS parsing failed') > 0 || err.indexOf('is an invalid expression') > 0) {
 						offender += ' (' + err.trim() + ')';
 					} else if (err.indexOf('Empty CSS was provided') > 0) {
 						offender += ' (Empty CSS was provided)';
@@ -130,6 +130,18 @@ exports.module = function(phantomas) {
 
 						phantomas.addOffender(metricPrefixed, msg);
 					});
+				}
+				// add more offenders (#578)
+				else {
+					switch (metricPrefixed) {
+						case 'cssLength':
+						case 'cssRules':
+						case 'cssSelectors':
+						case 'cssDeclarations':
+						case 'cssNotMinified':
+							phantomas.addOffender(metricPrefixed, offenderSrc + ': ' + metrics[metric]);
+							break;
+					}
 				}
 			});
 		});

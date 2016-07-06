@@ -23,7 +23,6 @@ if (!Function.prototype.bind) {
 // exit codes
 var EXIT_SUCCESS = 0,
 	EXIT_TIMED_OUT = 252,
-	EXIT_CONFIG_FAILED = 253,
 	EXIT_LOAD_FAILED = 254,
 	EXIT_ERROR = 255;
 
@@ -600,6 +599,12 @@ phantomas.prototype = {
 		}
 		this.initTriggered = currentUrl;
 
+		// Another multiple triggers case in PhantomJS (issue #606)
+		if (this.page.url === 'about:blank') {
+			this.log('onInit: webpage.url is about:blank, ignoring');
+			return;
+		}
+
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
 			this.tearDown(EXIT_ERROR, 'Scope script injection failed');
@@ -816,6 +821,7 @@ phantomas.prototype = {
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
+			osName = require('system').os.name, // linux / windows
 			start = Date.now(),
 			self = this;
 
@@ -828,6 +834,14 @@ phantomas.prototype = {
 		args = args || [];
 		script = this.dir + script;
 
+		// Windows fix: escape '&' (#587)
+		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt
+		if (osName === 'windows') {
+			args = args.map(function(arg) {
+				return arg.replace(/&/g, '^^^$&'); // $& - Inserts the matched substring
+			});
+		}
+
 		// always wait for runScript to finish (issue #417)
 		this.reportQueue.push(function(done) {
 			var ctx, pid;
@@ -837,9 +851,10 @@ phantomas.prototype = {
 				var result = stderr !== "" ? stderr : stdout;
 
 				if (err || stderr) {
-					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+					var errMessage = (err || stderr || 'unknown error').trim();
+					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, errMessage, time);
 
-					callback(err, result);
+					callback(errMessage, result);
 
 					done();
 					return;

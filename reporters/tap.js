@@ -5,11 +5,11 @@
  *  no-skip - don't print out metrics that were skipped
  *
  * @see http://podwiki.hexten.net/TAP/TAP.html?page=TAP
- * @see https://github.com/isaacs/node-tap
+ * @see https://github.com/macbre/tap-producer
  */
 'use strict';
 
-var Producer = require('tap').Producer;
+var TapProducer = require('tap-producer-macbre');
 
 module.exports = function(results, reporterOptions) {
 	// public API
@@ -63,7 +63,7 @@ module.exports = function(results, reporterOptions) {
 				res.push(entry);
 			});
 
-			return Producer.encode(res, true /* emit yanlish data in TAP */ );
+			return TapProducer.encode(res, true /* emit yanlish data in TAP */ );
 		}
 	};
 };

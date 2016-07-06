@@ -34,7 +34,7 @@ exports.module = function(phantomas) {
 
 		// match whitelist (--allow-domain)
 		if (allowedDomainsRegExp) {
-			if (allowedDomainsRegExp.test(domain)) {
+			if (allowedDomainsRegExp.test(domain) || domain === ourDomain) {
 				blocked = false;
 			} else {
 				blocked = true;
