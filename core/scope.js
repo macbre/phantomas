@@ -153,6 +153,13 @@
 			});
 		}
 
+		function addToAvgMetric(name, value) {
+			sendMsg('addToAvgMetric', {
+				name: name,
+				value: value
+			});
+		}
+
 		function setMarkerMetric(name) {
 			sendMsg('setMarkerMetric', {
 				name: name
@@ -171,6 +178,7 @@
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
 		phantomas.incrMetric = incrMetric;
+		phantomas.addToAvgMetric = addToAvgMetric;
 		phantomas.setMarkerMetric = setMarkerMetric;
 		phantomas.addOffender = addOffender;
 		phantomas.emit = emit;

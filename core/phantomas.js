@@ -20,6 +20,13 @@ if (!Function.prototype.bind) {
 	};
 }
 
+function getAverage(arr) {
+	var sum = arr.reduce(function(a, b) {
+		return a + b;
+	});
+	return sum / arr.length;
+}
+
 // exit codes
 var EXIT_SUCCESS = 0,
 	EXIT_TIMED_OUT = 252,
@@ -107,6 +114,8 @@ var phantomas = function(params) {
 
 	this.results.setGenerator('phantomas v' + this.getVersion());
 	this.results.setUrl(this.url);
+
+	this.metricsAvgStorage = {};
 
 	// allow asserts to be provided via command-line options (#128)
 	Object.keys(this.params).forEach(function(param) {
@@ -238,6 +247,7 @@ phantomas.prototype = {
 			setMetricEvaluate: this.setMetricEvaluate.bind(this),
 			setMarkerMetric: this.setMarkerMetric.bind(this),
 			incrMetric: this.incrMetric.bind(this),
+			addToAvgMetric: this.addToAvgMetric.bind(this),
 			getMetric: this.getMetric.bind(this),
 
 			// offenders
@@ -729,6 +739,10 @@ phantomas.prototype = {
 				this.incrMetric(data.name, data.incr);
 				break;
 
+			case 'addToAvgMetric':
+				this.addToAvgMetric(data.name, data.value);
+				break;
+
 			case 'setMarkerMetric':
 				this.setMarkerMetric(data.name);
 				break;
@@ -783,6 +797,17 @@ phantomas.prototype = {
 	incrMetric: function(name, incr /* =1 */ ) {
 		var currVal = this.getMetric(name) || 0;
 		this.setMetric(name, currVal + (typeof incr === 'number' ? incr : 1));
+	},
+
+	// push a value and update the metric if the current average value
+	addToAvgMetric: function(name, value) {
+		if (typeof this.metricsAvgStorage[name] === 'undefined') {
+			this.metricsAvgStorage[name] = [];
+		}
+
+		this.metricsAvgStorage[name].push(value);
+
+		this.setMetric(name, getAverage(this.metricsAvgStorage[name]));
 	},
 
 	getMetric: function(name) {

@@ -24,13 +24,13 @@
  * setMetric('cssMultiClassesSelectors') @desc number of selectors with multiple classes (e.g. span.foo.bar) @optional @offenders
  * setMetric('cssOldPropertyPrefixes') @desc number of properties with no longer needed vendor prefix, powered by data provided by autoprefixer (e.g. --moz-border-radius) @optional @offenders
  * setMetric('cssQualifiedSelectors') @desc number of qualified selectors (e.g. header#nav, .foo#bar, h1.title) @optional @offenders
- * setMetric('cssSpecificityIdAvg') @desc average specificity for ID @optional
+ * setMetric('cssSpecificityIdAvg') @desc average specificity for ID @optional @offenders
  * setMetric('cssSpecificityIdTotal') @desc total specificity for ID @optional
- * setMetric('cssSpecificityClassAvg') @desc average specificity for class, pseudo-class or attribute @optional
+ * setMetric('cssSpecificityClassAvg') @desc average specificity for class, pseudo-class or attribute @optional @offenders
  * setMetric('cssSpecificityClassTotal') @desc total specificity for class, pseudo-class or attribute @optional
- * setMetric('cssSpecificityTagAvg') @desc average specificity for element @optional
+ * setMetric('cssSpecificityTagAvg') @desc average specificity for element @optional @offenders
  * setMetric('cssSpecificityTagTotal') @desc total specificity for element @optional
- * setMetric('cssSelectorsByAttribute') @desc number of selectors by attribute (e.g. .foo[value=bar]) @optional
+ * setMetric('cssSelectorsByAttribute') @desc [number] number of selectors by attribute (e.g. .foo[value=bar]) @optional
  * setMetric('cssSelectorsByClass') @desc number of selectors by class @optional
  * setMetric('cssSelectorsById') @desc number of selectors by ID @optional
  * setMetric('cssSelectorsByPseudo') @desc number of pseudo-selectors (e,g. :hover) @optional
@@ -40,6 +40,8 @@
  * setMetric('cssRules') @desc number of rules (e.g. .foo, .bar { color: red } is counted as one rule) @optional @offenders
  * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional @offenders
  * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional @offenders
+ * setMetric('cssNotMinified') @desc [number] set to 1 if the provided CSS is not minified @optional @offenders
+ * setMetric('cssSelectorLengthAvg') @desc [number] average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offenders
  */
 /* global document: true, window: true */
 'use strict';
@@ -114,8 +116,13 @@ exports.module = function(phantomas) {
 			Object.keys(metrics).forEach(function(metric) {
 				var metricPrefixed = 'css' + ucfirst(metric);
 
-				// increase metrics
-				phantomas.incrMetric(metricPrefixed, metrics[metric]);
+				if (/Avg$/.test(metricPrefixed)) {
+					// update the average value (see #641)
+					phantomas.addToAvgMetric(metricPrefixed, metrics[metric]);
+				} else {
+					// increase metrics
+					phantomas.incrMetric(metricPrefixed, metrics[metric]);
+				}
 
 				// and add offenders
 				if (typeof offenders[metric] !== 'undefined') {
@@ -139,6 +146,10 @@ exports.module = function(phantomas) {
 						case 'cssSelectors':
 						case 'cssDeclarations':
 						case 'cssNotMinified':
+						case 'cssSelectorLengthAvg':
+						case 'cssSpecificityIdAvg':
+						case 'cssSpecificityClassAvg':
+						case 'cssSpecificityTagAvg':
 							phantomas.addOffender(metricPrefixed, offenderSrc + ': ' + metrics[metric]);
 							break;
 					}

@@ -213,6 +213,7 @@
     "cssSpecificityIdAvg": {
       "desc": "average specificity for ID",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -225,6 +226,7 @@
     "cssSpecificityClassAvg": {
       "desc": "average specificity for class, pseudo-class or attribute",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -237,6 +239,7 @@
     "cssSpecificityTagAvg": {
       "desc": "average specificity for element",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -247,9 +250,9 @@
       "module": "analyzeCss"
     },
     "cssSelectorsByAttribute": {
-      "desc": "number of selectors by attribute (e.g. .foo)",
+      "desc": "number of selectors by attribute (e.g. .foo[value=bar])",
       "optional": true,
-      "unit": "value=bar",
+      "unit": "number",
       "module": "analyzeCss"
     },
     "cssSelectorsByClass": {
@@ -306,6 +309,20 @@
     },
     "cssDeclarations": {
       "desc": "number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red)",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssNotMinified": {
+      "desc": "set to 1 if the provided CSS is not minified",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorLengthAvg": {
+      "desc": "average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5)",
       "optional": true,
       "offenders": true,
       "unit": "number",
@@ -1037,7 +1054,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 173,
+  "metricsCount": 175,
   "modulesCount": 35,
-  "version": "1.14.0"
+  "version": "1.15.1"
 }
