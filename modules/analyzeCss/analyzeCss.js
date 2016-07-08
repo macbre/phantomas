@@ -116,8 +116,13 @@ exports.module = function(phantomas) {
 			Object.keys(metrics).forEach(function(metric) {
 				var metricPrefixed = 'css' + ucfirst(metric);
 
-				// increase metrics
-				phantomas.incrMetric(metricPrefixed, metrics[metric]);
+				if (/Avg$/.test(metricPrefixed)) {
+					// update the average value (see #641)
+					phantomas.addToAvgMetric(metricPrefixed, metrics[metric]);
+				} else {
+					// increase metrics
+					phantomas.incrMetric(metricPrefixed, metrics[metric]);
+				}
 
 				// and add offenders
 				if (typeof offenders[metric] !== 'undefined') {
