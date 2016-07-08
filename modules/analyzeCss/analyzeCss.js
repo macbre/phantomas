@@ -30,7 +30,7 @@
  * setMetric('cssSpecificityClassTotal') @desc total specificity for class, pseudo-class or attribute @optional
  * setMetric('cssSpecificityTagAvg') @desc average specificity for element @optional @offenders
  * setMetric('cssSpecificityTagTotal') @desc total specificity for element @optional
- * setMetric('cssSelectorsByAttribute') @desc number of selectors by attribute (e.g. .foo[value=bar]) @optional
+ * setMetric('cssSelectorsByAttribute') @desc [number] number of selectors by attribute (e.g. .foo[value=bar]) @optional
  * setMetric('cssSelectorsByClass') @desc number of selectors by class @optional
  * setMetric('cssSelectorsById') @desc number of selectors by ID @optional
  * setMetric('cssSelectorsByPseudo') @desc number of pseudo-selectors (e,g. :hover) @optional
@@ -40,8 +40,8 @@
  * setMetric('cssRules') @desc number of rules (e.g. .foo, .bar { color: red } is counted as one rule) @optional @offenders
  * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional @offenders
  * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional @offenders
- * setMetric('cssNotMinified') @desc set to 1 if the provided CSS is not minified @optional @offenders
- * setMetric('cssSelectorLengthAvg') @desc average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offenders
+ * setMetric('cssNotMinified') @desc [number] set to 1 if the provided CSS is not minified @optional @offenders
+ * setMetric('cssSelectorLengthAvg') @desc [number] average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offenders
  */
 /* global document: true, window: true */
 'use strict';

@@ -250,9 +250,9 @@
       "module": "analyzeCss"
     },
     "cssSelectorsByAttribute": {
-      "desc": "number of selectors by attribute (e.g. .foo)",
+      "desc": "number of selectors by attribute (e.g. .foo[value=bar])",
       "optional": true,
-      "unit": "value=bar",
+      "unit": "number",
       "module": "analyzeCss"
     },
     "cssSelectorsByClass": {
@@ -318,14 +318,14 @@
       "desc": "set to 1 if the provided CSS is not minified",
       "optional": true,
       "offenders": true,
-      "unit": "ms",
+      "unit": "number",
       "module": "analyzeCss"
     },
     "cssSelectorLengthAvg": {
       "desc": "average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5)",
       "optional": true,
       "offenders": true,
-      "unit": "ms",
+      "unit": "number",
       "module": "analyzeCss"
     },
     "cssParsingErrors": {
