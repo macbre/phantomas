@@ -99,12 +99,12 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 
 #### Parameters
 
-* `--reporter=[json|csv|tap|plain|statsd|elasticsearch]` results reporter aka format (``plain`` is the default one)
+* `--reporter=[json|csv|tap|plain|statsd|elasticsearch|cloudwatch]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
 * `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
 * `--verbose` writes debug messages to the console
 * `--debug` run PhantomJS in debug mode
-* `--engine` select engine used to run the phantomas ``[webkit|webkit2|gecko]`` **experimental**
+* `--engine` select engine used to run the phantomas ``[webkit|gecko]``
 * `--colors` forces ANSI colors even when output is piped (e,g. via ``less -r``)
 * `--silent` don't write anything to the console
 * `--progress` shows page loading progress bar (disables verbose mode)
@@ -465,6 +465,9 @@ This will omit CSV headers row and add current timestamp as the first column, so
 ##### TAP
 * ``no-skip`` - don't print out metrics that were skipped
 
+##### StatsD
+* ``<host>:<port>:<prefix>`` - shorthand for ``--statsd-host``, ``--statsd-port`` and ``--statsd-prefix`` (you don't need to provide all three options)
+
 #### StatsD integration
 
 Metrics from phantomas run can be sent directly to [StatsD](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) and then graphed using [graphite](http://graphite.wikidot.com/), [graphene](http://jondot.github.io/graphene/) or any other tool of your choice. For instance:
@@ -500,16 +503,20 @@ $ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metr
 
 Note: as ``<port>`` option was skipped a default value will be used (``9200``).
 
+### 3rd-party reporters
+
+* [AWS CloudWatch](https://github.com/EFF/phantomas-reporter-cloudwatch)
+
 ## Engines
 
-phantomas can be run using [PhantomJS](http://phantomjs.org/) 1.9.x (legacy version) and the latest [2.1.x](https://github.com/macbre/phantomas/issues/488) (WebKit-powered headless browser) or [SlimerJS](https://slimerjs.org/) (Gecko-based non headless browser, run using [`xfvb`](http://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml)).
+phantomas can be run using [PhantomJS 2.1.x](https://github.com/macbre/phantomas/issues/488) (WebKit-powered headless browser) or [SlimerJS](https://slimerjs.org/) (Gecko-based non headless browser, run using [`xfvb`](http://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml)).
 
-**PhantomJS 2.1.x is now a default engine**.
+**PhantomJS 2.1.x is a default engine**.
 
 You can choose the engine by using either:
 
-* cli option: ``--engine=[webkit|webkit2|gecko]`` or ``--webkit`` / ``--webkit2`` / ``--gecko``
-* `PHANTOMAS_ENGINE` environmental variable: e.g. `PHANTOMAS_ENGINE=webkit2`
+* cli option: ``--engine=[webkit|gecko]`` or ``--webkit`` / ``--gecko``
+* `PHANTOMAS_ENGINE` environmental variable: e.g. `PHANTOMAS_ENGINE=gecko`
 
 > Please note that **support for SlimerJS is experimental at this point**.
 

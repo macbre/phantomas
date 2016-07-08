@@ -45,7 +45,9 @@ vows.describe('CommonJS module').addBatch({
 	},
 	'promise': {
 		topic: function() {
-			phantomas('http://example.com/', {'assert-requests': 0}).then(function(res) {
+			phantomas('http://example.com/', {
+				'assert-requests': 0
+			}).then(function(res) {
 				this.callback(null, res);
 			}.bind(this));
 		},
@@ -65,8 +67,8 @@ vows.describe('CommonJS module').addBatch({
 				timeout: 1
 			}).then(
 				function() {},
-				function(code, json, results) {
-					this.callback(null, code);
+				function(res) {
+					this.callback(null, res.code);
 				}.bind(this)
 			);
 		},

@@ -286,24 +286,28 @@
     "cssLength": {
       "desc": "length of CSS source (in bytes)",
       "optional": true,
+      "offenders": true,
       "unit": "bytes",
       "module": "analyzeCss"
     },
     "cssRules": {
       "desc": "number of rules (e.g. .foo, .bar { color: red } is counted as one rule)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssSelectors": {
       "desc": "number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssDeclarations": {
       "desc": "number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -515,6 +519,22 @@
       "unit": "px",
       "module": "documentHeight"
     },
+    "domains": {
+      "desc": "number of domains used to fetch the page",
+      "offenders": true,
+      "unit": "number",
+      "module": "domains"
+    },
+    "maxRequestsPerDomain": {
+      "desc": "maximum number of requests fetched from a single domain",
+      "unit": "number",
+      "module": "domains"
+    },
+    "medianRequestsPerDomain": {
+      "desc": "median of number of requests fetched from each domain",
+      "unit": "number",
+      "module": "domains"
+    },
     "commentsSize": {
       "desc": "the size of HTML comments on the page",
       "offenders": true,
@@ -654,22 +674,6 @@
       "unit": "number",
       "module": "domQueries"
     },
-    "domains": {
-      "desc": "number of domains used to fetch the page",
-      "offenders": true,
-      "unit": "number",
-      "module": "domains"
-    },
-    "maxRequestsPerDomain": {
-      "desc": "maximum number of requests fetched from a single domain",
-      "unit": "number",
-      "module": "domains"
-    },
-    "medianRequestsPerDomain": {
-      "desc": "median of number of requests fetched from each domain",
-      "unit": "number",
-      "module": "domains"
-    },
     "eventsBound": {
       "desc": "number of EventTarget.addEventListener calls",
       "offenders": true,
@@ -736,6 +740,18 @@
       "unit": "number",
       "module": "headers"
     },
+    "documentWriteCalls": {
+      "desc": "number of calls to either document.write or document.writeln",
+      "offenders": true,
+      "unit": "number",
+      "module": "javaScriptBottlenecks"
+    },
+    "evalCalls": {
+      "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
+      "offenders": true,
+      "unit": "number",
+      "module": "javaScriptBottlenecks"
+    },
     "jQueryVersion": {
       "desc": "version of jQuery framework (if loaded)",
       "unit": "string",
@@ -788,18 +804,6 @@
       "offenders": true,
       "unit": "number",
       "module": "jQuery"
-    },
-    "documentWriteCalls": {
-      "desc": "number of calls to either document.write or document.writeln",
-      "offenders": true,
-      "unit": "number",
-      "module": "javaScriptBottlenecks"
-    },
-    "evalCalls": {
-      "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
-      "offenders": true,
-      "unit": "number",
-      "module": "javaScriptBottlenecks"
     },
     "jsErrors": {
       "desc": "number of JavaScript errors",
@@ -1035,5 +1039,5 @@
   },
   "metricsCount": 173,
   "modulesCount": 35,
-  "version": "1.11.0"
+  "version": "1.14.0"
 }

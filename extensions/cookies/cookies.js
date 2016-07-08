@@ -4,7 +4,7 @@
 /* global phantom: true */
 'use strict';
 
-exports.version = '1.0';
+exports.version = '1.1';
 
 exports.module = function(phantomas) {
 
@@ -74,7 +74,8 @@ exports.module = function(phantomas) {
 				}
 
 				if (!phantom.addCookie(cookie)) {
-					throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
+					// In PhantomJS 2.1, the addCookie function always returns false (#597).
+					//throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
 				}
 
 				phantomas.log('Cookies: set ' + JSON.stringify(cookie));

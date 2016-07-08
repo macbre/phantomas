@@ -65,15 +65,6 @@ exports.module = function(phantomas) {
 
 		res.headers.forEach(function(header) {
 			entry.requestHeaders[header.name] = header.value;
-
-			switch (header.name.toLowerCase()) {
-				// AJAX requests
-				case 'x-requested-with':
-					if (header.value === 'XMLHttpRequest') {
-						entry.isAjax = true;
-					}
-					break;
-			}
 		});
 
 		parseEntryUrl(entry);

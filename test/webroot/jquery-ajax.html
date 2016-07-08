@@ -1,0 +1,15 @@
+<body>
+	<script src="/static/jquery-2.1.1.min.js"></script>
+	<script>
+		console.log('$.get');
+
+		$.get('/static/style.css', function() {
+			console.log('Ajax: done');
+		});
+
+		console.log('XMLHttpRequest');
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "/static/style.css", true);
+		xhr.send();
+	</script>
+</body>
