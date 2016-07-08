@@ -41,7 +41,7 @@
  * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional @offenders
  * setMetric('cssDeclarations') @desc number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red) @optional @offenders
  * setMetric('cssNotMinified') @desc set to 1 if the provided CSS is not minified @optional @offenders
- * setMetric('cssSelectorLengthAvg') @desc average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offender
+ * setMetric('cssSelectorLengthAvg') @desc average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offenders
  */
 /* global document: true, window: true */
 'use strict';
