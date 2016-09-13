@@ -14,12 +14,12 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 ## Requirements
 
 * [NodeJS](http://nodejs.org)
-* [PhantomJS 1.9+](http://phantomjs.org/)
+* [NPM](https://www.npmjs.com/) 3+
 
 ## Installation
 
 ```
-npm install --global phantomas
+npm install --global --no-optional phantomas phantomjs-prebuilt@^2.1.5
 ```
 
 > This will install the latest version of PhantomJS and add a symlink called ``phantomas`` (pointing to ``./bin/phantomas.js``) to your system's ``PATH``
@@ -522,7 +522,7 @@ You can choose the engine by using either:
 
 ### PhantomJS
 
-All required binaries are installed by npm. No extra work needed here :)
+All required binaries have already been installed by npm. No extra work needed here :)
 
 ### SlimerJS
 
@@ -530,6 +530,12 @@ In order to use SlimerJS install the following Debian/Ubuntu packages:
 
 ```
 sudo aptitude install xvfb libasound2 libgtk2.0-0
+```
+
+You will also need to install the module:
+
+```bash
+npm install --global slimerjs@^0.906.1
 ```
 
 ## For developers
