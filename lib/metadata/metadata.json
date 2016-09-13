@@ -213,6 +213,7 @@
     "cssSpecificityIdAvg": {
       "desc": "average specificity for ID",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -225,6 +226,7 @@
     "cssSpecificityClassAvg": {
       "desc": "average specificity for class, pseudo-class or attribute",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -237,6 +239,7 @@
     "cssSpecificityTagAvg": {
       "desc": "average specificity for element",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -247,9 +250,9 @@
       "module": "analyzeCss"
     },
     "cssSelectorsByAttribute": {
-      "desc": "number of selectors by attribute (e.g. .foo)",
+      "desc": "number of selectors by attribute (e.g. .foo[value=bar])",
       "optional": true,
-      "unit": "value=bar",
+      "unit": "number",
       "module": "analyzeCss"
     },
     "cssSelectorsByClass": {
@@ -286,24 +289,42 @@
     "cssLength": {
       "desc": "length of CSS source (in bytes)",
       "optional": true,
+      "offenders": true,
       "unit": "bytes",
       "module": "analyzeCss"
     },
     "cssRules": {
       "desc": "number of rules (e.g. .foo, .bar { color: red } is counted as one rule)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssSelectors": {
       "desc": "number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar)",
       "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
     "cssDeclarations": {
       "desc": "number of declarations (e.g. .foo, .bar { color: red } is counted as one declaration - color: red)",
       "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssNotMinified": {
+      "desc": "set to 1 if the provided CSS is not minified",
+      "optional": true,
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeCss"
+    },
+    "cssSelectorLengthAvg": {
+      "desc": "average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5)",
+      "optional": true,
+      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -515,6 +536,22 @@
       "unit": "px",
       "module": "documentHeight"
     },
+    "domains": {
+      "desc": "number of domains used to fetch the page",
+      "offenders": true,
+      "unit": "number",
+      "module": "domains"
+    },
+    "maxRequestsPerDomain": {
+      "desc": "maximum number of requests fetched from a single domain",
+      "unit": "number",
+      "module": "domains"
+    },
+    "medianRequestsPerDomain": {
+      "desc": "median of number of requests fetched from each domain",
+      "unit": "number",
+      "module": "domains"
+    },
     "commentsSize": {
       "desc": "the size of HTML comments on the page",
       "offenders": true,
@@ -654,22 +691,6 @@
       "unit": "number",
       "module": "domQueries"
     },
-    "domains": {
-      "desc": "number of domains used to fetch the page",
-      "offenders": true,
-      "unit": "number",
-      "module": "domains"
-    },
-    "maxRequestsPerDomain": {
-      "desc": "maximum number of requests fetched from a single domain",
-      "unit": "number",
-      "module": "domains"
-    },
-    "medianRequestsPerDomain": {
-      "desc": "median of number of requests fetched from each domain",
-      "unit": "number",
-      "module": "domains"
-    },
     "eventsBound": {
       "desc": "number of EventTarget.addEventListener calls",
       "offenders": true,
@@ -736,6 +757,18 @@
       "unit": "number",
       "module": "headers"
     },
+    "documentWriteCalls": {
+      "desc": "number of calls to either document.write or document.writeln",
+      "offenders": true,
+      "unit": "number",
+      "module": "javaScriptBottlenecks"
+    },
+    "evalCalls": {
+      "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
+      "offenders": true,
+      "unit": "number",
+      "module": "javaScriptBottlenecks"
+    },
     "jQueryVersion": {
       "desc": "version of jQuery framework (if loaded)",
       "unit": "string",
@@ -788,18 +821,6 @@
       "offenders": true,
       "unit": "number",
       "module": "jQuery"
-    },
-    "documentWriteCalls": {
-      "desc": "number of calls to either document.write or document.writeln",
-      "offenders": true,
-      "unit": "number",
-      "module": "javaScriptBottlenecks"
-    },
-    "evalCalls": {
-      "desc": "number of calls to eval (either direct or via setTimeout / setInterval)",
-      "offenders": true,
-      "unit": "number",
-      "module": "javaScriptBottlenecks"
     },
     "jsErrors": {
       "desc": "number of JavaScript errors",
@@ -1033,7 +1054,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 173,
+  "metricsCount": 175,
   "modulesCount": 35,
-  "version": "1.11.0"
+  "version": "1.15.1"
 }

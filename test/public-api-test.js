@@ -66,6 +66,7 @@ vows.describe('phantomas public API').addBatch({
 				'setMetricEvaluate',
 				'setMarkerMetric',
 				'incrMetric',
+				'addToAvgMetric',
 				'getMetric',
 				'addOffender',
 				'log',
@@ -173,6 +174,16 @@ vows.describe('phantomas public API').addBatch({
 
 			results.incrMetric('bar', 41);
 			assert.strictEqual(results.getMetric('bar'), 42);
+		},
+		'average metric is correctly calculates': function(results) {
+			results.setMetric('bar', 0);
+
+			results.addToAvgMetric('bar', 1);
+			assert.strictEqual(results.getMetric('bar'), 1);
+
+			results.addToAvgMetric('bar', 0);
+			results.addToAvgMetric('bar', 5);
+			assert.strictEqual(results.getMetric('bar'), 2);
 		},
 	},
 	'parameters': {

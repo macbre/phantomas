@@ -6,11 +6,27 @@
  */
 'use strict';
 
+//convenience function to hide the dirty import logic
+function _requireReporter(reporterName) {
+	var reporter,
+		reporterPath = 'phantomas-reporter-' + reporterName;
+
+	try {
+		reporter = require(reporterPath);
+	} catch (ex) {
+		//external reporter doesn't exist yet, try as a "local" reporter
+		reporterPath = '../reporters/' + reporterName;
+		reporter = require(reporterPath);
+	}
+
+	return reporter;
+}
+
+
 module.exports = function(results, options) {
 	var debug = require('debug')('phantomas:reporter'),
 		reporterName,
 		reporterOptions,
-		reporterPath,
 		reporter,
 		inMultipleMode = false;
 
@@ -35,11 +51,8 @@ module.exports = function(results, options) {
 		inMultipleMode = true;
 	}
 
-	// load the reporter
-	reporterPath = '../reporters/' + reporterName;
-
 	try {
-		reporter = new(require(reporterPath))(results, reporterOptions, options);
+		reporter = new(_requireReporter(reporterName))(results, reporterOptions, options);
 	} catch (ex) {
 		debug('Failed: %s', ex);
 		throw new Error('Reporter "' + reporterName + '" is not supported!');

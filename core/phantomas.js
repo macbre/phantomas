@@ -20,10 +20,16 @@ if (!Function.prototype.bind) {
 	};
 }
 
+function getAverage(arr) {
+	var sum = arr.reduce(function(a, b) {
+		return a + b;
+	});
+	return sum / arr.length;
+}
+
 // exit codes
 var EXIT_SUCCESS = 0,
 	EXIT_TIMED_OUT = 252,
-	EXIT_CONFIG_FAILED = 253,
 	EXIT_LOAD_FAILED = 254,
 	EXIT_ERROR = 255;
 
@@ -108,6 +114,8 @@ var phantomas = function(params) {
 
 	this.results.setGenerator('phantomas v' + this.getVersion());
 	this.results.setUrl(this.url);
+
+	this.metricsAvgStorage = {};
 
 	// allow asserts to be provided via command-line options (#128)
 	Object.keys(this.params).forEach(function(param) {
@@ -239,6 +247,7 @@ phantomas.prototype = {
 			setMetricEvaluate: this.setMetricEvaluate.bind(this),
 			setMarkerMetric: this.setMarkerMetric.bind(this),
 			incrMetric: this.incrMetric.bind(this),
+			addToAvgMetric: this.addToAvgMetric.bind(this),
 			getMetric: this.getMetric.bind(this),
 
 			// offenders
@@ -491,6 +500,9 @@ phantomas.prototype = {
 						self.results.addOffender('requestsWithTimeout', url);
 					});
 				});
+
+				// always register the metric (issue #581)
+				self.results.setMetric('requestsWithTimeout', 0);
 			});
 		}
 
@@ -596,6 +608,12 @@ phantomas.prototype = {
 			return;
 		}
 		this.initTriggered = currentUrl;
+
+		// Another multiple triggers case in PhantomJS (issue #606)
+		if (this.page.url === 'about:blank') {
+			this.log('onInit: webpage.url is about:blank, ignoring');
+			return;
+		}
 
 		// add helper tools into window.__phantomas "namespace"
 		if (!this.page.injectJs(this.dir + 'core/scope.js')) {
@@ -721,6 +739,10 @@ phantomas.prototype = {
 				this.incrMetric(data.name, data.incr);
 				break;
 
+			case 'addToAvgMetric':
+				this.addToAvgMetric(data.name, data.value);
+				break;
+
 			case 'setMarkerMetric':
 				this.setMarkerMetric(data.name);
 				break;
@@ -777,6 +799,17 @@ phantomas.prototype = {
 		this.setMetric(name, currVal + (typeof incr === 'number' ? incr : 1));
 	},
 
+	// push a value and update the metric if the current average value
+	addToAvgMetric: function(name, value) {
+		if (typeof this.metricsAvgStorage[name] === 'undefined') {
+			this.metricsAvgStorage[name] = [];
+		}
+
+		this.metricsAvgStorage[name].push(value);
+
+		this.setMetric(name, getAverage(this.metricsAvgStorage[name]));
+	},
+
 	getMetric: function(name) {
 		return this.results.getMetric(name);
 	},
@@ -813,6 +846,7 @@ phantomas.prototype = {
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
+			osName = require('system').os.name, // linux / windows
 			start = Date.now(),
 			self = this;
 
@@ -825,15 +859,30 @@ phantomas.prototype = {
 		args = args || [];
 		script = this.dir + script;
 
+		// Windows fix: escape '&' (#587)
+		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt
+		if (osName === 'windows') {
+			args = args.map(function(arg) {
+				return arg.replace(/&/g, '^^^$&'); // $& - Inserts the matched substring
+			});
+		}
+
 		// always wait for runScript to finish (issue #417)
 		this.reportQueue.push(function(done) {
 			var ctx, pid;
 
 			ctx = execFile(script, args, null, function(err, stdout, stderr) {
 				var time = Date.now() - start;
+				var result = stderr !== "" ? stderr : stdout;
 
 				if (err || stderr) {
-					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, (err || stderr || 'unknown error').trim(), time);
+					var errMessage = (err || stderr || 'unknown error').trim();
+					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, errMessage, time);
+
+					callback(errMessage, result);
+
+					done();
+					return;
 				} else if (!pid) {
 					self.log('runScript: failed running %s %s!', script, args.join(' '));
 
@@ -845,11 +894,13 @@ phantomas.prototype = {
 
 				// (try to) parse JSON-encoded output
 				try {
-					callback(null, JSON.parse(stdout));
+					result = JSON.parse(stdout);
 				} catch (ex) {
-					self.log('runScript: JSON parsing failed!');
-					callback(stderr, stdout);
+					self.log('runScript: JSON parsing failed! - %s', ex);
+					err = ex;
 				}
+
+				callback(err, result);
 
 				done();
 			});

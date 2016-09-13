@@ -9,6 +9,8 @@
 
 # DOM operations
 - url: "/dom-operations.html"
+  options:
+    cookie: "bar=foo;domain=url"
   metrics:
     requests: 3
     cssCount: 1
@@ -106,6 +108,9 @@
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
   metrics:
+    requests: 4
+    jsCount: 3
+    domains: 2
     jQueryVersion: "1.11.1" # the last loaded version
     jQueryVersionsLoaded: 3
     jQueryOnDOMReadyFunctions: 1
@@ -115,9 +120,19 @@
   options:
     "no-externals": true
   metrics:
+    requests: 2
+    jsCount: 1
     blockedRequests: 2
     domains: 1
-    jsCount: 1
+    jsErrors: 0
+# accept main domain in allow-domains
+- url: "/jquery-multiple.html"
+  label: "/jquery-multiple.html (with --allow-domain)"
+  options:
+    "allow-domain": "foo.com"
+  metrics:
+    requests: 2
+    blockedRequests: 2
 # jQuery read & write operations (issue #436)
 - url: "/jquery-reads-writes.html"
   metrics:
@@ -203,3 +218,8 @@
     requests: 2
     htmlCount: 2
     jsErrors: 0
+# AJAX requests (#622)
+- url: "/jquery-ajax.html"
+  metrics:
+    requests: 4
+    ajaxRequests: 2

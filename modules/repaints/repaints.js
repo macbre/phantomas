@@ -13,7 +13,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('repaints'); // @desc number of repaints of the current document @gecko
 	phantomas.setMetric('firstPaint'); // @desc time it took to perform the first paint @gecko @unreliable
 
-	phantomas.once('init', function() {
+	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
 			(function(phantomas) {
 				// feature detection
