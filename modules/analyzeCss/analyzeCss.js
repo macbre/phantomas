@@ -46,7 +46,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.5';
+exports.version = '0.6';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
@@ -72,7 +72,8 @@ exports.module = function(phantomas) {
 	// run analyze-css "binary" installed by npm
 	function analyzeCss(options) {
 		var isWindows = (require('system').os.name === 'windows'),
-			binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
+			binary = isWindows ? 'analyze-css.cmd' : 'analyze-css',
+			proxy;
 
 		// force JSON output format
 		options.push('--json');
@@ -81,6 +82,17 @@ exports.module = function(phantomas) {
 		if (phantomas.getParam('auth-user') && phantomas.getParam('auth-pass')) {
 			options.push('--auth-user', phantomas.getParam('auth-user'));
 			options.push('--auth-pass', phantomas.getParam('auth-pass'));
+		}
+
+		// HTTP proxy (#500)
+		proxy = phantomas.getParam('proxy', false, 'string');
+
+		if (proxy !== false) {
+			if (proxy.indexOf('http:') < 0) {
+				proxy = 'http://' + proxy; // http-proxy-agent (used by analyze-css) expects a protocol as well
+			}
+
+			options.push('--proxy', proxy);
 		}
 
 		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
