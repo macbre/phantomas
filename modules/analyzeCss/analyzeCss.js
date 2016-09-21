@@ -69,8 +69,9 @@ exports.module = function(phantomas) {
 
 	// run analyze-css "binary" installed by npm
 	function analyzeCss(options) {
-		var isWindows = (require('system').os.name === 'windows'),
-			binary = isWindows ? 'analyze-css.cmd' : 'analyze-css',
+		var system = require('system'),
+			isWindows = (system.os.name === 'windows'),
+			binary = system.env.ANALYZE_CSS_BIN,
 			proxy;
 
 		// force JSON output format
@@ -93,7 +94,7 @@ exports.module = function(phantomas) {
 			options.push('--proxy', proxy);
 		}
 
-		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
+		phantomas.runScript(binary, options, function(err, results) {
 			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
 
 			if (err !== null) {
