@@ -119,13 +119,6 @@
       "unit": "bytes",
       "module": "analyzeCss"
     },
-    "cssComplexSelectors": {
-      "desc": "number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo)",
-      "optional": true,
-      "offenders": true,
-      "unit": "number",
-      "module": "analyzeCss"
-    },
     "cssComplexSelectorsByAttribute": {
       "desc": "number of selectors with complex matching by attribute (e.g. [class$=\"foo\"])",
       "optional": true,
@@ -276,13 +269,6 @@
     "cssSelectorsByTag": {
       "desc": "number of selectors by tag name",
       "optional": true,
-      "unit": "number",
-      "module": "analyzeCss"
-    },
-    "cssUniversalSelectors": {
-      "desc": "number of selectors trying to match every element (e.g. .foo > *)",
-      "optional": true,
-      "offenders": true,
       "unit": "number",
       "module": "analyzeCss"
     },
@@ -1054,7 +1040,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 175,
+  "metricsCount": 173,
   "modulesCount": 35,
-  "version": "1.15.1"
+  "version": "1.16.0"
 }
