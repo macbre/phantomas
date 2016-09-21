@@ -857,7 +857,11 @@ phantomas.prototype = {
 		// execFile(file, args, options, callback)
 		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
 		args = args || [];
-		script = this.dir + script;
+
+		// handle relative paths to binaries
+		if (script.indexOf('/') !== 0) {
+			script = this.dir + script;
+		}
 
 		// Windows fix: escape '&' (#587)
 		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt
