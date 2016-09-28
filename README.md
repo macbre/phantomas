@@ -450,9 +450,6 @@ This will omit CSV headers row and add current timestamp as the first column, so
 * ``timestamp`` - add the current timestamp as the first column
 * ``url`` - add the URL as the first column
 
-##### Elasticsearch
-* ``<host>:<port>:<index>:<type>`` - shorthand for ``--elasticsearch-*`` options
-
 ##### JSON
 * ``pretty`` - emits pretty printed JSON
 
@@ -484,28 +481,12 @@ $ phantomas http://app.net/start -R statsd:stats.app.net:8125:myApp.mainPage.
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
 
-#### Save metrics to Elasticsearch
-
-Metrics from phantomas run can be outputted directly in Elasticsearch :
-
-##### Parameters
-
-* `--elasticsearch-host=[ip]` Elasticsearch instance ip (default : 127.0.0.1)
-* `--elasticsearch-port=[port]` Elasticsearch instance port (default : 9200)
-* `--elasticsearch-index=[index_name]` Name of the index to use
-* `--elasticsearch-type=[type_name]` Name of the document type to use
-
-Or by using reporter options (``<host>:<port>:<index>:<type>``):
-
-```
-$ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metrics
-```
-
-Note: as ``<port>`` option was skipped a default value will be used (``9200``).
-
 ### 3rd-party reporters
 
+> These need to be installed on demand as 3rd party npm packages
+
 * [AWS CloudWatch](https://github.com/EFF/phantomas-reporter-cloudwatch)
+* [elasticsearch](https://github.com/macbre/phantomas-reporter-elasticsearch)
 
 ## Engines
 
