@@ -110,6 +110,32 @@ vows.describe('simple-queue').addBatch({
 		'should be completed when all jobs are done': function(err, called) {
 			assert.equal(called, 3);
 		}
+	},
+	'push() + multiple calls of the same done()': {
+		topic: function() {
+			var q = new Queue(),
+				callbackOneIsCalled = false,
+				callbackTwoIsCalled = false;
+
+
+			q.push(function(done) {
+				callbackOneIsCalled = true;
+				done();
+				done();
+				done();
+			}).
+			push(function(done) {
+				callbackTwoIsCalled = true;
+				done();
+			}).
+			done(function() {
+				this.callback(null, callbackOneIsCalled, callbackTwoIsCalled);
+			}, this);
+		},
+		'should call both callbacks, even though the first callback calls done() multiple times': function(err, callbackOneIsCalled, callbackTwoIsCalled) {
+			assert.equal(callbackOneIsCalled, true);
+			assert.equal(callbackTwoIsCalled, true);
+		}
 	}
 
 }).export(module);
