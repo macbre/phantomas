@@ -1,9 +1,10 @@
 language: node_js
 node_js:
-  - "6"
-  - "5"
-  - "4"
-  - "0.12"
+  - 7
+  - 6
+  - 5
+  - 4
+  - 0.12
 sudo: false
 before_script:
   - sh test/server-start.sh &
