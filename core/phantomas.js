@@ -846,6 +846,7 @@ phantomas.prototype = {
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
+			fs = require('fs'),
 			osName = require('system').os.name, // linux / windows
 			start = Date.now(),
 			self = this;
@@ -858,8 +859,8 @@ phantomas.prototype = {
 		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
 		args = args || [];
 
-		// handle relative paths to binaries
-		if (script.indexOf('/') !== 0) {
+		// handle relative paths to binaries (issue #672)
+		if (!fs.isAbsolute(script)) {
 			script = this.dir + script;
 		}
 
