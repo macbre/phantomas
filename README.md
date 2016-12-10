@@ -101,7 +101,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 
 * `--reporter=[json|csv|tap|plain|statsd|elasticsearch|cloudwatch]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
-* `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
+* `--viewport=[width]x[height]` phantomJS viewport dimensions (1366x768 is the default)
 * `--verbose` writes debug messages to the console
 * `--debug` run PhantomJS in debug mode
 * `--engine` select engine used to run the phantomas ``[webkit|gecko]``
