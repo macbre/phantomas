@@ -48,7 +48,7 @@
   },
   "optionalDependencies": {
     "phantomjs-prebuilt": "^2.1.12",
-    "slimerjs": "^0.906.2"
+    "slimerjs": "^0.10.2"
   },
   "bin": "./bin/phantomas.js",
   "preferGlobal": true,
