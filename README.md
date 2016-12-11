@@ -13,7 +13,7 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 
 ## Requirements
 
-* [NodeJS](http://nodejs.org)
+* [NodeJS](http://nodejs.org) 4+
 * [NPM](https://www.npmjs.com/) 3+
 
 ## Installation
