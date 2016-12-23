@@ -1,0 +1,10 @@
+<body>
+	<script>
+		console.log('Got cookies: ' + document.cookie);
+
+		// for unit tests
+		(function(phantomas) {
+			phantomas.setMetric('cookiesRaw', document.cookie);
+		})(window.__phantomas);
+	</script>
+</body>
