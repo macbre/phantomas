@@ -1,12 +1,7 @@
-phantomas
+phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Build Status](https://api.travis-ci.org/macbre/phantomas.png?branch=devel)](http://travis-ci.org/macbre/phantomas) [![Known Vulnerabilities](https://snyk.io/test/github/macbre/phantomas/badge.svg)](https://snyk.io/test/github/macbre/phantomas)
 =========
 
-![GitHub Logo](http://upload.wikimedia.org/wikipedia/en/a/a5/Fantomas.jpg)
-
 PhantomJS-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
-
-[![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
-[![Build Status](https://api.travis-ci.org/macbre/phantomas.png?branch=devel)](http://travis-ci.org/macbre/phantomas)
 
 [![Download stats](https://nodei.co/npm/phantomas.png?downloads=true&downloadRank=true)](https://nodei.co/npm/phantomas/)
 
