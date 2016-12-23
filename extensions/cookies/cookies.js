@@ -4,11 +4,12 @@
 /* global phantom: true */
 'use strict';
 
-exports.version = '1.1';
+exports.version = '1.2';
 
 exports.module = function(phantomas) {
 
-	var cookiesJar = phantomas.getParam('cookies', [], 'object');
+	var cookiesJar = phantomas.getParam('cookies', [], 'object'),
+		COOKIE_SEPARATOR = '|';
 
 	// setup cookies handling
 	function initCookies() {
@@ -19,37 +20,42 @@ exports.module = function(phantomas) {
 		// constructed cookies from command line.
 
 		// --cookie='bar=foo;domain=url'
-		// for multiple cookies, please use config.json `cookies`.
+		// for multiple cookies, please use pipe-separated string (issue #667)
+		// --cookie='foo=42|test=123'
 		var cookieParam = phantomas.getParam('cookie', false, 'string');
 
 		if (cookieParam !== false) {
-			// Parse cookie. at minimum, need a key=value pair, and a domain.
-			// Domain attr, if unavailble, is created from `phantomas.url` during
-			//  addition to phantomjs in injectCookies function
-			// Full JS cookie syntax is supported.
-			var cookieComponents = cookieParam.split(';'),
-				cookie = {};
+			phantomas.log('Cookies: parsing "cookie" parameter'); // issue #667
 
-			for (var i = 0, len = cookieComponents.length; i < len; i++) {
-				var frag = cookieComponents[i].split('=');
+			cookieParam.split(COOKIE_SEPARATOR).forEach(function(cookieParam) {
+				// Parse cookie. at minimum, need a key=value pair, and a domain.
+				// Domain attr, if unavailble, is created from `phantomas.url` during
+				//  addition to phantomjs in injectCookies function
+				// Full JS cookie syntax is supported.
+				var cookieComponents = cookieParam.split(';'),
+					cookie = {};
 
-				// special case: key-value
-				if (i === 0) {
-					cookie.name = frag[0];
-					cookie.value = frag[1];
+				for (var i = 0, len = cookieComponents.length; i < len; i++) {
+					var frag = cookieComponents[i].split('=');
 
-					// special case: secure
-				} else if (frag[0] === 'secure') {
-					cookie.secure = true;
+					// special case: key-value
+					if (i === 0) {
+						cookie.name = frag[0];
+						cookie.value = frag[1];
 
-					// everything else
-				} else {
-					cookie[frag[0]] = frag[1];
+						// special case: secure
+					} else if (frag[0] === 'secure') {
+						cookie.secure = true;
+
+						// everything else
+					} else {
+						cookie[frag[0]] = frag[1];
+					}
 				}
-			}
 
-			// see injectCookies for validation
-			cookiesJar.push(cookie);
+				// see injectCookies for validation
+				cookiesJar.push(cookie);
+			});
 		}
 	}
 
