@@ -114,7 +114,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
 * `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.6.0 (PhantomJS/1.9.0; linux 64bit)``)
 * `--config=[JSON/YAML config file]` uses JSON or YAML-formatted config file to set parameters
-* `--cookie='bar=foo;domain=url'` document.cookie formatted string for setting a single cookie
+* `--cookie='bar=foo;domain=url'` document.cookie formatted string for setting a single cookie (separate multiple cookies using a pipe, e.g. `--cookie='foo=42;path=/foo|test=123'`)
 * `--cookies-file=[JAR file]` specifies the file name to store the persistent Cookies
 * `--no-externals` block requests to 3rd party domains
 * `--allow-domain=[domain],[domain]` allow requests to given domain(s) - aka whitelist
