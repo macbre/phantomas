@@ -223,3 +223,14 @@
   metrics:
     requests: 4
     ajaxRequests: 2
+# multiple cookies (#597)
+- url: "/cookies.html"
+  options:
+    "cookie": "bar=foo;path=/"
+  metrics:
+    cookiesRaw: "bar=foo"
+- url: "/cookies.html"
+  options:
+    "cookie": "bar=foo;path=/|test=42"
+  metrics:
+    cookiesRaw: "bar=foo; test=42"

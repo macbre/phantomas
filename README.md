@@ -1,19 +1,14 @@
-phantomas
+phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Build Status](https://api.travis-ci.org/macbre/phantomas.png?branch=devel)](http://travis-ci.org/macbre/phantomas) [![Known Vulnerabilities](https://snyk.io/test/github/macbre/phantomas/badge.svg)](https://snyk.io/test/github/macbre/phantomas)
 =========
 
-![GitHub Logo](http://upload.wikimedia.org/wikipedia/en/a/a5/Fantomas.jpg)
-
 PhantomJS-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
-
-[![NPM version](https://badge.fury.io/js/phantomas.png)](http://badge.fury.io/js/phantomas)
-[![Build Status](https://api.travis-ci.org/macbre/phantomas.png?branch=devel)](http://travis-ci.org/macbre/phantomas)
 
 [![Download stats](https://nodei.co/npm/phantomas.png?downloads=true&downloadRank=true)](https://nodei.co/npm/phantomas/)
 
 
 ## Requirements
 
-* [NodeJS](http://nodejs.org)
+* [NodeJS](http://nodejs.org) 4+
 * [NPM](https://www.npmjs.com/) 3+
 
 ## Installation
@@ -101,7 +96,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 
 * `--reporter=[json|csv|tap|plain|statsd|elasticsearch|cloudwatch]` results reporter aka format (``plain`` is the default one)
 * `--timeout=[seconds]` timeout for phantomas run (defaults to 15 seconds)
-* `--viewport=[width]x[height]` phantomJS viewport dimensions (1280x1024 is the default)
+* `--viewport=[width]x[height]` phantomJS viewport dimensions (1366x768 is the default)
 * `--verbose` writes debug messages to the console
 * `--debug` run PhantomJS in debug mode
 * `--engine` select engine used to run the phantomas ``[webkit|gecko]``
@@ -114,7 +109,7 @@ phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-d
 * `--skip-modules=[moduleOne],[moduleTwo]` skip selected modules
 * `--user-agent='Custom user agent'` provide a custom user agent (will default to something similar to ``phantomas/0.6.0 (PhantomJS/1.9.0; linux 64bit)``)
 * `--config=[JSON/YAML config file]` uses JSON or YAML-formatted config file to set parameters
-* `--cookie='bar=foo;domain=url'` document.cookie formatted string for setting a single cookie
+* `--cookie='bar=foo;domain=url'` document.cookie formatted string for setting a single cookie (separate multiple cookies using a pipe, e.g. `--cookie='foo=42;path=/foo|test=123'`)
 * `--cookies-file=[JAR file]` specifies the file name to store the persistent Cookies
 * `--no-externals` block requests to 3rd party domains
 * `--allow-domain=[domain],[domain]` allow requests to given domain(s) - aka whitelist
@@ -450,9 +445,6 @@ This will omit CSV headers row and add current timestamp as the first column, so
 * ``timestamp`` - add the current timestamp as the first column
 * ``url`` - add the URL as the first column
 
-##### Elasticsearch
-* ``<host>:<port>:<index>:<type>`` - shorthand for ``--elasticsearch-*`` options
-
 ##### JSON
 * ``pretty`` - emits pretty printed JSON
 
@@ -484,28 +476,12 @@ $ phantomas http://app.net/start -R statsd:stats.app.net:8125:myApp.mainPage.
 
 will sent metrics to StatsD running on ``stats.app.net:8125`` and prefix them with 'myApp.mainPage'.
 
-#### Save metrics to Elasticsearch
-
-Metrics from phantomas run can be outputted directly in Elasticsearch :
-
-##### Parameters
-
-* `--elasticsearch-host=[ip]` Elasticsearch instance ip (default : 127.0.0.1)
-* `--elasticsearch-port=[port]` Elasticsearch instance port (default : 9200)
-* `--elasticsearch-index=[index_name]` Name of the index to use
-* `--elasticsearch-type=[type_name]` Name of the document type to use
-
-Or by using reporter options (``<host>:<port>:<index>:<type>``):
-
-```
-$ phantomas http://app.net/start -R elasticsearch:es.app.net::app:phantomas_metrics
-```
-
-Note: as ``<port>`` option was skipped a default value will be used (``9200``).
-
 ### 3rd-party reporters
 
+> These need to be installed on demand as 3rd party npm packages
+
 * [AWS CloudWatch](https://github.com/EFF/phantomas-reporter-cloudwatch)
+* [elasticsearch](https://github.com/macbre/phantomas-reporter-elasticsearch)
 
 ## Engines
 

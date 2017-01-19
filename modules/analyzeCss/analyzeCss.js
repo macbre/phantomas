@@ -11,7 +11,6 @@
  * setMetric('cssColors') @desc number of unique colors used in CSS @optional @offenders
  * setMetric('cssComments') @desc number of comments in CSS source @optional @offenders
  * setMetric('cssCommentsLength') @desc length of comments content in CSS source @optional
- * setMetric('cssComplexSelectors') @desc number of complex selectors (consisting of more than three expressions, e.g. header ul li .foo) @optional @offenders
  * setMetric('cssComplexSelectorsByAttribute') @desc  [number] number of selectors with complex matching by attribute (e.g. [class$="foo"]) @optional @offenders
  * setMetric('cssDuplicatedSelectors') @desc number of CSS selectors defined more than once in CSS source @optional @offenders
  * setMetric('cssDuplicatedProperties') @desc number of CSS property definitions duplicated within a selector @optional @offenders
@@ -35,7 +34,6 @@
  * setMetric('cssSelectorsById') @desc number of selectors by ID @optional
  * setMetric('cssSelectorsByPseudo') @desc number of pseudo-selectors (e,g. :hover) @optional
  * setMetric('cssSelectorsByTag') @desc number of selectors by tag name @optional
- * setMetric('cssUniversalSelectors') @desc number of selectors trying to match every element (e.g. .foo > *) @optional @offenders
  * setMetric('cssLength') @desc length of CSS source (in bytes) @optional @offenders
  * setMetric('cssRules') @desc number of rules (e.g. .foo, .bar { color: red } is counted as one rule) @optional @offenders
  * setMetric('cssSelectors') @desc number of selectors (e.g. .foo, .bar { color: red } is counted as two selectors - .foo and .bar) @optional @offenders
@@ -46,7 +44,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.5';
+exports.version = '0.6';
 
 exports.module = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
@@ -71,8 +69,10 @@ exports.module = function(phantomas) {
 
 	// run analyze-css "binary" installed by npm
 	function analyzeCss(options) {
-		var isWindows = (require('system').os.name === 'windows'),
-			binary = isWindows ? 'analyze-css.cmd' : 'analyze-css';
+		var system = require('system'),
+			isWindows = (system.os.name === 'windows'),
+			binary = system.env.ANALYZE_CSS_BIN,
+			proxy;
 
 		// force JSON output format
 		options.push('--json');
@@ -83,7 +83,18 @@ exports.module = function(phantomas) {
 			options.push('--auth-pass', phantomas.getParam('auth-pass'));
 		}
 
-		phantomas.runScript('node_modules/.bin/' + binary, options, function(err, results) {
+		// HTTP proxy (#500)
+		proxy = phantomas.getParam('proxy', false, 'string');
+
+		if (proxy !== false) {
+			if (proxy.indexOf('http:') < 0) {
+				proxy = 'http://' + proxy; // http-proxy-agent (used by analyze-css) expects a protocol as well
+			}
+
+			options.push('--proxy', proxy);
+		}
+
+		phantomas.runScript(binary, options, function(err, results) {
 			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
 
 			if (err !== null) {

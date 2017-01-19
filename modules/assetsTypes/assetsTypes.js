@@ -22,7 +22,7 @@
  */
 'use strict';
 
-exports.version = '0.2';
+exports.version = '1.0';
 
 exports.module = function(phantomas) {
 	['html', 'css', 'js', 'json', 'image', 'video', 'webfont', 'base64', 'other'].forEach(function(key) {
@@ -36,7 +36,7 @@ exports.module = function(phantomas) {
 		phantomas.incrMetric(entry.type + 'Count');
 		phantomas.incrMetric(entry.type + 'Size', size);
 
-		phantomas.addOffender(entry.type + 'Count', entry.url + ' (' + (size / 1024).toFixed(2) + ' kB)');
+		phantomas.addOffender(entry.type + 'Count', entry.url + ' (size: ' + (size / 1024).toFixed(2) + ' kB, latency: ' + entry.timeToFirstByte + ' ms)');
 	});
 
 	phantomas.on('base64recv', function(entry, res) {

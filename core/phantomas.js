@@ -846,6 +846,7 @@ phantomas.prototype = {
 	// tries to parse it's output (assumes JSON formatted output)
 	runScript: function(script, args, callback) {
 		var execFile = require("child_process").execFile,
+			fs = require('fs'),
 			osName = require('system').os.name, // linux / windows
 			start = Date.now(),
 			self = this;
@@ -857,7 +858,11 @@ phantomas.prototype = {
 		// execFile(file, args, options, callback)
 		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
 		args = args || [];
-		script = this.dir + script;
+
+		// handle relative paths to binaries (issue #672)
+		if (!fs.isAbsolute(script)) {
+			script = this.dir + script;
+		}
 
 		// Windows fix: escape '&' (#587)
 		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt

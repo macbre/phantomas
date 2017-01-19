@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "1.16.0",
+  "version": "1.18.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
   "main": "./lib/index.js",
@@ -19,17 +19,16 @@
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=0.10"
+    "node": ">=4.0"
   },
   "dependencies": {
-    "analyze-css": "^0.12.2",
+    "analyze-css": "^0.12.3",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
     "async": "^2.0.1",
     "csv-string": "^2.3.0",
     "debug": "^2.2.0",
-    "elasticsearch": "^11.0.1",
     "js-yaml": "^3.6.1",
     "node-statsd": "0.1.1",
     "node-uuid": "~1.4.1",
@@ -49,7 +48,7 @@
   },
   "optionalDependencies": {
     "phantomjs-prebuilt": "^2.1.12",
-    "slimerjs": "^0.906.2"
+    "slimerjs": "^0.10.2"
   },
   "bin": "./bin/phantomas.js",
   "preferGlobal": true,
