@@ -3,9 +3,6 @@ phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Build Statu
 
 PhantomJS-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
-[![Download stats](https://nodei.co/npm/phantomas.png?downloads=true&downloadRank=true)](https://nodei.co/npm/phantomas/)
-
-
 ## Requirements
 
 * [NodeJS](http://nodejs.org) 4+
