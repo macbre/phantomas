@@ -33,6 +33,7 @@
     "node-statsd": "0.1.1",
     "node-uuid": "~1.4.1",
     "optimist": "0.6.x",
+    "optimist-config-file": "^1.0.0",
     "progress": "~1.1.4",
     "q": "^1.4.1",
     "tap-producer-macbre": "0.0.3",
