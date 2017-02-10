@@ -1,5 +1,5 @@
 # YAML config file
-url: "http://phantomjs.org"
+url: "${URL:-http://phantomjs.org}"
 verbose: true
 reporter: "tap:no-skip"
 "block-domain": "google-analytics.com, amazonaws.com"
@@ -16,4 +16,3 @@ asserts:
   domains: 2
   timeToFirstByte: 600
   httpTrafficCompleted: 1000
-

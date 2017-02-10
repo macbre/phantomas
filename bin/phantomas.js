@@ -12,7 +12,7 @@
 var phantomas = require('..'),
 	async = require('async'),
 	debug = require('debug')('phantomas:cli'),
-	program = require('../lib/optimist-config-file'),
+	program = require('optimist-config-file'),
 	ProgressBar = require('progress'),
 	options = {},
 	runs,
@@ -82,6 +82,9 @@ program
 
 // handle --config (issue #209)
 program.setConfigFile('config');
+
+// handle env variables (issue #685)
+program.setReplacementVars(process.env);
 
 // parse it
 options = program.parse(process.argv);
