@@ -89,6 +89,19 @@ You can measure the performance of your site without requests to 3rd party domai
 phantomas https://github.com/macbre/phantomas --verbose --no-externals --allow-domain .fastly.net
 ```
 
+You can provide phantomas config via JSON or YAML file. We [support environment variables in YAML config files](https://github.com/macbre/phantomas/issues/685) ([the way Docker does](https://docs.docker.com/compose/environment-variables/)].
+
+```
+./bin/phantomas.js --config examples/config.yaml
+URL='https://www.google.is' ./bin/phantomas.js --config examples/config.yaml
+```
+
+An example config file with customizable test URL for various environments (production, staging, sandboxes, ...):
+
+```yaml
+url: "https://${ENV:-prod}.super-fast-app.io"
+```
+
 #### Parameters
 
 * `--reporter=[json|csv|tap|plain|statsd|elasticsearch|cloudwatch]` results reporter aka format (``plain`` is the default one)
