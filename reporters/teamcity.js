@@ -24,6 +24,8 @@ module.exports = function(results, reporterOptions) {
         if (reporterOptions['postfix-url'] === true)
             key = key + '.' + results.getUrl();
 
+        key = key.replace(/'/g, '&apos;');
+
         return "##teamcity[buildStatisticValue key='" + key + "' value='" + value + "']";
     }
 
