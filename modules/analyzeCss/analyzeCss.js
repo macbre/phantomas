@@ -185,10 +185,17 @@ exports.module = function(phantomas) {
 				phantomas.spyEnabled(false, 'looking for inline styles');
 
 				var styles = document.getElementsByTagName('style'),
-					content = [];
+					content = [],
+					type;
 
 				for (var i = 0, len = styles.length; i < len; i++) {
-					content.push(styles[i].textContent);
+					type = styles[i].getAttribute('type') || 'text/css'; // ignore inline <style> tags with type different than text/css (issue #694)
+
+					if (type === 'text/css') {
+						content.push(styles[i].textContent);
+					} else {
+						phantomas.log('analyzeCss: inline <style> tag found with type="%s", ignoring...', type);
+					}
 				}
 
 				phantomas.spyEnabled(true);
