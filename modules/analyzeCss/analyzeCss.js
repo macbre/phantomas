@@ -145,6 +145,10 @@ exports.module = function(phantomas) {
 						if (re.test(msg)) {
 							msg = msg.replace(re, ' ' + offenderSrc + '$&');
 						}
+						// add file url in offenders for cssDuplicatedSelectors (issue #693)
+						else if (metricPrefixed === 'cssDuplicatedSelectors') {
+							msg += ' ' + offenderSrc;
+						}
 
 						phantomas.addOffender(metricPrefixed, msg);
 					});
