@@ -22,7 +22,7 @@
     "node": ">=4.0"
   },
   "dependencies": {
-    "analyze-css": "^0.12.4",
+    "analyze-css": "^0.12.5",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
@@ -32,8 +32,8 @@
     "js-yaml": "^3.8.4",
     "node-statsd": "0.1.1",
     "node-uuid": "~1.4.8",
-    "optimist": "0.6.x",
-    "optimist-config-file": "^1.0.0",
+    "optimist": "^0.6.1",
+    "optimist-config-file": "^1.0.1",
     "progress": "~2.0.0",
     "q": "^1.5.0",
     "tap-producer-macbre": "0.0.3",
