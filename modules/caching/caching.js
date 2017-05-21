@@ -62,7 +62,8 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('cachingUseImmutable'); // @desc number of responses with a long TTL that can benefit from Cache-Control: immutable
 
 	phantomas.on('recv', function(entry, res) {
-		var ttl = getCachingTime(entry.url, entry.headers);
+		var ttl = getCachingTime(entry.url, entry.headers),
+			headerName;
 
 		// static assets
 		if (entry.isImage || entry.isJS || entry.isCSS) {
@@ -75,6 +76,21 @@ exports.module = function(phantomas) {
 			} else if (ttl < 7 * 86400) {
 				phantomas.incrMetric('cachingTooShort');
 				phantomas.addOffender('cachingTooShort', entry.url + ' cached for ' + ttl + ' s');
+			} else {
+				// long TTL, suggest the use of Cache-Control: immutable (issue #683)
+				for (headerName in entry.headers) {
+					var value = entry.headers[headerName];
+
+					if (headerName.toLowerCase() === 'cache-control') {
+						if (/,\s?immutable/.test(value) === false) {
+							phantomas.incrMetric('cachingUseImmutable');
+							phantomas.addOffender('cachingUseImmutable', entry.url + ' cached for ' + ttl + ' s');
+						}
+						else {
+							phantomas.log('caching: Cache-Control: immutable used for <%s>', entry.url);
+						}
+					}
+				}
 			}
 		}
 	});

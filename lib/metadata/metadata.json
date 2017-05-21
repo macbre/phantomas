@@ -487,6 +487,7 @@
     },
     "cachingUseImmutable": {
       "desc": "number of responses with a long TTL that can benefit from Cache-Control: immutable",
+      "offenders": true,
       "unit": "number",
       "module": "caching"
     },
