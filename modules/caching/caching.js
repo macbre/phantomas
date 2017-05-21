@@ -85,8 +85,7 @@ exports.module = function(phantomas) {
 						if (/,\s?immutable/.test(value) === false) {
 							phantomas.incrMetric('cachingUseImmutable');
 							phantomas.addOffender('cachingUseImmutable', entry.url + ' cached for ' + ttl + ' s');
-						}
-						else {
+						} else {
 							phantomas.log('caching: Cache-Control: immutable used for <%s>', entry.url);
 						}
 					}
