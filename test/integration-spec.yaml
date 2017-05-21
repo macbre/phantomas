@@ -67,15 +67,15 @@
   metrics:
     requests: 1
   exitCode: 1 # one assert not met
-# inline styles (#397)
+# inline styles (#397 / #694)
 - url: "/inline-css.html"
   options:
     "analyze-css": true
   metrics:
     requests: 2
-    cssParsingErrors: 0
-    cssInlineStyles: 2
-    cssLength: 106
+    cssParsingErrors: 1
+    cssInlineStyles: 3
+    cssLength: 172
     cssRules: 3
     cssImportants: 1
     DOMqueries: 0
