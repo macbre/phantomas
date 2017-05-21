@@ -73,10 +73,11 @@
     "analyze-css": true
   metrics:
     requests: 2
+    cssDuplicatedSelectors: 1
     cssParsingErrors: 1
     cssInlineStyles: 3
-    cssLength: 172
-    cssRules: 3
+    cssLength: 200
+    cssRules: 4
     cssImportants: 1
     DOMqueries: 0
 # analyze-css fails to parse a file (#404)
