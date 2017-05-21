@@ -31,13 +31,13 @@
     "debug": "^2.6.8",
     "js-yaml": "^3.8.4",
     "node-statsd": "0.1.1",
-    "node-uuid": "~1.4.8",
     "optimist": "^0.6.1",
     "optimist-config-file": "^1.0.1",
     "progress": "~2.0.0",
     "q": "^1.5.0",
     "tap-producer-macbre": "0.0.3",
-    "travis-fold": ">=0.1.2"
+    "travis-fold": ">=0.1.2",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "glob": "^7.1.2",
