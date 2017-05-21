@@ -37,7 +37,8 @@
     "progress": "~2.0.0",
     "q": "^1.5.0",
     "tap-producer-macbre": "0.0.3",
-    "travis-fold": ">=0.1.2"
+    "travis-fold": ">=0.1.2",
+    "snyk": "^1.30.1"
   },
   "devDependencies": {
     "glob": "^7.1.2",
@@ -58,11 +59,14 @@
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "jshint --verbose core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
-    "metadata": "DEBUG=* node lib/metadata/generate.js"
+    "metadata": "DEBUG=* node lib/metadata/generate.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "jshintConfig": {
     "node": true,
     "-W020": false,
     "-W030": false
-  }
+  },
+  "snyk": true
 }
