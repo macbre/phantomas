@@ -162,7 +162,7 @@ Only ``plain`` (the default one) and ``json`` reporters are currently supported 
 
 ## Metrics
 
-_Current number of metrics: 135_
+_Current number of metrics: 136_
 
 Units:
 
@@ -374,6 +374,7 @@ Units:
 * cachingTooShort: responses with too short (less than a week) caching time
 * cachingDisabled: responses with caching disabled (`max-age=0`)
 * oldCachingHeaders: responses with old, HTTP 1.0 caching headers (``Expires`` and ``Pragma``)
+* cachingUseImmutable: responses with a long TTL that can benefit from [`Cache-Control: immutable`](https://hacks.mozilla.org/2017/01/using-immutable-caching-to-speed-up-the-web/)
 
 ### Time to first asset
 
