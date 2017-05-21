@@ -59,6 +59,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('cachingDisabled'); // @desc number of responses with caching disabled (max-age=0)
 
 	phantomas.setMetric('oldCachingHeaders');
+	phantomas.setMetric('cachingUseImmutable'); // @desc number of responses with a long TTL that can benefit from Cache-Control: immutable
 
 	phantomas.on('recv', function(entry, res) {
 		var ttl = getCachingTime(entry.url, entry.headers);

@@ -485,6 +485,11 @@
       "unit": "number",
       "module": "caching"
     },
+    "cachingUseImmutable": {
+      "desc": "number of responses with a long TTL that can benefit from Cache-Control: immutable",
+      "unit": "number",
+      "module": "caching"
+    },
     "consoleMessages": {
       "desc": "number of calls to console.* functions",
       "unit": "number",
@@ -1040,7 +1045,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 173,
+  "metricsCount": 174,
   "modulesCount": 35,
-  "version": "1.16.0"
+  "version": "1.18.0"
 }
