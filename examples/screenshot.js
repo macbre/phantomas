@@ -19,7 +19,7 @@ if (typeof url !== 'string') {
 
 run = phantomas(url, {
 	'screenshot': true
-		//'screenshot': __dirname + '/screenshot.png'
+	//'screenshot': __dirname + '/screenshot.png'
 });
 
 // handle the promise
