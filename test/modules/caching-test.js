@@ -48,9 +48,10 @@ addBatch({
 			}
 		}).report();
 	}, {
-		'cachingTooShort': 1
+		'cachingTooShort': 1,
+		'cachingUseImmutable': 0,
 	}),
-	'caching not too short': mock.getContext('caching', function(phantomas) {
+	'caching not too short (but without immutable)': mock.getContext('caching', function(phantomas) {
 		return phantomas.recv({
 			isImage: true,
 			headers: {
@@ -58,7 +59,19 @@ addBatch({
 			}
 		}).report();
 	}, {
-		'cachingTooShort': 0
+		'cachingTooShort': 0,
+		'cachingUseImmutable': 1,
+	}),
+	'caching not too short (and use immutable)': mock.getContext('caching', function(phantomas) {
+		return phantomas.recv({
+			isImage: true,
+			headers: {
+				'Cache-Control': 'max-age=2592000, immutable' // 30 days
+			}
+		}).report();
+	}, {
+		'cachingTooShort': 0,
+		'cachingUseImmutable': 0,
 	}),
 }).
 export(module);
