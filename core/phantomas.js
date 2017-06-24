@@ -439,7 +439,7 @@ phantomas.prototype = {
 		this.log('Viewport set to %d x %d', this.page.viewportSize.width, this.page.viewportSize.height);
 
 		if (typeof phantom !== 'undefined') {
-			this.log('phantom.version: %j (%s)', phantom.version);
+			this.log('phantom.version: %j', phantom.version);
 			this.log('phantom user agent: %s', phantom.defaultPageSettings.userAgent);
 		}
 
