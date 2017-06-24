@@ -438,6 +438,11 @@ phantomas.prototype = {
 		this.log('Using %s as user agent', this.page.settings.userAgent);
 		this.log('Viewport set to %d x %d', this.page.viewportSize.width, this.page.viewportSize.height);
 
+		if (typeof phantom !== 'undefined') {
+			this.log('phantom.version: %j (%s)', phantom.version);
+			this.log('phantom user agent: %s', phantom.defaultPageSettings.userAgent);
+		}
+
 		// bind basic events
 		this.page.onInitialized = this.proxy(this.onInitialized);
 		this.page.onLoadStarted = this.proxy(this.onLoadStarted);
