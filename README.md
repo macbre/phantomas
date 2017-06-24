@@ -11,12 +11,12 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 ## Installation
 
 ```
-npm install --global --no-optional phantomas phantomjs-prebuilt@^2.1.5
+npm install --global --no-optional phantomas phantomjs-prebuilt@macbre/phantomjs2-npm#v2.5.0-dev
 ```
 
-> This will install the latest version of PhantomJS and add a symlink called ``phantomas`` (pointing to ``./bin/phantomas.js``) to your system's ``PATH``
+> This will install [the latest version of PhantomJS](https://github.com/macbre/phantomjs-static-2.5/releases/tag/v2.5-beta) and add a symlink called ``phantomas`` (pointing to ``./bin/phantomas.js``) to your system's ``PATH``
 
-You may need to install libfontconfig by running ``sudo apt-get install libfontconfig1``.
+You may need to install libfontconfig and libjpeg8 by running ``sudo apt-get install libfontconfig1 libjpeg8``.
 
 ### Development version
 
