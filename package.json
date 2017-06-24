@@ -48,7 +48,7 @@
     "vows": "^0.7.0"
   },
   "optionalDependencies": {
-    "phantomjs-prebuilt": "^2.1.14",
+    "phantomjs-prebuilt": "macbre/phantomjs2-npm#v2.5.0-dev",
     "slimerjs": "^0.10.3"
   },
   "bin": "./bin/phantomas.js",
