@@ -131,6 +131,7 @@ url: "https://${ENV:-prod}.super-fast-app.io"
 * `--film-strip` register film strip when page is loading **experimental**
 * `--film-strip-dir=[dir path]` folder path to output film strip (default is ``./filmstrip`` directory)
 * `--film-strip-prefix` film strip files name prefix (defaults to ``screenshot``)
+* `--film-strip-zoom-factor` film strip zoom factor (defaults to ``0.5``)
 * `--page-source` save page source to file **experimental**
 * `--page-source-dir=[dir path]` folder path to output page source (default is ``./html`` directory) **experimental**
 * `--assert-[metric-name]=value` assert that given metric should be less or equal the value

@@ -25,7 +25,7 @@ exports.module = function(phantomas) {
 	var filmStripOutputDir = phantomas.getParam('film-strip-dir', 'filmstrip', 'string').replace(/\/+$/, ''),
 		filmStripPrefix = phantomas.getParam('film-strip-prefix', 'screenshot', 'string').replace(/[^a-z0-9\-]+/ig, '-');
 
-	var zoomFactor = 0.5;
+	var zoomFactor = phantomas.getParam('film-strip-zoom-factor', 0.5);
 	phantomas.setZoom(zoomFactor);
 
 	phantomas.log('filmStrip: film strip will be stored as %s/%s-*.png files (zoom: %d)', filmStripOutputDir, filmStripPrefix, zoomFactor);
