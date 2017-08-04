@@ -235,3 +235,7 @@
     "cookie": "bar=foo;path=/|test=42"
   metrics:
     cookiesRaw: "bar=foo; test=42"
+# local storage (#710)
+- url: "/local-storage.html"
+  metrics:
+    localStorageEntries: 2

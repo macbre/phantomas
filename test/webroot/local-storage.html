@@ -1,0 +1,11 @@
+<body>
+	<script>
+		var storage = window.localStorage;
+
+		storage.setItem('foo', 'bar');
+		storage.setItem('foo', 42);
+		storage.setItem('test', 'bar');
+
+		console.log(Object.keys(window.localStorage));
+	</script>
+</body>
