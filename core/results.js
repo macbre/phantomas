@@ -88,7 +88,7 @@ module.exports = function(data) {
 			return typeof asserts[metric] !== 'undefined';
 		},
 		getAssertion: function(metric) {
-			return asserts[metric];
+			return this.hasAssertion(metric) ? asserts[metric] : undefined;
 		},
 
 		// assertions

@@ -34,7 +34,7 @@ exports.module = function(phantomas) {
 			metricName = '';
 
 		// report only the first asset of supported type
-		if ((types.indexOf(type) === -1) || (hasReceived[type] === true)) {
+		if ((types.indexOf(type) === -1) || (typeof hasReceived[type] !== 'undefined')) {
 			return;
 		}
 
