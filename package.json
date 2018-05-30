@@ -26,8 +26,8 @@
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
-    "async": "^2.4.0",
-    "csv-string": "^3.1.2",
+    "async": "^2.6.1",
+    "csv-string": "^3.1.3",
     "debug": "^3.1.0",
     "js-yaml": "^3.11.0",
     "node-statsd": "0.1.1",
@@ -48,7 +48,7 @@
     "vows": "^0.7.0"
   },
   "optionalDependencies": {
-    "phantomjs-prebuilt": "macbre/phantomjs2-npm#v2.5.0-dev",
+    "phantomjs-prebuilt": "github:macbre/phantomjs2-npm#653f3ea49014f9a5a749d0670a484defcdeb209b",
     "slimerjs": "^0.10.3"
   },
   "bin": "./bin/phantomas.js",
