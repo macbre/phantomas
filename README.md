@@ -11,7 +11,7 @@ PhantomJS-based modular web performance metrics collector. And why phantomas? We
 ## Installation
 
 ```
-npm install --global --no-optional phantomas phantomjs-prebuilt@macbre/phantomjs2-npm#v2.5.0-dev
+npm install --global --no-optional phantomas phantomjs-prebuilt-macbre
 ```
 
 > This will install [the latest version of PhantomJS](https://github.com/macbre/phantomjs-static-2.5/releases/tag/v2.5-beta) and add a symlink called ``phantomas`` (pointing to ``./bin/phantomas.js``) to your system's ``PATH``
