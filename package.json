@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "1.20.0",
+  "version": "1.20.1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
   "main": "./lib/index.js",
