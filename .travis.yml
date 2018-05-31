@@ -3,10 +3,7 @@ language: node_js
 dist: trusty
 node_js:
   - 8
-  - 7
   - 6
-  - 5
-  - 4
 sudo: false
 before_script:
   - sh test/server-start.sh &
