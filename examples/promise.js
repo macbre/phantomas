@@ -19,11 +19,9 @@ const promise = phantomas('http://google.is', {
 
 // handle the promise
 promise.
-	then(res => {
-		console.log('Resolved', res);
-
-		console.log('Number of requests: %d', res.results.getMetric('requests'));
-		console.log('Failed asserts: %j', res.results.getFailedAsserts());
+	then(results => {
+		console.log('Number of requests: %d', results.getMetric('requests'));
+		console.log('Failed asserts: %j', results.getFailedAsserts());
 	}).
 	catch(res => {
 		console.error(res);
