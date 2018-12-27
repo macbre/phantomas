@@ -12,14 +12,14 @@ const promise = phantomas('http://google.is', {
 	'assert-requests': 1
 });
 
-console.log('Results: %s', promise);
+//console.log('Results: %s', promise);
 
 // metrics metadata
-console.log('Number of available metrics: %d', phantomas.metadata.metricsCount);
+//console.log('Number of available metrics: %d', phantomas.metadata.metricsCount);
 
 // handle the promise
 promise.
-	then(function(res) {
+	then(res => {
 		console.log('Resolved: %s', res);
 		/**
 		console.log('Exit code: %d', res.code);
@@ -27,22 +27,24 @@ promise.
 		console.log('Failed asserts: %j', res.results.getFailedAsserts());
 		**/
 	}).
-	catch(function(res) {
+	catch(res => {
 		console.error(res);
 		console.log('Error code #%d', res.code);
 		process.exit(res.code);
 	});
 
 // events handling
-promise.on('milestone', function(milestone) {
+//promise.on('init', (browser, page) => console.log('Init', browser, page));
+
+promise.on('milestone', milestone => {
 	console.log('Milestone reached: %s', milestone);
 });
 
-promise.on('recv', function(response) {
+promise.on('recv', response => {
 	console.log('Response #%d: %s %s [HTTP %d]', response.id, response.method, response.url, response.status);
 });
 
 // including the custom once emitted by phantomas modules
-promise.on('domQuery', function(type, query) {
+promise.on('domQuery', (type, query) => {
 	console.log('DOM query by %s - "%s"', type, query);
 });
