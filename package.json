@@ -42,6 +42,7 @@
   },
   "jshintConfig": {
     "node": true,
+    "esversion": 6,
     "-W020": false,
     "-W030": false
   }
