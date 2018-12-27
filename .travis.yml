@@ -4,7 +4,6 @@ dist: trusty
 node_js:
   - 10
   - 8
-  - 6
 sudo: false
 before_script:
   - sh test/server-start.sh &
