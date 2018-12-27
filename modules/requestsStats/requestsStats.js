@@ -12,11 +12,9 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
 var Stats = require('../../lib/fast-stats').Stats;
 
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var stack = {};
 
 	// adds given entry under the "type" if given check function returns true
