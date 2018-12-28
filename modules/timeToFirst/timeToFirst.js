@@ -7,9 +7,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	function capitalize(txt) {
 		return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 	}

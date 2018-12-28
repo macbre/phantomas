@@ -7,9 +7,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var lastUrl;
 
 	phantomas.setMetric('jQueryVersion', ''); // @desc version of jQuery framework (if loaded) [string]
@@ -21,6 +19,8 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('jQueryDOMReads'); // @desc number of DOM read operations
 	phantomas.setMetric('jQueryDOMWrites'); // @desc number of DOM write operations
 	phantomas.setMetric('jQueryDOMWriteReadSwitches'); // @desc number of read operations that follow a series of write operations (will cause repaint and can cause reflow)
+
+	return; // TODO
 
 	// spy calls to jQuery functions
 	phantomas.on('init', function() {

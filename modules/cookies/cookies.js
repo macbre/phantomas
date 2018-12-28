@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// monitor cookies in HTTP headers
 	var Collection = require('../../lib/collection'),
 		cookiesDomains = new Collection();
@@ -15,6 +13,8 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('domainsWithCookies'); // @desc number of domains with cookies set
 	phantomas.setMetric('documentCookiesLength'); // @desc length of document.cookie
 	phantomas.setMetric('documentCookiesCount'); //@desc number of cookies in document.cookie
+
+	return; // TODO
 
 	phantomas.on('send', function(entry, res) {
 		res.headers.forEach(function(header) {

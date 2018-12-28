@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var closedConnectionHosts = {};
 
 	phantomas.setMetric('closedConnections'); // @desc number of requests not keeping the connection alive and slowing down the next request

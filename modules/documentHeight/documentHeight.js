@@ -4,10 +4,10 @@
 /* global document: true */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('documentHeight'); // @desc the page height [px]
+
+	return; // TODO
 
 	phantomas.on('report', function() {
 		phantomas.setMetricEvaluate('documentHeight', function() {

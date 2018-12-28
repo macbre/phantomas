@@ -5,9 +5,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var ourDomain = false,
 
 		// --no-externals

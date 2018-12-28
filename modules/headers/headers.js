@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('headersCount'); // @desc number of requests and responses headers
 	phantomas.setMetric('headersSentCount'); // @desc number of headers sent in requests
 	phantomas.setMetric('headersRecvCount'); // @desc number of headers received in responses

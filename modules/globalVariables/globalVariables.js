@@ -4,11 +4,11 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.3';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('globalVariables'); // @desc number of JS globals variables @offenders
 	phantomas.setMetric('globalVariablesFalsy'); // @desc number of JS globals variables with falsy value @offenders
+
+	return; // TODO
 
 	phantomas.on('report', function() {
 		phantomas.evaluate(function() {

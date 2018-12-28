@@ -3,11 +3,9 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
 var Stats = require('../../lib/fast-stats').Stats;
 
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var Collection = require('../../lib/collection'),
 		domains = new Collection();
 

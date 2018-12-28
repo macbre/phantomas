@@ -7,9 +7,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// times below are calculated relative to performance.timing.responseEnd (#117)
 	phantomas.setMetric('domInteractive'); // @desc time it took to parse the HTML and construct the DOM
 	phantomas.setMetric('domContentLoaded'); // @desc time it took to construct both DOM and CSSOM, no stylesheets that are blocking JavaScript execution (i.e. onDOMReady)
@@ -19,6 +17,8 @@ exports.module = function(phantomas) {
 	// backend vs frontend time
 	phantomas.setMetric('timeBackend'); // @desc time to the first byte compared to the total loading time [%]
 	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
+
+	return; // TODO
 
 	// measure dom... metrics from the moment HTML response was fully received
 	var responseEndTime = Date.now();

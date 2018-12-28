@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('redirects'); // @desc number of HTTP redirects (either 301, 302 or 303)
 	phantomas.setMetric('redirectsTime'); // @desc time it took to send and receive redirects
 

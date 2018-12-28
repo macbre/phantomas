@@ -6,13 +6,13 @@
 /* global window: true, document: true, MutationObserver: true */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// SlimerJS only metrics
 	phantomas.setMetric('DOMmutationsInserts'); // @desc number of <body> node inserts
 	phantomas.setMetric('DOMmutationsRemoves'); // @desc number of <body> node removes
 	phantomas.setMetric('DOMmutationsAttributes'); // @desc number of DOM nodes attributes changes
+
+	return; // TODO
 
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {

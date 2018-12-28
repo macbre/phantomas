@@ -4,10 +4,10 @@
 /* global window: true */
 'use strict';
 
-exports.version = '0.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('ajaxRequests'); // @desc number of AJAX requests
+
+	return; // TODO
 
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {

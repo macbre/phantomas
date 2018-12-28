@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('requestsToFirstPaint'); // @desc number of HTTP requests it took to make the first paint @gecko
 	phantomas.setMetric('domainsToFirstPaint'); // @desc number of domains used to make the first paint @offenders @gecko @offenders
 	phantomas.setMetric('requestsToDomContentLoaded'); // @desc number of HTTP requests it took to make the page reach DomContentLoaded state

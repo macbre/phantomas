@@ -44,9 +44,7 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.6';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	if (!phantomas.getParam('analyze-css')) {
 		phantomas.log('To enable CSS in-depth metrics please run phantomas with --analyze-css option');
 		return;

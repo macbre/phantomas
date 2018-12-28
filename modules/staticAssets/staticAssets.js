@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.5';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var SIZE_THRESHOLD = 2 * 1024;
 
 	// count requests for each asset

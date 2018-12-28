@@ -4,9 +4,7 @@
 /* global Element: true, Document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
 	phantomas.setMetric('DOMqueriesWithoutResults'); // @desc number of DOM queries that returned nothing @offenders
 	phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
@@ -16,6 +14,8 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
 	phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of DOM queries called more than once
 	phantomas.setMetric('DOMqueriesAvoidable'); // @desc number of repeated uses of a duplicated query 
+
+	return; // TODO
 
 	// fake native DOM functions
 	phantomas.on('init', function() {

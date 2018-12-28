@@ -7,11 +7,11 @@
 /* global window: true */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('repaints'); // @desc number of repaints of the current document @gecko
 	phantomas.setMetric('firstPaint'); // @desc time it took to perform the first paint @gecko @unreliable
+
+	return; // TODO
 
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {

@@ -6,10 +6,10 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('lazyLoadableImagesBelowTheFold'); // @desc number of images displayed below the fold that can be lazy-loaded
+
+	return; // TODO
 
 	phantomas.on('report', function() {
 		phantomas.log('lazyLoadableImages: analyzing which images can be lazy-loaded...');

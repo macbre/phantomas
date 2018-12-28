@@ -4,9 +4,7 @@
 /* global document: true, Node: true, window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 
 	// total length of HTML comments (including <!-- --> brackets)
 	phantomas.setMetric('commentsSize'); // @desc the size of HTML comments on the page @offenders
@@ -25,6 +23,8 @@ exports.module = function(phantomas) {
 	// TODO: move to a separate module
 	phantomas.setMetric('imagesScaledDown'); // @desc number of <img> nodes that have images scaled down in HTML @offenders
 	phantomas.setMetric('imagesWithoutDimensions'); // @desc number of <img> nodes without both width and height attribute @offenders
+
+	return; // TODO
 
 	// keep the track of SVG graphics (#479)
 	var svgResources = [];

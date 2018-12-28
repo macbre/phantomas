@@ -5,9 +5,7 @@
  */
 'use strict';
 
-exports.version = '0.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var cacheControlRegExp = /max-age=(\d+)/;
 
 	function getCachingTime(url, headers) {

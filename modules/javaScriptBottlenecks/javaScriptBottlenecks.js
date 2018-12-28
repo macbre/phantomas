@@ -10,11 +10,11 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('documentWriteCalls'); //@desc number of calls to either document.write or document.writeln @offenders
 	phantomas.setMetric('evalCalls'); // @desc number of calls to eval (either direct or via setTimeout / setInterval) @offenders
+
+	return; // TODO
 
 	// spy calls to eval only when requested (issue #467)
 	var spyEval = phantomas.getParam('spy-eval') === true;

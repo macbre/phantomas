@@ -4,10 +4,10 @@
 /* global window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('localStorageEntries'); // @desc number of entries in local storage
+
+	return; // TODO
 
 	phantomas.on('report', function() {
 		phantomas.evaluate(function() {

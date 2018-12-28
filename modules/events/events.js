@@ -4,12 +4,12 @@
 /* global Document: true, Element: true, window: true */
 'use strict';
 
-exports.version = '0.4';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('eventsBound'); // @desc number of EventTarget.addEventListener calls
 	phantomas.setMetric('eventsDispatched'); // @desc number of EventTarget.dispatchEvent calls
 	phantomas.setMetric('eventsScrollBound'); // @desc number of scroll event bounds
+
+	return; // TODO
 
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {

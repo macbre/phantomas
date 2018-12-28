@@ -22,9 +22,7 @@
  */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	['html', 'css', 'js', 'json', 'image', 'video', 'webfont', 'base64', 'other'].forEach(function(key) {
 		phantomas.setMetric(key + 'Count');
 		phantomas.setMetric(key + 'Size');
