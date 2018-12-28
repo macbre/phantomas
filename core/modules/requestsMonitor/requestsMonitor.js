@@ -44,62 +44,33 @@ module.exports = function(phantomas) {
 		}
 	}
 
-	phantomas.on('onResourceRequested', function(res, request) {
+	phantomas.on('request',	/** @param {Request} request **/ (request) => {
+		const resId = request._requestId;
+
 		// store current request data
-		var entry = requests[res.id] = {
-			id: res.id,
-			url: res.url,
-			method: res.method,
-			requestHeaders: {},
-			sendTime: res.time,
-			bodySize: 0,
-			isBlocked: false
-		};
+		// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#class-request
+		var entry = requests[resId] = request;
 
-		// allow modules to block requests
-		entry.block = function() {
-			this.isBlocked = true;
-		};
-
-		res.headers.forEach(function(header) {
-			entry.requestHeaders[header.name] = header.value;
-		});
-
-		parseEntryUrl(entry);
-
-		if (entry.isBase64) {
-			return;
-		}
-
-		// give modules a chance to block requests using entry.block()
-		// @see https://github.com/ariya/phantomjs/issues/10230
-		phantomas.emitInternal('beforeSend', entry, res); // @desc allows the request to be blocked
-
-		if ( (entry.isBlocked === true) && (typeof request !== 'undefined') ) {
-			phantomas.log('Blocked request: <' + entry.url + '>');
-			request.abort();
-			return;
-		}
-
-		phantomas.log('req: <%s>', entry.url);
-
-		phantomas.emit('send', entry, res); // @desc request has been sent
+		phantomas.log('Request: %j', entry);
+		phantomas.emit('send', entry); // @desc request has been sent
 	});
 
-	phantomas.on('onResourceReceived', function(res) {
-		// current request data
-		var entry = requests[res.id] || {};
+	phantomas.on('response', /** @param {Response} resp **/ resp => {
+		const resId = resp._requestId;
+		var entry = requests[resId];
 
-		// fix for blocked requests still "emitting" onResourceReceived with "stage" = 'end' and empty "status" (issue #122)
-		// or empty URL (broken in PhantomJS 2.0.1 (PR #573)
-		if (res.status === null || res.url === '' ) {
-			if (entry.isBlocked) {
-				return;
-			} else if (!entry.isBase64) {
-				phantomas.log('Got a response with no status or URL set: <%s> (%j)', res.url, res);
-				phantomas.emitInternal('abort', entry, res); // @desc request has been blocked
-			}
-		}
+		phantomas.log('Response: %j', resp);
+
+		// get navigation timing details
+		// https://www.w3.org/TR/navigation-timing/#performancetiming
+		// https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceTiming
+		phantomas.log('Timing', entry._timestamp, resp.timing);
+
+		return; // TODO
+
+		entry.timeToFirstByte = resp.timing.sendStart;
+		entry.timeToLastByte = resp.timing.sendEnd;
+		entry.receiveTime = entry.recvEndTime - entry.recvStartTime;
 
 		switch(res.stage) {
 			// the beginning of response
@@ -327,7 +298,7 @@ module.exports = function(phantomas) {
 		loadStartedTime = Date.now();
 	});
 
-        phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', function(entry, res) {
 		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - loadStartedTime);
 	});
 };

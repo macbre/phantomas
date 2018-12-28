@@ -14,6 +14,8 @@ module.exports = function(phantomas) {
 
 	phantomas.setMetric('headersBiggerThanContent'); // @desc number of responses with headers part bigger than the response body
 
+	return; // TODO
+
 	function processHeaders(headers) {
 		var res = {
 			count: 0,
@@ -30,8 +32,8 @@ module.exports = function(phantomas) {
 		return res;
 	}
 
-	phantomas.on('send', function(entry, res) {
-		var headers = processHeaders(res.headers);
+	phantomas.on('send', function(entry) {
+		var headers = processHeaders(entry.headers);
 
 		phantomas.incrMetric('headersCount', headers.count);
 		phantomas.incrMetric('headersSize', headers.size);
@@ -40,8 +42,8 @@ module.exports = function(phantomas) {
 		phantomas.incrMetric('headersSentSize', headers.size);
 	});
 
-	phantomas.on('recv', function(entry, res) {
-		var headers = processHeaders(res.headers);
+	phantomas.on('recv', function(entry) {
+		var headers = processHeaders(entry.headers);
 
 		phantomas.incrMetric('headersCount', headers.count);
 		phantomas.incrMetric('headersSize', headers.size);

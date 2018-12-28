@@ -7,7 +7,7 @@ const phantomas = require('..');
 
 console.log('phantomas v%s loaded from %s', phantomas.version, phantomas.path);
 
-const promise = phantomas('http://google.is', {
+const promise = phantomas('http://0.0.0.0', {
 	'analyze-css': true,
 	'assert-requests': 1
 });
@@ -20,6 +20,7 @@ const promise = phantomas('http://google.is', {
 // handle the promise
 promise.
 	then(results => {
+		console.log('Metrics: %j', results.getMetrics());
 		console.log('Number of requests: %d', results.getMetric('requests'));
 		console.log('Failed asserts: %j', results.getFailedAsserts());
 	}).
