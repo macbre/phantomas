@@ -3,12 +3,10 @@
  */
 'use strict';
 
-exports.version = '1.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// imports
-	var HTTP_STATUS_CODES = phantomas.require('http').STATUS_CODES,
-		parseUrl = phantomas.require('url').parse;
+	var HTTP_STATUS_CODES = require('http').STATUS_CODES,
+		parseUrl = require('url').parse;
 
 	var requests = [];
 

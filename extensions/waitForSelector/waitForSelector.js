@@ -4,8 +4,6 @@
 /* global document: true */
 'use strict';
 
-exports.version = '0.2';
-
 function checkSelector(phantomas, selector) {
 	var res = phantomas.evaluate(function(selector) {
 		return (function(phantomas) {
@@ -27,7 +25,7 @@ function checkSelector(phantomas, selector) {
 	return res;
 }
 
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// e.g. --wait-for-selector "body.loaded"
 	var selector = phantomas.getParam('wait-for-selector');
 

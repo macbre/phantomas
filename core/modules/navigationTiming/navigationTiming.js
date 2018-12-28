@@ -10,10 +10,9 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.once('init', function() {
+		return; // TODO
 		phantomas.evaluate(function () {
 			(function(phantomas) {
 				function emit(eventName) {

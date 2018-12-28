@@ -5,11 +5,11 @@
  */
 'use strict';
 
-exports.version = '0.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var param = phantomas.getParam('screenshot'),
 		path = '';
+
+	return; // TODO
 
 	if (typeof param === 'undefined') {
 		phantomas.log('Screenshot: to enable screenshot of the fully loaded page run phantomas with --screenshot option');

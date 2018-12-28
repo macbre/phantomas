@@ -5,9 +5,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var device,
 		// @see https://developers.google.com/chrome/mobile/docs/user-agent?hl=pl
 		// @see http://viewportsizes.com/

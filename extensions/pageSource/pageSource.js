@@ -8,9 +8,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	if (!phantomas.getParam('page-source')) {
 		phantomas.log('To enable page-source of page being loaded run phantomas with --page-source option');
 		return;

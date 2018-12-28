@@ -7,8 +7,6 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
 var fs = require('fs');
 
 /**
@@ -106,11 +104,15 @@ function createHAR(page, creator) {
 }
 /** End **/
 
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 
 	var param = phantomas.getParam('har'),
 		path = '',
 		timeToLastByte = undefined;
+
+	if (param === false) {
+		return;
+	}
 
 	var page = {
 		origin: undefined,

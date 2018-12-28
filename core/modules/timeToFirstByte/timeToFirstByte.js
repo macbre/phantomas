@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '1.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var measured = false,
 		reqId = 1; // request ID to consider when calculating TTFB / TTLB
 

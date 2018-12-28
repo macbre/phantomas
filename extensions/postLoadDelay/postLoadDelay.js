@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// e.g. --post-load-delay 5
 	var delay = parseInt(phantomas.getParam('post-load-delay'), 10);
 

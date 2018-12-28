@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '1.0';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var userName = phantomas.getParam('auth-user', '', 'string'),
 		password = phantomas.getParam('auth-pass', '', 'string');
 

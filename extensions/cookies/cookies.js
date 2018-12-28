@@ -4,9 +4,7 @@
 /* global phantom: true */
 'use strict';
 
-exports.version = '1.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 
 	var cookiesJar = phantomas.getParam('cookies', [], 'object'),
 		COOKIE_SEPARATOR = '|';
@@ -14,7 +12,7 @@ exports.module = function(phantomas) {
 	// setup cookies handling
 	function initCookies() {
 		// cookie handling via command line and config.json
-		phantom.cookiesEnabled = true;
+		//phantom.cookiesEnabled = true;
 
 		// handles multiple cookies from config.json, and used for storing
 		// constructed cookies from command line.

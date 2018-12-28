@@ -14,9 +14,7 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	if (!phantomas.getParam('film-strip')) {
 		phantomas.log('filmStrip: to enable screenshots of page being loaded run phantomas with --film-strip option');
 		return;
