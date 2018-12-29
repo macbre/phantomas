@@ -104,10 +104,6 @@ var phantomas = function(params) {
 	this.log('phantomas v%s: %s', this.getVersion(), this.dir);
 	this.log('Options: %j', this.params);
 
-	// queue of jobs that needs to be done before report can be generated
-	var Queue = require('../lib/simple-queue');
-	this.reportQueue = new Queue();
-
 	// set up results wrapper
 	var Results = require('./results');
 	this.results = new Results();
@@ -238,9 +234,6 @@ phantomas.prototype = {
 			once: this.once.bind(this),
 			emit: this.emit.bind(this),
 			emitInternal: this.emitInternal.bind(this),
-
-			// reports
-			reportQueuePush: this.reportQueue.push.bind(this.reportQueue),
 
 			// metrics
 			setMetric: this.setMetric.bind(this),
@@ -459,64 +452,6 @@ phantomas.prototype = {
 		this.page.onError = this.proxy(this.onError);
 
 		this.initLoadingProgress();
-
-		// do not wait for any requests, stop immediately after onload event (issue #513)
-		if (this.getParam('stop-at-onload', false) === true) {
-			this.log('stop-at-onload: --stop-at-onload passed, will stop immediately after onload event');
-		} else {
-			// observe HTTP requests
-			// finish when the last request is completed + one second timeout
-			this.reportQueue.push(function(done) {
-				var currentRequests = 0,
-					requestsUrls = {},
-					onFinished = function(entry) {
-						currentRequests--;
-						delete requestsUrls[entry.url];
-
-						if (currentRequests < 1) {
-							timeoutId = setTimeout(function() {
-								done();
-							}, 1000);
-						}
-					},
-					timeoutId;
-
-				// update HTTP requests counter
-				self.on('send', function(entry) {
-					clearTimeout(timeoutId);
-
-					currentRequests++;
-					requestsUrls[entry.url] = true;
-				});
-
-				self.on('recv', onFinished);
-				self.on('abort', onFinished);
-
-				// add debug info about pending responses (issue #216)
-				self.on('timeout', function() {
-					var timedOutRequests = Object.keys(requestsUrls);
-
-					self.log('Timeout: gave up waiting for %d HTTP response(s): <%s>', currentRequests, timedOutRequests.join('>, <'));
-
-					// emit timed out requests as a fake metric (#539)
-					self.results.setMetric('requestsWithTimeout', timedOutRequests.length);
-
-					timedOutRequests.forEach(function(url) {
-						self.results.addOffender('requestsWithTimeout', url);
-					});
-				});
-
-				// always register the metric (issue #581)
-				self.results.setMetric('requestsWithTimeout', 0);
-			});
-		}
-
-		this.reportQueue.push(function(done) {
-			self.on('loadFinished', done);
-		});
-
-		// generate a report when all jobs are done
-		this.reportQueue.done(this.report, this);
 
 		// last time changes?
 		this.emitInternal('pageBeforeOpen', this.page); // @desc page.open is about to be called
@@ -845,84 +780,6 @@ phantomas.prototype = {
 	// require CommonJS module from lib/modules
 	require: function(module) {
 		return require('../lib/modules/' + module);
-	},
-
-	// runs a given helper script from phantomas main directory
-	// tries to parse it's output (assumes JSON formatted output)
-	runScript: function(script, args, callback) {
-		var execFile = require("child_process").execFile,
-			fs = require('fs'),
-			osName = require('system').os.name, // linux / windows
-			start = Date.now(),
-			self = this;
-
-		if (typeof args === 'function') {
-			callback = args;
-		}
-
-		// execFile(file, args, options, callback)
-		// @see https://github.com/ariya/phantomjs/wiki/API-Reference-ChildProcess
-		args = args || [];
-
-		// handle relative paths to binaries (issue #672)
-		if (!fs.isAbsolute(script)) {
-			script = this.dir + script;
-		}
-
-		// Windows fix: escape '&' (#587) and ')' (#687)
-		// @see http://superuser.com/questions/550048/is-there-an-escape-for-character-in-the-command-prompt
-		if (osName === 'windows') {
-			args = args.map(function(arg) {
-				return arg.replace(/[&)]/g, '^^^$&'); // $& - Inserts the matched substring
-			});
-		}
-
-		// always wait for runScript to finish (issue #417)
-		this.reportQueue.push(function(done) {
-			var ctx, pid;
-
-			ctx = execFile(script, args, null, function(err, stdout, stderr) {
-				var time = Date.now() - start;
-				var result = stderr !== "" ? stderr : stdout;
-
-				if (err || stderr) {
-					var errMessage = (err || stderr || 'unknown error').trim();
-					self.log('runScript: pid #%d failed - %s (took %d ms)!', pid, errMessage, time);
-
-					callback(errMessage, result);
-
-					done();
-					return;
-				} else if (!pid) {
-					self.log('runScript: failed running %s %s!', script, args.join(' '));
-
-					done();
-					return;
-				} else {
-					self.log('runScript: pid #%d done (took %d ms)', pid, time);
-				}
-
-				// (try to) parse JSON-encoded output
-				try {
-					result = JSON.parse(stdout);
-				} catch (ex) {
-					self.log('runScript: JSON parsing failed! - %s', ex);
-					err = ex;
-				}
-
-				callback(err, result);
-
-				done();
-			});
-
-			pid = ctx.pid;
-
-			if (pid) {
-				self.log('runScript: %s %s (pid #%d)', script, args.join(' '), pid);
-			} else {
-				done();
-			}
-		});
 	},
 
 	// return temporary directory for the current phantomas run
