@@ -3,35 +3,7 @@
  */
 var vows = require('vows'),
 	assert = require('assert'),
-	mockery = require('mockery'),
 	phantomas = require('../core/phantomas');
-
-// mock PhantomJS-specific modules and globals
-GLOBAL.phantom = {
-	version: {}
-};
-mockery.registerMock('fs', {
-	list: function() {}
-});
-mockery.registerMock('system', {
-	os: {},
-	stdout: {
-		writeLine: function() {}
-	}
-});
-mockery.registerMock('webpage', {
-	create: function() {
-		return {
-			evaluate: function() {},
-			injectJs: function() {},
-			render: function() {},
-			content: '<html></html>'
-		};
-	},
-});
-mockery.enable({
-	warnOnUnregistered: false
-});
 
 // helper
 function getPhantomasAPI(params) {

@@ -9,11 +9,10 @@ var vows = require('vows'),
 	yaml = require('js-yaml'),
 	phantomas = require('..');
 
-var WEBROOT = 'http://127.0.0.1:8888', // see start-server.sh
-	ENGINE = process.env.PHANTOMAS_ENGINE; // currently used engine (either PhantomJS or SlimerJS)
+var WEBROOT = 'http://127.0.0.1:8888'; // see start-server.sh
 
 // run the test
-var suite = vows.describe('Integration tests - ' + ENGINE).addBatch({
+var suite = vows.describe('Integration tests').addBatch({
 	'test server': {
 		topic: function() {
 			var http = require('http'),
@@ -36,35 +35,31 @@ var raw = fs.readFileSync(__dirname + '/integration-spec.yaml').toString(),
 
 spec.forEach(function(test) {
 	var batch = {},
-		batchName = test.label || test.url,
-		shouldSkip = test.skip && (test.skip === ENGINE);
+		batchName = test.label || test.url;
 
-	if (shouldSkip) {
-		batch[batchName] = {
-			topic: 'foo',
-			'should be skipped': function() {}
-		};
-	} else {
-		batch[batchName] = {
-			topic: function() {
-				phantomas(WEBROOT + test.url, test.options || {}, this.callback);
-			},
-			'should be generated': function(err, data, results) {
-				if (test.exitCode) {
-					assert.ok(err instanceof Error);
-					assert.strictEqual(err.message, test.exitCode.toString(), 'Exit code matches the expected value');
-				} else {
-					assert.equal(err, null, 'Exit code matches the expected value');
-				}
-			},
-		};
+	batch[batchName] = {
+		topic: function() {
+			phantomas(WEBROOT + test.url, test.options || {}).
+				then(res => this.callback(null, res)).
+				catch(err => this.callback(err));
+		},
+		'should be generated': function(err) {
+			if (test.exitCode) {
+				assert.ok(err instanceof Error);
+				assert.strictEqual(err.message, test.exitCode.toString(), 'Exit code matches the expected value');
+			} else {
+				assert.equal(err, null, 'Exit code matches the expected value');
+			}
+		},
+	};
 
-		Object.keys(test.metrics || {}).forEach(function(name) {
-			batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
-				assert.strictEqual(results.getMetric(name), test.metrics[name]);
-			};
-		});
-	}
+	Object.keys(test.metrics || {}).forEach(function(name) {
+		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, results) {
+			assert.ok(!(err instanceof Error), 'Error should not be thrown: ' + err);
+			assert.ok(false, results);
+			assert.strictEqual(results.getMetric(name), test.metrics[name]);
+		};
+	});
 
 	suite.addBatch(batch);
 });
