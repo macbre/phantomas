@@ -138,7 +138,7 @@ function initModule(name, isCore) {
 		instance = new phantomas(name);
 		def = require('../../' + (isCore ? 'core/modules' : 'modules') + '/' + name + '/' + name + '.js');
 
-		new(def.module)(instance);
+		new(def)(instance);
 	} catch (ex) {
 		console.log(ex);
 	}
