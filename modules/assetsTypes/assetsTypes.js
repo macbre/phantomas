@@ -2,23 +2,23 @@
  * Analyzes number of requests and sizes of different types of assets
  *
  * setMetric('htmlCount') @desc number of HTML responses @offenders
- * setMetric('htmlSize')  @desc size of HTML responses @unreliable
+ * setMetric('htmlSize')  @desc size of HTML responses
  * setMetric('cssCount') @desc number of CSS responses @offenders
- * setMetric('cssSize')  @desc size of CSS responses @unreliable
+ * setMetric('cssSize')  @desc size of CSS responses
  * setMetric('jsCount') @desc number of JS responses @offenders
- * setMetric('jsSize')  @desc size of JS responses @unreliable
+ * setMetric('jsSize')  @desc size of JS responses
  * setMetric('jsonCount') @desc number of JSON responses @offenders
- * setMetric('jsonSize')  @desc size of JSON responses @unreliable
+ * setMetric('jsonSize')  @desc size of JSON responses
  * setMetric('imageCount') @desc number of image responses @offenders
- * setMetric('imageSize')  @desc size of image responses @unreliable
+ * setMetric('imageSize')  @desc size of image responses
  * setMetric('webfontCount') @desc number of web font responses @offenders
- * setMetric('webfontSize')  @desc size of web font responses @unreliable
- * setMetric('videoCount') @desc number of video responses @offenders @gecko
- * setMetric('videoSize')  @desc size of video responses @gecko
+ * setMetric('webfontSize')  @desc size of web font responses
+ * setMetric('videoCount') @desc number of video responses @offenders
+ * setMetric('videoSize')  @desc size of video responses
  * setMetric('base64Count') @desc number of base64 encoded "responses" (no HTTP request was actually made) @offenders
- * setMetric('base64Size')  @desc size of base64 encoded responses @unreliable
+ * setMetric('base64Size')  @desc size of base64 encoded responses
  * setMetric('otherCount') @desc number of other responses @offenders
- * setMetric('otherSize')  @desc size of other responses @unreliable
+ * setMetric('otherSize')  @desc size of other responses
  */
 'use strict';
 
@@ -29,7 +29,7 @@ module.exports = function(phantomas) {
 	});
 
 	phantomas.on('recv', function(entry, res) {
-		var size = entry.contentLength;
+		var size = entry.bodySize;
 
 		phantomas.incrMetric(entry.type + 'Count');
 		phantomas.incrMetric(entry.type + 'Size', size);
