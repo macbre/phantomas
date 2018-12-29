@@ -3,12 +3,112 @@
  */
 'use strict';
 
+const debug = require('debug')('phantomas:modules:requestsMonitor');
+
+/**
+ * Detect response content type using "Content-Type header value"
+ * 
+ * @param {string} headerValue 
+ * @param {object} entry 
+ */
+function addContentType(headerValue, entry) {
+	var value = headerValue.split(';').shift().toLowerCase();
+	entry.contentType = value;
+
+	switch(value) {
+		case 'text/html':
+			entry.type = 'html';
+			entry.isHTML = true;
+			break;
+
+		case 'text/xml':
+			entry.type = 'xml';
+			entry.isXML = true;
+			break;
+
+		case 'text/css':
+			entry.type = 'css';
+			entry.isCSS = true;
+			break;
+
+		case 'application/x-javascript':
+		case 'application/javascript':
+		case 'text/javascript':
+			entry.type = 'js';
+			entry.isJS = true;
+			break;
+
+		case 'application/json':
+			entry.type = 'json';
+			entry.isJSON = true;
+			break;
+
+		case 'image/png':
+		case 'image/jpeg':
+		case 'image/gif':
+		case 'image/svg+xml':
+		case 'image/webp':
+			entry.type = 'image';
+			entry.isImage = true;
+
+			if (value === 'image/svg+xml') {
+				entry.isSVG = true;
+			}
+			break;
+
+		case 'video/webm':
+			entry.type = 'video';
+			entry.isVideo = true;
+			break;
+
+		// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
+		case 'application/font-wof':
+		case 'application/font-woff':
+		case 'application/vnd.ms-fontobject':
+		case 'application/x-font-opentype':
+		case 'application/x-font-truetype':
+		case 'application/x-font-ttf':
+		case 'application/x-font-woff':
+		case 'font/opentype':
+		case 'font/ttf':
+		case 'font/woff':
+			entry.type = 'webfont';
+			entry.isWebFont = true;
+
+			if (/ttf|truetype$/.test(value)) {
+				entry.isTTF = true;
+			}
+			break;
+
+		case 'application/octet-stream':
+			var ext = (entry.url || '').split('.').pop();
+
+			switch(ext) {
+				// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts#comment-8077637
+				case 'otf':
+					entry.type = 'webfont';
+					entry.isWebFont = true;
+					break;
+			}
+			break;
+
+		case 'image/x-icon':
+		case 'image/vnd.microsoft.icon':
+			entry.type = 'favicon';
+			entry.isFavicon = true;
+			break;
+
+		default:
+			debug('Unknown content type found: ' + value + ' for <' + entry.url + '>');
+	}
+
+	return entry;
+}
+
 module.exports = function(phantomas) {
 	// imports
 	var HTTP_STATUS_CODES = require('http').STATUS_CODES,
 		parseUrl = require('url').parse;
-
-	var requests = [];
 
 	// register metric
 	phantomas.setMetric('requests');              // @desc total number of HTTP requests made
@@ -16,8 +116,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('postRequests');          // @desc number of POST requests
 	phantomas.setMetric('httpsRequests');         // @desc number of HTTPS requests
 	phantomas.setMetric('notFound');              // @desc number of HTTP 404 responses
-	phantomas.setMetric('bodySize');              // @desc size of the uncompressed content of all responses @unreliable
-	phantomas.setMetric('contentLength');         // @desc size of the content of all responses (based on Content-Length header) @unreliable
+	phantomas.setMetric('bodySize');              // @desc size of the compressed content of all responses, equals Content-Length header value
 	phantomas.setMetric('httpTrafficCompleted');  // @desc time it took to receive the last byte of the last HTTP response
 
 	// parse given URL to get protocol and domain
@@ -44,68 +143,70 @@ module.exports = function(phantomas) {
 		}
 	}
 
+	var requests = {};
+
 	phantomas.on('request',	/** @param {Request} request **/ (request) => {
 		const resId = request._requestId;
+		requests[resId] = request;
 
-		// store current request data
+		// request data
 		// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#class-request
-		var entry = requests[resId] = request;
-
-		phantomas.log('Request: %j', entry);
-		phantomas.emit('send', entry); // @desc request has been sent
+		phantomas.emit('send', request); // @desc request has been sent
 	});
 
 	phantomas.on('response', /** @param {Response} resp **/ resp => {
-		const resId = resp._requestId;
-		var entry = requests[resId];
+		const resId = resp._requestId,
+			request = requests[resId];
 
-		phantomas.log('Response: %j', resp);
+		var entry = {
+			id: resId,
+			url: resp.url,
+			method: request.method,
+			headers: resp.headers,
+			bodySize: resp.encodedDataLength,
+		};
 
-		// get navigation timing details
-		// https://www.w3.org/TR/navigation-timing/#performancetiming
-		// https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceTiming
-		phantomas.log('Timing', entry._timestamp, resp.timing);
+		/**
+		 * Time to First Byte is the amount of time it takes for the browser
+		 * to receive the first byte of data from the server
+		 * after the browser makes the request.
+		 * 
+		 * https://developers.google.com/web/tools/chrome-devtools/network-performance/reference#timing-explanation
+		 * https://www.w3.org/TR/navigation-timing/#performancetiming
+		 * https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceTiming
+		 * 
+		 * All times are in seconds, while times in resp.timing are in miliseconds.
+		 */
 
-		return; // TODO
+		// how long a given request stalled waiting for DNS, proxy, connection, SSL negotation, etc.
+		entry.stalled = 1.0 * resp.timing.sendStart / 1000;
 
-		entry.timeToFirstByte = resp.timing.sendStart;
-		entry.timeToLastByte = resp.timing.sendEnd;
-		entry.receiveTime = entry.recvEndTime - entry.recvStartTime;
+		// how it took to receive a first byte of the response after making a request
+		entry.timeToFirstByte = 1.0 * (resp.timing.receiveHeadersEnd - resp.timing.sendEnd) / 1000;
 
-		switch(res.stage) {
-			// the beginning of response
-			case 'start':
-				entry.recvStartTime = res.time;
-				entry.timeToFirstByte = res.time - entry.sendTime;
+		// difference between when the request was sent and when it was received
+		entry.timeToLastByte = resp._timestamp - request._timestamp;
 
-				// FIXME: buggy
-				// @see https://github.com/ariya/phantomjs/issues/10169
-				entry.bodySize = res.bodySize || 0;
-				break;
+		// POST requests
+		if (entry.method === 'POST') {
+			phantomas.incrMetric('postRequests');
+			phantomas.addOffender('postRequests', entry.url);
+		}
 
-			// the end of response
-			case 'end':
-				// SlimerJS sets res.bodySize at stage = end
-				entry.bodySize = entry.bodySize || res.bodySize;
+		// response content type
+		// https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceType
+		Object.keys(entry.headers).forEach(headerName => {
+			const headerValue = entry.headers[headerName];
 
-				// timing
-				entry.recvEndTime = res.time;
-				entry.timeToLastByte = res.time - entry.sendTime;
-				entry.receiveTime = entry.recvEndTime - entry.recvStartTime;
+			switch(headerName.toLowerCase()) {
+				// detect content type
+				case 'content-type':
+					entry = addContentType(headerValue, entry);
+					break;
+			}
+		});
 
-				// issue #295
-				if (typeof entry.recvStartTime === 'undefined') {
-					phantomas.log('recv: "start" stage not registered for <%s>!', res.url);
-					entry.receiveTime = entry.recvEndTime - entry.sendTime;
-				}
-
-				// request method
-				switch(entry.method) {
-					case 'POST':
-						phantomas.incrMetric('postRequests');
-						phantomas.addOffender('postRequests', entry.url);
-						break;
-				}
+		/**
 
 				// asset type
 				entry.type = 'other';
@@ -116,112 +217,6 @@ module.exports = function(phantomas) {
 					entry.headers[header.name] = header.value;
 
 					switch (header.name.toLowerCase()) {
-						// TODO: why it's not gzipped?
-						// because: https://github.com/ariya/phantomjs/issues/10156
-						case 'content-length':
-							entry.contentLength = parseInt(header.value, 10);
-
-							/**
-							if (entry.bodySize !== entry.contentLength) {
-								phantomas.log('%s: %j', 'bodySize vs contentLength', {url: entry.url, bodySize: entry.bodySize, contentLength: entry.contentLength});
-							}
-							**/
-							break;
-
-						// detect content type
-						case 'content-type':
-							// parse header value
-							var value = header.value.split(';').shift().toLowerCase();
-							entry.contentType = value;
-
-							switch(value) {
-								case 'text/html':
-									entry.type = 'html';
-									entry.isHTML = true;
-									break;
-
-								case 'text/xml':
-									entry.type = 'xml';
-									entry.isXML = true;
-									break;
-
-								case 'text/css':
-									entry.type = 'css';
-									entry.isCSS = true;
-									break;
-
-								case 'application/x-javascript':
-								case 'application/javascript':
-								case 'text/javascript':
-									entry.type = 'js';
-									entry.isJS = true;
-									break;
-
-								case 'application/json':
-									entry.type = 'json';
-									entry.isJSON = true;
-									break;
-
-								case 'image/png':
-								case 'image/jpeg':
-								case 'image/gif':
-								case 'image/svg+xml':
-								case 'image/webp':
-									entry.type = 'image';
-									entry.isImage = true;
-
-									if (value === 'image/svg+xml') {
-										entry.isSVG = true;
-									}
-									break;
-
-								case 'video/webm':
-									entry.type = 'video';
-									entry.isVideo = true;
-									break;
-
-								// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
-								case 'application/font-wof':
-								case 'application/font-woff':
-								case 'application/vnd.ms-fontobject':
-								case 'application/x-font-opentype':
-								case 'application/x-font-truetype':
-								case 'application/x-font-ttf':
-								case 'application/x-font-woff':
-								case 'font/opentype':
-								case 'font/ttf':
-								case 'font/woff':
-									entry.type = 'webfont';
-									entry.isWebFont = true;
-
-									if (/ttf|truetype$/.test(value)) {
-										entry.isTTF = true;
-									}
-									break;
-
-								case 'application/octet-stream':
-									var ext = (entry.url || '').split('.').pop();
-
-									switch(ext) {
-										// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts#comment-8077637
-										case 'otf':
-											entry.type = 'webfont';
-											entry.isWebFont = true;
-											break;
-									}
-									break;
-
-								case 'image/x-icon':
-								case 'image/vnd.microsoft.icon':
-									entry.type = 'favicon';
-									entry.isFavicon = true;
-									break;
-
-								default:
-									phantomas.log('Unknown content type found: ' + value + ' for <' + entry.url + '>');
-							}
-							break;
-
 						// detect content encoding
 						case 'content-encoding':
 							if (header.value === 'gzip') {
@@ -239,7 +234,7 @@ module.exports = function(phantomas) {
 				parseEntryUrl(entry);
 
 				// HTTP code
-				entry.status = res.status || 200 /* for base64 data */;
+				entry.status = res.status || 200 // for base64 data;
 				entry.statusText = HTTP_STATUS_CODES[entry.status];
 
 				switch(entry.status) {
@@ -287,9 +282,17 @@ module.exports = function(phantomas) {
 					phantomas.log('recv: HTTP %d <%s> [%s]', entry.status, entry.url, entry.contentType);
 					phantomas.emit('recv' , entry, res); // @desc response has been received
 				}
-				break;
-		}
+				//break;
+		**/
+
+		phantomas.log('Response metadata: %j', entry);
+
+		phantomas.incrMetric('requests');
+		phantomas.incrMetric('bodySize', entry.bodySize);
+
+		phantomas.emit('recv' , entry, resp); // @desc response has been received
 	});
+	
 
 	// completion of the last HTTP request
 	var loadStartedTime;
