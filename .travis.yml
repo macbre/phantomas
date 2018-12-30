@@ -19,7 +19,6 @@ before_install:
   - "export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true"
   # Point Phantomas to Chrome stable binary provided by Travis
   - "export PHANTOMAS_CHROMIUM_EXECUTABLE=`which google-chrome-stable`"
-  - env && google-chrome-stable --version
 
 before_script:
   - sh test/server-start.sh &

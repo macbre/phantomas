@@ -38,7 +38,7 @@ promise.on('milestone', milestone => {
 });
 
 promise.on('recv', response => {
-	console.log('Response #%d: %s %s [HTTP %d]', response.id, response.method, response.url, response.status);
+	console.log('Response: %s %s [%s]', response.method, response.url, response.contentType);
 });
 
 // including the custom once emitted by phantomas modules
