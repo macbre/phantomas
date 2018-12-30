@@ -2,27 +2,26 @@
  * Test requestsStats core module
  */
 var vows = require('vows'),
-	assert = require('assert'),
 	mock = require('./mock');
 
 vows.describe('requestsStats').addBatch({
-	'module': mock.getContext('requestsStats', function(phantomas) {
+	'module': mock.getContext('requestsStats', phantomas => {
 		var requests = [
 			{
 				status: 200,
-				contentLength: 25,
+				transferedSize: 25,
 				timeToFirstByte: 3,
 				timeToLastByte: 5,
 			},
 			{
 				status: 200,
-				contentLength: 2245,
+				transferedSize: 2245,
 				timeToFirstByte: 1,
 				timeToLastByte: 11,
 			},
 			{
 				status: 200,
-				contentLength: 205,
+				transferedSize: 205,
 				timeToFirstByte: 2,
 				timeToLastByte: 2,
 			}
