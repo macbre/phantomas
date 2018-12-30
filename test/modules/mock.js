@@ -64,17 +64,17 @@ phantomas.prototype = {
 	// mock core PhantomJS events
 	sendRequest: function(req) {
 		req = req || {};
-		req.id = req.id || 1;
+		req._requestId = req._requestId || 1;
 		req.method = req.method || 'GET';
 		req.url = req.url || 'http://example.com';
 		req.headers = req.headers || [];
+		req.timing = {};
 
 		this.log('sendRequest: %j', req);
 
 		try {
-			this.emitter.emit('onResourceRequested', req, {
-				abort: noop
-			});
+			this.emitter.emit('request', req);
+			this.emitter.emit('response', req);
 		} catch (ex) {
 			console.log(ex);
 		}

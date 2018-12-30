@@ -5,6 +5,33 @@
 
 const debug = require('debug')('phantomas:modules:requestsMonitor');
 
+// parse given URL to get protocol and domain
+function parseEntryUrl(entry) {
+	const parseUrl = require('url').parse;
+	var parsed;
+
+	if (entry.url.indexOf('data:') !== 0) {
+		// @see http://nodejs.org/api/url.html#url_url
+		parsed = parseUrl(entry.url) || {};
+
+		entry.protocol = parsed.protocol.replace(':', '');
+		entry.domain = parsed.hostname;
+		entry.query = parsed.query;
+
+		if (entry.protocol === 'https') {
+			entry.isSSL = true;
+		}
+	}
+	else {
+		// base64 encoded data
+		entry.domain = false;
+		entry.protocol = false;
+		entry.isBase64 = true;
+	}
+
+	return entry;
+}
+
 /**
  * Detect response content type using "Content-Type header value"
  * 
@@ -116,32 +143,9 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('postRequests');          // @desc number of POST requests
 	phantomas.setMetric('httpsRequests');         // @desc number of HTTPS requests
 	phantomas.setMetric('notFound');              // @desc number of HTTP 404 responses
-	phantomas.setMetric('bodySize');              // @desc size of the compressed content of all responses, equals Content-Length header value
+	phantomas.setMetric('bodySize');              // @desc size of the uncompressed content of all responses
+	phantomas.setMetric('transferedSize');        // @desc size of the compressed content of all responses, i.e. what was transfered in packets
 	phantomas.setMetric('httpTrafficCompleted');  // @desc time it took to receive the last byte of the last HTTP response
-
-	// parse given URL to get protocol and domain
-	function parseEntryUrl(entry) {
-		var parsed;
-
-		if (entry.url.indexOf('data:') !== 0) {
-			// @see http://nodejs.org/api/url.html#url_url
-			parsed = parseUrl(entry.url) || {};
-
-			entry.protocol = parsed.protocol.replace(':', '');
-			entry.domain = parsed.hostname;
-			entry.query = parsed.query;
-
-			if (entry.protocol === 'https') {
-				entry.isSSL = true;
-			}
-		}
-		else {
-			// base64 encoded data
-			entry.domain = false;
-			entry.protocol = false;
-			entry.isBase64 = true;
-		}
-	}
 
 	var requests = {};
 
@@ -163,7 +167,8 @@ module.exports = function(phantomas) {
 			url: resp.url,
 			method: request.method,
 			headers: resp.headers,
-			bodySize: resp.encodedDataLength,
+			bodySize: resp.dataLength,
+			transferedSize: resp.encodedDataLength,
 		};
 
 		/**
@@ -203,94 +208,73 @@ module.exports = function(phantomas) {
 				case 'content-type':
 					entry = addContentType(headerValue, entry);
 					break;
+
+				// content compression
+				case 'content-encoding':
+					if (headerValue === 'gzip') {
+						entry.gzip = true;
+
+						phantomas.log('Response compressed with %s, %f kB -> %f kB (x%f)',
+							headerValue, entry.bodySize / 1024, entry.transferedSize / 1024, entry.bodySize / entry.transferedSize);
+					}
+					break;
+
+				// detect cookies (issue #92)
+				case 'set-cookie':
+					entry.hasCookies = true;
+					break;
 			}
 		});
 
-		/**
+		// asset type
+		entry.type = 'other';
 
-				// asset type
-				entry.type = 'other';
+		entry = parseEntryUrl(entry);
 
-				// analyze HTTP headers
-				entry.headers = {};
-				res.headers.forEach(function(header) {
-					entry.headers[header.name] = header.value;
+		// HTTP code
+		entry.status = resp.status || 200 // for base64 data;
+		entry.statusText = HTTP_STATUS_CODES[entry.status];
 
-					switch (header.name.toLowerCase()) {
-						// detect content encoding
-						case 'content-encoding':
-							if (header.value === 'gzip') {
-								entry.gzip = true;
-							}
-							break;
+		switch(entry.status) {
+			case 301: // Moved Permanently
+			case 302: // Found
+			case 303: // See Other
+				entry.isRedirect = true;
+				break;
 
-						// detect cookies (issue #92)
-						case 'set-cookie':
-							entry.hasCookies = true;
-							break;
-					}
-				});
+			case 404: // Not Found
+				phantomas.incrMetric('notFound');
+				phantomas.addOffender('notFound', entry.url);
+				break;
+		}
 
-				parseEntryUrl(entry);
+		// requests stats
+		if (!entry.isBase64) {
+			phantomas.incrMetric('requests');
 
-				// HTTP code
-				entry.status = res.status || 200 // for base64 data;
-				entry.statusText = HTTP_STATUS_CODES[entry.status];
+			phantomas.incrMetric('bodySize', entry.bodySize);
+			phantomas.incrMetric('contentLength', entry.contentLength);
+		}
 
-				switch(entry.status) {
-					case 301: // Moved Permanently
-					case 302: // Found
-					case 303: // See Other
-						entry.isRedirect = true;
-						break;
+		if (entry.gzip) {
+			phantomas.incrMetric('gzipRequests');
+			phantomas.addOffender('gzipRequests', '%s (gzip: %s kB / uncompressed: %s kB)', entry.url, (entry.contentLength/1024).toFixed(2), (entry.bodySize/1024).toFixed(2));
+		}
 
-					case 404: // Not Found
-						phantomas.incrMetric('notFound');
-						phantomas.addOffender('notFound', entry.url);
-						break;
-				}
+		if (entry.isSSL) {
+			phantomas.incrMetric('httpsRequests');
+			phantomas.addOffender('httpsRequests', entry.url);
+		}
 
-				// default value (if Content-Length header is not present in the response or it's base64-encoded)
-				// see issue #137
-				if (typeof entry.contentLength === 'undefined') {
-					entry.contentLength = entry.bodySize;
-					phantomas.log('%s: %j', 'contentLength missing', {url: entry.url, bodySize: entry.bodySize});
-				}
-
-				// requests stats
-				if (!entry.isBase64) {
-					phantomas.incrMetric('requests');
-
-					phantomas.incrMetric('bodySize', entry.bodySize);
-					phantomas.incrMetric('contentLength', entry.contentLength);
-				}
-
-				if (entry.gzip) {
-					phantomas.incrMetric('gzipRequests');
-					phantomas.addOffender('gzipRequests', '%s (gzip: %s kB / uncompressed: %s kB)', entry.url, (entry.contentLength/1024).toFixed(2), (entry.bodySize/1024).toFixed(2));
-				}
-
-				if (entry.isSSL) {
-					phantomas.incrMetric('httpsRequests');
-					phantomas.addOffender('httpsRequests', entry.url);
-				}
-
-				if (entry.isBase64) {
-					phantomas.emit('base64recv', entry, res); // @desc base64-encoded "response" has been received
-				}
-				else {
-					phantomas.log('recv: HTTP %d <%s> [%s]', entry.status, entry.url, entry.contentType);
-					phantomas.emit('recv' , entry, res); // @desc response has been received
-				}
-				//break;
-		**/
+		if (entry.isBase64) {
+			phantomas.emit('base64recv', entry, resp); // @desc base64-encoded "response" has been received
+		}
+		else {
+			phantomas.log('recv: HTTP %d <%s> [%s]', entry.status, entry.url, entry.contentType);
+			phantomas.emit('recv' , entry, resp); // @desc response has been received
+		}
 
 		phantomas.log('Response metadata: %j', entry);
-
-		phantomas.incrMetric('requests');
-		phantomas.incrMetric('bodySize', entry.bodySize);
-
-		phantomas.emit('recv' , entry, resp); // @desc response has been received
 	});
 	
 
