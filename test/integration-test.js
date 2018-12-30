@@ -43,12 +43,12 @@ spec.forEach(function(test) {
 				then(res => this.callback(null, res)).
 				catch(err => this.callback(err));
 		},
-		'should be generated': function(err) {
+		'should be generated': (err, res) => {
 			if (test.exitCode) {
 				assert.ok(err instanceof Error);
-				assert.strictEqual(err.message, test.exitCode.toString(), 'Exit code matches the expected value');
 			} else {
-				assert.equal(err, null, 'Exit code matches the expected value');
+				assert.equal(err, null, 'No error should be thrown');
+				assert.ok(res.getMetric instanceof Function, 'Results wrapper should be passed');
 			}
 		},
 	};
@@ -56,7 +56,6 @@ spec.forEach(function(test) {
 	Object.keys(test.metrics || {}).forEach(function(name) {
 		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, results) {
 			assert.ok(!(err instanceof Error), 'Error should not be thrown: ' + err);
-			assert.ok(false, results);
 			assert.strictEqual(results.getMetric(name), test.metrics[name]);
 		};
 	});
