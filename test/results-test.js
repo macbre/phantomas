@@ -35,11 +35,11 @@ vows.describe('Results wrapper').addBatch({
 		topic: topic,
 		'should be registered': function(results) {
 			results.addOffender('metric', 'foo');
-			results.addOffender('metric', 'bar');
+			results.addOffender('metric', {'url': 'bar', 'size': 42});
 			results.addOffender('metric2', 'test');
 		},
 		'should be kept in order': function(results) {
-			assert.deepEqual(results.getOffenders('metric'), ['foo', 'bar']);
+			assert.deepEqual(results.getOffenders('metric'), ['foo', {'url': 'bar', 'size': 42}]);
 			assert.deepEqual(results.getOffenders('metric2'), ['test']);
 
 			assert.equal('undefined', typeof results.getOffenders('metric3'));
