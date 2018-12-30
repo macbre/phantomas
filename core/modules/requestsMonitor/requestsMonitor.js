@@ -134,8 +134,7 @@ function addContentType(headerValue, entry) {
 
 module.exports = function(phantomas) {
 	// imports
-	var HTTP_STATUS_CODES = require('http').STATUS_CODES,
-		parseUrl = require('url').parse;
+	var HTTP_STATUS_CODES = require('http').STATUS_CODES;
 
 	// register metric
 	phantomas.setMetric('requests');              // @desc total number of HTTP requests made
@@ -180,14 +179,14 @@ module.exports = function(phantomas) {
 		 * https://www.w3.org/TR/navigation-timing/#performancetiming
 		 * https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceTiming
 		 * 
-		 * All times are in seconds, while times in resp.timing are in miliseconds.
+		 * All times are in seconds!
 		 */
 
 		// how long a given request stalled waiting for DNS, proxy, connection, SSL negotation, etc.
-		entry.stalled = 1.0 * resp.timing.sendStart / 1000;
+		entry.stalled = resp.timing.sendStart;
 
 		// how it took to receive a first byte of the response after making a request
-		entry.timeToFirstByte = 1.0 * (resp.timing.receiveHeadersEnd - resp.timing.sendEnd) / 1000;
+		entry.timeToFirstByte = resp.timing.receiveHeadersEnd - resp.timing.sendEnd;
 
 		// difference between when the request was sent and when it was received
 		entry.timeToLastByte = resp._timestamp - request._timestamp;
@@ -232,7 +231,7 @@ module.exports = function(phantomas) {
 		entry = parseEntryUrl(entry);
 
 		// HTTP code
-		entry.status = resp.status || 200 // for base64 data;
+		entry.status = resp.status || 200; // for base64 data
 		entry.statusText = HTTP_STATUS_CODES[entry.status];
 
 		switch(entry.status) {

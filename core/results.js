@@ -5,7 +5,7 @@
  */
 'use strict';
 
-module.exports = function(data) {
+module.exports = function (data) {
 	var asserts = {},
 		generator = '',
 		metrics = {},

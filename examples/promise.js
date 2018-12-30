@@ -20,7 +20,8 @@ const promise = phantomas('http://0.0.0.0', {
 // handle the promise
 promise.
 	then(results => {
-		console.log('Metrics: %j', results.getMetrics());
+		console.log('Metrics', results.getMetrics());
+		console.log('Offenders', results.getAllOffenders());
 		console.log('Number of requests: %d', results.getMetric('requests'));
 		console.log('Failed asserts: %j', results.getFailedAsserts());
 	}).
