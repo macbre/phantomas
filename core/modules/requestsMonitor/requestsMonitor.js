@@ -3,7 +3,8 @@
  */
 'use strict';
 
-const debug = require('debug')('phantomas:modules:requestsMonitor');
+const assert = require('assert'),
+	debug = require('debug')('phantomas:modules:requestsMonitor');
 
 // parse given URL to get protocol and domain
 function parseEntryUrl(entry) {
@@ -170,6 +171,8 @@ module.exports = function(phantomas) {
 			transferedSize: resp.encodedDataLength,
 		};
 
+		entry = parseEntryUrl(entry);
+
 		/**
 		 * Time to First Byte is the amount of time it takes for the browser
 		 * to receive the first byte of data from the server
@@ -181,15 +184,19 @@ module.exports = function(phantomas) {
 		 * 
 		 * All times are in seconds!
 		 */
+		if (!entry.isBase64) {
+			// resp.timing is empty when handling data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D
+			assert(typeof resp.timing !== 'undefined', 'resp.timing is empty when handling ' + resp.url);
 
-		// how long a given request stalled waiting for DNS, proxy, connection, SSL negotation, etc.
-		entry.stalled = resp.timing.sendStart;
+			// how long a given request stalled waiting for DNS, proxy, connection, SSL negotation, etc.
+			entry.stalled = resp.timing.sendStart;
 
-		// how it took to receive a first byte of the response after making a request
-		entry.timeToFirstByte = resp.timing.receiveHeadersEnd - resp.timing.sendEnd;
+			// how it took to receive a first byte of the response after making a request
+			entry.timeToFirstByte = resp.timing.receiveHeadersEnd - resp.timing.sendEnd;
 
-		// difference between when the request was sent and when it was received
-		entry.timeToLastByte = resp._timestamp - request._timestamp;
+			// difference between when the request was sent and when it was received
+			entry.timeToLastByte = resp._timestamp - request._timestamp;
+		}
 
 		// POST requests
 		if (entry.method === 'POST') {
@@ -227,8 +234,6 @@ module.exports = function(phantomas) {
 
 		// asset type
 		entry.type = 'other';
-
-		entry = parseEntryUrl(entry);
 
 		// HTTP code
 		entry.status = resp.status || 200; // for base64 data
