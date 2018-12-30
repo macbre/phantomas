@@ -12,6 +12,7 @@ function getPhantomasAPI(params) {
 }
 
 // run the test
+/**
 vows.describe('phantomas public API').addBatch({
 	'exposes values and methods': {
 		topic: function() {
@@ -192,3 +193,4 @@ vows.describe('phantomas public API').addBatch({
 		}
 	}
 }).export(module);
+**/
