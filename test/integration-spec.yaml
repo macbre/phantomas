@@ -14,7 +14,9 @@
   metrics:
     requests: 3
     cssCount: 1
+    cssSize: 22
     jsCount: 1
+    jsSize: 29415
     domains: 1
     DOMqueries: 20
     DOMqueriesById: 7

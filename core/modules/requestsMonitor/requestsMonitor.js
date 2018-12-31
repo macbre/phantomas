@@ -11,6 +11,9 @@ function parseEntryUrl(entry) {
 	const parseUrl = require('url').parse;
 	var parsed;
 
+	// asset type
+	entry.type = 'other';
+
 	if (entry.url.indexOf('data:') !== 0) {
 		// @see http://nodejs.org/api/url.html#url_url
 		parsed = parseUrl(entry.url) || {};
@@ -182,7 +185,7 @@ module.exports = function(phantomas) {
 		 * https://www.w3.org/TR/navigation-timing/#performancetiming
 		 * https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceTiming
 		 * 
-		 * All times are in seconds!
+		 * "Throughout this work, time is measured in milliseconds"
 		 */
 		if (!entry.isBase64) {
 			// resp.timing is empty when handling data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D
@@ -231,9 +234,6 @@ module.exports = function(phantomas) {
 					break;
 			}
 		});
-
-		// asset type
-		entry.type = 'other';
 
 		// HTTP code
 		entry.status = resp.status || 200; // for base64 data

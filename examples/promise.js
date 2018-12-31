@@ -7,7 +7,7 @@ const phantomas = require('..');
 
 console.log('phantomas v%s loaded from %s', phantomas.version, phantomas.path);
 
-const promise = phantomas('http://0.0.0.0', {
+const promise = phantomas('http://127.0.0.1:8888/dom-operations.html', {
 	'analyze-css': true,
 	'assert-requests': 1
 });
