@@ -6,6 +6,22 @@
 const assert = require('assert'),
 	debug = require('debug')('phantomas:modules:requestsMonitor');
 
+/**
+ * Given key-value set of HTTP headers returns the set with lowercased header names
+ * 
+ * @param {object} headers
+ * @returns {object} 
+ */
+function lowerCaseHeaders(headers) {
+	var res = {};
+
+	Object.keys(headers).forEach(headerName => {
+		res[headerName.toLowerCase()] = headers[headerName];
+	});
+
+	return res;
+}
+
 // parse given URL to get protocol and domain
 function parseEntryUrl(entry) {
 	const parseUrl = require('url').parse;
@@ -169,7 +185,7 @@ module.exports = function(phantomas) {
 			id: resId,
 			url: resp.url,
 			method: request.method,
-			headers: resp.headers,
+			headers: lowerCaseHeaders(resp.headers), // All header names are lower-case
 			bodySize: resp.dataLength,
 			transferedSize: resp.encodedDataLength,
 		};
@@ -212,7 +228,7 @@ module.exports = function(phantomas) {
 		Object.keys(entry.headers).forEach(headerName => {
 			const headerValue = entry.headers[headerName];
 
-			switch(headerName.toLowerCase()) {
+			switch(headerName) {
 				// detect content type
 				case 'content-type':
 					entry = addContentType(headerValue, entry);
