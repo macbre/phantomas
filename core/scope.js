@@ -1,7 +1,7 @@
 /**
  * phantomas browser "scope" with helper code
  *
- * Code below is executed in page's "scope" (injected by onInitialized() in core/phantomas.js)
+ * Code below is executed in page's "scope" (injected by lib/browser.js)
  */
 (function(scope) {
 	'use strict';
