@@ -170,10 +170,6 @@
 			sendMsg('addOffender', Array.prototype.slice.apply(arguments));
 		}
 
-		function emit( /* eventName, arg1, arg2, ... */ ) {
-			sendMsg('emit', Array.prototype.slice.apply(arguments));
-		}
-
 		// exports
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
@@ -181,7 +177,7 @@
 		phantomas.addToAvgMetric = addToAvgMetric;
 		phantomas.setMarkerMetric = setMarkerMetric;
 		phantomas.addOffender = addOffender;
-		phantomas.emit = emit;
+		phantomas.emit = scope.__phantomas_emit.bind(scope);
 	})();
 
 	/**
