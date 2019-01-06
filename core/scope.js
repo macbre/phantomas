@@ -112,26 +112,7 @@
 		};
 
 		function sendMsg(type, data) {
-			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
-			// Stability: EXPERIMENTAL - see issue #62
-			/**
-			if (typeof window.callPhantom === 'function') {
-				window.callPhantom({type: type, data: data});
-			}
-			**/
-
-			try {
-				// Prototype 1.6 (and Mootools 1.2 too) creates an Array.prototype.toJSON - issue #482
-				// @see http://stackoverflow.com/questions/710586/json-stringify-array-bizarreness-with-prototype-js
-				Array.prototype.toJSON = undefined;
-
-				origConsoleLog.call(console, 'msg:' + stringify({
-					type: type || false,
-					data: data || false
-				}));
-			} catch (e) {
-				throw new Error('phantomas: calling native console.log() failed ("' + e + '")!');
-			}
+			scope.__phantomas_emit('scopeMessage', type, data);
 		}
 
 		function log() {
@@ -147,10 +128,7 @@
 		}
 
 		function incrMetric(name, incr /* =1 */ ) {
-			sendMsg('incrMetric', {
-				name: name,
-				incr: incr || 1
-			});
+			sendMsg('incrMetric', [name, incr || 1]);
 		}
 
 		function addToAvgMetric(name, value) {
