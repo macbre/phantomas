@@ -240,3 +240,8 @@
 - url: "/local-storage.html"
   metrics:
     localStorageEntries: 2
+# JS errors
+- url: "/js-errors.html"
+  metrics:
+    requests: 2
+    jsErrors: 1

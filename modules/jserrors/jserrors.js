@@ -6,21 +6,7 @@
 module.exports = function(phantomas) {
 	phantomas.setMetric('jsErrors'); // @desc number of JavaScript errors
 
-	function formatTrace(trace) {
-		var ret = [];
-
-		if (Array.isArray(trace)) {
-			trace.forEach(function(entry) {
-				ret.push((entry.function ? entry.function+'(): ' : 'unknown fn: ') + (entry.sourceURL || entry.file) + ' @ ' + entry.line);
-			});
-		}
-
-		return ret;
-	}
-
 	phantomas.on('jserror', function(msg, trace) {
-		trace = formatTrace(trace);
-
 		phantomas.log(msg);
 		phantomas.log('Backtrace: ' + trace.join(' / '));
 
