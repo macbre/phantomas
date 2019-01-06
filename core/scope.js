@@ -320,5 +320,5 @@
 	phantomas.getDOMPath = getDOMPath;
 	phantomas.nodeRunner = nodeRunner;
 
-	phantomas.log('phantomas scope injected');
+	phantomas.log('phantomas page scope initialized');
 })(window);
