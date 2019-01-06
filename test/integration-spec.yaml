@@ -30,7 +30,6 @@
 
 # DOM mutations
 - url: "/dom-operations.html"
-  skip: "webkit" # do not run using PhantomJS 1.9.x as it doesn't support DOM mutations API
   metrics:
     DOMmutationsInserts: 1 # DocumentFragment > b[0]" appended to "body > p#foo"
 
