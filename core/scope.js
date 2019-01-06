@@ -120,11 +120,7 @@
 		}
 
 		function setMetric(name, value, isFinal) {
-			sendMsg('setMetric', {
-				name: name,
-				value: (typeof value !== 'undefined') ? value : 0,
-				isFinal: isFinal === true
-			});
+			sendMsg('setMetric', [name, typeof value !== 'undefined' ? value : 0, isFinal === true]);
 		}
 
 		function incrMetric(name, incr /* =1 */ ) {

@@ -13,6 +13,10 @@ var topic = function() {
 vows.describe('Results wrapper').addBatch({
 	'Metrics': {
 		topic: topic,
+		'should be set to zero by default': function(results) {
+			results.setMetric('foo');
+			assert.strictEqual(results.getMetric('foo'), 0);
+		},
 		'should be correctly set': function(results) {
 			results.setMetric('foo', 'bar');
 			assert.strictEqual(results.getMetric('foo'), 'bar');

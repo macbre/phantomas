@@ -24,7 +24,8 @@ module.exports = function (data) {
 	return {
 		// metrics
 		setMetric: function(metricName, value) {
-			metrics[metricName] = value;
+			// default to zero when no value is provided
+			metrics[metricName] = (typeof value !== 'undefined') ? value : 0;
 
 			// make the order of offenders match the order of metrics
 			if (typeof offenders[metricName] === 'undefined') {
