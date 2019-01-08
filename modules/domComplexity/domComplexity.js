@@ -24,8 +24,6 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('imagesScaledDown'); // @desc number of <img> nodes that have images scaled down in HTML @offenders
 	phantomas.setMetric('imagesWithoutDimensions'); // @desc number of <img> nodes without both width and height attribute @offenders
 
-	return; // TODO
-
 	// keep the track of SVG graphics (#479)
 	var svgResources = [];
 	phantomas.on('recv', function(entry) {
@@ -35,15 +33,28 @@ module.exports = function(phantomas) {
 		}
 	});
 
+	// inject JS code
+	phantomas.on('init', () => phantomas.injectJs(__dirname + '/scope.js'));
+
 	// duplicated ID (issue #392)
 	phantomas.setMetric('DOMidDuplicated'); // @desc number of duplicated IDs found in DOM
 
-	var Collection = require('../../lib/collection'),
-		DOMids = new Collection();
+	phantomas.on('DOMids', ids => {
+		var Collection = require('../../lib/collection'),
+			DOMids = new Collection();
 
-	phantomas.on('domId', function(id) {
-		DOMids.push(id);
+		ids.forEach(id => DOMids.push(id));
+		phantomas.log('Nodes with IDs: ' + ids.length);
+
+		DOMids.sort().forEach((id, cnt) => {
+			if (cnt > 1) {
+				phantomas.incrMetric('DOMidDuplicated');
+				phantomas.addOffender('DOMidDuplicated', {id: id, count: cnt});
+			}
+		});
 	});
+
+	return; // TODO
 
 	// HTML size
 	phantomas.on('report', function() {
