@@ -100,11 +100,6 @@ module.exports = function(phantomas) {
 								DOMelementMaxDepthNodes.push(path);
 							}
 
-							// report duplicated ID (issue #392)
-							if (typeof node.id === 'string' && node.id !== '') {
-								phantomas.emit('domId', node.id);
-							}
-
 							// ignore inline <script> tags
 							if (node.nodeName === 'SCRIPT') {
 								return false;
@@ -141,12 +136,6 @@ module.exports = function(phantomas) {
 								}
 							}
 
-							// count nodes with inline CSS
-							if (node.hasAttribute('style')) {
-								phantomas.incrMetric('nodesWithInlineCSS');
-								phantomas.addOffender('nodesWithInlineCSS', '%s (%s)', path, node.getAttribute('style'));
-							}
-
 							break;
 
 						case Node.TEXT_NODE:
@@ -169,11 +158,5 @@ module.exports = function(phantomas) {
 			}(window.__phantomas));
 		}, scope);
 
-		DOMids.sort().forEach(function(id, cnt) {
-			if (cnt > 1) {
-				phantomas.incrMetric('DOMidDuplicated');
-				phantomas.addOffender('DOMidDuplicated', '%s: %d occurrences', id, cnt);
-			}
-		});
 	});
 };
