@@ -240,6 +240,8 @@
 - url: "/local-storage.html"
   metrics:
     localStorageEntries: 2
+  offenders:
+    localStorageEntries: ['foo', 'test']
 # JS errors
 - url: "/js-errors.html"
   metrics:
