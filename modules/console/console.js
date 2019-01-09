@@ -6,7 +6,7 @@
 module.exports = function(phantomas) {
 	phantomas.setMetric('consoleMessages'); // @desc number of calls to console.* functions
 
-	phantomas.on('consoleLog', function(msg) {
+	phantomas.on('consoleLog', (msg) => {
 		phantomas.incrMetric('consoleMessages');
 	});
 };

@@ -1,7 +1,7 @@
 (function(phantomas) {
 
     document.addEventListener("DOMContentLoaded", () => {
-        console.log("DOM fully loaded and parsed");
+        phantomas.log("DOM fully loaded and parsed");
         phantomas.spyEnabled(false, 'running domComplexity metrics');
 
         // duplicated ID (issue #392)

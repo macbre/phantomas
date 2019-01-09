@@ -245,3 +245,7 @@
   metrics:
     requests: 2
     jsErrors: 1
+# console.log() calls
+- url: "/console-log.html"
+  metrics:
+    consoleMessages: 2
