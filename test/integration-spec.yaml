@@ -104,10 +104,24 @@
     jQueryWindowOnLoadFunctions: 1
     jQuerySizzleCalls: 1
     jQueryEventTriggers: 2
-    eventsBound: 7
+    eventsBound: 8
     eventsDispatched: 1
     eventsScrollBound: 2
   offenders:
+    eventsDispatched:
+      - { eventType: 'click', path: 'body > div#foo > span.bar' }
+    eventsBound:
+      - { eventType: 'load', path: 'window' }
+      - { eventType: 'DOMContentLoaded', path: '#document' }
+      - { eventType: 'load', path: 'window' }
+      - { eventType: 'load', path: 'window' }
+      - { eventType: 'click', path: 'body > div#foo > span.bar' }
+      - { eventType: 'load', path: 'body > div#foo > span.bar' }
+      - { eventType: 'scroll', path: '#document' }
+      - { eventType: 'scroll', path: 'window' }
+    eventsScrollBound:
+      - { element: '#document' }
+      - { element: 'window' }
     jQueryVersionsLoaded:
       - version: "2.1.1"
         url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' 
