@@ -107,6 +107,25 @@
     eventsBound: 7
     eventsDispatched: 1
     eventsScrollBound: 2
+  offenders:
+    jQueryVersionsLoaded:
+      - version: "2.1.1"
+        url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' 
+    jQueryWindowOnLoadFunctions:
+      - http://127.0.0.1:8888/jquery.html:49:13
+    jQueryEventTriggers:
+      - { type: 'click', element: 'body > div#foo > span.bar' }
+      - { element: '#document',  type: 'ready' }
+    jQuerySizzleCalls: 
+      - { selector: '#foo .bar', element: '#document' }
+    jQueryDOMReads:
+      - { functionName: 'css', arguments: '["color"]', contextPath: 'body > div#foo > span.bar' }
+    jQueryDOMWrites:
+     - { functionName: 'css', arguments: '[{"color":"red","background":"green"}]', contextPath: 'body > div#foo > span.bar' }
+     - { functionName: 'css', arguments: '[{"background-color":"blue"}]', contextPath: 'body > div#foo' }
+     - { functionName: 'css', arguments: '[{"background-color":"blue"}]', contextPath: 'body > div#foo' }
+    jQueryDOMWriteReadSwitches:
+      - { functionName: 'css', arguments: '["color"]', contextPath: 'body > div#foo > span.bar' }
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
   metrics:
@@ -116,6 +135,11 @@
     jQueryVersion: "1.11.1" # the last loaded version
     jQueryVersionsLoaded: 3
     jQueryOnDOMReadyFunctions: 1
+  offenders:
+    jQueryVersionsLoaded:
+      - { version: "2.1.1", url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' }
+      - { version: "2.1.1", url: 'http://code.jquery.com/jquery-2.1.1.js' }
+      - { version: "1.11.1", url: 'http://code.jquery.com/jquery-1.11.1.js' }
 # --no-externals handling (issue #535)
 - url: "/jquery-multiple.html"
   label: "/jquery-multiple.html (with --no-externals)"
