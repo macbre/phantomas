@@ -3,10 +3,6 @@
 	// spy calls to eval only when requested (issue #467)
 	var spyEval = await phantomas.getParam('spy-eval') === true;
 
-    console.log(await phantomas.getParam('url'))
-    console.log(await phantomas.getParam('spy-eval'))
-    console.log(spyEval);
-
 	if (!spyEval) {
 		phantomas.log('javaScriptBottlenecks: to spy calls to eval() run phantomas with "spy-eval" option set to true');
     }
