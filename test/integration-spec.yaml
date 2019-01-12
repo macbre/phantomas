@@ -47,6 +47,11 @@
     hiddenImages: 3
     nodesWithInlineCSS: 1
     whiteSpacesSize: 33
+  offenders:
+    hiddenImages:
+      - 'http://127.0.0.1:8888/static/mdn.png'
+      - 'http://127.0.0.1:8888/static/blank.gif'
+      - 'http://127.0.0.1:8888/static/example.svg'
 # document height
 - url: "/document-height.html"
   metrics:
