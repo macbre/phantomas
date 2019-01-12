@@ -1,5 +1,7 @@
 (function(phantomas) {
 
+    phantomas.spyEnabled(false, 'initializing domComplexity metrics');
+
     document.addEventListener("DOMContentLoaded", () => {
         phantomas.log("DOM fully loaded and parsed");
         phantomas.spyEnabled(false, 'running domComplexity metrics');
@@ -26,5 +28,7 @@
 
         phantomas.spyEnabled(true);
     });
+
+    phantomas.spyEnabled(true);
 
 })(window.__phantomas);

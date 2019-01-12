@@ -7,6 +7,8 @@
 		allowed.push(varName);
 	}
 
+	phantomas.spyEnabled(false, 'initializing global variables metrics');
+
 	window.addEventListener("load", () => {
 		var varName;
 
@@ -35,4 +37,6 @@
 			}
 		}
 	});
+
+	phantomas.spyEnabled(true);
 })(window.__phantomas);
