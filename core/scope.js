@@ -144,6 +144,11 @@
 			sendMsg('addOffender', Array.prototype.slice.apply(arguments));
 		}
 
+		// see lib/index.js code that injects __phantomas_options into page scope
+		function getParam(param, _default) {
+			return scope.__phantomas_options[param] || _default;
+		}
+
 		// exports
 		phantomas.log = log;
 		phantomas.setMetric = setMetric;
@@ -152,6 +157,7 @@
 		phantomas.setMarkerMetric = setMarkerMetric;
 		phantomas.addOffender = addOffender;
 		phantomas.emit = scope.__phantomas_emit.bind(scope);
+		phantomas.getParam = getParam;
 	})();
 
 	/**
