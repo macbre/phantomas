@@ -56,6 +56,10 @@
   metrics:
     imagesScaledDown: 2
     imagesWithoutDimensions: 3
+  offenders:
+    imagesScaledDown:
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', naturalWidth: 600, naturalHeight: 529, imgWidth: 300, imgHeight: 265 }
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', naturalWidth: 600, naturalHeight: 529, imgWidth: 50, imgHeight: 50 }
 # duplicated ID (issue #392)
 - url: "/dom-id.html"
   metrics:
