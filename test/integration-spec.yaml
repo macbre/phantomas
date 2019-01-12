@@ -225,10 +225,22 @@
   metrics:
     documentWriteCalls: 1
     evalCalls: 2 # via eval() and setTimeout()
+  offenders:
+    documentWriteCalls:
+      - { message: 'document.write() used', caller: 'http://127.0.0.1:8888/bottlenecks.html:11:11' }
+    evalCalls:
+      - { message: 'eval() called directly', caller: 'http://127.0.0.1:8888/bottlenecks.html:8:2' }
+      - { message: 'eval() called via setTimeout("foo()")', caller: 'http://127.0.0.1:8888/bottlenecks.html:9:2' }
+
 - url: "/bottlenecks.html"
   metrics:
     documentWriteCalls: 1
     evalCalls: 1 # via setTimeout() only
+  offenders:
+    documentWriteCalls:
+      - { message: 'document.write() used', caller: 'http://127.0.0.1:8888/bottlenecks.html:11:11' }
+    evalCalls:
+      - { message: 'eval() called via setTimeout("foo()")', caller: 'http://127.0.0.1:8888/bottlenecks.html:9:2' }
 # stop-at-onload (#513)
 - url: "/after-onload.html"
   label: "/after-onload.html (--stop-at-onload)"
