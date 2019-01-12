@@ -267,6 +267,10 @@
 - url: "/lazy-loadable-images.html"
   metrics:
     lazyLoadableImagesBelowTheFold: 2
+  offenders:
+    lazyLoadableImagesBelowTheFold:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', node: 'body > img#dot', offset: 900 }
+      - { url: 'http://127.0.0.1:8888/static/example.svg', node: 'body > footer[2] > img[3]', offset: 1526 }
 # JS globals (#482)
 - url: "/js-globals.html"
   metrics:
