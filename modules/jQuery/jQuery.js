@@ -20,9 +20,6 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('jQueryDOMWrites'); // @desc number of DOM write operations
 	phantomas.setMetric('jQueryDOMWriteReadSwitches'); // @desc number of read operations that follow a series of write operations (will cause repaint and can cause reflow)
 
-	// inject JS code
-	phantomas.on('init', () => phantomas.injectJs(__dirname + '/scope.js'));
-
 	// store the last resource that was received
 	// try to report where given jQuery version was loaded from
 	phantomas.on('recv', entry => {

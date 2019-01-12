@@ -49,7 +49,7 @@ module.exports = function(phantomas) {
 		phantomas.log('To enable CSS in-depth metrics please run phantomas with --analyze-css option');
 		return;
 	}
-
+/**
 	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
 	phantomas.setMetric('cssInlineStyles'); // @desc number of inline styles @optional
 
@@ -227,4 +227,5 @@ module.exports = function(phantomas) {
 			analyzeCss(['--file', path]);
 		});
 	});
+**/
 };

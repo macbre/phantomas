@@ -15,8 +15,6 @@ module.exports = phantomas => {
 	phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of DOM queries called more than once
 	phantomas.setMetric('DOMqueriesAvoidable'); // @desc number of repeated uses of a duplicated query 
 
-	phantomas.on('init', () => phantomas.injectJs(__dirname + '/scope.js'));
-
 	//
 	// TODO: pass events fired by page scoped code
 	//

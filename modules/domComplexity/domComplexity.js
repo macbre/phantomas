@@ -33,9 +33,6 @@ module.exports = function(phantomas) {
 		}
 	});
 
-	// inject JS code
-	phantomas.on('init', () => phantomas.injectJs(__dirname + '/scope.js'));
-
 	// duplicated ID (issue #392)
 	phantomas.setMetric('DOMidDuplicated'); // @desc number of duplicated IDs found in DOM
 
