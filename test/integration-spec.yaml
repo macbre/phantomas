@@ -261,8 +261,11 @@
 # AJAX requests (#622)
 - url: "/jquery-ajax.html"
   metrics:
-    requests: 4
     ajaxRequests: 2
+  offenders:
+    ajaxRequests:
+      - { url: '/static/style.css', method: 'GET' }
+      - { url: '/static/broken.css', method: 'GET' }
 # multiple cookies (#597)
 - url: "/cookies.html"
   options:
