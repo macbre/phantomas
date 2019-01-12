@@ -252,6 +252,10 @@
     globalVariables: 3
     globalVariablesFalsy: 1
     jsErrors: 0
+  offenders:
+    globalVariables: [ 'a_global', 'falsy', 'foo' ]
+    globalVariablesFalsy:
+      - { name: 'falsy', value: false }
 # JS redirects (#550)
 - url: "/js-redirect.html"
   metrics:
