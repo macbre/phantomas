@@ -143,16 +143,15 @@
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
   metrics:
-    requests: 4
-    jsCount: 3
+    requests: 3
+    jsCount: 2
     domains: 2
     jQueryVersion: "1.11.1" # the last loaded version
-    jQueryVersionsLoaded: 3
+    jQueryVersionsLoaded: 2
     jQueryOnDOMReadyFunctions: 1
   offenders:
     jQueryVersionsLoaded:
       - { version: "2.1.1", url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' }
-      - { version: "2.1.1", url: 'http://code.jquery.com/jquery-2.1.1.js' }
       - { version: "1.11.1", url: 'http://code.jquery.com/jquery-1.11.1.js' }
     globalVariables: [ 'jQuery', '$' ]
 # --no-externals handling (issue #535)
