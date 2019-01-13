@@ -4,8 +4,8 @@
 'use strict';
 
 module.exports = function(phantomas) {
-	phantomas.setMetric('requestsToFirstPaint'); // @desc number of HTTP requests it took to make the first paint @gecko
-	phantomas.setMetric('domainsToFirstPaint'); // @desc number of domains used to make the first paint @offenders @gecko @offenders
+	phantomas.setMetric('requestsToFirstPaint'); // @desc number of HTTP requests it took to make the first paint
+	phantomas.setMetric('domainsToFirstPaint'); // @desc number of domains used to make the first paint @offenders @offenders
 	phantomas.setMetric('requestsToDomContentLoaded'); // @desc number of HTTP requests it took to make the page reach DomContentLoaded state
 	phantomas.setMetric('domainsToDomContentLoaded'); // @desc number of domains used to make the page reach DomContentLoaded state @offenders
 	phantomas.setMetric('requestsToDomComplete'); // @desc number of HTTP requests it took to make the page reach DomComplete state
@@ -18,7 +18,7 @@ module.exports = function(phantomas) {
 	function setDomainMetric(metricName) {
 		phantomas.setMetric(metricName, domains.getLength());
 		domains.sort().forEach(function(domain, cnt) {
-			phantomas.addOffender(metricName, '%s (%d requests)', domain, cnt);
+			phantomas.addOffender(metricName, {domain, requests:cnt});
 		});
 	}
 
@@ -33,8 +33,6 @@ module.exports = function(phantomas) {
 	});
 
 	phantomas.on('milestone', function(name) {
-		//phantomas.log('requestsTo: %s (after %d requests)', name, requests);
-
 		switch (name) {
 			case 'firstPaint':
 				phantomas.setMetric('requestsToFirstPaint', requests);

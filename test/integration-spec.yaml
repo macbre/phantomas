@@ -222,10 +222,18 @@
 - url: "/timing.html"
   metrics:
     requests: 4
-#    requestsToDomContentLoaded: 4
-#    domainsToDomContentLoaded: 1
-    requestsToDomComplete: 4
-    domainsToDomComplete: 1
+    requestsToDomContentLoaded: 3
+    domainsToDomContentLoaded: 2
+    requestsToDomComplete: 3
+    domainsToDomComplete: 2
+  offenders:
+    domainsToDomContentLoaded:
+      - { domain: '127.0.0.1', requests: 2 }
+      - { domain: 'code.jquery.com', requests: 1 }
+    domainsToDomComplete:
+      - { domain: '127.0.0.1', requests: 2 }
+      - { domain: 'code.jquery.com', requests: 1 }
+
 # JS bottlenecks (#467)
 - url: "/bottlenecks.html"
   label: "/bottlenecks.html (--spy-eval)"
