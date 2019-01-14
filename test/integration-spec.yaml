@@ -182,10 +182,13 @@
 - url: "/jquery-multiple.html"
   label: "/jquery-multiple.html (with --allow-domain)"
   options:
-    "allow-domain": "foo.com"
+    "no-externals": true
+    "allow-domain": "code.jquery.com"
   metrics:
-    requests: 2
-    blockedRequests: 2
+    requests: 3
+    jsCount: 2
+    blockedRequests: 0
+    jQueryVersion: '1.11.1'
 # jQuery read & write operations (issue #436)
 - url: "/jquery-reads-writes.html"
   metrics:

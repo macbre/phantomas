@@ -21,6 +21,8 @@ module.exports = function(phantomas) {
 
 	ourDomain = parse(phantomas.getParam('url')).hostname;
 
+	phantomas.setMetric('blockedRequests'); // @desc number of requests blocked due to domain filtering @optional
+
 	function checkBlock(domain) {
 		var blocked = false;
 
@@ -86,7 +88,7 @@ module.exports = function(phantomas) {
 				phantomas.log('Request has been blocked: <%s>', url);
 
 				// stats
-				phantomas.incrMetric('blockedRequests'); // @desc number of requests blocked due to domain filtering @optional
+				phantomas.incrMetric('blockedRequests');
 				phantomas.addOffender('blockedRequests', url);
 			}
 			else {
