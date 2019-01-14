@@ -13,6 +13,8 @@
     cookie: "bar=foo;domain=url"
   metrics:
     requests: 3
+    htmlCount: 1
+    htmlSize: 2094
     cssCount: 1
     cssSize: 22
     jsCount: 1

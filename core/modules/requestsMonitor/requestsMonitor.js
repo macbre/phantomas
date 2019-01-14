@@ -190,6 +190,12 @@ module.exports = function(phantomas) {
 			transferedSize: resp.encodedDataLength,
 		};
 
+		// this is set to zero when requests interception is enabled
+		// use Content-Length response header instead
+		if (entry.transferedSize == 0) {
+			entry.transferedSize = parseInt(entry.headers['content-length'] || '0', 10);
+		}
+
 		entry = parseEntryUrl(entry);
 
 		/**
