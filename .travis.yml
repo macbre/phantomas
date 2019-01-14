@@ -1,6 +1,6 @@
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
 language: node_js
-dist: trusty
+dist: xenial
 node_js:
   - 10
   - 8
@@ -12,9 +12,6 @@ addons:
 before_install:
   # Enable user namespace cloning
   - "sysctl kernel.unprivileged_userns_clone=1"
-  # Launch XVFB
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
   # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
   - "export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true"
   # Point Phantomas to Chrome stable binary provided by Travis
