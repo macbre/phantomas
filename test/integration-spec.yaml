@@ -171,9 +171,13 @@
   metrics:
     requests: 2
     jsCount: 1
-    blockedRequests: 2
+    blockedRequests: 1
     domains: 1
     jsErrors: 0
+    jQueryVersion: '2.1.1'
+  offenders:
+    blockedRequests:
+      - 'http://code.jquery.com/jquery-1.11.1.js'
 # accept main domain in allow-domains
 - url: "/jquery-multiple.html"
   label: "/jquery-multiple.html (with --allow-domain)"
