@@ -219,6 +219,7 @@
 #    'wait-for-event': "done"
 #  metrics:
 #    testFooBar: 123 # a metric set just before event trigger
+
 # requests to (#438 / #486)
 - url: "/timing.html"
   metrics:
@@ -234,6 +235,8 @@
     domainsToDomComplete:
       - { domain: '127.0.0.1', requests: 2 }
       - { domain: 'code.jquery.com', requests: 1 }
+  options:
+    "wait-for-network-idle": true
 
 # JS bottlenecks (#467)
 - url: "/bottlenecks.html"
