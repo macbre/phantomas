@@ -66,6 +66,8 @@
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
+    base64Count: 1
+    base64Size: 43
     bodyHTMLSize: 709
     commentsSize: 85
     DOMelementsCount: 11

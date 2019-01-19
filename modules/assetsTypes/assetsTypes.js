@@ -28,7 +28,7 @@ module.exports = function(phantomas) {
 		phantomas.setMetric(key + 'Size');
 	});
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', (entry, _) => {
 		var size = entry.transferedSize;
 
 		phantomas.incrMetric(entry.type + 'Count');
@@ -41,8 +41,8 @@ module.exports = function(phantomas) {
 		});
 	});
 
-	phantomas.on('base64recv', function(entry, res) {
+	phantomas.on('base64recv', (entry, _) => {
 		phantomas.incrMetric('base64Count');
-		phantomas.incrMetric('base64Size', entry.contentLength);
+		phantomas.incrMetric('base64Size', entry.bodySize);
 	});
 };
