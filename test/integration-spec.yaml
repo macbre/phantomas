@@ -143,12 +143,14 @@
      - { functionName: 'css', arguments: '[{"background-color":"blue"}]', contextPath: 'body > div#foo' }
     jQueryDOMWriteReadSwitches:
       - { functionName: 'css', arguments: '["color"]', contextPath: 'body > div#foo > span.bar' }
+
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
   metrics:
     requests: 3
     jsCount: 2
     domains: 2
+    maxRequestsPerDomain: 2
     jQueryVersion: "1.11.1" # the last loaded version
     jQueryVersionsLoaded: 2
     jQueryOnDOMReadyFunctions: 1
@@ -157,6 +159,10 @@
       - { version: "2.1.1", url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' }
       - { version: "1.11.1", url: 'http://code.jquery.com/jquery-1.11.1.js' }
     globalVariables: [ 'jQuery', '$' ]
+    domains:
+      - { domain: '127.0.0.1', requests: 2 }
+      - { domain: 'code.jquery.com', requests: 1 }
+
 # --no-externals handling (issue #535)
 - url: "/jquery-multiple.html"
   label: "/jquery-multiple.html (with --no-externals)"

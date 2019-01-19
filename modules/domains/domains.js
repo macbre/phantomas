@@ -25,10 +25,10 @@ module.exports = function(phantomas) {
 	phantomas.on('report', function() {
 		var domainsRequests = new Stats();
 
-		domains.sort().forEach(function(name, cnt) {
-			phantomas.addOffender('domains', '%s: %d request(s)', name, cnt);
+		domains.sort().forEach(function(domain, requests) {
+			phantomas.addOffender('domains', {domain, requests});
 
-			domainsRequests.push(cnt);
+			domainsRequests.push(requests);
 		});
 
 		if (domains.getLength() > 0) {
