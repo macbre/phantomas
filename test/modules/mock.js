@@ -9,6 +9,7 @@ var phantomas = function(name) {
 	this.emitter = new(require('events').EventEmitter)();
 	this.wasEmitted = {};
 	this.metrics = {};
+	this.offenders = {};
 
 	this.log = debug('phantomas:test:' + name);
 };
@@ -59,6 +60,15 @@ phantomas.prototype = {
 	},
 	hasValue: function(name, val) {
 		return this.getMetric(name) === val;
+	},
+
+	addOffender: function(name, value) {
+		this.offenders[name] = this.offenders[name] || [];
+		this.offenders[name].push(value);
+	},
+
+	getOffenders: function(name) {
+		return this.offenders[name];
 	},
 
 	// mock core PhantomJS events
@@ -122,9 +132,6 @@ phantomas.prototype = {
 	},
 
 	// noop mocks
-	addOffender: function() {
-		this.log('addOffenders: %j', Array.prototype.slice.apply(arguments));
-	},
 	log: noop,
 	echo: noop,
 	evaluate: noop,
@@ -152,6 +159,12 @@ function assertMetric(name, value) {
 	};
 }
 
+function assertOffender(name, value) {
+	return function(phantomas) {
+		assert.deepStrictEqual(phantomas.getOffenders(name), value);
+	};
+}
+
 module.exports = {
 	initModule: function(name) {
 		return initModule(name);
@@ -162,7 +175,7 @@ module.exports = {
 
 	assertMetric: assertMetric,
 
-	getContext: function(moduleName, topic, metricsCheck) {
+	getContext: function(moduleName, topic, metricsCheck, offendersCheck) {
 		var phantomas = initModule(moduleName),
 			context = {};
 
@@ -173,6 +186,11 @@ module.exports = {
 		Object.keys(metricsCheck || {}).forEach(function(name) {
 			var check = 'sets "' + name + '" metric correctly';
 			context[check] = assertMetric(name, metricsCheck[name]);
+		});
+
+		Object.keys(offendersCheck || {}).forEach(function(name) {
+			var check = 'sets "' + name + '" offender(s) correctly';
+			context[check] = assertOffender(name, offendersCheck[name]);
 		});
 
 		return context;
