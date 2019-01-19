@@ -71,14 +71,6 @@
 - url: "/dom-id.html"
   metrics:
     DOMidDuplicated: 2 # foo and bar
-# assertions & exit codes (#382 / #528)
-- url: "/dom-id.html"
-  label: "Assertions and exit code"
-  options:
-    "assert-requests": 0
-  metrics:
-    requests: 1
-  exitCode: 1 # one assert not met
 # inline styles (#397 / #694)
 - url: "/inline-css.html"
   options:
@@ -269,14 +261,14 @@
       - { message: 'eval() called via setTimeout("foo()")', caller: 'http://127.0.0.1:8888/bottlenecks.html:9:2' }
 # stop-at-onload (#513)
 - url: "/after-onload.html"
-  label: "/after-onload.html (--stop-at-onload)"
-  options:
-    "stop-at-onload": true
+  label: "/after-onload.html"
   metrics:
     imageCount: 1
     requests: 2
 - url: "/after-onload.html"
-  label: "/after-onload.html"
+  label: "/after-onload.html (with --wait-for-network-idle)"
+  options:
+    "wait-for-network-idle": true
   metrics:
     imageCount: 2
     requests: 3
