@@ -30,6 +30,34 @@
     DOMqueriesAvoidable: 3
     DOMqueriesWithoutResults: 4
 
+  offenders:
+    DOMqueriesById:
+      - { id: 'foo', node: '#document' }
+      - { id: 'foo', node: '#document' }
+      - { id: 'delete', node: '#document' }
+      - { id: 'foo', node: '#document' }
+      - { id: 'list1', node: '#document' }
+      - { id: 'list2', node: '#document' }
+      - { id: 'foobar', node: '#document' }
+    DOMqueriesByClassName:
+      - { class: 'barr', node: 'body' }
+    DOMqueriesByTagName:
+      - { tag: '*', node: 'div' }
+      - { tag: 'script', node: 'DocumentFragment > strong[0]' }
+      - { tag: 'script', node: 'DocumentFragment > strong[0]' }
+      - { tag: 'strong', node: '#document' }
+      - { tag: 'strong', node: '#document' }
+      - { tag: 'li', node: 'body > ul#list1' }
+      - { tag: 'li', node: 'body > ul#list2' }
+      - { tag: 'a', node: 'div' }
+      - { tag: 'a', node: 'div' }
+    DOMinserts:
+      - { append: 'html > div[2]', node: 'html' }
+      - { append: 'body > p#foo > strong[0]', node: 'body > p#foo' }
+    DOMqueriesDuplicated:
+      - { query: 'id "#foo" (in #document)', count: 3 }
+      - { query: 'tag name "strong" (in #document)', count: 2 }
+
 # DOM mutations
 - url: "/dom-operations.html"
   metrics:

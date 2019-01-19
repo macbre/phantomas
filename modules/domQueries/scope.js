@@ -10,7 +10,7 @@
     // selectors by element ID
     phantomas.spy(Document.prototype, 'getElementById', function(results, id) {
         phantomas.incrMetric('DOMqueriesById');
-        phantomas.addOffender('DOMqueriesById', '#%s (in %s)', id, '#document');
+        phantomas.addOffender('DOMqueriesById', {id, node: phantomas.getDOMPath(this)});
         querySpy('id', '#' + id, 'getElementById', '#document', (results === null));
     }, true);
 
@@ -20,7 +20,7 @@
         var context = phantomas.getDOMPath(this);
 
         phantomas.incrMetric('DOMqueriesByClassName');
-        phantomas.addOffender('DOMqueriesByClassName', '.%s (in %s)', className, context);
+        phantomas.addOffender('DOMqueriesByClassName', {class: className, node: context});
         querySpy('class', '.' + className, 'getElementsByClassName', context, (results.length === 0));
     }
 
@@ -36,7 +36,7 @@
         tagName = tagName.toLowerCase();
 
         phantomas.incrMetric('DOMqueriesByTagName');
-        phantomas.addOffender('DOMqueriesByTagName', '%s (in %s)', tagName, context);
+        phantomas.addOffender('DOMqueriesByTagName', {tag: tagName, node: phantomas.getDOMPath(this)});
         querySpy('tag name', tagName, 'getElementsByTagName', context, (results.length === 0));
     }
 
@@ -49,7 +49,7 @@
         var context = phantomas.getDOMPath(this);
 
         phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
-        phantomas.addOffender('DOMqueriesByQuerySelectorAll', '%s (in %s)', selector, context);
+        phantomas.addOffender('DOMqueriesByQuerySelectorAll', {selector, node: context});
         querySpy('selector', selector, 'querySelectorAll', context, (results === null || results.length === 0));
     }
 
@@ -81,7 +81,7 @@
         }
 
         phantomas.incrMetric('DOMinserts');
-        phantomas.addOffender('DOMinserts', '"%s" appended to "%s"', appendedNodePath, destNodePath);
+        phantomas.addOffender('DOMinserts', {append: appendedNodePath, node: destNodePath});
 
         phantomas.log('DOM insert: node "%s" appended to "%s"', appendedNodePath, destNodePath);
     }

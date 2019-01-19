@@ -28,7 +28,7 @@ module.exports = phantomas => {
 
 		if (hasNoResults === true) {
 			phantomas.incrMetric('DOMqueriesWithoutResults');
-			phantomas.addOffender('DOMqueriesWithoutResults', '%s (in %s) using %s', query, context, fnName);
+			phantomas.addOffender('DOMqueriesWithoutResults', {query, node: context, 'function': fnName});
 		}
 	});
 
@@ -52,12 +52,12 @@ module.exports = phantomas => {
 		}
 	});
 
-	phantomas.on('report', function() {
-		DOMqueries.sort().forEach(function(query, cnt) {
-			if (cnt > 1) {
+	phantomas.on('report', () => {
+		DOMqueries.sort().forEach((query, count) => {
+			if (count > 1) {
 				phantomas.incrMetric('DOMqueriesDuplicated');
-				phantomas.incrMetric('DOMqueriesAvoidable', cnt - 1);
-				phantomas.addOffender('DOMqueriesDuplicated', '%s: %d queries', query, cnt);
+				phantomas.incrMetric('DOMqueriesAvoidable', count - 1);
+				phantomas.addOffender('DOMqueriesDuplicated', {query, count});
 			}
 		});
 	});
