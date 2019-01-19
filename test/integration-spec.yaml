@@ -82,6 +82,9 @@
       - 'http://127.0.0.1:8888/static/mdn.png'
       - 'http://127.0.0.1:8888/static/blank.gif'
       - 'http://127.0.0.1:8888/static/example.svg'
+    nodesWithInlineCSS:
+      - { css: 'color: blue', node: 'p#foo' }
+
 # document height
 - url: "/document-height.html"
   metrics:

@@ -24,7 +24,7 @@
                 const path = phantomas.getDOMPath(node, true /* dontGoUpTheDom */ );
 
                 phantomas.incrMetric('nodesWithInlineCSS');
-                phantomas.addOffender('nodesWithInlineCSS', {path: path, css: node.getAttribute('style')});
+                phantomas.addOffender('nodesWithInlineCSS', {node: path, css: node.getAttribute('style')});
             });
         })();
 
