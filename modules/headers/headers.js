@@ -14,8 +14,6 @@ module.exports = function(phantomas) {
 
 	phantomas.setMetric('headersBiggerThanContent'); // @desc number of responses with headers part bigger than the response body
 
-	return; // TODO
-
 	function processHeaders(headers) {
 		var res = {
 			count: 0,
@@ -23,16 +21,16 @@ module.exports = function(phantomas) {
 		};
 
 		if (headers) {
-			headers.forEach(function(header) {
+			Object.keys(headers).forEach(function(key) {
 				res.count++;
-				res.size += (header.name + ': ' + header.value + '\r\n').length;
+				res.size += (key + ': ' + headers[key] + '\r\n').length;
 			});
 		}
 
 		return res;
 	}
 
-	phantomas.on('send', function(entry) {
+	phantomas.on('request', function(entry) {
 		var headers = processHeaders(entry.headers);
 
 		phantomas.incrMetric('headersCount', headers.count);
@@ -45,6 +43,8 @@ module.exports = function(phantomas) {
 	phantomas.on('recv', function(entry) {
 		var headers = processHeaders(entry.headers);
 
+		// phantomas.log('Headers: <%s> %d bytes', entry.url, headers.size);
+
 		phantomas.incrMetric('headersCount', headers.count);
 		phantomas.incrMetric('headersSize', headers.size);
 
@@ -52,9 +52,9 @@ module.exports = function(phantomas) {
 		phantomas.incrMetric('headersRecvSize', headers.size);
 
 		// skip HTTP 204 No Content responses
-		if ((entry.status !== 204) && (headers.size > entry.contentLength)) {
+		if ((entry.status !== 204) && (headers.size > entry.transferedSize)) {
 			phantomas.incrMetric('headersBiggerThanContent');
-			phantomas.addOffender('headersBiggerThanContent', '%s (body: %s kB / headers: %s kB)', entry.url, (entry.contentLength / 1024).toFixed(2), (headers.size / 1024).toFixed(2));
+			phantomas.addOffender('headersBiggerThanContent', {url: entry.url, contentSize: entry.transferedSize, headersSize: headers.size});
 		}
 	});
 };
