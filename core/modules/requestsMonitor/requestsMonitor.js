@@ -279,12 +279,12 @@ module.exports = function(phantomas) {
 			phantomas.incrMetric('requests');
 
 			phantomas.incrMetric('bodySize', entry.bodySize);
-			phantomas.incrMetric('contentLength', entry.contentLength);
+			phantomas.incrMetric('contentLength', entry.transferedSize);
 		}
 
 		if (entry.gzip) {
 			phantomas.incrMetric('gzipRequests');
-			phantomas.addOffender('gzipRequests', '%s (gzip: %s kB / uncompressed: %s kB)', entry.url, (entry.contentLength/1024).toFixed(2), (entry.bodySize/1024).toFixed(2));
+			phantomas.addOffender('gzipRequests', {url: entry.url, transferedSize: entry.transferedSize, bodySize: entry.bodySize});
 		}
 
 		if (entry.isSSL) {

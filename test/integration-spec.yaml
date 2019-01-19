@@ -130,9 +130,11 @@
     cssParsingErrors: 0
     cssLength: 22
     cssRules: 1
+
 # jQuery and events (#440 / #451)
 - url: "/jquery.html"
   metrics:
+    gzipRequests: 1
     jQueryVersion: "2.1.1"
     jQueryOnDOMReadyFunctions: 1
     jQueryWindowOnLoadFunctions: 1
@@ -142,6 +144,8 @@
     eventsDispatched: 1
     eventsScrollBound: 2
   offenders:
+    gzipRequests:
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29415, bodySize: 84245 }
     eventsDispatched:
       - { eventType: 'click', path: 'body > div#foo > span.bar' }
     eventsBound:
