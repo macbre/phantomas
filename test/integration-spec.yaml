@@ -390,3 +390,12 @@
   offenders:
     headersBiggerThanContent:
      - { url: 'http://127.0.0.1:8888/static/blank.gif', contentSize: 43, headersSize: 268 }
+
+# caching
+- url: "/caching.html"
+  metrics:
+    requests: 2
+    cachingTooShort: 1
+  offenders:
+    cachingTooShort:
+     - { url: 'http://127.0.0.1:8888/static/mdn.png', ttl: 84600 }
