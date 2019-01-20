@@ -22,6 +22,7 @@
     "node": ">=8.0"
   },
   "dependencies": {
+    "analyze-css": "^0.12.7",
     "debug": "^4.1.1",
     "puppeteer": "^1.11.0"
   },
