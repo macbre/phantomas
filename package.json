@@ -27,18 +27,18 @@
     "puppeteer": "^1.11.0"
   },
   "devDependencies": {
+    "eslint": "^5.12.1",
     "glob": "^7.1.2",
     "http-serve": "^1.0.1",
     "js-beautify": "^1.6.14",
     "js-yaml": "^3.12.0",
-    "jshint": "^2.9.7",
     "mockery": "^2.0.0",
     "vows": "^0.8.2"
   },
   "scripts": {
     "test": "vows --spec",
     "unit-test": "vows test/modules/*-test.js --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
+    "lint": "eslint core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
     "metadata": "DEBUG=* node lib/metadata/generate.js"
   },
