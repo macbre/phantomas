@@ -21,6 +21,14 @@ vows.describe('Results wrapper').addBatch({
 			results.setMetric('foo', 'bar');
 			assert.strictEqual(results.getMetric('foo'), 'bar');
 		},
+		'avarage should be correctly calculated': () => {
+			const results = new Results();
+			results.addToAvgMetric('foo', 2);
+			results.addToAvgMetric('foo', 1);
+			results.addToAvgMetric('bar', 4);
+			assert.strictEqual(results.getMetric('foo'), 1.5);
+			assert.strictEqual(results.getMetric('bar'), 4);
+		},
 		'should be correctly set (with no casting)': function(results) {
 			results.setMetric('bar', null);
 			assert.strictEqual(results.getMetric('bar'), null);

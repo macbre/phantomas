@@ -5,10 +5,18 @@
  */
 'use strict';
 
+function getAverage(arr) {
+	var sum = arr.reduce(function(a, b) {
+		return a + b;
+	});
+	return sum / arr.length;
+}
+
 module.exports = function (data) {
 	var asserts = {},
 		generator = '',
 		metrics = {},
+		metricsAvgStorage = {},
 		offenders = {},
 		url;
 
@@ -36,6 +44,16 @@ module.exports = function (data) {
 		incrMetric: function(name, incr /* =1 */ ) {
 			var currVal = this.getMetric(name) || 0;
 			this.setMetric(name, currVal + (typeof incr === 'number' ? incr : 1));
+		},
+		// push a value and update the metric if the current average value
+		addToAvgMetric: function(name, value) {
+			if (typeof metricsAvgStorage[name] === 'undefined') {
+				metricsAvgStorage[name] = [];
+			}
+
+			metricsAvgStorage[name].push(value);
+
+			this.setMetric(name, getAverage(metricsAvgStorage[name]));
 		},
 		getMetric: function(name) {
 			return metrics[name];
