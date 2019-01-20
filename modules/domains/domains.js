@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var Stats = require('../../lib/fast-stats').Stats;
+const Stats = require('../../lib/fast-stats').Stats;
 
 module.exports = function(phantomas) {
 	var Collection = require('../../lib/collection'),
@@ -13,7 +13,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('maxRequestsPerDomain'); // @desc maximum number of requests fetched from a single domain
 	phantomas.setMetric('medianRequestsPerDomain'); // @desc median of number of requests fetched from each domain
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var domain = entry.domain;
 
 		if (domain) {
@@ -22,7 +22,7 @@ module.exports = function(phantomas) {
 	});
 
 	// add metrics
-	phantomas.on('report', function() {
+	phantomas.on('report', () => {
 		var domainsRequests = new Stats();
 
 		domains.sort().forEach(function(domain, requests) {

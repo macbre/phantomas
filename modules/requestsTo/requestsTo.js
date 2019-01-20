@@ -22,7 +22,7 @@ module.exports = function(phantomas) {
 		});
 	}
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		//phantomas.log('requestsTo: #%d <%s> / %s', requests, entry.url, entry.domain);
 
 		requests++;
@@ -32,7 +32,7 @@ module.exports = function(phantomas) {
 		}
 	});
 
-	phantomas.on('milestone', function(name) {
+	phantomas.on('milestone', name => {
 		switch (name) {
 			case 'firstPaint':
 				phantomas.setMetric('requestsToFirstPaint', requests);

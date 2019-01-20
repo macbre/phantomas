@@ -21,7 +21,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('smallJsFiles'); // @desc number of JS assets smaller than 2 KiB that can be inlined or merged @unreliable
 	phantomas.setMetric('multipleRequests'); // @desc number of static assets that are requested more than once
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var isContent = (entry.status === 200),
 			sizeFormatted;
 
@@ -82,8 +82,8 @@ module.exports = function(phantomas) {
 		}
 	});
 
-	phantomas.on('report', function() {
-		assetsReqCounter.forEach(function(asset, cnt) {
+	phantomas.on('report', () => {
+		assetsReqCounter.forEach((asset, cnt) => {
 			if (cnt > 1) {
 				phantomas.incrMetric('multipleRequests');
 				phantomas.addOffender('multipleRequests', asset);

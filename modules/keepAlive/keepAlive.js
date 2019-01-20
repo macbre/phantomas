@@ -8,7 +8,7 @@ module.exports = function(phantomas) {
 
 	phantomas.setMetric('closedConnections'); // @desc number of requests not keeping the connection alive and slowing down the next request
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var connectionHeader = (entry.headers.Connection || '').toLowerCase(),
 			// Taking the protocol in account, in case the same domain is called with two different protocols.
 			host = entry.protocol + '://' + entry.domain;
@@ -19,7 +19,7 @@ module.exports = function(phantomas) {
 		}
 	});
 
-	phantomas.on('send', function(entry, res) {
+	phantomas.on('send', entry => {
 		var host = entry.protocol + '://' + entry.domain,
 			previousClosedConnection = closedConnectionHosts[host];
 

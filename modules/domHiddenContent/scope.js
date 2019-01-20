@@ -7,7 +7,7 @@
 
         phantomas.spyEnabled(false, 'analyzing hidden content');
 
-        runner.walk(document.body, function(node, depth) {
+        runner.walk(document.body, node => {
             switch (node.nodeType) {
                 case Node.ELEMENT_NODE:
                     // @see https://developer.mozilla.org/en/DOM%3awindow.getComputedStyle
@@ -54,7 +54,7 @@
             }
         });
 
-        Object.keys(lazyLoadableImages).forEach(function(img) {
+        Object.keys(lazyLoadableImages).forEach(img => {
             var entry = lazyLoadableImages[img];
 
             phantomas.incrMetric('hiddenImages');

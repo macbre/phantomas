@@ -1,8 +1,7 @@
 /**
  * Test staticAssets module
  */
-var vows = require('vows'),
-	assert = require('assert'),
+const vows = require('vows'),
 	mock = require('./mock');
 
 var URL = 'http://example.com/';

@@ -26,7 +26,7 @@ module.exports = function(phantomas) {
 		timestampStart = Date.now();
 	});
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var type = entry.type,
 			time = 0,
 			metricName = '';

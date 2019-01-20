@@ -63,7 +63,7 @@
             'hasClass',
             'position',
         ].forEach(function(funcName) {
-            phantomas.spy(jQuery.fn, funcName, function(val) {
+            phantomas.spy(jQuery.fn, funcName, () => {
                 report(TYPE_GET, funcName, this[0], arguments);
             });
         });

@@ -11,7 +11,7 @@ function sendReq(url, extra) {
 		var phantomas = mock.initCoreModule('requestsMonitor'),
 			ret = false;
 
-		phantomas.on('recv', function(entry, _) {
+		phantomas.on('recv', entry => {
 			ret = entry;
 		});
 		phantomas.sendRequest(extend({

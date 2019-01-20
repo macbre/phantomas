@@ -36,7 +36,7 @@ module.exports = function(phantomas) {
 	var responseTimes = new Stats(),
 		latencyTimes = new Stats();
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		// ignore anything different than HTTP 200
 		if (entry.status !== 200) {
 			return;

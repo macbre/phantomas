@@ -27,24 +27,24 @@
     }
 
     // spy calls to setTimeout / setInterval with string passed instead of a function
-    phantomas.spy(window, 'setTimeout', function(fn, _) {
+    phantomas.spy(window, 'setTimeout', fn => {
         if (typeof fn !== 'string') return;
 
         report('eval() called via setTimeout("' + fn + '")', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
     });
 
-    phantomas.spy(window, 'setInterval', function(fn, _) {
+    phantomas.spy(window, 'setInterval', fn => {
         if (typeof fn !== 'string') return;
 
         report('eval() called via setInterval("' + fn + '")', phantomas.getCaller(), phantomas.getBacktrace(), 'evalCalls');
     });
 
     // spy document.write(ln)
-    phantomas.spy(document, 'write', function(_) {
+    phantomas.spy(document, 'write', () => {
         report('document.write() used', phantomas.getCaller(), phantomas.getBacktrace(), 'documentWriteCalls');
     });
 
-    phantomas.spy(document, 'writeln', function(_) {
+    phantomas.spy(document, 'writeln', () => {
         report('document.writeln() used', phantomas.getCaller(), phantomas.getBacktrace(), 'documentWriteCalls');
     });
 })(window.__phantomas);
