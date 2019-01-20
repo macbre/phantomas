@@ -104,6 +104,7 @@
 - url: "/dom-id.html"
   metrics:
     DOMidDuplicated: 2 # foo and bar
+
 # inline styles (#397 / #694)
 - url: "/inline-css.html"
   options:
@@ -117,6 +118,7 @@
     cssRules: 4
     cssImportants: 1
     DOMqueries: 0
+
 # analyze-css fails to parse a file (#404)
 - url: "/broken-css.html"
   options:
@@ -125,6 +127,7 @@
     cssParsingErrors: 3
     cssLength: 39
     cssRules: 1
+
 - url: "/dom-operations.html"
   options:
     "analyze-css": true

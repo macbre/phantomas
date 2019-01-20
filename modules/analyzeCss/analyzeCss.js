@@ -45,11 +45,16 @@
 'use strict';
 
 module.exports = function(phantomas) {
-	if (!phantomas.getParam('analyze-css')) {
+	if (phantomas.getParam('analyze-css') !== true) {
 		phantomas.log('To enable CSS in-depth metrics please run phantomas with --analyze-css option');
 		return;
 	}
-/**
+
+	// load analyze-css module
+	// https://www.npmjs.com/package/analyze-css
+	const analyzer = require('analyze-css');
+	phantomas.log('Using version %s', analyzer.version);
+
 	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
 	phantomas.setMetric('cssInlineStyles'); // @desc number of inline styles @optional
 
@@ -65,13 +70,10 @@ module.exports = function(phantomas) {
 		return f + str.substr(1);
 	}
 
-	// run analyze-css "binary" installed by npm
-	function analyzeCss(options) {
-		var system = require('system'),
-			isWindows = (system.os.name === 'windows'),
-			binary = system.env.ANALYZE_CSS_BIN,
-			proxy;
+	function analyzeCss(css, context) {
+		var proxy;
 
+		/**
 		// force JSON output format
 		options.push('--json');
 
@@ -91,9 +93,13 @@ module.exports = function(phantomas) {
 
 			options.push('--proxy', proxy);
 		}
+		**/
 
-		phantomas.runScript(binary, options, function(err, results) {
-			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
+		// https://www.npmjs.com/package/analyze-css#commonjs-module
+		var options = {};
+
+		new analyzer(css, options, function(err, results) {
+			var offenderSrc = context || '[inline CSS]';
 
 			if (err !== null) {
 				phantomas.log('analyzeCss: sub-process failed! - %s', err);
@@ -117,7 +123,7 @@ module.exports = function(phantomas) {
 				return;
 			}
 
-			phantomas.log('analyzeCss: using ' + results.generator);
+			phantomas.log('Got results for %s from %s', context, results.generator);
 
 			var metrics = results.metrics || {},
 				offenders = results.offenders || {};
@@ -136,19 +142,7 @@ module.exports = function(phantomas) {
 				// and add offenders
 				if (typeof offenders[metric] !== 'undefined') {
 					offenders[metric].forEach(function(msg) {
-						var re = / @ \d+:\d+$/;
-
-						// add the file name to offenders (issue #442)
-						// the message ends with something similar to " @ 25:1"
-						if (re.test(msg)) {
-							msg = msg.replace(re, ' ' + offenderSrc + '$&');
-						}
-						// add file url in offenders for cssDuplicatedSelectors (issue #693)
-						else if (metricPrefixed === 'cssDuplicatedSelectors') {
-							msg += ' ' + offenderSrc;
-						}
-
-						phantomas.addOffender(metricPrefixed, msg);
+						phantomas.addOffender(metricPrefixed, {url: offenderSrc, value: msg});
 					});
 				}
 				// add more offenders (#578)
@@ -163,7 +157,7 @@ module.exports = function(phantomas) {
 						case 'cssSpecificityIdAvg':
 						case 'cssSpecificityClassAvg':
 						case 'cssSpecificityTagAvg':
-							phantomas.addOffender(metricPrefixed, offenderSrc + ': ' + metrics[metric]);
+							phantomas.addOffender(metricPrefixed, {url: offenderSrc, value: metrics[metric]});
 							break;
 					}
 				}
@@ -171,13 +165,29 @@ module.exports = function(phantomas) {
 		});
 	}
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', async (entry, res) => {
 		if (entry.isCSS) {
 			phantomas.log('CSS: analyzing <%s>...', entry.url);
-			analyzeCss(['--url', entry.url]);
+
+			// get the response content and pass it to the analyze-css module
+			var content = await res.getContent();
+			analyzeCss(content, entry.url);
 		}
 	});
 
+	/**
+	phantomas.on('milestone', async (milestone) => {
+		if (milestone !== 'domComplete') {
+			return;
+		}
+
+		phantomas.log('domComplete: checking inline styles');
+
+		const nodes = await phantomas.querySelectorAll('[style]');
+		console.log(nodes);
+	});
+
+	/**
 	phantomas.on('loadFinished', function() {
 		var fs = require('fs');
 
@@ -227,5 +237,5 @@ module.exports = function(phantomas) {
 			analyzeCss(['--file', path]);
 		});
 	});
-**/
+	**/
 };
