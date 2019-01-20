@@ -118,6 +118,19 @@
     cssRules: 4
     cssImportants: 1
     DOMqueries: 0
+  offenders:
+    cssParsingErrors:
+      - {
+          url: '[inline CSS]',
+          value: { message: "missing '{'", position: {
+            end: { column: 2, line: 3 },
+            start: { column: 2, line: 3 }
+          }}
+        }
+    cssInlineStyles:
+      - { node: 'head > style[1]' }
+      - { node: 'body > style[0]' }
+      - { node: 'body > style[1]' }
 
 # analyze-css fails to parse a file (#404)
 - url: "/broken-css.html"

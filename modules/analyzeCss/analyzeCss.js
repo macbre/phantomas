@@ -123,7 +123,7 @@ module.exports = function(phantomas) {
 				return;
 			}
 
-			phantomas.log('Got results for %s from %s', context, results.generator);
+			phantomas.log('Got results for %s from %s', offenderSrc, results.generator);
 
 			var metrics = results.metrics || {},
 				offenders = results.offenders || {};
@@ -175,67 +175,8 @@ module.exports = function(phantomas) {
 		}
 	});
 
-	/**
-	phantomas.on('milestone', async (milestone) => {
-		if (milestone !== 'domComplete') {
-			return;
-		}
-
-		phantomas.log('domComplete: checking inline styles');
-
-		const nodes = await phantomas.querySelectorAll('[style]');
-		console.log(nodes);
+	phantomas.on('inlinecss', css => {
+		phantomas.log('CSS: analyzing inline CSS: %s', css);
+		analyzeCss(css);
 	});
-
-	/**
-	phantomas.on('loadFinished', function() {
-		var fs = require('fs');
-
-		// get the content of inline CSS (issue #397)
-		var inlineCss = phantomas.evaluate(function() {
-			return (function(phantomas) {
-				phantomas.spyEnabled(false, 'looking for inline styles');
-
-				var styles = document.getElementsByTagName('style'),
-					content = [],
-					type;
-
-				for (var i = 0, len = styles.length; i < len; i++) {
-					type = styles[i].getAttribute('type') || 'text/css'; // ignore inline <style> tags with type different than text/css (issue #694)
-
-					if (type === 'text/css') {
-						content.push(styles[i].textContent);
-					} else {
-						phantomas.log('analyzeCss: inline <style> tag found with type="%s", ignoring...', type);
-					}
-				}
-
-				phantomas.spyEnabled(true);
-				return content;
-			})(window.__phantomas);
-		});
-
-		// no inline styles found, leave
-		if (inlineCss.length === 0) {
-			return;
-		}
-
-		phantomas.log('analyzeCss: found %d inline styles', inlineCss.length);
-		phantomas.setMetric('cssInlineStyles', inlineCss.length);
-
-		// create the temporary directory
-		fs.makeTree(phantomas.tmpdir());
-
-		inlineCss.forEach(function(cssContent, idx) {
-			var path = phantomas.tmpdir() + 'inline-' + idx + '.css';
-
-			phantomas.log('analyzeCss: saving inline CSS #%d to %s (%d bytes)...', (idx + 1), path, cssContent.length);
-
-			// save CSS to the file
-			fs.write(path, cssContent, 'w');
-
-			analyzeCss(['--file', path]);
-		});
-	});
-	**/
 };
