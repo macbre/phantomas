@@ -31,11 +31,9 @@ module.exports = function(phantomas) {
 					}
 					break;
 
-					// catch Expires and Pragma headers
-				case 'expires':
+				case 'expires': // catch Expires and Pragma headers
 				case 'pragma':
-					// and Varnish specific headers
-				case 'x-pass-expires':
+				case 'x-pass-expires': // and Varnish specific headers
 				case 'x-pass-cache-control':
 					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
 					phantomas.addOffender('oldCachingHeaders', {url, headerName, value});
@@ -59,7 +57,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('oldCachingHeaders');
 	phantomas.setMetric('cachingUseImmutable'); // @desc number of responses with a long TTL that can benefit from Cache-Control: immutable
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var ttl = getCachingTime(entry.url, entry.headers),
 			headerName;
 

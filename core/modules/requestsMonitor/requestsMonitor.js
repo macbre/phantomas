@@ -306,12 +306,7 @@ module.exports = function(phantomas) {
 
 	// completion of the last HTTP request
 	var loadStartedTime;
-	phantomas.on('loadStarted', function(res) {
-		// when the monitoring started?
-		loadStartedTime = Date.now();
-	});
+	phantomas.on('loadStarted', () => loadStartedTime = Date.now()); // when the monitoring started?
 
-	phantomas.on('recv', function(entry, res) {
-		phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - loadStartedTime);
-	});
+	phantomas.on('recv', entry => phantomas.setMetric('httpTrafficCompleted', entry.recvEndTime - loadStartedTime));
 };

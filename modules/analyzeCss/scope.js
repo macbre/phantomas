@@ -8,7 +8,7 @@
 
         inlineCss.forEach(node => {
             // ignore inline <style> tags with type different than text/css (issue #694)
-            type = node.getAttribute('type') || 'text/css';
+            const type = node.getAttribute('type') || 'text/css';
 
             if (type === 'text/css') {
                 phantomas.emit('inlinecss', node.textContent);

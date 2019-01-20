@@ -8,7 +8,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('cacheMisses'); // @desc number of cache misses @offenders
 	phantomas.setMetric('cachePasses'); // @desc number of cache passes @offenders
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var age, xCacheHeader,
 			isHit, isMiss, isPass;
 

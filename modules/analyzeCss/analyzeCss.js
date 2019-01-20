@@ -71,8 +71,6 @@ module.exports = function(phantomas) {
 	}
 
 	function analyzeCss(css, context) {
-		var proxy;
-
 		/**
 		// force JSON output format
 		options.push('--json');
@@ -84,7 +82,7 @@ module.exports = function(phantomas) {
 		}
 
 		// HTTP proxy (#500)
-		proxy = phantomas.getParam('proxy', false, 'string');
+		var proxy = phantomas.getParam('proxy', false, 'string');
 
 		if (proxy !== false) {
 			if (proxy.indexOf('http:') < 0) {

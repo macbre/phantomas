@@ -22,13 +22,13 @@
  */
 'use strict';
 
-module.exports = function(phantomas) {
-	['html', 'css', 'js', 'json', 'image', 'video', 'webfont', 'base64', 'other'].forEach(function(key) {
+module.exports = (phantomas) => {
+	['html', 'css', 'js', 'json', 'image', 'video', 'webfont', 'base64', 'other'].forEach(key => {
 		phantomas.setMetric(key + 'Count');
 		phantomas.setMetric(key + 'Size');
 	});
 
-	phantomas.on('recv', (entry, _) => {
+	phantomas.on('recv', entry => {
 		var size = entry.transferedSize;
 
 		phantomas.incrMetric(entry.type + 'Count');
@@ -41,7 +41,7 @@ module.exports = function(phantomas) {
 		});
 	});
 
-	phantomas.on('base64recv', (entry, _) => {
+	phantomas.on('base64recv', entry => {
 		phantomas.incrMetric('base64Count');
 		phantomas.incrMetric('base64Size', entry.bodySize);
 	});

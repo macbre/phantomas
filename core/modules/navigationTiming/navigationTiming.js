@@ -10,6 +10,5 @@
 /* global document: true, window: true */
 'use strict';
 
-module.exports = (phantomas) => {
-
-};
+// no-op, see scope.js
+module.exports = () => {};

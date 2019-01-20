@@ -94,8 +94,8 @@ module.exports = function(phantomas) {
 			else {
 				interceptedRequest.continue();
 			}
-		  });
+		});
 
-		  phantomas.log('Requests intercepting enabled');
+		phantomas.log('Requests intercepting enabled');
 	});
 };
