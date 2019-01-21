@@ -5,8 +5,8 @@
 
 module.exports = function(phantomas) {
 	// monitor cookies in HTTP headers
-	var Collection = require('../../lib/collection'),
-		cookiesDomains = new Collection();
+	//var Collection = require('../../lib/collection'),
+		//cookiesDomains = new Collection();
 
 	phantomas.setMetric('cookiesSent'); // @desc length of cookies sent in HTTP requests @unreliable
 	phantomas.setMetric('cookiesRecv'); // @desc length of cookies received in HTTP responses
@@ -14,7 +14,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('documentCookiesLength'); // @desc length of document.cookie
 	phantomas.setMetric('documentCookiesCount'); //@desc number of cookies in document.cookie
 
-	return; // TODO
+	/**
 
 	phantomas.on('send', function(entry, res) {
 		res.headers.forEach(function(header) {
@@ -50,8 +50,6 @@ module.exports = function(phantomas) {
 
 	// domain cookies (accessible by the browser)
 	phantomas.on('report', function() {
-		/* global document: true, window: true */
-
 		// domains with cookies
 		cookiesDomains.forEach(function(domain, cnt) {
 			phantomas.incrMetric('domainsWithCookies');
@@ -77,4 +75,5 @@ module.exports = function(phantomas) {
 			}
 		});
 	});
+	**/
 };

@@ -18,7 +18,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('timeBackend'); // @desc time to the first byte compared to the total loading time [%]
 	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
 
-	return; // TODO
+	/**
 
 	// measure dom... metrics from the moment HTML response was fully received
 	var responseEndTime = Date.now();
@@ -108,6 +108,7 @@ module.exports = function(phantomas) {
 	 *
 	 * @see http://www.stevesouders.com/blog/2012/02/10/the-performance-golden-rule/
 	 */
+	/**
 	phantomas.on('report', function() {
 		//  The “backend” time is the time it takes the server to get the first byte back to the client.
 		//  The “frontend” time is measured from the last byte of the response (responseEnd) until all resources are fetched (domComplete)
@@ -127,4 +128,5 @@ module.exports = function(phantomas) {
 
 		phantomas.log('Performance timing: backend vs frontend time - %d% / %d%', backendTimePercentage, 100 - backendTimePercentage);
 	});
+	**/
 };

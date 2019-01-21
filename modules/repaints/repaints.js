@@ -11,7 +11,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('repaints'); // @desc number of repaints of the current document @gecko
 	phantomas.setMetric('firstPaint'); // @desc time it took to perform the first paint @gecko @unreliable
 
-	return; // TODO
+	/**
 
 	phantomas.on('init', function() {
 		phantomas.evaluate(function() {
@@ -50,4 +50,5 @@ module.exports = function(phantomas) {
 		phantomas.log('repaints: %d so far', count);
 		phantomas.setMetric('repaints', count);
 	});
+	**/
 };

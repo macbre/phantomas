@@ -2,12 +2,11 @@
  * Tests CommonJS module
  */
 'use strict';
+/**
 
 var vows = require('vows'),
 	assert = require('assert'),
 	phantomas = require('..');
-
-return; // TODO
 
 // run the test
 vows.describe('CommonJS module').addBatch({
@@ -15,7 +14,7 @@ vows.describe('CommonJS module').addBatch({
 		topic: function() {
 			phantomas(false, this.callback);
 		},
-		'should fail with err #255': function(err, stats) {
+		'should fail with err #255': err => {
 			assert.ok(err instanceof Error);
 			assert.strictEqual(err.message, '255');
 		}
@@ -26,7 +25,7 @@ vows.describe('CommonJS module').addBatch({
 				timeout: 1
 			}, this.callback);
 		},
-		'should fail with err #252': function(err, stats) {
+		'should fail with err #252': err => {
 			assert.ok(err instanceof Error);
 			assert.strictEqual(err.message, '252');
 		}
@@ -35,7 +34,7 @@ vows.describe('CommonJS module').addBatch({
 		topic: function() {
 			phantomas('http://example.com/', this.callback);
 		},
-		'should not throw an error': function(err, stats) {
+		'should not throw an error': err => {
 			assert.strictEqual(err, null);
 		},
 		'should return metrics and other stats': function(err, stats) {
@@ -79,3 +78,4 @@ vows.describe('CommonJS module').addBatch({
 		}
 	}
 }).export(module);
+**/

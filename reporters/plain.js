@@ -98,7 +98,7 @@ module.exports = function(results, reporterOptions) {
 			format = require('util').format,
 			stats = new(require('../lib/stats'))(),
 			runs = results.length,
-			fields, table;
+			table;
 
 		// table title and heading
 		table = new AsciiTable();
