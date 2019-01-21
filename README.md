@@ -303,13 +303,6 @@ Units:
 * timeBackend: time to the first byte compared to the total loading time (in %)
 * timeFrontend: time to window on load compared to the total loading time (in %)
 
-### Repaints
-
-> These metrics are only available when running phantomas using **Gecko engine** (``--engine=gecko``)
-
-* repaints: [number of repaints](https://developer.mozilla.org/en-US/docs/Web/API/Window.mozPaintCount) of the current document
-* firstPaint: time it took to perform the first paint (time is relative to ``responseEnd`` event)
-
 ### Requests statistics
 
 > **Time** is total duration, from the start of the request to the receipt of the final byte in the response. **Latency** is the time to load the first byte in the response.
