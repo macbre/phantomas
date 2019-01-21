@@ -2,15 +2,16 @@
  * Tests CommonJS module
  */
 'use strict';
-/**
 
 var vows = require('vows'),
 	assert = require('assert'),
 	phantomas = require('..');
 
+const URL = 'http://127.0.0.1:8888/';
+
 // run the test
 vows.describe('CommonJS module').addBatch({
-	'when not provided with URL': {
+	/**'when not provided with URL': {
 		topic: function() {
 			phantomas(false, this.callback);
 		},
@@ -29,39 +30,21 @@ vows.describe('CommonJS module').addBatch({
 			assert.ok(err instanceof Error);
 			assert.strictEqual(err.message, '252');
 		}
-	},
-	'for a valid URL': {
-		topic: function() {
-			phantomas('http://example.com/', this.callback);
-		},
-		'should not throw an error': err => {
-			assert.strictEqual(err, null);
-		},
-		'should return metrics and other stats': function(err, stats) {
-			assert.equal(stats.url, 'http://example.com/');
-			assert.equal(typeof stats.generator, 'string');
-			assert.equal(typeof stats.metrics, 'object');
-			assert.equal(typeof stats.offenders, 'object');
-		}
-	},
+	},**/
 	'promise': {
 		topic: function() {
-			phantomas('http://example.com/', {
-				'assert-requests': 0
-			}).then(function(res) {
-				this.callback(null, res);
-			}.bind(this));
+			const promise = phantomas(URL);
+
+			promise.
+				then(res => this.callback(null, res)).
+				catch(err => this.callback(err));
 		},
 		'should be resolved': function(err, res) {
-			assert.equal(typeof res, 'object');
-
-			assert.equal(typeof res.code, 'number');
-			assert.strictEqual(res.code, 1); // one failed assertion (requests)
-
-			assert.equal(typeof res.results, 'object');
-			assert.equal(typeof res.json, 'object');
+			assert.equal(typeof res.getMetrics, 'function');
+			assert.equal(typeof res.setMetric, 'function');
 		}
 	},
+	/**
 	'promise (when timed out)': {
 		topic: function() {
 			phantomas('http://phantomjs.org/', {
@@ -77,5 +60,5 @@ vows.describe('CommonJS module').addBatch({
 			assert.strictEqual(code, 252);
 		}
 	}
+	/**/
 }).export(module);
-**/
