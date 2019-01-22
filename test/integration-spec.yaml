@@ -415,3 +415,15 @@
   offenders:
     cachingTooShort:
      - { url: 'http://127.0.0.1:8888/static/mdn.png', ttl: 84600 }
+
+# requestsStats
+- url: "/headers.html"
+  metrics:
+    requests: 2
+    smallestResponse: 330  # headers + body size
+    biggestResponse: 1313  #
+  offenders:
+    smallestResponse:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+    biggestResponse:
+      - { url: 'http://127.0.0.1:8888/headers.html', size: 1313 }

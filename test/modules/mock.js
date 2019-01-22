@@ -79,6 +79,7 @@ phantomas.prototype = {
 		req.url = req.url || 'http://example.com';
 		req.headers = req.headers || [];
 		req.timing = {};
+		req.headersText = '';
 
 		this.log('sendRequest: %j', req);
 

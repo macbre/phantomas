@@ -44,11 +44,11 @@ module.exports = function(phantomas) {
 
 		// size
 		pushToStack('smallestResponse', entry, function(stack, entry) {
-			return stack.transferedSize > entry.transferedSize;
+			return stack.responseSize > entry.responseSize;
 		});
 
 		pushToStack('biggestResponse', entry, function(stack, entry) {
-			return stack.transferedSize < entry.transferedSize;
+			return stack.responseSize < entry.responseSize;
 		});
 
 		// time (from sent to last byte)
@@ -92,29 +92,31 @@ module.exports = function(phantomas) {
 			'biggestLatency'
 		].forEach(function(metric) {
 			var entry = getFromStack(metric),
-				details = '';
+				offender = {
+					url: entry.url,
+				};
 
 			switch (metric) {
 				case 'smallestResponse':
 				case 'biggestResponse':
-					phantomas.setMetric(metric, entry.transferedSize);
-					details = (entry.transferedSize / 1024).toFixed(2) + ' kB';
+					phantomas.setMetric(metric, entry.responseSize);
+					offender.size = entry.responseSize; // [bytes]
 					break;
 
 				case 'fastestResponse':
 				case 'slowestResponse':
 					phantomas.setMetric(metric, entry.timeToLastByte);
-					details = entry.timeToLastByte + ' ms';
+					offender.timeToLastByte = entry.timeToLastByte; // [seconds]
 					break;
 
 				case 'smallestLatency':
 				case 'biggestLatency':
 					phantomas.setMetric(metric, entry.timeToFirstByte);
-					details = entry.timeToFirstByte + ' ms';
+					offender.timeToFirstByte = entry.timeToFirstByte; // [seconds]
 					break;
 			}
 
-			phantomas.addOffender(metric, entry.url + ' (' + details + ')');
+			phantomas.addOffender(metric, offender);
 		});
 
 		phantomas.setMetric('medianResponse', responseTimes.median());

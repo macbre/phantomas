@@ -9,19 +9,19 @@ vows.describe('requestsStats').addBatch({
 		var requests = [
 			{
 				status: 200,
-				transferedSize: 25,
+				responseSize: 25,
 				timeToFirstByte: 3,
 				timeToLastByte: 5,
 			},
 			{
 				status: 200,
-				transferedSize: 2245,
+				responseSize: 2245,
 				timeToFirstByte: 1,
 				timeToLastByte: 11,
 			},
 			{
 				status: 200,
-				transferedSize: 205,
+				responseSize: 205,
 				timeToFirstByte: 2,
 				timeToLastByte: 2,
 			}
