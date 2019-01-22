@@ -26,24 +26,31 @@ vows.describe('CommonJS module\'s promise').addBatch({
 	},
 	/**'when timed out': {
 		topic: function() {
-			phantomas('http://phantomjs.org/', {
-				timeout: 1
-			}, this.callback);
+			const promise = phantomas('http://phantomjs.org/', {
+				timeout: 1 // [ms]
+			});
+
+			promise.
+				then(res => this.callback(null, res)).
+				catch(err => this.callback(null, err));
 		},
-		'should fail with err #252': err => {
+		'should reject a promise': (_, err) => {
 			assert.ok(err instanceof Error);
-			assert.strictEqual(err.message, '252');
+			assert.strictEqual(err.message, 'Navigation Timeout Exceeded: 10ms exceeded');
 		}
-	},**/
+	}, */
 	'a valid URL': {
 		topic: function() {
 			const promise = phantomas(URL);
 
 			promise.
 				then(res => this.callback(null, res)).
-				catch(err => this.callback(err));
+				catch(err => this.callback(null, err));
 		},
-		'should be resolved': function(err, res) {
+		'should not reject a promise': (_, err) => {
+			assert.ok(!(err instanceof Error), err.message);
+		},
+		'should be resolved': function(_, res) {
 			assert.equal(typeof res.getMetrics, 'function');
 			assert.equal(typeof res.setMetric, 'function');
 		}
