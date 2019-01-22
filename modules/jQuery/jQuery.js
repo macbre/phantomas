@@ -12,10 +12,10 @@ module.exports = function(phantomas) {
 
 	phantomas.setMetric('jQueryVersion', ''); // @desc version of jQuery framework (if loaded) [string]
 	phantomas.setMetric('jQueryVersionsLoaded'); // @desc number of loaded jQuery "instances" (even in the same version)
-	phantomas.setMetric('jQueryOnDOMReadyFunctions'); // @desc number of functions bound to onDOMReady event
-	phantomas.setMetric('jQueryWindowOnLoadFunctions'); // @desc number of functions bound to windowOnLoad event
-	phantomas.setMetric('jQuerySizzleCalls'); // @desc number of calls to Sizzle (including those that will be resolved using querySelectorAll)
-	phantomas.setMetric('jQueryEventTriggers'); // @desc number of jQuery event triggers
+	phantomas.setMetric('jQueryOnDOMReadyFunctions'); // @desc number of functions bound to onDOMReady event @offenders
+	phantomas.setMetric('jQueryWindowOnLoadFunctions'); // @desc number of functions bound to windowOnLoad event @offenders
+	phantomas.setMetric('jQuerySizzleCalls'); // @desc number of calls to Sizzle (including those that will be resolved using querySelectorAll) @offenders
+	phantomas.setMetric('jQueryEventTriggers'); // @desc number of jQuery event triggers @offenders
 	phantomas.setMetric('jQueryDOMReads'); // @desc number of DOM read operations
 	phantomas.setMetric('jQueryDOMWrites'); // @desc number of DOM write operations
 	phantomas.setMetric('jQueryDOMWriteReadSwitches'); // @desc number of read operations that follow a series of write operations (will cause repaint and can cause reflow)

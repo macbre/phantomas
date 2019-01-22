@@ -16,10 +16,12 @@ module.exports = function(phantomas) {
 
 	// count all tags
 	phantomas.setMetric('DOMelementsCount'); // @desc total number of HTML element nodes
-	phantomas.setMetric('DOMelementMaxDepth'); // @desc maximum level on nesting of HTML element node
+	phantomas.setMetric('DOMelementMaxDepth'); // @desc maximum level on nesting of HTML element node @offenders
 
 	// nodes with inlines CSS (style attribute)
 	phantomas.setMetric('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
+
+	phantomas.setMetric('iframesCount'); // @desc number of iframe nodes
 
 	// images
 	// TODO: move to a separate module

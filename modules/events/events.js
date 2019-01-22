@@ -4,8 +4,8 @@
 /* global Document: true, Element: true, window: true */
 'use strict';
 
-module.exports = function(phantomas) {
-	phantomas.setMetric('eventsBound'); // @desc number of EventTarget.addEventListener calls
-	phantomas.setMetric('eventsDispatched'); // @desc number of EventTarget.dispatchEvent calls
-	phantomas.setMetric('eventsScrollBound'); // @desc number of scroll event bounds
+module.exports = phantomas => {
+	phantomas.setMetric('eventsBound'); // @desc number of EventTarget.addEventListener calls @offenders
+	phantomas.setMetric('eventsDispatched'); // @desc number of EventTarget.dispatchEvent calls @offenders
+	phantomas.setMetric('eventsScrollBound'); // @desc number of scroll event bounds @offenders
 };

@@ -163,7 +163,7 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('httpsRequests');         // @desc number of HTTPS requests
 	phantomas.setMetric('notFound');              // @desc number of HTTP 404 responses
 	phantomas.setMetric('bodySize');              // @desc size of the uncompressed content of all responses
-	phantomas.setMetric('transferedSize');        // @desc size of the compressed content of all responses, i.e. what was transfered in packets
+	phantomas.setMetric('contentLength');         // @desc size of the compressed content of all responses, i.e. what was transfered in packets
 	phantomas.setMetric('httpTrafficCompleted');  // @desc time it took to receive the last byte of the last HTTP response
 
 	var requests = {};

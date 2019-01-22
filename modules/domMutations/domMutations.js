@@ -6,8 +6,8 @@
 /* global window: true, document: true, MutationObserver: true */
 'use strict';
 
-module.exports = function(phantomas) {
-	phantomas.setMetric('DOMmutationsInserts'); // @desc number of <body> node inserts
-	phantomas.setMetric('DOMmutationsRemoves'); // @desc number of <body> node removes
-	phantomas.setMetric('DOMmutationsAttributes'); // @desc number of DOM nodes attributes changes
+module.exports = phantomas => {
+	phantomas.setMetric('DOMmutationsInserts'); // @desc number of <body> node inserts @offenders
+	phantomas.setMetric('DOMmutationsRemoves'); // @desc number of <body> node removes @offenders
+	phantomas.setMetric('DOMmutationsAttributes'); // @desc number of DOM nodes attributes changes @offenders
 };

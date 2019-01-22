@@ -5,5 +5,5 @@
 'use strict';
 
 module.exports = function(phantomas) {
-	phantomas.setMetric('ajaxRequests'); // @desc number of AJAX requests
+	phantomas.setMetric('ajaxRequests'); // @desc number of AJAX requests @offenders
 };

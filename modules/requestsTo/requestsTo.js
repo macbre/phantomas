@@ -5,7 +5,7 @@
 
 module.exports = function(phantomas) {
 	phantomas.setMetric('requestsToFirstPaint'); // @desc number of HTTP requests it took to make the first paint
-	phantomas.setMetric('domainsToFirstPaint'); // @desc number of domains used to make the first paint @offenders @offenders
+	phantomas.setMetric('domainsToFirstPaint'); // @desc number of domains used to make the first paint @offenders
 	phantomas.setMetric('requestsToDomContentLoaded'); // @desc number of HTTP requests it took to make the page reach DomContentLoaded state
 	phantomas.setMetric('domainsToDomContentLoaded'); // @desc number of domains used to make the page reach DomContentLoaded state @offenders
 	phantomas.setMetric('requestsToDomComplete'); // @desc number of HTTP requests it took to make the page reach DomComplete state

@@ -7,5 +7,5 @@
 'use strict';
 
 module.exports = phantomas => {
-	phantomas.setMetric('lazyLoadableImagesBelowTheFold'); // @desc number of images displayed below the fold that can be lazy-loaded
+	phantomas.setMetric('lazyLoadableImagesBelowTheFold'); // @desc number of images displayed below the fold that can be lazy-loaded @offenders
 };

@@ -2,6 +2,7 @@
   "metrics": {
     "requests": {
       "desc": "total number of HTTP requests made",
+      "offenders": true,
       "unit": "number",
       "module": "requestsMonitor"
     },
@@ -32,13 +33,11 @@
     },
     "bodySize": {
       "desc": "size of the uncompressed content of all responses",
-      "unreliable": true,
       "unit": "bytes",
       "module": "requestsMonitor"
     },
     "contentLength": {
-      "desc": "size of the content of all responses (based on Content-Length header)",
-      "unreliable": true,
+      "desc": "size of the compressed content of all responses, i.e. what was transfered in packets",
       "unit": "bytes",
       "module": "requestsMonitor"
     },
@@ -334,8 +333,7 @@
       "module": "assetsTypes"
     },
     "htmlSize": {
-      "desc": "size of HTML responses",
-      "unreliable": true,
+      "desc": "size of HTML responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -346,8 +344,7 @@
       "module": "assetsTypes"
     },
     "cssSize": {
-      "desc": "size of CSS responses",
-      "unreliable": true,
+      "desc": "size of CSS responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -358,8 +355,7 @@
       "module": "assetsTypes"
     },
     "jsSize": {
-      "desc": "size of JS responses",
-      "unreliable": true,
+      "desc": "size of JS responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -370,8 +366,7 @@
       "module": "assetsTypes"
     },
     "jsonSize": {
-      "desc": "size of JSON responses",
-      "unreliable": true,
+      "desc": "size of JSON responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -382,8 +377,7 @@
       "module": "assetsTypes"
     },
     "imageSize": {
-      "desc": "size of image responses",
-      "unreliable": true,
+      "desc": "size of image responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -394,21 +388,18 @@
       "module": "assetsTypes"
     },
     "webfontSize": {
-      "desc": "size of web font responses",
-      "unreliable": true,
+      "desc": "size of web font responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
     "videoCount": {
       "desc": "number of video responses",
       "offenders": true,
-      "gecko": true,
       "unit": "number",
       "module": "assetsTypes"
     },
     "videoSize": {
-      "desc": "size of video responses",
-      "gecko": true,
+      "desc": "size of video responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -420,7 +411,6 @@
     },
     "base64Size": {
       "desc": "size of base64 encoded responses",
-      "unreliable": true,
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -431,8 +421,7 @@
       "module": "assetsTypes"
     },
     "otherSize": {
-      "desc": "size of other responses",
-      "unreliable": true,
+      "desc": "size of other responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes"
     },
@@ -544,6 +533,11 @@
       "unit": "number",
       "module": "domains"
     },
+    "bodyHTMLSize": {
+      "desc": "the size of body tag content (document.body.innerHTML.length)",
+      "unit": "bytes",
+      "module": "domComplexity"
+    },
     "commentsSize": {
       "desc": "the size of HTML comments on the page",
       "offenders": true,
@@ -572,6 +566,11 @@
       "unit": "number",
       "module": "domComplexity"
     },
+    "iframesCount": {
+      "desc": "number of iframe nodes",
+      "unit": "number",
+      "module": "domComplexity"
+    },
     "imagesScaledDown": {
       "desc": "number of <img> nodes that have images scaled down in HTML",
       "offenders": true,
@@ -587,16 +586,6 @@
     "DOMidDuplicated": {
       "desc": "number of duplicated IDs found in DOM",
       "offenders": true,
-      "unit": "number",
-      "module": "domComplexity"
-    },
-    "bodyHTMLSize": {
-      "desc": "the size of body tag content (document.body.innerHTML.length)",
-      "unit": "bytes",
-      "module": "domComplexity"
-    },
-    "iframesCount": {
-      "desc": "number of iframe nodes",
       "unit": "number",
       "module": "domComplexity"
     },
@@ -854,19 +843,6 @@
       "unit": "ms",
       "module": "redirects"
     },
-    "repaints": {
-      "desc": "number of repaints of the current document",
-      "gecko": true,
-      "unit": "number",
-      "module": "repaints"
-    },
-    "firstPaint": {
-      "desc": "time it took to perform the first paint",
-      "unreliable": true,
-      "gecko": true,
-      "unit": "ms",
-      "module": "repaints"
-    },
     "smallestResponse": {
       "desc": "the size of the smallest response",
       "offenders": true,
@@ -917,14 +893,12 @@
     },
     "requestsToFirstPaint": {
       "desc": "number of HTTP requests it took to make the first paint",
-      "gecko": true,
       "unit": "number",
       "module": "requestsTo"
     },
     "domainsToFirstPaint": {
-      "desc": "number of domains used to make the first paint   @offenders",
+      "desc": "number of domains used to make the first paint",
       "offenders": true,
-      "gecko": true,
       "unit": "number",
       "module": "requestsTo"
     },
@@ -1046,7 +1020,7 @@
       "module": "windowPerformance"
     }
   },
-  "metricsCount": 174,
-  "modulesCount": 35,
-  "version": "1.18.0"
+  "metricsCount": 172,
+  "modulesCount": 34,
+  "version": "2.0.0-beta"
 }

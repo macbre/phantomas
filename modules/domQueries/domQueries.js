@@ -7,11 +7,11 @@
 module.exports = phantomas => {
 	phantomas.setMetric('DOMqueries'); // @desc number of all DOM queries @offenders
 	phantomas.setMetric('DOMqueriesWithoutResults'); // @desc number of DOM queries that returned nothing @offenders
-	phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls
-	phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls
-	phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls
-	phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelector(All) calls
-	phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts
+	phantomas.setMetric('DOMqueriesById'); // @desc number of document.getElementById calls @offenders
+	phantomas.setMetric('DOMqueriesByClassName'); // @desc number of document.getElementsByClassName calls @offenders
+	phantomas.setMetric('DOMqueriesByTagName'); // @desc number of document.getElementsByTagName calls @offenders
+	phantomas.setMetric('DOMqueriesByQuerySelectorAll'); // @desc number of document.querySelector(All) calls @offenders
+	phantomas.setMetric('DOMinserts'); // @desc number of DOM nodes inserts @offenders
 	phantomas.setMetric('DOMqueriesDuplicated'); // @desc number of DOM queries called more than once
 	phantomas.setMetric('DOMqueriesAvoidable'); // @desc number of repeated uses of a duplicated query 
 
