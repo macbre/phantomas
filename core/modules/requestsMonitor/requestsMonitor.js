@@ -281,6 +281,11 @@ module.exports = function(phantomas) {
 		// requests stats
 		if (!entry.isBase64) {
 			phantomas.incrMetric('requests');
+			phantomas.addOffender('requests', {
+				url: entry.url,
+				type: entry.type,
+				size: entry.responseSize
+			});
 
 			phantomas.incrMetric('bodySize', entry.bodySize);
 			phantomas.incrMetric('contentLength', entry.transferedSize);
