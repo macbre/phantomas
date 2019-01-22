@@ -10,17 +10,21 @@ var vows = require('vows'),
 const URL = 'http://127.0.0.1:8888/';
 
 // run the test
-vows.describe('CommonJS module').addBatch({
-	/**'when not provided with URL': {
+vows.describe('CommonJS module\'s promise').addBatch({
+	'when not provided with URL': {
 		topic: function() {
-			phantomas(false, this.callback);
+			const promise = phantomas(false);
+
+			promise.
+				then(res => this.callback(null, res)).
+				catch(err => this.callback(null, err));
 		},
-		'should fail with err #255': err => {
+		'should reject a promise': (_, err) => {
 			assert.ok(err instanceof Error);
-			assert.strictEqual(err.message, '255');
+			assert.strictEqual(err.message, 'URL must be a string');
 		}
 	},
-	'when timed out': {
+	/**'when timed out': {
 		topic: function() {
 			phantomas('http://phantomjs.org/', {
 				timeout: 1
@@ -31,7 +35,7 @@ vows.describe('CommonJS module').addBatch({
 			assert.strictEqual(err.message, '252');
 		}
 	},**/
-	'promise': {
+	'a valid URL': {
 		topic: function() {
 			const promise = phantomas(URL);
 
@@ -43,22 +47,5 @@ vows.describe('CommonJS module').addBatch({
 			assert.equal(typeof res.getMetrics, 'function');
 			assert.equal(typeof res.setMetric, 'function');
 		}
-	},
-	/**
-	'promise (when timed out)': {
-		topic: function() {
-			phantomas('http://phantomjs.org/', {
-				timeout: 1
-			}).then(
-				function() {},
-				function(res) {
-					this.callback(null, res.code);
-				}.bind(this)
-			);
-		},
-		'should fail': function(err, code) {
-			assert.strictEqual(code, 252);
-		}
 	}
-	/**/
 }).export(module);
