@@ -46,15 +46,15 @@ module.exports = function(phantomas) {
 		// phantomas.log('Headers: <%s> %d bytes', entry.url, headers.size);
 
 		phantomas.incrMetric('headersCount', headers.count);
-		phantomas.incrMetric('headersSize', headers.size);
+		phantomas.incrMetric('headersSize', entry.headersSize);
 
 		phantomas.incrMetric('headersRecvCount', headers.count);
-		phantomas.incrMetric('headersRecvSize', headers.size);
+		phantomas.incrMetric('headersRecvSize', entry.headersSize);
 
 		// skip HTTP 204 No Content responses
 		if ((entry.status !== 204) && (headers.size > entry.transferedSize)) {
 			phantomas.incrMetric('headersBiggerThanContent');
-			phantomas.addOffender('headersBiggerThanContent', {url: entry.url, contentSize: entry.transferedSize, headersSize: headers.size});
+			phantomas.addOffender('headersBiggerThanContent', {url: entry.url, contentSize: entry.transferedSize, headersSize: entry.headersSize});
 		}
 	});
 };
