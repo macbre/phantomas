@@ -3,8 +3,13 @@
  */
 'use strict';
 
-module.exports = function(phantomas) {
-	phantomas.setMetric('consoleMessages'); // @desc number of calls to console.* functions
+module.exports = (phantomas) => {
+	phantomas.setMetric('consoleMessages'); // @desc number of calls to console.* functions @offenders
 
-	phantomas.on('consoleLog', () => phantomas.incrMetric('consoleMessages'));
+	phantomas.on('consoleLog', (msg) => {
+		phantomas.incrMetric('consoleMessages');
+
+		// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#consolemessagetext
+		phantomas.addOffender('consoleMessages', msg.text());
+	});
 };

@@ -563,6 +563,7 @@
     },
     "consoleMessages": {
       "desc": "number of calls to console.* functions",
+      "offenders": true,
       "unit": "number",
       "module": "console",
       "testsCovered": true
