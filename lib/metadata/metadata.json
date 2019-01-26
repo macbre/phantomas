@@ -717,14 +717,14 @@
       "offenders": true,
       "unit": "number",
       "module": "domMutations",
-      "testsCovered": false
+      "testsCovered": true
     },
     "DOMmutationsAttributes": {
       "desc": "number of DOM nodes attributes changes",
       "offenders": true,
       "unit": "number",
       "module": "domMutations",
-      "testsCovered": false
+      "testsCovered": true
     },
     "DOMqueries": {
       "desc": "number of all DOM queries",

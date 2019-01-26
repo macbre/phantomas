@@ -22,13 +22,13 @@
     jsSize: 29730  # compressed
     domains: 1
     DOMqueries: 20
-    DOMqueriesById: 7
+    DOMqueriesById: 6
     DOMqueriesByClassName: 1
-    DOMqueriesByTagName: 9
+    DOMqueriesByTagName: 10
     DOMqueriesByQuerySelectorAll: 3
     DOMinserts: 2 # "div" appended to "html" (from jQuery) and the one below
     DOMqueriesDuplicated: 2
-    DOMqueriesAvoidable: 3
+    DOMqueriesAvoidable: 2
     DOMqueriesWithoutResults: 4
 
   offenders:
@@ -43,7 +43,6 @@
 
     DOMqueriesById:
       - { id: 'foo', node: '#document' }
-      - { id: 'foo', node: '#document' }
       - { id: 'delete', node: '#document' }
       - { id: 'foo', node: '#document' }
       - { id: 'list1', node: '#document' }
@@ -53,6 +52,7 @@
       - { class: 'barr', node: 'body' }
     DOMqueriesByTagName:
       - { tag: '*', node: 'div' }
+      - { tag: 'body', node: '#document' }
       - { tag: 'script', node: 'DocumentFragment > strong[0]' }
       - { tag: 'script', node: 'DocumentFragment > strong[0]' }
       - { tag: 'strong', node: '#document' }
@@ -65,13 +65,25 @@
       - { append: 'html > div[2]', node: 'html' }
       - { append: 'body > p#foo > strong[0]', node: 'body > p#foo' }
     DOMqueriesDuplicated:
-      - { query: 'id "#foo" (in #document)', count: 3 }
+      - { query: 'id "#foo" (in #document)', count: 2 }
       - { query: 'tag name "strong" (in #document)', count: 2 }
 
 # DOM mutations
 - url: "/dom-operations.html"
   metrics:
-    DOMmutationsInserts: 1 # DocumentFragment > b[0]" appended to "body > p#foo"
+    DOMmutationsInserts: 1
+    DOMmutationsRemoves: 1
+    DOMmutationsAttributes: 4
+  offenders:
+    DOMmutationsInserts:
+      - { node: 'strong[0]', target: 'p#foo' }
+    DOMmutationsRemoves:
+      - { node: 'span#delete', target: 'body' }
+    DOMmutationsAttributes:
+      - { attribute: 'style', node: 'body' }
+      - { attribute: 'style', node: 'body' }
+      - { attribute: 'style', node: 'p#foo' }
+      - { attribute: 'style', node: 'p#foo' }
 
 # DOM complexity
 - url: "/dom-complexity.html"

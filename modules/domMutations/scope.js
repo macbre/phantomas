@@ -22,7 +22,7 @@
                             );
 
                             phantomas.incrMetric('DOMmutationsAttributes');
-                            phantomas.addOffender('DOMmutationsAttributes', '"%s" attr set on %s', mutation.attributeName, targetPath);
+                            phantomas.addOffender('DOMmutationsAttributes', {attribute: mutation.attributeName, node: targetPath});
                             break;
 
                         case 'childList':
@@ -41,10 +41,10 @@
 
                                 if (wereAdded) {
                                     phantomas.incrMetric('DOMmutationsInserts');
-                                    phantomas.addOffender('DOMmutationsInserts', '"%s" added to "%s"', nodePath, targetPath);
+                                    phantomas.addOffender('DOMmutationsInserts', {node: nodePath, target: targetPath});
                                 } else {
                                     phantomas.incrMetric('DOMmutationsRemoves');
-                                    phantomas.addOffender('DOMmutationsRemoves', '"%s" removed from "%s"', nodePath, targetPath);
+                                    phantomas.addOffender('DOMmutationsRemoves', {node: nodePath, target: targetPath});
                                 }
                             }
                             break;
