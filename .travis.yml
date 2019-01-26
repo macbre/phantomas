@@ -1,9 +1,7 @@
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
 language: node_js
 dist: xenial
-node_js:
-  - 10
-  - 8
+node_js: 10
 
 # allow headful tests
 # https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/troubleshooting.md#running-puppeteer-on-travis-ci
