@@ -1,9 +1,9 @@
 <body>
 	<script src="/static/jquery-2.1.1.min.js"></script>
 	<script>
-		console.log('$.get');
+		console.log('$.post');
 
-		$.get('/static/style.css', function() {
+		$.post('/static/style.css', function() {
 			console.log('Ajax: done');
 		});
 
@@ -11,5 +11,8 @@
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", "/static/broken.css", true);
 		xhr.send();
+
+		// AJAX to not found resource
+		$.get('/static/foo');
 	</script>
 </body>
