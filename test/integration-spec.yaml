@@ -398,6 +398,8 @@
       - { url: '/static/foo', method: 'GET' }
     postRequests:
       - 'http://127.0.0.1:8888/static/style.css'
+  options:
+    "wait-for-network-idle": true
 
 # multiple cookies (#597)
 - url: "/cookies.html"
