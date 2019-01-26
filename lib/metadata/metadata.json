@@ -662,9 +662,10 @@
     },
     "iframesCount": {
       "desc": "number of iframe nodes",
+      "offenders": true,
       "unit": "number",
       "module": "domComplexity",
-      "testsCovered": false
+      "testsCovered": true
     },
     "imagesScaledDown": {
       "desc": "number of <img> nodes that have images scaled down in HTML",

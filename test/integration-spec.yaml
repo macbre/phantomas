@@ -443,3 +443,12 @@
       - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
     biggestResponse:
       - { url: 'http://127.0.0.1:8888/headers.html', size: 1313 }
+
+# iframes
+- url: "/iframe.html"
+  metrics:
+    requests: 5  # include requests for iframe and its content
+    iframesCount: 1
+  offenders:
+    iframesCount:
+     - { element: 'body > iframe[1]', url: 'http://127.0.0.1:8888/image-scaling.html' }

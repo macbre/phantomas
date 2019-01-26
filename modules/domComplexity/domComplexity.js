@@ -21,7 +21,7 @@ module.exports = function(phantomas) {
 	// nodes with inlines CSS (style attribute)
 	phantomas.setMetric('nodesWithInlineCSS'); // @desc number of nodes with inline CSS styling (with style attribute) @offenders
 
-	phantomas.setMetric('iframesCount'); // @desc number of iframe nodes
+	phantomas.setMetric('iframesCount'); // @desc number of iframe nodes @offenders
 
 	// images
 	// TODO: move to a separate module

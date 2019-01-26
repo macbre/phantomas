@@ -111,7 +111,10 @@
         })();
 
         // count <iframe> tags
-        phantomas.setMetric('iframesCount', document.querySelectorAll('iframe').length); // @desc number of iframe nodes
+        document.querySelectorAll('iframe').forEach(function(iframe) {
+            phantomas.incrMetric('iframesCount'); // @desc number of iframe nodes
+            phantomas.addOffender('iframesCount', {element: phantomas.getDOMPath(iframe), url: iframe.src});
+        });
 
         phantomas.spyEnabled(true);
     });
