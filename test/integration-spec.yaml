@@ -431,6 +431,8 @@
 - url: "/headers.html"
   metrics:
     requests: 2
+    bodySize: 1065
+    contentLength: 1065 # these are equal as no gzip compression took place
     smallestResponse: 330  # headers + body size
     biggestResponse: 1313
   offenders:

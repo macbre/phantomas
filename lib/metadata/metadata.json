@@ -40,13 +40,13 @@
       "desc": "size of the uncompressed content of all responses",
       "unit": "bytes",
       "module": "requestsMonitor",
-      "testsCovered": false
+      "testsCovered": true
     },
     "contentLength": {
       "desc": "size of the compressed content of all responses, i.e. what was transfered in packets",
       "unit": "bytes",
       "module": "requestsMonitor",
-      "testsCovered": false
+      "testsCovered": true
     },
     "httpTrafficCompleted": {
       "desc": "time it took to receive the last byte of the last HTTP response",
