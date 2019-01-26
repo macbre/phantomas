@@ -75,21 +75,24 @@
     },
     "windowAlerts": {
       "desc": "number of calls to window.alert",
+      "offenders": true,
       "unit": "number",
       "module": "alerts",
-      "testsCovered": false
+      "testsCovered": true
     },
     "windowConfirms": {
       "desc": "number of calls to window.confirm",
+      "offenders": true,
       "unit": "number",
       "module": "alerts",
-      "testsCovered": false
+      "testsCovered": true
     },
     "windowPrompts": {
       "desc": "number of calls to window.prompt",
+      "offenders": true,
       "unit": "number",
       "module": "alerts",
-      "testsCovered": false
+      "testsCovered": true
     },
     "cssBase64Length": {
       "desc": "total length of base64-encoded data in CSS source (will warn about base64-encoded data bigger than 4 kB)",

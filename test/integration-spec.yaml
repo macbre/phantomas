@@ -461,3 +461,15 @@
       - { url: 'http://127.0.0.1:8888/not_found/foo.js', type: 'other', size: 130 }
     notFound:
       - 'http://127.0.0.1:8888/not_found/foo.js'
+
+
+# alerts, prompts, confirms
+- url: "/alerts-prompts.html"
+  metrics:
+    windowAlerts: 1
+    windowConfirms: 1
+    windowPrompts: 1
+  offenders:
+    windowAlerts: [ 'Oh dear!' ]
+    windowConfirms: [ 'Oh dear?' ]
+    windowPrompts: [ "What's your name, dear?" ]
