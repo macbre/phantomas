@@ -1,4 +1,4 @@
 {
-	"test": 42
+	"test": 42,
 	"foo": {"bar": true}
 }

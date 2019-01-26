@@ -1,6 +1,9 @@
 <body>
     <script src="/static/jquery-2.1.1.min.js"></script>
     <script>
-        $.getJSON('/foo.json');
+        // https://api.jquery.com/jquery.getjson/
+        $.getJSON('/foo.json', function(resp) {
+            console.log('Loaded');
+        });
     </script>
 </body>
