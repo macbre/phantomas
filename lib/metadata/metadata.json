@@ -424,13 +424,13 @@
       "offenders": true,
       "unit": "number",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "jsonSize": {
       "desc": "size of JSON responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "imageCount": {
       "desc": "number of image responses",

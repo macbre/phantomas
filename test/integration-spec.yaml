@@ -498,3 +498,15 @@
     windowAlerts: [ 'Oh dear!' ]
     windowConfirms: [ 'Oh dear?' ]
     windowPrompts: [ "What's your name, dear?" ]
+
+# JSON
+- url: "/ajax-json.html"
+  metrics:
+    ajaxRequests: 1
+    jsonCount: 1
+    jsonSize: 332
+  offenders:
+    ajaxRequests:
+      - { url: '/foo.json', method: 'GET' }
+    jsonCount:
+      - { url: 'http://127.0.0.1:8888/foo.json', size: 332 }
