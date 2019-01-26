@@ -13,12 +13,13 @@
     cookie: "bar=foo;domain=url"
   metrics:
     requests: 3
+    gzipRequests: 1
     htmlCount: 1
-    htmlSize: 2094
+    htmlSize: 2385
     cssCount: 1
-    cssSize: 22
+    cssSize: 308
     jsCount: 1
-    jsSize: 29415
+    jsSize: 29730  # compressed
     domains: 1
     DOMqueries: 20
     DOMqueriesById: 7
@@ -31,6 +32,15 @@
     DOMqueriesWithoutResults: 4
 
   offenders:
+    gzipRequests:
+      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29415 }
+    htmlCount:
+      - { url: 'http://127.0.0.1:8888/dom-operations.html', size: 2385 }
+    cssCount:
+      - { url: 'http://127.0.0.1:8888/static/style.css', size: 308 }
+    jsCount:
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', size: 29730 }
+
     DOMqueriesById:
       - { id: 'foo', node: '#document' }
       - { id: 'foo', node: '#document' }
@@ -321,19 +331,33 @@
       - { message: 'document.write() used', caller: 'http://127.0.0.1:8888/bottlenecks.html:11:11' }
     evalCalls:
       - { message: 'eval() called via setTimeout("foo()")', caller: 'http://127.0.0.1:8888/bottlenecks.html:9:2' }
+
 # stop-at-onload (#513)
 - url: "/after-onload.html"
   label: "/after-onload.html"
   metrics:
     imageCount: 1
+    imageSize: 330
     requests: 2
+  offenders:
+    htmlCount:
+      - { url: 'http://127.0.0.1:8888/after-onload.html', size: 658 }
+    imageCount:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+
 - url: "/after-onload.html"
   label: "/after-onload.html (with --wait-for-network-idle)"
   options:
     "wait-for-network-idle": true
   metrics:
     imageCount: 2
+    imageSize: 21009
     requests: 3
+  offenders:
+    imageCount:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
+
 # lazy-loadable-images.html (#494)
 - url: "/lazy-loadable-images.html"
   metrics:
@@ -342,6 +366,7 @@
     lazyLoadableImagesBelowTheFold:
       - { url: 'http://127.0.0.1:8888/static/blank.gif', node: 'body > img#dot', offset: 900 }
       - { url: 'http://127.0.0.1:8888/static/example.svg', node: 'body > footer[2] > img[3]', offset: 1526 }
+
 # JS globals (#482)
 - url: "/js-globals.html"
   metrics:

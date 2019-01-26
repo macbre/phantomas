@@ -443,7 +443,7 @@
       "desc": "size of image responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "webfontCount": {
       "desc": "number of web font responses",

@@ -29,15 +29,15 @@ module.exports = (phantomas) => {
 	});
 
 	phantomas.on('recv', entry => {
-		var size = entry.transferedSize;
+		// that's the response size as reported by Chrome's dev tools (headers + compressed body)
+		var size = entry.responseSize;
 
 		phantomas.incrMetric(entry.type + 'Count');
 		phantomas.incrMetric(entry.type + 'Size', size);
 
 		phantomas.addOffender(entry.type + 'Count', {
 			url: entry.url,
-			size: size,
-			latency: entry.timeToFirstByte
+			size: size
 		});
 	});
 
