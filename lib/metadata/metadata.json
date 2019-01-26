@@ -486,7 +486,7 @@
       "offenders": true,
       "unit": "number",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "otherSize": {
       "desc": "size of other responses (with compression)",

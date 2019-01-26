@@ -448,3 +448,16 @@
   offenders:
     iframesCount:
      - { element: 'body > iframe[1]', url: 'http://127.0.0.1:8888/image-scaling.html' }
+
+# not found
+- url: "/not-found.html"
+  metrics:
+    requests: 2
+    notFound: 1
+    otherCount: 1  # with HTTP 404 response we can't determine the type
+  offenders:
+    requests:
+      - { url: 'http://127.0.0.1:8888/not-found.html', type: 'html', size: 362 }
+      - { url: 'http://127.0.0.1:8888/not_found/foo.js', type: 'other', size: 130 }
+    notFound:
+      - 'http://127.0.0.1:8888/not_found/foo.js'
