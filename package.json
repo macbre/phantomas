@@ -13,7 +13,9 @@
     "metrics",
     "monitoring",
     "phantomas",
-    "phantomjs",
+    "puppeteer",
+    "chromium",
+    "headless browser",
     "web development",
     "webperf"
   ],
@@ -31,7 +33,7 @@
     "glob": "^7.1.2",
     "http-serve": "^1.0.1",
     "js-beautify": "^1.6.14",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^3.12.1",
     "mockery": "^2.0.0",
     "vows": "^0.8.2"
   },
