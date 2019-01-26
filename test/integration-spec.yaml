@@ -364,10 +364,8 @@
 # AJAX requests (#622)
 - url: "/jquery-ajax.html"
   metrics:
-    requests: 5
     ajaxRequests: 3
     postRequests: 1
-    notFound: 1
   offenders:
     ajaxRequests:
       - { url: '/static/style.css', method: 'POST' }
@@ -375,8 +373,6 @@
       - { url: '/static/foo', method: 'GET' }
     postRequests:
       - 'http://127.0.0.1:8888/static/style.css'
-    notFound:
-      - 'http://127.0.0.1:8888/static/foo'
 
 # multiple cookies (#597)
 - url: "/cookies.html"
