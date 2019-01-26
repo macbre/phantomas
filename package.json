@@ -42,7 +42,7 @@
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "eslint core/ modules/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
-    "metadata": "DEBUG=* node lib/metadata/generate.js"
+    "metadata": "DEBUG=generate node lib/metadata/generate.js"
   },
   "jshintConfig": {
     "node": true,
