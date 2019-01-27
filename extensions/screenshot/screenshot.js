@@ -1,15 +1,12 @@
 /**
- * Renders a screenshot of the page when it's fully loaded
- *
- * @see http://phantomjs.org/api/webpage/method/render.html
+ * Renders a screenshot of the full page when it's fully loaded
  */
 'use strict';
 
 module.exports = function(phantomas) {
-	var param = phantomas.getParam('screenshot'),
-		path = '';
-
-	return; // TODO
+	const workingDirectory = require('process').cwd(),
+		param = phantomas.getParam('screenshot');
+	var path = '';
 
 	if (typeof param === 'undefined') {
 		phantomas.log('Screenshot: to enable screenshot of the fully loaded page run phantomas with --screenshot option');
@@ -20,7 +17,7 @@ module.exports = function(phantomas) {
 	if (param === true) {
 		// defaults to "2013-12-07T20:15:01.521Z.png"
 		path = (new Date()).toJSON().
-		replace(/:/g, '-'); // be M$ Windows compatible (issue #454)
+			replace(/:/g, '-'); // be M$ Windows compatible (issue #454)
 
 		path += '.png';
 	}
@@ -29,15 +26,27 @@ module.exports = function(phantomas) {
 		path = param;
 	}
 
-	phantomas.on('report', function() {
-		var then = Date.now(),
-			time;
+	path = workingDirectory + '/' + path;
+	phantomas.log('Screenshot will be saved in %s', path);
 
-		phantomas.render(path);
+	phantomas.awaitBeforeClose(function waitForEvent(page) {
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+		return new Promise(async resolve => {
+			const options = {
+				path: path,
+				type: 'png',
+				fullPage: true, // takes a screenshot of the full scrollable page
+			};
+			phantomas.log('Will take screenshot, options: %j', options);
 
-		time = Date.now() - then;
+			// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagescreenshotoptions
+			await page.screenshot(options);
 
-		phantomas.log('Screenshot: rendered to %s in %d ms', path, time);
-		phantomas.emit('screenshot', path, time);
+			phantomas.log('Screenshot stored in %s', path);
+
+			// let clients know that we stored the page source in a file
+			phantomas.emit('screenshot', path);
+			resolve();
+		});
 	});
 };

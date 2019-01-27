@@ -4,6 +4,7 @@ log
 *.har
 filmstrip
 *.html
+examples/*.png
 
 node_modules
 npm-debug.log
