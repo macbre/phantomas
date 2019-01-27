@@ -573,3 +573,10 @@
   options:
     "page-source": true
   assertFunction: pageSource  # run pageSource() from integration-test-extra.js
+
+# screenshot
+- url: "/image-scaling.html"
+  label: "image-scaling.html (with --screenshot)"
+  options:
+    screenshot: true
+  assertFunction: screenshot

@@ -19,4 +19,21 @@ function pageSource(phantomas, batch) {
     };
 }
 
-module.exports = {pageSource};
+function screenshot(phantomas, batch) {
+    var path;
+
+    phantomas.on('screenshot', _path => {
+        path = _path;
+    });
+
+    batch['PNG file should be saved'] = () => {
+        assert.ok(typeof path === 'string', 'screenshot event should get a path');
+        assert.ok(fs.existsSync(path), 'The file should exist');
+        assert.ok(path.match(/.png$/), 'The file should be a PNG');
+    };
+}
+
+module.exports = {
+    pageSource,
+    screenshot
+};
