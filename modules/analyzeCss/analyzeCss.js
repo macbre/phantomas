@@ -70,7 +70,7 @@ module.exports = function(phantomas) {
 		return f + str.substr(1);
 	}
 
-	function analyzeCss(css, context) {
+	function analyzeCss(css, context, callback) {
 		/**
 		// force JSON output format
 		options.push('--json');
@@ -118,6 +118,8 @@ module.exports = function(phantomas) {
 
 				phantomas.incrMetric('cssParsingErrors');
 				phantomas.addOffender('cssParsingErrors', offender);
+
+				callback();
 				return;
 			}
 
@@ -160,21 +162,43 @@ module.exports = function(phantomas) {
 					}
 				}
 			});
+
+			callback();
 		});
 	}
 
+	// prepare a list of CSS stylesheets (both external and inline)
+	var stylesheets = [];
+
 	phantomas.on('recv', async (entry, res) => {
 		if (entry.isCSS) {
-			phantomas.log('CSS: analyzing <%s>...', entry.url);
-
-			// get the response content and pass it to the analyze-css module
-			var content = await res.getContent();
-			analyzeCss(content, entry.url);
+			// defer getting the response content and pass it to the analyze-css module
+			stylesheets.push({content: res.getContent, url: entry.url});
 		}
 	});
 
-	phantomas.on('inlinecss', css => {
-		phantomas.log('CSS: analyzing inline CSS: %s', css);
-		analyzeCss(css);
+	phantomas.on('inlinecss', css => stylesheets.push({inline: css}));
+
+	// ok, now let's analyze the collect CSS
+	phantomas.awaitBeforeClose(function analyzeInlineCss() {
+		var promises = [];
+
+		stylesheets.forEach(entry => {
+			promises.push(
+				new Promise(async resolve => {
+					var css = entry.inline;
+					phantomas.log('Analyzing %s', entry.url || 'inline CSS');
+
+					if (entry.content) {
+						css = await entry.content();
+					}
+
+					analyzeCss(css, entry.url, resolve);
+				})
+			);
+		});
+
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+		return Promise.all(promises);
 	});
 };
