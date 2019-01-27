@@ -4,27 +4,6 @@
 /* global document: true */
 'use strict';
 
-function checkSelector(phantomas, selector) {
-	var res = phantomas.evaluate(function(selector) {
-		return (function(phantomas) {
-			try {
-				var result;
-
-				phantomas.spyEnabled(false, 'checking the selector');
-				result = (document.querySelector(selector) !== null);
-				phantomas.spyEnabled(true);
-
-				return result;
-			} catch (ex) {
-				return ex.toString();
-			}
-		}(window.__phantomas));
-	}, selector);
-
-	phantomas.log('Selector: query for "%s" returned %j', selector, res);
-	return res;
-}
-
 module.exports = function(phantomas) {
 	// e.g. --wait-for-selector "body.loaded"
 	var selector = phantomas.getParam('wait-for-selector');
@@ -33,27 +12,14 @@ module.exports = function(phantomas) {
 		return;
 	}
 
-	phantomas.log('Selector: will wait for "%s" selector', selector);
+	phantomas.on('init', (_, page) => {
+		// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#framewaitforselectororfunctionortimeout-options-args
+		phantomas.log('Selector: will wait for "%s" selector', selector);
 
-	phantomas.reportQueuePush(function(done) {
-		phantomas.on('loadFinished', function() {
-			var intervalId,
-				pollFn;
+		phantomas.awaitBeforeClose(function waitForSelector() {
+			phantomas.log('Waiting for "%s"...', selector);
 
-			phantomas.log('Selector: starting polling of "%s" selector', selector);
-
-			pollFn = function() {
-				var res = checkSelector(phantomas, selector);
-
-				// complete when selector is found or DOM exception is thrown
-				if (res === true || typeof res === 'string') {
-					clearInterval(intervalId);
-					done();
-				}
-			};
-
-			intervalId = setInterval(pollFn, 200);
-			pollFn();
+			return page.waitFor(selector => !!document.querySelector(selector), {}, selector);
 		});
 	});
 };
