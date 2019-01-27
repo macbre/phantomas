@@ -14,7 +14,7 @@ module.exports = function(phantomas) {
 
 	phantomas.on('init', (_, page) => {
 		// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#framewaitforselectororfunctionortimeout-options-args
-		phantomas.log('Selector: will wait for "%s" selector', selector);
+		phantomas.log('Will wait for "%s" selector', selector);
 
 		phantomas.awaitBeforeClose(function waitForSelector() {
 			phantomas.log('Waiting for "%s"...', selector);

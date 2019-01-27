@@ -289,12 +289,20 @@
 #  exitCode: 252 # timeout
 
 # --wait-for-event (issue #453)
-#- url: "/wait-for-event.html"
-#  options:
-#    timeout: 4
-#    'wait-for-event': "done"
-#  metrics:
-#    testFooBar: 123 # a metric set just before event trigger
+- url: "/wait-for-event.html"
+  metrics:
+    testFooBar: 1 # first value set
+
+# --wait-for-event (issue #453)
+- url: "/wait-for-event.html"
+  options:
+    timeout: 4
+    'wait-for-event': "done"
+  metrics:
+    testFooBar: 123 # a metric set just before event trigger
+  offenders:
+    testFooBar:
+      - "I'm done!"
 
 # requests to (#438 / #486)
 - url: "/timing.html"

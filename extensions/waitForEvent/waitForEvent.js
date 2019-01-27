@@ -11,9 +11,14 @@ module.exports = function(phantomas) {
 		return;
 	}
 
-	phantomas.log('Waiting for event: will wait for "%s" event', eventName);
+	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#framewaitforfunctionpagefunction-options-args
+	phantomas.log('Will wait for a "%s" event', eventName);
 
-	phantomas.reportQueuePush(function(done) {
-		phantomas.on(eventName, done);
+	phantomas.awaitBeforeClose(function waitForEvent() {
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+		return new Promise(resolve => {
+			phantomas.log('Waiting for "%s" event...', eventName);
+			phantomas.on(eventName, resolve);
+		});
 	});
 };
