@@ -3,7 +3,7 @@ log
 *.swp
 *.har
 filmstrip
-html
+examples/*.html
 
 node_modules
 npm-debug.log
