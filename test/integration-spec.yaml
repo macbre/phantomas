@@ -561,3 +561,15 @@
       - 'log:["Page fully loaded"]'
     DOMmutationsAttributes:
       - { attribute: 'class', node: 'body' } # we add "loaded" class to <body>
+
+#
+# integration-test-extra section
+#
+# "assertFunction" entry will be taken from "integration-test-extra" module
+#
+
+# page source
+- url: "/page-source.html"
+  options:
+    "page-source": true
+  assertFunction: pageSource  # run pageSource() from integration-test-extra.js

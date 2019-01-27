@@ -7,7 +7,8 @@ var vows = require('vows'),
 	assert = require('assert'),
 	fs = require('fs'),
 	yaml = require('js-yaml'),
-	phantomas = require('..');
+	phantomas = require('..'),
+	extras = require('./integration-test-extra');
 
 var WEBROOT = 'http://127.0.0.1:8888'; // see start-server.sh
 
@@ -39,15 +40,21 @@ spec.forEach(function(test) {
 
 	batch[batchName] = {
 		topic: function() {
-			phantomas(WEBROOT + test.url, test.options || {}).
+			var promise = phantomas(WEBROOT + test.url, test.options || {});
+
+			promise.
 				then(res => this.callback(null, res)).
-				catch(err => this.callback(err));
+				catch(err => this.callback(err))
+
+			if (test.assertFunction) {
+				extras[test.assertFunction](promise, batch[batchName]);
+			}
 		},
 		'should be generated': (err, res) => {
 			if (test.exitCode) {
 				assert.ok(err instanceof Error);
 			} else {
-				assert.equal(err, null, 'No error should be thrown');
+				assert.equal(err, null, 'No error should be thrown: got ' + err);
 				assert.ok(res.getMetric instanceof Function, 'Results wrapper should be passed');
 			}
 		},
