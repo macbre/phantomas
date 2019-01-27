@@ -519,8 +519,12 @@
 
 # JSON
 - url: "/ajax-json.html"
+  label: "/ajax-json.html (waiting for 'body.loaded')"
+  options:
+    "wait-for-selector": 'body.loaded'
   metrics:
     ajaxRequests: 1
+    consoleMessages: 2
     jsonCount: 1
     jsonSize: 333
   offenders:
@@ -528,3 +532,8 @@
       - { url: '/foo.json', method: 'GET' }
     jsonCount:
       - { url: 'http://127.0.0.1:8888/foo.json', size: 333 }
+    consoleMessages:
+      - 'log:["Ajax fetched"]'
+      - 'log:["Page fully loaded"]'
+    DOMmutationsAttributes:
+      - { attribute: 'class', node: 'body' } # we add "loaded" class to <body>

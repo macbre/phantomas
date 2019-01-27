@@ -3,7 +3,12 @@
     <script>
         // https://api.jquery.com/jquery.getjson/
         $.getJSON('/foo.json', function(resp) {
-            console.log('Loaded');
+            console.log('Ajax fetched');
+
+            setTimeout(function() {
+                console.log('Page fully loaded');
+                $('body').addClass('loaded');
+            }, 1000);
         });
     </script>
 </body>
