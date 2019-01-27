@@ -295,9 +295,30 @@
 
 # --wait-for-event (issue #453)
 - url: "/wait-for-event.html"
+  label: "/wait-for-event.html (with --wait-for-event)"
   options:
     timeout: 4
     'wait-for-event': "done"
+  metrics:
+    testFooBar: 123 # a metric set just before event trigger
+  offenders:
+    testFooBar:
+      - "I'm done!"
+
+# --post-load-delay
+- url: "/wait-for-event.html"
+  label: "/wait-for-event.html (with --post-load-delay)"
+  options:
+    timeout: 4
+    'post-load-delay': 1
+  metrics:
+    testFooBar: 1 # first set value
+
+- url: "/wait-for-event.html"
+  label: "/wait-for-event.html (with longer --post-load-delay)"
+  options:
+    timeout: 4
+    'post-load-delay': 3
   metrics:
     testFooBar: 123 # a metric set just before event trigger
   offenders:
