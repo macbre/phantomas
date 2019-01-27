@@ -277,22 +277,17 @@
     jQueryVersion: "1.4.4"
     jQuerySizzleCalls: 0
     jQueryEventTriggers: 0
+
 # --wait-for-selector
 #- url: "/"
-#  label: "/ (--wait-for-selector)"
+#  label: "/ (--wait-for-selector with timeout)"
 #  options:
 #    timeout: 1
 #    'wait-for-selector': "#foo"
 #  metrics:
 #    DOMqueries: 0 # no queries should be reported despite DOM being polled by waitForSelector module
 #  exitCode: 252 # timeout
-# --wait-for-selector (issue #512)
-#- url: "/wait-for-selector.html"
-#  options:
-#    timeout: 10
-#    'wait-for-selector': ".bar:nth-child(4):last-child"
-#  metrics:
-#    DOMelementsCount: 4
+
 # --wait-for-event (issue #453)
 #- url: "/wait-for-event.html"
 #  options:
