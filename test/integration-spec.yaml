@@ -562,6 +562,25 @@
     DOMmutationsAttributes:
       - { attribute: 'class', node: 'body' } # we add "loaded" class to <body>
 
+# scroll
+- url: "/lazy-load-scroll.html"
+  metrics:
+    requests: 1
+    imageCount: 0
+
+- url: "/lazy-load-scroll.html"
+  label: "/lazy-load-scroll.html (with --scroll)"
+  options:
+    scroll: true
+  metrics:
+    requests: 2
+    imageCount: 1
+  offenders:
+    imageCount:
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
+    consoleMessages:
+      - 'log:["Lazy loading /static/mdn.png"]'
+
 #
 # integration-test-extra section
 #

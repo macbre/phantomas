@@ -3,10 +3,11 @@ log
 *.swp
 *.har
 filmstrip
-*.html
 
 examples/*.png
 *.png
+
+phantomas_*.html
 
 node_modules
 npm-debug.log

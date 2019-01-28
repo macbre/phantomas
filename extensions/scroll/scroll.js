@@ -7,7 +7,7 @@
 'use strict';
 
 module.exports = function(phantomas) {
-	var scroll = phantomas.getParam('scroll') === true;
+	const scroll = phantomas.getParam('scroll') === true;
 
 	if (!scroll) {
 		phantomas.log('Scroll: pass --scroll option to scroll down the page when it\'s loaded');
@@ -16,20 +16,18 @@ module.exports = function(phantomas) {
 
 	phantomas.log('Scroll: the page will be scrolled down when loaded');
 
-	phantomas.reportQueuePush(function(done) {
-		phantomas.on('loadFinished', function() {
-			phantomas.evaluate(function() {
-				(function(phantomas) {
-					phantomas.log('Scroll: scrolling the page down...');
-					document.body.scrollIntoView(false);
+	phantomas.awaitBeforeClose(function scroll(page) {
+		return new Promise(async resolve => {
+			phantomas.log('Scrolling the page...');
 
-					var offset = document.body.scrollTop;
-					phantomas.log('Scroll: scroll offset is %d px', offset);
-				})(window.__phantomas);
-			});
+			await page.evaluate(() => document.body.scrollIntoView(false));
+			const scrollOffset = await page.evaluate(() => document.body.scrollTop);
 
 			// wait for lazy loading to do its job
-			setTimeout(done, 250);
+			phantomas.log('Scrolled the page to %d px, wait a bit', scrollOffset);
+			phantomas.emit('scroll', scrollOffset);
+
+			setTimeout(resolve, 500);
 		});
 	});
 };
