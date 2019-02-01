@@ -29,7 +29,7 @@ module.exports = function(phantomas) {
 	path = workingDirectory + '/' + path;
 	phantomas.log('Screenshot will be saved in %s', path);
 
-	phantomas.awaitBeforeClose(function waitForEvent(page) {
+	phantomas.on('beforeClose', page => {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 		return new Promise(async resolve => {
 			const options = {

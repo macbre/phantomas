@@ -16,7 +16,7 @@ module.exports = function(phantomas) {
 
 	phantomas.log('Scroll: the page will be scrolled down when loaded');
 
-	phantomas.awaitBeforeClose(function scroll(page) {
+	phantomas.on('beforeClose' ,page => {
 		return new Promise(async resolve => {
 			phantomas.log('Scrolling the page...');
 

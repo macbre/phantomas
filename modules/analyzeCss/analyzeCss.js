@@ -180,7 +180,7 @@ module.exports = function(phantomas) {
 	phantomas.on('inlinecss', css => stylesheets.push({inline: css}));
 
 	// ok, now let's analyze the collect CSS
-	phantomas.awaitBeforeClose(function analyzeInlineCss() {
+	phantomas.on('beforeClose', () => {
 		var promises = [];
 
 		stylesheets.forEach(entry => {

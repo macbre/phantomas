@@ -14,7 +14,7 @@ module.exports = function(phantomas) {
 	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#framewaitforfunctionpagefunction-options-args
 	phantomas.log('Will wait for a "%s" event', eventName);
 
-	phantomas.awaitBeforeClose(function waitForEvent() {
+	phantomas.on('beforeClose', () => {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 		return new Promise(resolve => {
 			phantomas.log('Waiting for "%s" event...', eventName);

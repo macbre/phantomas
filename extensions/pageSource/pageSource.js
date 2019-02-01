@@ -24,7 +24,7 @@ module.exports = phantomas => {
 	phantomas.log('Will store page source in %s', path);
 
 	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageevaluatepagefunction-args
-	phantomas.awaitBeforeClose(function waitForEvent(page) {
+	phantomas.on('beforeClose', page => {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 		return new Promise(async resolve => {
 			// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageevaluatepagefunction-args
