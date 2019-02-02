@@ -581,6 +581,44 @@
     consoleMessages:
       - 'log:["Lazy loading /static/mdn.png"]'
 
+# devices
+- url: "/devices.html"
+  label: "/devices.html"
+  metrics:
+    viewport: '800x600' # a default
+
+- url: "/devices.html"
+  label: "/devices.html (with --phone)"
+  options:
+    phone: true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3452.0 Mobile Safari/537.36'
+    viewport: '360x640'
+
+- url: "/devices.html"
+  label: "/devices.html (with --phone-landscape)"
+  options:
+    "phone-landscape": true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3452.0 Mobile Safari/537.36'
+    viewport: '640x360'
+
+- url: "/devices.html"
+  label: "/devices.html (with --tablet)"
+  options:
+    tablet: true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
+    viewport: '800x1280'
+
+- url: "/devices.html"
+  label: "/devices.html (with --tablet-landscape)"
+  options:
+    "tablet-landscape": true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
+    viewport: '1280x800'
+
 #
 # integration-test-extra section
 #
