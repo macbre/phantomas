@@ -40,25 +40,33 @@ spec.forEach(function(test) {
 
 	batch[batchName] = {
 		topic: function() {
-			var promise = phantomas(WEBROOT + test.url, test.options || {});
+			const url = test.url[0] == '/' ? WEBROOT + test.url : test.url,
+				promise = phantomas(url, test.options || {});
 
 			promise.
 				then(res => this.callback(null, res)).
-				catch(err => this.callback(err))
+				catch(err => this.callback(null, err))
 
 			if (test.assertFunction) {
 				extras[test.assertFunction](promise, batch[batchName]);
 			}
 		},
 		'should be generated': (err, res) => {
-			if (test.exitCode) {
-				assert.ok(err instanceof Error);
-			} else {
-				assert.equal(err, null, 'No error should be thrown: got ' + err);
-				assert.ok(res.getMetric instanceof Function, 'Results wrapper should be passed');
-			}
+			assert.ok(!(res instanceof Error), 'No error should be thrown: got ' + res);
+			assert.ok(res.getMetric instanceof Function, 'Results wrapper should be passed');
 		},
 	};
+
+	// check for errors
+	if (test.error) {
+		delete batch[batchName]['should be generated'];
+
+		batch[batchName]['should reject a promise'] = (_, err) => {
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+			assert.ok(err instanceof Error);
+			assert.ok(err.message.indexOf(test.error) === 0, test.error + ' should be raised');
+		};
+	}
 
 	// check metrics
 	Object.keys(test.metrics || {}).forEach(function(name) {
