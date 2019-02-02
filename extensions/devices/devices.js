@@ -37,7 +37,7 @@ module.exports = function(phantomas) {
 
 	phantomas.log('Devices: %s provided - using "%s" profile: %j', device, profileName, devices[profileName]);
 
-	phantomas.on('init', async (_, page) => {
+	phantomas.on('init', async page => {
 		await page.emulate(devices[profileName]);
 		phantomas.log('page.emulate() called');
 	});

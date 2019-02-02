@@ -75,7 +75,7 @@ module.exports = function(phantomas) {
 	}
 
 	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagesetrequestinterceptionvalue
-	phantomas.on('init', async (_, page) => {
+	phantomas.on('init', async page => {
 		await page.setRequestInterception(true);
 
 		page.on('request', interceptedRequest => {

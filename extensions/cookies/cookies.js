@@ -1,7 +1,6 @@
 /**
  * Support for cookies
  */
-/* global phantom: true */
 'use strict';
 
 module.exports = function(phantomas) {
@@ -54,7 +53,7 @@ module.exports = function(phantomas) {
 		return cookiesJar;
 	}
 
-	phantomas.on('init', async (_, page) => {
+	phantomas.on('init', async page => {
 		const url = phantomas.getParam('url'),
 			// https://nodejs.org/docs/latest/api/url.html#url_legacy_url_api
 			domain = require('url').parse(url).hostname;
