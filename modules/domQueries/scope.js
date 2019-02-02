@@ -16,7 +16,6 @@
 
     // selectors by class name
     function selectorClassNameSpy(results, className) {
-        /* jshint validthis: true */
         var context = phantomas.getDOMPath(this);
 
         phantomas.incrMetric('DOMqueriesByClassName');
@@ -29,7 +28,6 @@
 
     // selectors by tag name
     function selectorTagNameSpy(results, tagName) {
-        /* jshint validthis: true */
         var context = phantomas.getDOMPath(this);
 
         // querying by BODY and body is the same (issue #419)
@@ -45,7 +43,6 @@
 
     // selector queries
     function selectorQuerySpy(results, selector) {
-        /* jshint validthis: true */
         var context = phantomas.getDOMPath(this);
 
         phantomas.incrMetric('DOMqueriesByQuerySelectorAll');
@@ -60,7 +57,6 @@
 
     // count DOM inserts
     function appendSpy(child) {
-        /* jshint validthis: true */
         // ignore appending to the node that's not yet added to DOM tree
         if (!this.parentNode) {
             return;

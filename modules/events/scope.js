@@ -2,7 +2,6 @@
     // spy calls to EventTarget.addEventListener
     // @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
     function eventSpy(eventType) {
-        /* jshint validthis: true */
         var path = phantomas.getDOMPath(this);
         phantomas.log('DOM event: "' + eventType + '" bound to "' + path + '"');
 
@@ -23,7 +22,6 @@
     // spy calls to EventTarget.dispatchEvent
     // @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.dispatchEvent
     phantomas.spy(Element.prototype, 'dispatchEvent', function(ev) {
-        /* jshint validthis: true */
         var path = phantomas.getDOMPath(this);
 
         phantomas.log('Core JS event: triggered "%s" on "%s"', ev.type, path);
