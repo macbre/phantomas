@@ -619,6 +619,20 @@
     userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
     viewport: '1280x800'
 
+# https and webfonts
+- url: "/https-fonts.html"
+  options:
+    "wait-for-network-idle": true  # wait for webfont file
+  metrics:
+    requests: 3
+    httpsRequests: 2
+    webfontCount: 1
+  offenders:
+    domains:
+      - { domain: '127.0.0.1', requests: 1 }
+      - { domain: 'fonts.googleapis.com', requests: 1 }
+      - { domain: 'fonts.gstatic.com', requests: 1 }
+
 #
 # integration-test-extra section
 #

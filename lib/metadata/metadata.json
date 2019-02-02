@@ -27,7 +27,7 @@
       "offenders": true,
       "unit": "number",
       "module": "requestsMonitor",
-      "testsCovered": false
+      "testsCovered": true
     },
     "notFound": {
       "desc": "number of HTTP 404 responses",
@@ -450,7 +450,7 @@
       "offenders": true,
       "unit": "number",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "webfontSize": {
       "desc": "size of web font responses (with compression)",
