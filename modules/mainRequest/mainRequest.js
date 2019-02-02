@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var isMainRequest = true;
 	var statusCodes = [];
 

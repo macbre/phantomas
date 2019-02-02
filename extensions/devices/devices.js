@@ -1,32 +1,25 @@
 /**
- * Provides --phone and --tabled options to force given device viewport and user agent
+ * Provides --phone, --phone-landscape, --tablet and --table-landscape options to force given device viewport and user agent.
  *
  * @see https://github.com/macbre/phantomas/issues/213
+ * @see https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageemulateoptions
  */
 'use strict';
 
-exports.version = '0.1';
+module.exports = function(phantomas) {
+	const devices = require('puppeteer/DeviceDescriptors'),
+		// @see https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
+		availableDevices = {
+			'phone': 'Galaxy S5', // 360x640
+			'phone-landscape': 'Galaxy S5 landscape', // 640x360
+			'tablet': 'Kindle Fire HDX', // 800x1200
+			'tablet-landscape': 'Kindle Fire HDX landscape', // 1280x800
+		};
 
-exports.module = function(phantomas) {
-	var device,
-		// @see https://developers.google.com/chrome/mobile/docs/user-agent?hl=pl
-		// @see http://viewportsizes.com/
-		devices = {
-			// pretend we're iPhone
-			phone: {
-				viewport: '320x568',
-				'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A452 Safari/601.1'
-			},
-			// pretend we're iPad
-			tablet: {
-				viewport: '768x1024',
-				'user-agent': 'Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B5110e Safari/601.1'
-			}
-		},
-		availableDevices = Object.keys(devices);
+	var device;
 
 	// check if --phone or --tablet option was passed
-	availableDevices.forEach(function(item) {
+	Object.keys(availableDevices).forEach(function(item) {
 		if (phantomas.getParam(item) === true) {
 			device = item;
 			return false;
@@ -35,14 +28,17 @@ exports.module = function(phantomas) {
 
 	// no profile selected, add a hint to the logs
 	if (typeof device === 'undefined') {
-		phantomas.log('Devices: no profile selected (available: %s)', availableDevices.join(', '));
+		phantomas.log('No profile selected (available: %s)', Object.keys(availableDevices).join(', '));
 		return;
 	}
 
 	// apply the profile
-	phantomas.log('Devices: using "%s" profile', device);
+	const profileName = availableDevices[device];
 
-	Object.keys(devices[device]).forEach(function(key) {
-		phantomas.setParam(key, devices[device][key]);
+	phantomas.log('Devices: %s provided - using "%s" profile: %j', device, profileName, devices[profileName]);
+
+	phantomas.on('init', async (_, page) => {
+		await page.emulate(devices[profileName]);
+		phantomas.log('page.emulate() called');
 	});
 };

@@ -13,28 +13,83 @@
     cookie: "bar=foo;domain=url"
   metrics:
     requests: 3
+    gzipRequests: 1
+    htmlCount: 1
+    htmlSize: 2385
     cssCount: 1
+    cssSize: 308
     jsCount: 1
+    jsSize: 29730  # compressed
     domains: 1
     DOMqueries: 20
-    DOMqueriesById: 7
+    DOMqueriesById: 6
     DOMqueriesByClassName: 1
-    DOMqueriesByTagName: 9
+    DOMqueriesByTagName: 10
     DOMqueriesByQuerySelectorAll: 3
     DOMinserts: 2 # "div" appended to "html" (from jQuery) and the one below
     DOMqueriesDuplicated: 2
-    DOMqueriesAvoidable: 3
+    DOMqueriesAvoidable: 2
     DOMqueriesWithoutResults: 4
+
+  offenders:
+    gzipRequests:
+      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29415 }
+    htmlCount:
+      - { url: 'http://127.0.0.1:8888/dom-operations.html', size: 2385 }
+    cssCount:
+      - { url: 'http://127.0.0.1:8888/static/style.css', size: 308 }
+    jsCount:
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', size: 29730 }
+
+    DOMqueriesById:
+      - { id: 'foo', node: '#document' }
+      - { id: 'delete', node: '#document' }
+      - { id: 'foo', node: '#document' }
+      - { id: 'list1', node: '#document' }
+      - { id: 'list2', node: '#document' }
+      - { id: 'foobar', node: '#document' }
+    DOMqueriesByClassName:
+      - { class: 'barr', node: 'body' }
+    DOMqueriesByTagName:
+      - { tag: '*', node: 'div' }
+      - { tag: 'body', node: '#document' }
+      - { tag: 'script', node: 'DocumentFragment > strong[0]' }
+      - { tag: 'script', node: 'DocumentFragment > strong[0]' }
+      - { tag: 'strong', node: '#document' }
+      - { tag: 'strong', node: '#document' }
+      - { tag: 'li', node: 'body > ul#list1' }
+      - { tag: 'li', node: 'body > ul#list2' }
+      - { tag: 'a', node: 'div' }
+      - { tag: 'a', node: 'div' }
+    DOMinserts:
+      - { append: 'html > div[2]', node: 'html' }
+      - { append: 'body > p#foo > strong[0]', node: 'body > p#foo' }
+    DOMqueriesDuplicated:
+      - { query: 'id "#foo" (in #document)', count: 2 }
+      - { query: 'tag name "strong" (in #document)', count: 2 }
 
 # DOM mutations
 - url: "/dom-operations.html"
-  skip: "webkit" # do not run using PhantomJS 1.9.x as it doesn't support DOM mutations API
   metrics:
-    DOMmutationsInserts: 1 # DocumentFragment > b[0]" appended to "body > p#foo"
+    DOMmutationsInserts: 1
+    DOMmutationsRemoves: 1
+    DOMmutationsAttributes: 4
+  offenders:
+    DOMmutationsInserts:
+      - { node: 'strong[0]', target: 'p#foo' }
+    DOMmutationsRemoves:
+      - { node: 'span#delete', target: 'body' }
+    DOMmutationsAttributes:
+      - { attribute: 'style', node: 'body' }
+      - { attribute: 'style', node: 'body' }
+      - { attribute: 'style', node: 'p#foo' }
+      - { attribute: 'style', node: 'p#foo' }
 
 # DOM complexity
 - url: "/dom-complexity.html"
   metrics:
+    base64Count: 1
+    base64Size: 43
     bodyHTMLSize: 709
     commentsSize: 85
     DOMelementsCount: 11
@@ -46,6 +101,14 @@
     hiddenImages: 3
     nodesWithInlineCSS: 1
     whiteSpacesSize: 33
+  offenders:
+    hiddenImages:
+      - 'http://127.0.0.1:8888/static/mdn.png'
+      - 'http://127.0.0.1:8888/static/blank.gif'
+      - 'http://127.0.0.1:8888/static/example.svg'
+    nodesWithInlineCSS:
+      - { css: 'color: blue', node: 'p#foo' }
+
 # document height
 - url: "/document-height.html"
   metrics:
@@ -55,18 +118,15 @@
   metrics:
     imagesScaledDown: 2
     imagesWithoutDimensions: 3
+  offenders:
+    imagesScaledDown:
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', naturalWidth: 600, naturalHeight: 529, imgWidth: 300, imgHeight: 265 }
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', naturalWidth: 600, naturalHeight: 529, imgWidth: 50, imgHeight: 50 }
 # duplicated ID (issue #392)
 - url: "/dom-id.html"
   metrics:
     DOMidDuplicated: 2 # foo and bar
-# assertions & exit codes (#382 / #528)
-- url: "/dom-id.html"
-  label: "Assertions and exit code"
-  options:
-    "assert-requests": 0
-  metrics:
-    requests: 1
-  exitCode: 1 # one assert not met
+
 # inline styles (#397 / #694)
 - url: "/inline-css.html"
   options:
@@ -80,6 +140,20 @@
     cssRules: 4
     cssImportants: 1
     DOMqueries: 0
+  offenders:
+    cssParsingErrors:
+      - {
+          url: '[inline CSS]',
+          value: { message: "missing '{'", position: {
+            end: { column: 2, line: 3 },
+            start: { column: 2, line: 3 }
+          }}
+        }
+    cssInlineStyles:
+      - { node: 'head > style[1]' }
+      - { node: 'body > style[0]' }
+      - { node: 'body > style[1]' }
+
 # analyze-css fails to parse a file (#404)
 - url: "/broken-css.html"
   options:
@@ -88,6 +162,7 @@
     cssParsingErrors: 3
     cssLength: 39
     cssRules: 1
+
 - url: "/dom-operations.html"
   options:
     "analyze-css": true
@@ -95,26 +170,74 @@
     cssParsingErrors: 0
     cssLength: 22
     cssRules: 1
+
 # jQuery and events (#440 / #451)
 - url: "/jquery.html"
   metrics:
+    gzipRequests: 1
     jQueryVersion: "2.1.1"
     jQueryOnDOMReadyFunctions: 1
     jQueryWindowOnLoadFunctions: 1
     jQuerySizzleCalls: 1
     jQueryEventTriggers: 2
-    eventsBound: 7
+    eventsBound: 8
     eventsDispatched: 1
     eventsScrollBound: 2
+  offenders:
+    gzipRequests:
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29415, bodySize: 84245 }
+    eventsDispatched:
+      - { eventType: 'click', path: 'body > div#foo > span.bar' }
+    eventsBound:
+      - { eventType: 'load', path: 'window' }
+      - { eventType: 'DOMContentLoaded', path: '#document' }
+      - { eventType: 'load', path: 'window' }
+      - { eventType: 'load', path: 'window' }
+      - { eventType: 'click', path: 'body > div#foo > span.bar' }
+      - { eventType: 'load', path: 'body > div#foo > span.bar' }
+      - { eventType: 'scroll', path: '#document' }
+      - { eventType: 'scroll', path: 'window' }
+    eventsScrollBound:
+      - { element: '#document' }
+      - { element: 'window' }
+    jQueryVersionsLoaded:
+      - version: "2.1.1"
+        url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' 
+    jQueryWindowOnLoadFunctions:
+      - http://127.0.0.1:8888/jquery.html:49:13
+    jQueryEventTriggers:
+      - { type: 'click', element: 'body > div#foo > span.bar' }
+      - { element: '#document',  type: 'ready' }
+    jQuerySizzleCalls: 
+      - { selector: '#foo .bar', element: '#document' }
+    jQueryDOMReads:
+      - { functionName: 'css', arguments: '["color"]', contextPath: 'body > div#foo > span.bar' }
+    jQueryDOMWrites:
+     - { functionName: 'css', arguments: '[{"color":"red","background":"green"}]', contextPath: 'body > div#foo > span.bar' }
+     - { functionName: 'css', arguments: '[{"background-color":"blue"}]', contextPath: 'body > div#foo' }
+     - { functionName: 'css', arguments: '[{"background-color":"blue"}]', contextPath: 'body > div#foo' }
+    jQueryDOMWriteReadSwitches:
+      - { functionName: 'css', arguments: '["color"]', contextPath: 'body > div#foo > span.bar' }
+
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
   metrics:
-    requests: 4
-    jsCount: 3
+    requests: 3
+    jsCount: 2
     domains: 2
+    maxRequestsPerDomain: 2
     jQueryVersion: "1.11.1" # the last loaded version
-    jQueryVersionsLoaded: 3
+    jQueryVersionsLoaded: 2
     jQueryOnDOMReadyFunctions: 1
+  offenders:
+    jQueryVersionsLoaded:
+      - { version: "2.1.1", url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js' }
+      - { version: "1.11.1", url: 'http://code.jquery.com/jquery-1.11.1.js' }
+    globalVariables: [ 'jQuery', '$' ]
+    domains:
+      - { domain: '127.0.0.1', requests: 2 }
+      - { domain: 'code.jquery.com', requests: 1 }
+
 # --no-externals handling (issue #535)
 - url: "/jquery-multiple.html"
   label: "/jquery-multiple.html (with --no-externals)"
@@ -123,17 +246,24 @@
   metrics:
     requests: 2
     jsCount: 1
-    blockedRequests: 2
+    blockedRequests: 1
     domains: 1
     jsErrors: 0
+    jQueryVersion: '2.1.1'
+  offenders:
+    blockedRequests:
+      - 'http://code.jquery.com/jquery-1.11.1.js'
 # accept main domain in allow-domains
 - url: "/jquery-multiple.html"
   label: "/jquery-multiple.html (with --allow-domain)"
   options:
-    "allow-domain": "foo.com"
+    "no-externals": true
+    "allow-domain": "code.jquery.com"
   metrics:
-    requests: 2
-    blockedRequests: 2
+    requests: 3
+    jsCount: 2
+    blockedRequests: 0
+    jQueryVersion: '1.11.1'
 # jQuery read & write operations (issue #436)
 - url: "/jquery-reads-writes.html"
   metrics:
@@ -147,37 +277,72 @@
     jQueryVersion: "1.4.4"
     jQuerySizzleCalls: 0
     jQueryEventTriggers: 0
+
 # --wait-for-selector
-- url: "/"
-  label: "/ (--wait-for-selector)"
-  options:
-    timeout: 1
-    'wait-for-selector': "#foo"
-  metrics:
-    DOMqueries: 0 # no queries should be reported despite DOM being polled by waitForSelector module
-  exitCode: 252 # timeout
-# --wait-for-selector (issue #512)
-- url: "/wait-for-selector.html"
-  options:
-    timeout: 10
-    'wait-for-selector': ".bar:nth-child(4):last-child"
-  metrics:
-    DOMelementsCount: 4
+#- url: "/"
+#  label: "/ (--wait-for-selector with timeout)"
+#  options:
+#    timeout: 1
+#    'wait-for-selector': "#foo"
+#  metrics:
+#    DOMqueries: 0 # no queries should be reported despite DOM being polled by waitForSelector module
+#  exitCode: 252 # timeout
+
 # --wait-for-event (issue #453)
 - url: "/wait-for-event.html"
+  metrics:
+    testFooBar: 1 # first value set
+
+# --wait-for-event (issue #453)
+- url: "/wait-for-event.html"
+  label: "/wait-for-event.html (with --wait-for-event)"
   options:
     timeout: 4
     'wait-for-event': "done"
   metrics:
     testFooBar: 123 # a metric set just before event trigger
+  offenders:
+    testFooBar:
+      - "I'm done!"
+
+# --post-load-delay
+- url: "/wait-for-event.html"
+  label: "/wait-for-event.html (with --post-load-delay)"
+  options:
+    timeout: 4
+    'post-load-delay': 1
+  metrics:
+    testFooBar: 1 # first set value
+
+- url: "/wait-for-event.html"
+  label: "/wait-for-event.html (with longer --post-load-delay)"
+  options:
+    timeout: 4
+    'post-load-delay': 3
+  metrics:
+    testFooBar: 123 # a metric set just before event trigger
+  offenders:
+    testFooBar:
+      - "I'm done!"
+
 # requests to (#438 / #486)
 - url: "/timing.html"
   metrics:
     requests: 4
-#    requestsToDomContentLoaded: 4
-#    domainsToDomContentLoaded: 1
-    requestsToDomComplete: 4
-    domainsToDomComplete: 1
+    requestsToDomContentLoaded: 3
+    domainsToDomContentLoaded: 2
+    requestsToDomComplete: 3
+    domainsToDomComplete: 2
+  offenders:
+    domainsToDomContentLoaded:
+      - { domain: '127.0.0.1', requests: 2 }
+      - { domain: 'code.jquery.com', requests: 1 }
+    domainsToDomComplete:
+      - { domain: '127.0.0.1', requests: 2 }
+      - { domain: 'code.jquery.com', requests: 1 }
+  options:
+    "wait-for-network-idle": true
+
 # JS bottlenecks (#467)
 - url: "/bottlenecks.html"
   label: "/bottlenecks.html (--spy-eval)"
@@ -186,44 +351,92 @@
   metrics:
     documentWriteCalls: 1
     evalCalls: 2 # via eval() and setTimeout()
+  offenders:
+    documentWriteCalls:
+      - { message: 'document.write() used', caller: 'http://127.0.0.1:8888/bottlenecks.html:11:11' }
+    evalCalls:
+      - { message: 'eval() called directly', caller: 'http://127.0.0.1:8888/bottlenecks.html:8:2' }
+      - { message: 'eval() called via setTimeout("foo()")', caller: 'http://127.0.0.1:8888/bottlenecks.html:9:2' }
+
 - url: "/bottlenecks.html"
   metrics:
     documentWriteCalls: 1
     evalCalls: 1 # via setTimeout() only
+  offenders:
+    documentWriteCalls:
+      - { message: 'document.write() used', caller: 'http://127.0.0.1:8888/bottlenecks.html:11:11' }
+    evalCalls:
+      - { message: 'eval() called via setTimeout("foo()")', caller: 'http://127.0.0.1:8888/bottlenecks.html:9:2' }
+
 # stop-at-onload (#513)
-- url: "/after-onload.html"
-  label: "/after-onload.html (--stop-at-onload)"
-  options:
-    "stop-at-onload": true
-  metrics:
-    imageCount: 1
-    requests: 2
 - url: "/after-onload.html"
   label: "/after-onload.html"
   metrics:
+    imageCount: 1
+    imageSize: 330
+    requests: 2
+  offenders:
+    htmlCount:
+      - { url: 'http://127.0.0.1:8888/after-onload.html', size: 658 }
+    imageCount:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+
+- url: "/after-onload.html"
+  label: "/after-onload.html (with --wait-for-network-idle)"
+  options:
+    "wait-for-network-idle": true
+  metrics:
     imageCount: 2
+    imageSize: 21009
     requests: 3
+  offenders:
+    imageCount:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
+
 # lazy-loadable-images.html (#494)
 - url: "/lazy-loadable-images.html"
   metrics:
     lazyLoadableImagesBelowTheFold: 2
+  offenders:
+    lazyLoadableImagesBelowTheFold:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', node: 'body > img#dot', offset: 900 }
+      - { url: 'http://127.0.0.1:8888/static/example.svg', node: 'body > footer[2] > img[3]', offset: 1526 }
+
 # JS globals (#482)
 - url: "/js-globals.html"
   metrics:
     globalVariables: 3
     globalVariablesFalsy: 1
     jsErrors: 0
+  offenders:
+    globalVariables: [ 'a_global', 'falsy', 'foo' ]
+    globalVariablesFalsy:
+      - { name: 'falsy', value: false }
 # JS redirects (#550)
 - url: "/js-redirect.html"
   metrics:
     requests: 2
     htmlCount: 2
     jsErrors: 0
+  options:
+    "wait-for-network-idle": true
+
 # AJAX requests (#622)
 - url: "/jquery-ajax.html"
   metrics:
-    requests: 4
-    ajaxRequests: 2
+    ajaxRequests: 3
+    postRequests: 1
+  offenders:
+    ajaxRequests:
+      - { url: '/static/style.css', method: 'POST' }
+      - { url: '/static/broken.css', method: 'GET' }
+      - { url: '/static/foo', method: 'GET' }
+    postRequests:
+      - 'http://127.0.0.1:8888/static/style.css'
+  options:
+    "wait-for-network-idle": true
+
 # multiple cookies (#597)
 - url: "/cookies.html"
   options:
@@ -239,3 +452,232 @@
 - url: "/local-storage.html"
   metrics:
     localStorageEntries: 2
+  offenders:
+    localStorageEntries: ['foo', 'test']
+# JS errors
+- url: "/js-errors.html"
+  metrics:
+    requests: 2
+    jsErrors: 1
+# console.log() calls
+- url: "/console-log.html"
+  metrics:
+    consoleMessages: 2
+  offenders:
+    consoleMessages:
+      - 'log:["Hi!"]'
+      - 'Bye, %d! 42'
+
+# headers
+- url: "/headers.html"
+  metrics:
+    requests: 2
+    headersCount: 20
+    headersSentCount: 4
+    headersRecvCount: 16
+    headersRecvSize: 578
+    headersBiggerThanContent: 1
+  offenders:
+    headersBiggerThanContent:
+     - { url: 'http://127.0.0.1:8888/static/blank.gif', contentSize: 43, headersSize: 287 }
+
+# caching
+- url: "/caching.html"
+  metrics:
+    requests: 2
+    cachingTooShort: 1
+  offenders:
+    cachingTooShort:
+     - { url: 'http://127.0.0.1:8888/static/mdn.png', ttl: 84600 }
+
+# requestsStats
+- url: "/headers.html"
+  metrics:
+    requests: 2
+    bodySize: 1065
+    contentLength: 1065 # these are equal as no gzip compression took place
+    smallestResponse: 330  # headers + body size
+    biggestResponse: 1313
+  offenders:
+    requests:
+      - { url: 'http://127.0.0.1:8888/headers.html', type: 'html', size: 1313 }
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', type: 'image', size: 330 }
+    smallestResponse:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+    biggestResponse:
+      - { url: 'http://127.0.0.1:8888/headers.html', size: 1313 }
+
+# iframes
+- url: "/iframe.html"
+  metrics:
+    requests: 5  # include requests for iframe and its content
+    iframesCount: 1
+  offenders:
+    iframesCount:
+     - { element: 'body > iframe[1]', url: 'http://127.0.0.1:8888/image-scaling.html' }
+
+# not found
+- url: "/not-found.html"
+  metrics:
+    requests: 2
+    notFound: 1
+    otherCount: 1  # with HTTP 404 response we can't determine the type
+  offenders:
+    requests:
+      - { url: 'http://127.0.0.1:8888/not-found.html', type: 'html', size: 362 }
+      - { url: 'http://127.0.0.1:8888/not_found/foo.js', type: 'other', size: 130 }
+    notFound:
+      - 'http://127.0.0.1:8888/not_found/foo.js'
+
+
+# alerts, prompts, confirms
+- url: "/alerts-prompts.html"
+  metrics:
+    windowAlerts: 1
+    windowConfirms: 1
+    windowPrompts: 1
+  offenders:
+    windowAlerts: [ 'Oh dear!' ]
+    windowConfirms: [ 'Oh dear?' ]
+    windowPrompts: [ "What's your name, dear?" ]
+
+# JSON
+- url: "/ajax-json.html"
+  label: "/ajax-json.html (waiting for 'body.loaded')"
+  options:
+    "wait-for-selector": 'body.loaded'
+  metrics:
+    ajaxRequests: 1
+    consoleMessages: 2
+    jsonCount: 1
+    jsonSize: 333
+  offenders:
+    ajaxRequests:
+      - { url: '/foo.json', method: 'GET' }
+    jsonCount:
+      - { url: 'http://127.0.0.1:8888/foo.json', size: 333 }
+    consoleMessages:
+      - 'log:["Ajax fetched"]'
+      - 'log:["Page fully loaded"]'
+    DOMmutationsAttributes:
+      - { attribute: 'class', node: 'body' } # we add "loaded" class to <body>
+
+# scroll
+- url: "/lazy-load-scroll.html"
+  metrics:
+    requests: 1
+    imageCount: 0
+
+- url: "/lazy-load-scroll.html"
+  label: "/lazy-load-scroll.html (with --scroll)"
+  options:
+    scroll: true
+  metrics:
+    requests: 2
+    imageCount: 1
+  offenders:
+    imageCount:
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
+    consoleMessages:
+      - 'log:["Lazy loading /static/mdn.png"]'
+
+# devices
+- url: "/devices.html"
+  label: "/devices.html"
+  metrics:
+    viewport: '800x600' # a default
+
+- url: "/devices.html"
+  label: "/devices.html (with --phone)"
+  options:
+    phone: true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3452.0 Mobile Safari/537.36'
+    viewport: '360x640'
+
+- url: "/devices.html"
+  label: "/devices.html (with --phone-landscape)"
+  options:
+    "phone-landscape": true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3452.0 Mobile Safari/537.36'
+    viewport: '640x360'
+
+- url: "/devices.html"
+  label: "/devices.html (with --tablet)"
+  options:
+    tablet: true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
+    viewport: '800x1280'
+
+- url: "/devices.html"
+  label: "/devices.html (with --tablet-landscape)"
+  options:
+    "tablet-landscape": true
+  metrics:
+    userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
+    viewport: '1280x800'
+
+# https and webfonts
+- url: "/https-fonts.html"
+  options:
+    "wait-for-network-idle": true  # wait for webfont file
+  metrics:
+    requests: 3
+    httpsRequests: 2
+    webfontCount: 1
+  offenders:
+    domains:
+      - { domain: '127.0.0.1', requests: 1 }
+      - { domain: 'fonts.googleapis.com', requests: 1 }
+      - { domain: 'fonts.gstatic.com', requests: 1 }
+    assetsNotGzipped:
+      # CSS response is compressed using "brotli"
+      - { url: 'http://127.0.0.1:8888/https-fonts.html', contentType: 'text/html' }
+
+# staticAssets
+- url: "/assets.html"
+  offenders:
+    assetsWithQueryString:
+      - { url: 'http://127.0.0.1:8888/static/mdn.png?cb=123', contentType: 'image/png' }
+    smallImages:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+    smallCssFiles:
+      - { url: 'http://127.0.0.1:8888/static/style.css', size: 308 }
+
+# authentication
+- url: "https://httpbin.org/basic-auth/foo/bar"
+  label: "httpbin's /basic-auth"
+  # the following promise rejection is expected
+  error: 'HTTP response code from <https://httpbin.org/basic-auth/foo/bar> is 401'
+
+- url: "https://httpbin.org/basic-auth/foo/bar"
+  label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
+  options:
+    auth-user: 'foo'
+    auth-pass: 'bar'
+  metrics:
+    requests: 1
+  offenders:
+    httpsRequests:
+      - 'https://httpbin.org/basic-auth/foo/bar'
+
+#
+# integration-test-extra section
+#
+# "assertFunction" entry will be taken from "integration-test-extra" module
+#
+
+# page source
+- url: "/page-source.html"
+  options:
+    "page-source": true
+  assertFunction: pageSource  # run pageSource() from integration-test-extra.js
+
+# screenshot
+- url: "/image-scaling.html"
+  label: "image-scaling.html (with --screenshot)"
+  options:
+    screenshot: true
+  assertFunction: screenshot

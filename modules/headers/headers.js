@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('headersCount'); // @desc number of requests and responses headers
 	phantomas.setMetric('headersSentCount'); // @desc number of headers sent in requests
 	phantomas.setMetric('headersRecvCount'); // @desc number of headers received in responses
@@ -23,17 +21,17 @@ exports.module = function(phantomas) {
 		};
 
 		if (headers) {
-			headers.forEach(function(header) {
+			Object.keys(headers).forEach(function(key) {
 				res.count++;
-				res.size += (header.name + ': ' + header.value + '\r\n').length;
+				res.size += (key + ': ' + headers[key] + '\r\n').length;
 			});
 		}
 
 		return res;
 	}
 
-	phantomas.on('send', function(entry, res) {
-		var headers = processHeaders(res.headers);
+	phantomas.on('request', function(entry) {
+		var headers = processHeaders(entry.headers);
 
 		phantomas.incrMetric('headersCount', headers.count);
 		phantomas.incrMetric('headersSize', headers.size);
@@ -42,19 +40,21 @@ exports.module = function(phantomas) {
 		phantomas.incrMetric('headersSentSize', headers.size);
 	});
 
-	phantomas.on('recv', function(entry, res) {
-		var headers = processHeaders(res.headers);
+	phantomas.on('recv', function(entry) {
+		var headers = processHeaders(entry.headers);
+
+		// phantomas.log('Headers: <%s> %d bytes', entry.url, headers.size);
 
 		phantomas.incrMetric('headersCount', headers.count);
-		phantomas.incrMetric('headersSize', headers.size);
+		phantomas.incrMetric('headersSize', entry.headersSize);
 
 		phantomas.incrMetric('headersRecvCount', headers.count);
-		phantomas.incrMetric('headersRecvSize', headers.size);
+		phantomas.incrMetric('headersRecvSize', entry.headersSize);
 
 		// skip HTTP 204 No Content responses
-		if ((entry.status !== 204) && (headers.size > entry.contentLength)) {
+		if ((entry.status !== 204) && (headers.size > entry.transferedSize)) {
 			phantomas.incrMetric('headersBiggerThanContent');
-			phantomas.addOffender('headersBiggerThanContent', '%s (body: %s kB / headers: %s kB)', entry.url, (entry.contentLength / 1024).toFixed(2), (headers.size / 1024).toFixed(2));
+			phantomas.addOffender('headersBiggerThanContent', {url: entry.url, contentSize: entry.transferedSize, headersSize: entry.headersSize});
 		}
 	});
 };

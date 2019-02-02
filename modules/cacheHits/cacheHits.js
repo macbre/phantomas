@@ -3,14 +3,12 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	phantomas.setMetric('cacheHits'); // @desc number of cache hits @offenders
 	phantomas.setMetric('cacheMisses'); // @desc number of cache misses @offenders
 	phantomas.setMetric('cachePasses'); // @desc number of cache passes @offenders
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var age, xCacheHeader,
 			isHit, isMiss, isPass;
 

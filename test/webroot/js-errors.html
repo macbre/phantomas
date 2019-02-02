@@ -1,0 +1,12 @@
+<body>
+    <img src="static/blank.gif" alt="." width="1" height="1">
+
+	<script>
+        // this one should fail
+        // Uncaught SyntaxError: Unexpected token h in JSON at position 0
+        JSON.parse('hello!');
+
+        // and this one too, but the execution will never reach this linen
+        window.Foo('test');
+	</script>
+</body>

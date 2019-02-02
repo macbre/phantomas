@@ -1,8 +1,7 @@
 /**
  * Test cacheHits module
  */
-var vows = require('vows'),
-	assert = require('assert'),
+const vows = require('vows'),
 	mock = require('./mock');
 
 vows.describe('cacheHits').

@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "1.20.1",
+  "version": "2.0.0-beta",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "PhantomJS-based web performance metrics collector",
   "main": "./lib/index.js",
@@ -13,56 +13,35 @@
     "metrics",
     "monitoring",
     "phantomas",
-    "phantomjs",
+    "puppeteer",
+    "chromium",
+    "headless browser",
     "web development",
     "webperf"
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=4.0"
+    "node": ">=8.0"
   },
   "dependencies": {
-    "analyze-css": "^0.12.6",
-    "ansicolors": "~0.3.2",
-    "ansistyles": "~0.1.0",
-    "ascii-table": "0.0.9",
-    "async": "^2.6.1",
-    "csv-string": "^3.1.3",
-    "debug": "^3.1.0",
-    "js-yaml": "^3.11.0",
-    "node-statsd": "0.1.1",
-    "optimist": "^0.6.1",
-    "optimist-config-file": "^1.0.1",
-    "progress": "~2.0.0",
-    "q": "^1.5.0",
-    "tap-producer-macbre": "0.0.3",
-    "travis-fold": ">=0.1.2",
-    "uuid": "^3.0.1"
+    "analyze-css": "^0.12.7",
+    "debug": "^4.1.1",
+    "puppeteer": "^1.11.0"
   },
   "devDependencies": {
+    "eslint": "^5.12.1",
     "glob": "^7.1.2",
-    "http-server": "^0.11.1",
+    "http-serve": "^1.0.1",
     "js-beautify": "^1.6.14",
-    "jshint": "macbre/jshint#master",
+    "js-yaml": "^3.12.1",
     "mockery": "^2.0.0",
-    "vows": "^0.7.0"
+    "vows": "^0.8.2"
   },
-  "optionalDependencies": {
-    "phantomjs-prebuilt-macbre": "^2.5.0-dev2",
-    "slimerjs": "^0.10.3"
-  },
-  "bin": "./bin/phantomas.js",
-  "preferGlobal": true,
   "scripts": {
-    "test": "PHANTOMAS_ENGINE=webkit vows --spec",
+    "test": "vows --spec",
     "unit-test": "vows test/modules/*-test.js --spec",
-    "lint": "jshint --verbose core/ modules/ scripts/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
+    "lint": "eslint core/ modules/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
     "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
-    "metadata": "DEBUG=* node lib/metadata/generate.js"
-  },
-  "jshintConfig": {
-    "node": true,
-    "-W020": false,
-    "-W030": false
+    "metadata": "DEBUG=generate node lib/metadata/generate.js"
   }
 }

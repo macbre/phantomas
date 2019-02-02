@@ -8,10 +8,10 @@
 		}
 
 		// overwrite some core objects (#482)
-		window.JSON = {
+		window.navigator = {
 			foo: 'bar'
 		};
 
-		Array.prototype.toJSON = foo;
+		Array.prototype.foo = foo;
 	</script>
 </body>

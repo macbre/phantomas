@@ -1,0 +1,11 @@
+<body>
+    <script>
+        console.log(navigator.userAgent);
+        console.log(window.outerWidth, window.outerHeight);
+
+        (phantomas => {
+            phantomas.setMetric('userAgent', navigator.userAgent);
+            phantomas.setMetric('viewport', window.outerWidth + 'x' + window.outerHeight);
+        })(window.__phantomas);
+    </script>
+</body>

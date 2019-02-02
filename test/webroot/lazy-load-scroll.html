@@ -1,0 +1,31 @@
+<body>
+    <!-- https://css-tricks.com/the-complete-guide-to-lazy-loading-images/ -->
+
+    <div style="height: 2000px">foo</div>
+    <img class="lazy" data-src="/static/mdn.png" width=250>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var lazyloadImages;
+
+        lazyloadImages = document.querySelectorAll(".lazy");
+        var imageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var image = entry.target;
+
+                    console.log('Lazy loading ' + image.dataset.src);
+
+                    image.src = image.dataset.src;
+                    image.classList.remove("lazy");
+                    imageObserver.unobserve(image);
+                }
+            });
+        });
+
+        lazyloadImages.forEach(function(image) {
+            imageObserver.observe(image);
+        });
+    });
+    </script>
+</body>

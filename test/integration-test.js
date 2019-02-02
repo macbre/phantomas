@@ -7,13 +7,13 @@ var vows = require('vows'),
 	assert = require('assert'),
 	fs = require('fs'),
 	yaml = require('js-yaml'),
-	phantomas = require('..');
+	phantomas = require('..'),
+	extras = require('./integration-test-extra');
 
-var WEBROOT = 'http://127.0.0.1:8888', // see start-server.sh
-	ENGINE = process.env.PHANTOMAS_ENGINE; // currently used engine (either PhantomJS or SlimerJS)
+var WEBROOT = 'http://127.0.0.1:8888'; // see start-server.sh
 
 // run the test
-var suite = vows.describe('Integration tests - ' + ENGINE).addBatch({
+var suite = vows.describe('Integration tests').addBatch({
 	'test server': {
 		topic: function() {
 			var http = require('http'),
@@ -36,35 +36,54 @@ var raw = fs.readFileSync(__dirname + '/integration-spec.yaml').toString(),
 
 spec.forEach(function(test) {
 	var batch = {},
-		batchName = test.label || test.url,
-		shouldSkip = test.skip && (test.skip === ENGINE);
+		batchName = test.label || test.url;
 
-	if (shouldSkip) {
-		batch[batchName] = {
-			topic: 'foo',
-			'should be skipped': function() {}
-		};
-	} else {
-		batch[batchName] = {
-			topic: function() {
-				phantomas(WEBROOT + test.url, test.options || {}, this.callback);
-			},
-			'should be generated': function(err, data, results) {
-				if (test.exitCode) {
-					assert.ok(err instanceof Error);
-					assert.strictEqual(err.message, test.exitCode.toString(), 'Exit code matches the expected value');
-				} else {
-					assert.equal(err, null, 'Exit code matches the expected value');
-				}
-			},
-		};
+	batch[batchName] = {
+		topic: function() {
+			const url = test.url[0] == '/' ? WEBROOT + test.url : test.url,
+				promise = phantomas(url, test.options || {});
 
-		Object.keys(test.metrics || {}).forEach(function(name) {
-			batch[batchName]['should have "' + name + '" metric properly set'] = function(err, data, results) {
-				assert.strictEqual(results.getMetric(name), test.metrics[name]);
-			};
-		});
+			promise.
+				then(res => this.callback(null, res)).
+				catch(err => this.callback(null, err))
+
+			if (test.assertFunction) {
+				extras[test.assertFunction](promise, batch[batchName]);
+			}
+		},
+		'should be generated': (err, res) => {
+			assert.ok(!(res instanceof Error), 'No error should be thrown: got ' + res);
+			assert.ok(res.getMetric instanceof Function, 'Results wrapper should be passed');
+		},
+	};
+
+	// check for errors
+	if (test.error) {
+		delete batch[batchName]['should be generated'];
+
+		batch[batchName]['should reject a promise'] = (_, err) => {
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+			assert.ok(err instanceof Error);
+			assert.ok(err.message.indexOf(test.error) === 0, test.error + ' should be raised');
+		};
 	}
+
+	// check metrics
+	Object.keys(test.metrics || {}).forEach(function(name) {
+		batch[batchName]['should have "' + name + '" metric properly set'] = function(err, results) {
+			assert.ok(!(err instanceof Error), 'Error should not be thrown: ' + err);
+			assert.strictEqual(results.getMetric(name), test.metrics[name]);
+		};
+	});
+
+	// check offenders
+	Object.keys(test.offenders || {}).forEach(function(name) {
+		batch[batchName]['should have "' + name + '" offender(s) properly set'] = function(err, results) {
+			assert.ok(!(err instanceof Error), 'Error should not be thrown: ' + err);
+			assert.deepStrictEqual(results.getOffenders(name), test.offenders[name]);
+		};
+	});
+
 
 	suite.addBatch(batch);
 });

@@ -3,9 +3,7 @@
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// e.g. --post-load-delay 5
 	var delay = parseInt(phantomas.getParam('post-load-delay'), 10);
 
@@ -13,11 +11,12 @@ exports.module = function(phantomas) {
 		return;
 	}
 
-	phantomas.log('Post load delay: will wait %d second(s) after onload', delay);
+	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#framewaitforselectororfunctionortimeout-options-args
+	phantomas.log('Will wait %d second(s) after load', delay);
 
-	phantomas.reportQueuePush(function(done) {
-		phantomas.on('loadFinished', function() {
-			setInterval(done, delay * 1000);
-		});
+	phantomas.on('beforeClose', page => {
+		phantomas.log('Sleeping for %d seconds', delay);
+
+		return page.waitFor(delay * 1000);
 	});
 };

@@ -6,6 +6,8 @@
 				return;
 			}
 
+			phantomas.setMetric('testFooBar', 1);
+
 			setTimeout(function() {
 				phantomas.setMetric('testFooBar', 123);
 				phantomas.addOffender('testFooBar', 'I\'m done!');

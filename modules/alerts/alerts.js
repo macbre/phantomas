@@ -4,28 +4,23 @@
  */
 'use strict';
 
-exports.version = '0.1';
+module.exports = phantomas => {
+	phantomas.setMetric('windowAlerts'); // @desc number of calls to window.alert
+	phantomas.setMetric('windowConfirms'); // @desc number of calls to window.confirm
+	phantomas.setMetric('windowPrompts'); // @desc number of calls to window.prompt
 
-exports.module = function(phantomas) {
-	var alerts = [],
-		confirms = [],
-		prompts = [];
-
-	phantomas.on('alert', function(msg) {
-		alerts.push(msg);
+	phantomas.on('alert', msg => {
+		phantomas.incrMetric('windowAlerts');
+		phantomas.addOffender('windowAlerts', msg);
 	});
 
-	phantomas.on('confirm', function(msg) {
-		confirms.push(msg);
+	phantomas.on('confirm', msg => {
+		phantomas.incrMetric('windowConfirms');
+		phantomas.addOffender('windowConfirms', msg);
 	});
 
-	phantomas.on('prompt', function(msg) {
-		prompts.push(msg);
-	});
-
-	phantomas.on('report', function() {
-		phantomas.setMetric('windowAlerts', alerts.length); // @desc number of calls to window.alert
-		phantomas.setMetric('windowConfirms', confirms.length); // @desc number of calls to window.confirm
-		phantomas.setMetric('windowPrompts', prompts.length); // @desc number of calls to window.prompt
+	phantomas.on('prompt', msg => {
+		phantomas.incrMetric('windowPrompts');
+		phantomas.addOffender('windowPrompts', msg);
 	});
 };

@@ -44,13 +44,16 @@
 /* global document: true, window: true */
 'use strict';
 
-exports.version = '0.6';
-
-exports.module = function(phantomas) {
-	if (!phantomas.getParam('analyze-css')) {
+module.exports = function(phantomas) {
+	if (phantomas.getParam('analyze-css') !== true) {
 		phantomas.log('To enable CSS in-depth metrics please run phantomas with --analyze-css option');
 		return;
 	}
+
+	// load analyze-css module
+	// https://www.npmjs.com/package/analyze-css
+	const analyzer = require('analyze-css');
+	phantomas.log('Using version %s', analyzer.version);
 
 	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
 	phantomas.setMetric('cssInlineStyles'); // @desc number of inline styles @optional
@@ -67,13 +70,8 @@ exports.module = function(phantomas) {
 		return f + str.substr(1);
 	}
 
-	// run analyze-css "binary" installed by npm
-	function analyzeCss(options) {
-		var system = require('system'),
-			isWindows = (system.os.name === 'windows'),
-			binary = system.env.ANALYZE_CSS_BIN,
-			proxy;
-
+	function analyzeCss(css, context, callback) {
+		/**
 		// force JSON output format
 		options.push('--json');
 
@@ -84,7 +82,7 @@ exports.module = function(phantomas) {
 		}
 
 		// HTTP proxy (#500)
-		proxy = phantomas.getParam('proxy', false, 'string');
+		var proxy = phantomas.getParam('proxy', false, 'string');
 
 		if (proxy !== false) {
 			if (proxy.indexOf('http:') < 0) {
@@ -93,9 +91,13 @@ exports.module = function(phantomas) {
 
 			options.push('--proxy', proxy);
 		}
+		**/
 
-		phantomas.runScript(binary, options, function(err, results) {
-			var offenderSrc = (options[0] === '--url') ? '<' + options[1] + '>' : '[inline CSS]';
+		// https://www.npmjs.com/package/analyze-css#commonjs-module
+		var options = {};
+
+		new analyzer(css, options, function(err, results) {
+			var offenderSrc = context || '[inline CSS]';
 
 			if (err !== null) {
 				phantomas.log('analyzeCss: sub-process failed! - %s', err);
@@ -116,10 +118,12 @@ exports.module = function(phantomas) {
 
 				phantomas.incrMetric('cssParsingErrors');
 				phantomas.addOffender('cssParsingErrors', offender);
+
+				callback();
 				return;
 			}
 
-			phantomas.log('analyzeCss: using ' + results.generator);
+			phantomas.log('Got results for %s from %s', offenderSrc, results.generator);
 
 			var metrics = results.metrics || {},
 				offenders = results.offenders || {};
@@ -138,19 +142,7 @@ exports.module = function(phantomas) {
 				// and add offenders
 				if (typeof offenders[metric] !== 'undefined') {
 					offenders[metric].forEach(function(msg) {
-						var re = / @ \d+:\d+$/;
-
-						// add the file name to offenders (issue #442)
-						// the message ends with something similar to " @ 25:1"
-						if (re.test(msg)) {
-							msg = msg.replace(re, ' ' + offenderSrc + '$&');
-						}
-						// add file url in offenders for cssDuplicatedSelectors (issue #693)
-						else if (metricPrefixed === 'cssDuplicatedSelectors') {
-							msg += ' ' + offenderSrc;
-						}
-
-						phantomas.addOffender(metricPrefixed, msg);
+						phantomas.addOffender(metricPrefixed, {url: offenderSrc, value: msg});
 					});
 				}
 				// add more offenders (#578)
@@ -165,68 +157,48 @@ exports.module = function(phantomas) {
 						case 'cssSpecificityIdAvg':
 						case 'cssSpecificityClassAvg':
 						case 'cssSpecificityTagAvg':
-							phantomas.addOffender(metricPrefixed, offenderSrc + ': ' + metrics[metric]);
+							phantomas.addOffender(metricPrefixed, {url: offenderSrc, value: metrics[metric]});
 							break;
 					}
 				}
 			});
+
+			callback();
 		});
 	}
 
-	phantomas.on('recv', function(entry, res) {
+	// prepare a list of CSS stylesheets (both external and inline)
+	var stylesheets = [];
+
+	phantomas.on('recv', async (entry, res) => {
 		if (entry.isCSS) {
-			phantomas.log('CSS: analyzing <%s>...', entry.url);
-			analyzeCss(['--url', entry.url]);
+			// defer getting the response content and pass it to the analyze-css module
+			stylesheets.push({content: res.getContent, url: entry.url});
 		}
 	});
 
-	phantomas.on('loadFinished', function() {
-		var fs = require('fs');
+	phantomas.on('inlinecss', css => stylesheets.push({inline: css}));
 
-		// get the content of inline CSS (issue #397)
-		var inlineCss = phantomas.evaluate(function() {
-			return (function(phantomas) {
-				phantomas.spyEnabled(false, 'looking for inline styles');
+	// ok, now let's analyze the collect CSS
+	phantomas.on('beforeClose', () => {
+		var promises = [];
 
-				var styles = document.getElementsByTagName('style'),
-					content = [],
-					type;
+		stylesheets.forEach(entry => {
+			promises.push(
+				new Promise(async resolve => {
+					var css = entry.inline;
+					phantomas.log('Analyzing %s', entry.url || 'inline CSS');
 
-				for (var i = 0, len = styles.length; i < len; i++) {
-					type = styles[i].getAttribute('type') || 'text/css'; // ignore inline <style> tags with type different than text/css (issue #694)
-
-					if (type === 'text/css') {
-						content.push(styles[i].textContent);
-					} else {
-						phantomas.log('analyzeCss: inline <style> tag found with type="%s", ignoring...', type);
+					if (entry.content) {
+						css = await entry.content();
 					}
-				}
 
-				phantomas.spyEnabled(true);
-				return content;
-			})(window.__phantomas);
+					analyzeCss(css, entry.url, resolve);
+				})
+			);
 		});
 
-		// no inline styles found, leave
-		if (inlineCss.length === 0) {
-			return;
-		}
-
-		phantomas.log('analyzeCss: found %d inline styles', inlineCss.length);
-		phantomas.setMetric('cssInlineStyles', inlineCss.length);
-
-		// create the temporary directory
-		fs.makeTree(phantomas.tmpdir());
-
-		inlineCss.forEach(function(cssContent, idx) {
-			var path = phantomas.tmpdir() + 'inline-' + idx + '.css';
-
-			phantomas.log('analyzeCss: saving inline CSS #%d to %s (%d bytes)...', (idx + 1), path, cssContent.length);
-
-			// save CSS to the file
-			fs.write(path, cssContent, 'w');
-
-			analyzeCss(['--file', path]);
-		});
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+		return Promise.all(promises);
 	});
 };
