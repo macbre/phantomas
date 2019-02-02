@@ -1,7 +1,7 @@
 (function(phantomas) {
     function emit(eventName) {
         phantomas.log('Navigation Timing milestone: %s', eventName);
-        phantomas.emit('milestone', eventName);
+        phantomas.emit('milestone', eventName); // @desc Page loading milestone has been reached: domInteractive, domReady and domComplete
     }
 
     document.addEventListener("DOMContentLoaded", function() {
