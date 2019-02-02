@@ -634,7 +634,17 @@
       - { domain: 'fonts.gstatic.com', requests: 1 }
     assetsNotGzipped:
       # CSS response is compressed using "brotli"
-      - 'http://127.0.0.1:8888/https-fonts.html (HTML)'
+      - { url: 'http://127.0.0.1:8888/https-fonts.html', contentType: 'text/html' }
+
+# staticAssets
+- url: "/assets.html"
+  offenders:
+    assetsWithQueryString:
+      - { url: 'http://127.0.0.1:8888/static/mdn.png?cb=123', contentType: 'image/png' }
+    smallImages:
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+    smallCssFiles:
+      - { url: 'http://127.0.0.1:8888/static/style.css', size: 308 }
 
 #
 # integration-test-extra section

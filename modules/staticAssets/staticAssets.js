@@ -13,17 +13,16 @@ module.exports = function(phantomas) {
 		// TODO: use 3pc database with tracking services
 		trackingUrls = /google-analytics.com\/__utm.gif|pixel.quantserve.com\/pixel/;
 
-	phantomas.setMetric('assetsNotGzipped'); // @desc number of static assets that were not gzipped @unreliable
+	phantomas.setMetric('assetsNotGzipped'); // @desc number of static assets that were not gzipped
 	phantomas.setMetric('assetsWithQueryString'); // @desc number of static assets requested with query string (e.g. ?foo) in URL
 	phantomas.setMetric('assetsWithCookies'); // @desc number of static assets requested from domains with cookie set
-	phantomas.setMetric('smallImages'); // @desc number of images smaller than 2 KiB that can be base64 encoded @unreliable
-	phantomas.setMetric('smallCssFiles'); // @desc number of CSS assets smaller than 2 KiB that can be inlined or merged @unreliable
-	phantomas.setMetric('smallJsFiles'); // @desc number of JS assets smaller than 2 KiB that can be inlined or merged @unreliable
+	phantomas.setMetric('smallImages'); // @desc number of images smaller than 2 KiB that can be base64 encoded
+	phantomas.setMetric('smallCssFiles'); // @desc number of CSS assets smaller than 2 KiB that can be inlined or merged
+	phantomas.setMetric('smallJsFiles'); // @desc number of JS assets smaller than 2 KiB that can be inlined or merged
 	phantomas.setMetric('multipleRequests'); // @desc number of static assets that are requested more than once
 
 	phantomas.on('recv', entry => {
-		var isContent = (entry.status === 200),
-			sizeFormatted;
+		var isContent = (entry.status === 200);
 
 		// mark domains with cookie set
 		if (entry.hasCookies) {
@@ -39,7 +38,7 @@ module.exports = function(phantomas) {
 		if (entry.isImage || entry.isJS || entry.isCSS) {
 			if (entry.url.indexOf('?') > -1) {
 				phantomas.incrMetric('assetsWithQueryString');
-				phantomas.addOffender('assetsWithQueryString', entry.url + ' (' + entry.type.toUpperCase() + ')');
+				phantomas.addOffender('assetsWithQueryString', {url: entry.url, contentType: entry.contentType});
 			}
 		}
 
@@ -47,26 +46,25 @@ module.exports = function(phantomas) {
 		if (entry.isJS || entry.isCSS || entry.isHTML || entry.isJSON || entry.isSVG || entry.isTTF || entry.isXML || entry.isFavicon) {
 			if (!entry.gzip && isContent) {
 				phantomas.incrMetric('assetsNotGzipped');
-				phantomas.addOffender('assetsNotGzipped', entry.url + ' (' + entry.type.toUpperCase() + ')');
+				phantomas.addOffender('assetsNotGzipped', {url: entry.url, contentType: entry.contentType});
 			}
 		}
 
 		// small assets can be inlined
-		if (entry.contentLength < SIZE_THRESHOLD) {
-			sizeFormatted = (entry.contentLength / 1024).toFixed(2);
-
+		// responseSize - that's the response size as reported by Chrome's dev tools (headers + compressed body)
+		if (entry.responseSize < SIZE_THRESHOLD) {
 			// check small images that can be base64 encoded
 			if (entry.isImage) {
 				phantomas.incrMetric('smallImages');
-				phantomas.addOffender('smallImages', '%s (%s kB)', entry.url, sizeFormatted);
+				phantomas.addOffender('smallImages', {url: entry.url, size: entry.responseSize});
 			}
 			// CSS / JS that can be inlined
 			else if (entry.isCSS) {
 				phantomas.incrMetric('smallCssFiles');
-				phantomas.addOffender('smallCssFiles', '%s (%s kB)', entry.url, sizeFormatted);
+				phantomas.addOffender('smallCssFiles', {url: entry.url, size: entry.responseSize});
 			} else if (entry.isJS) {
 				phantomas.incrMetric('smallJsFiles');
-				phantomas.addOffender('smallJsFiles', '%s (%s kB)', entry.url, sizeFormatted);
+				phantomas.addOffender('smallJsFiles', {url: entry.url, size: entry.responseSize});
 			}
 		}
 
@@ -77,7 +75,7 @@ module.exports = function(phantomas) {
 			// count static assets requested from domains with cookie set
 			if (cookieDomains.has(entry.domain)) {
 				phantomas.incrMetric('assetsWithCookies');
-				phantomas.addOffender('assetsWithCookies', '%s (%s)', entry.url, entry.type.toUpperCase());
+				phantomas.addOffender('assetsWithCookies', {url: entry.url, contentType: entry.contentType});
 			}
 		}
 	});
@@ -86,7 +84,7 @@ module.exports = function(phantomas) {
 		assetsReqCounter.forEach((asset, cnt) => {
 			if (cnt > 1) {
 				phantomas.incrMetric('multipleRequests');
-				phantomas.addOffender('multipleRequests', asset);
+				phantomas.addOffender('multipleRequests', {url: asset, count: cnt});
 			}
 		});
 	});
