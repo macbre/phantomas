@@ -205,5 +205,14 @@ vows.describe('requestMonitor').addBatch({
 			headers: {'Content-Encoding': 'gzip'}
 		}),
 		'gzip is set': assertField('gzip', true)
+	},
+	'Brotli responses are detected': {
+		topic: sendReq(undefined, {
+			// A format using the Brotli algorithm.
+			// https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed
+			headers: {'content-encoding': 'br'}
+		}),
+		'gzip is set': assertField('gzip', true),
+		'brotli is set': assertField('brotli', true)
 	}
 }).export(module);

@@ -246,12 +246,18 @@ module.exports = function(phantomas) {
 					break;
 
 				// content compression
+				// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding#Directives
 				case 'content-encoding':
-					if (headerValue === 'gzip') {
+					if (headerValue === 'gzip' || headerValue === 'br') {
 						entry.gzip = true;
 
 						phantomas.log('Response compressed with %s, %f kB -> %f kB (x%f)',
 							headerValue, entry.bodySize / 1024, entry.transferedSize / 1024, entry.bodySize / entry.transferedSize);
+					}
+
+					// A format using the Brotli algorithm.
+					if (headerValue === 'br') {
+						entry.brotli = true;
 					}
 					break;
 

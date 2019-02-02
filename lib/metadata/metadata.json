@@ -1091,7 +1091,7 @@
       "offenders": true,
       "unit": "number",
       "module": "staticAssets",
-      "testsCovered": false
+      "testsCovered": true
     },
     "assetsWithQueryString": {
       "desc": "number of static assets requested with query string (e.g. ?foo) in URL",

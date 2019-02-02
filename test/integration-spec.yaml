@@ -632,6 +632,9 @@
       - { domain: '127.0.0.1', requests: 1 }
       - { domain: 'fonts.googleapis.com', requests: 1 }
       - { domain: 'fonts.gstatic.com', requests: 1 }
+    assetsNotGzipped:
+      # CSS response is compressed using "brotli"
+      - 'http://127.0.0.1:8888/https-fonts.html (HTML)'
 
 #
 # integration-test-extra section
