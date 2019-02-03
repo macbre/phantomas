@@ -1,7 +1,5 @@
 /**
- * Adds CSS related metrics using analyze-css NPM module
- *
- * @see https://github.com/macbre/analyze-css
+ * Adds CSS complexity metrics using analyze-css npm module.
  *
  * Run phantomas with --analyze-css option to use this module
  *

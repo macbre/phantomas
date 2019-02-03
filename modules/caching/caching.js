@@ -1,13 +1,12 @@
 /**
  * Analyzes HTTP caching headers
- *
- * @see https://developers.google.com/speed/docs/best-practices/caching
  */
 'use strict';
 
 module.exports = function(phantomas) {
 	var cacheControlRegExp = /max-age=(\d+)/;
 
+	// @see https://developers.google.com/speed/docs/best-practices/caching
 	function getCachingTime(url, headers) {
 		// false means "no caching"
 		var ttl = false,
