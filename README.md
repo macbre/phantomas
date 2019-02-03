@@ -15,6 +15,27 @@ npm install phantomas
 
 > This will install [a recent version of Chromium](https://github.com/GoogleChrome/puppeteer#installation) supported by `puppeteer` module.
 
+## Usage example
+
+```js
+const phantomas = require('phantomas'),
+    promise = phantomas('http://example.com/');
+
+promise.
+	then(results => {
+		console.log('Metrics', results.getMetrics());
+		console.log('Offenders', results.getAllOffenders());
+    }).
+    catch(res => {
+		console.error(res);
+    });
+
+// events handling
+promise.on('recv', response => {
+	console.log('Response: %s %s [%s]', response.method, response.url, response.contentType);
+});
+```
+
 ### Development version
 
 To get the latest development version of phantomas (and install all required dependencies):
