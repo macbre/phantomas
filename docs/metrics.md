@@ -3,6 +3,9 @@ Modules and metrics
 
 This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (34 of them) and 172 metrics that they emit.
 
+When applicable, [offender](https://github.com/macbre/phantomas/issues/140) example is provided.
+
+
 
 ## [ajaxRequests](https://github.com/macbre/phantomas/tree/devel/modules/ajaxRequests/ajaxRequests.js)
 
@@ -11,6 +14,13 @@ This file describes all [`phantomas` modules](https://github.com/macbre/phantoma
 ##### `ajaxRequests`
 
 number of AJAX requests (number, with offenders)
+
+```json
+{
+  "url": "/static/style.css",
+  "method": "POST"
+}
+```
 
 
 ## [alerts](https://github.com/macbre/phantomas/tree/devel/modules/alerts/alerts.js)
@@ -22,13 +32,25 @@ window.prompt.
 
 number of calls to window.alert (number, with offenders)
 
+```json
+"Oh dear!"
+```
+
 ##### `windowConfirms`
 
 number of calls to window.confirm (number, with offenders)
 
+```json
+"Oh dear?"
+```
+
 ##### `windowPrompts`
 
 number of calls to window.prompt (number, with offenders)
+
+```json
+"What's your name, dear?"
+```
 
 
 ## [analyzeCss](https://github.com/macbre/phantomas/tree/devel/modules/analyzeCss/analyzeCss.js)
@@ -116,6 +138,25 @@ number of properties with no longer needed vendor prefix, powered by data provid
 
 number of CSS files (or embeded CSS) that failed to be parse by analyze-css (number, with offenders)
 
+```json
+{
+  "url": "[inline CSS]",
+  "value": {
+    "message": "missing '{'",
+    "position": {
+      "end": {
+        "column": 2,
+        "line": 3
+      },
+      "start": {
+        "column": 2,
+        "line": 3
+      }
+    }
+  }
+}
+```
+
 ##### `cssQualifiedSelectors`
 
 number of qualified selectors (e.g. header#nav, .foo#bar, h1.title) (number, with offenders)
@@ -201,6 +242,13 @@ size of base64 encoded responses (bytes)
 
 number of CSS responses (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/style.css",
+  "size": 308
+}
+```
+
 ##### `cssSize`
 
 size of CSS responses (with compression) (bytes)
@@ -208,6 +256,13 @@ size of CSS responses (with compression) (bytes)
 ##### `htmlCount`
 
 number of HTML responses (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/dom-operations.html",
+  "size": 2385
+}
+```
 
 ##### `htmlSize`
 
@@ -217,6 +272,13 @@ size of HTML responses (with compression) (bytes)
 
 number of image responses (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/blank.gif",
+  "size": 330
+}
+```
+
 ##### `imageSize`
 
 size of image responses (with compression) (bytes)
@@ -225,6 +287,13 @@ size of image responses (with compression) (bytes)
 
 number of JS responses (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/jquery-2.1.1.min.js",
+  "size": 29730
+}
+```
+
 ##### `jsSize`
 
 size of JS responses (with compression) (bytes)
@@ -232,6 +301,13 @@ size of JS responses (with compression) (bytes)
 ##### `jsonCount`
 
 number of JSON responses (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/foo.json",
+  "size": 333
+}
+```
 
 ##### `jsonSize`
 
@@ -271,6 +347,10 @@ Does not emit any metrics
 
 number of requests blocked due to domain filtering (number, with offenders)
 
+```json
+"http://code.jquery.com/jquery-1.11.1.js"
+```
+
 
 ## [cacheHits](https://github.com/macbre/phantomas/tree/devel/modules/cacheHits/cacheHits.js)
 
@@ -305,6 +385,13 @@ number of responses with no caching header sent (no Cache-Control header) (numbe
 
 number of responses with too short (less than a week) caching time (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/mdn.png",
+  "ttl": 84600
+}
+```
+
 ##### `cachingUseImmutable`
 
 number of responses with a long TTL that can benefit from Cache-Control: immutable (number, with offenders)
@@ -321,6 +408,10 @@ number of responses with old, HTTP 1.0 caching headers (Expires and Pragma) (num
 ##### `consoleMessages`
 
 number of calls to console.* functions (number, with offenders)
+
+```json
+"log:[\"Hi!\"]"
+```
 
 
 ## [cookies](https://github.com/macbre/phantomas/tree/devel/modules/cookies/cookies.js)
@@ -385,9 +476,26 @@ the size of HTML comments on the page (bytes, with offenders)
 
 number of iframe nodes (number, with offenders)
 
+```json
+{
+  "element": "body > iframe[1]",
+  "url": "http://127.0.0.1:8888/image-scaling.html"
+}
+```
+
 ##### `imagesScaledDown`
 
 number of <img> nodes that have images scaled down in HTML (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/mdn.png",
+  "naturalWidth": 600,
+  "naturalHeight": 529,
+  "imgWidth": 300,
+  "imgHeight": 265
+}
+```
 
 ##### `imagesWithoutDimensions`
 
@@ -396,6 +504,13 @@ number of <img> nodes without both width and height attribute (number, with offe
 ##### `nodesWithInlineCSS`
 
 number of nodes with inline CSS styling (with style attribute) (number, with offenders)
+
+```json
+{
+  "css": "color: blue",
+  "node": "p#foo"
+}
+```
 
 ##### `whiteSpacesSize`
 
@@ -414,6 +529,10 @@ the size of content of hidden elements on the page (with CSS display: none) (byt
 
 number of hidden images that can be lazy-loaded (number, with offenders)
 
+```json
+"http://127.0.0.1:8888/static/mdn.png"
+```
+
 
 ## [domMutations](https://github.com/macbre/phantomas/tree/devel/modules/domMutations/domMutations.js)
 
@@ -423,13 +542,34 @@ number of hidden images that can be lazy-loaded (number, with offenders)
 
 number of DOM nodes attributes changes (number, with offenders)
 
+```json
+{
+  "attribute": "style",
+  "node": "body"
+}
+```
+
 ##### `DOMmutationsInserts`
 
 number of <body> node inserts (number, with offenders)
 
+```json
+{
+  "node": "strong[0]",
+  "target": "p#foo"
+}
+```
+
 ##### `DOMmutationsRemoves`
 
 number of <body> node removes (number, with offenders)
+
+```json
+{
+  "node": "span#delete",
+  "target": "body"
+}
+```
 
 
 ## [domQueries](https://github.com/macbre/phantomas/tree/devel/modules/domQueries/domQueries.js)
@@ -439,6 +579,13 @@ number of <body> node removes (number, with offenders)
 ##### `DOMinserts`
 
 number of DOM nodes inserts (number, with offenders)
+
+```json
+{
+  "append": "html > div[2]",
+  "node": "html"
+}
+```
 
 ##### `DOMqueries`
 
@@ -452,9 +599,23 @@ number of repeated uses of a duplicated query (number)
 
 number of document.getElementsByClassName calls (number, with offenders)
 
+```json
+{
+  "class": "barr",
+  "node": "body"
+}
+```
+
 ##### `DOMqueriesById`
 
 number of document.getElementById calls (number, with offenders)
+
+```json
+{
+  "id": "foo",
+  "node": "#document"
+}
+```
 
 ##### `DOMqueriesByQuerySelectorAll`
 
@@ -464,9 +625,23 @@ number of document.querySelector(All) calls (number, with offenders)
 
 number of document.getElementsByTagName calls (number, with offenders)
 
+```json
+{
+  "tag": "*",
+  "node": "div"
+}
+```
+
 ##### `DOMqueriesDuplicated`
 
 number of DOM queries called more than once (number, with offenders)
+
+```json
+{
+  "query": "id \"#foo\" (in #document)",
+  "count": 2
+}
+```
 
 ##### `DOMqueriesWithoutResults`
 
@@ -480,6 +655,13 @@ number of DOM queries that returned nothing (number, with offenders)
 ##### `domains`
 
 number of domains used to fetch the page (number, with offenders)
+
+```json
+{
+  "domain": "127.0.0.1",
+  "requests": 2
+}
+```
 
 ##### `maxRequestsPerDomain`
 
@@ -498,13 +680,33 @@ median of number of requests fetched from each domain (number)
 
 number of EventTarget.addEventListener calls (number, with offenders)
 
+```json
+{
+  "eventType": "load",
+  "path": "window"
+}
+```
+
 ##### `eventsDispatched`
 
 number of EventTarget.dispatchEvent calls (number, with offenders)
 
+```json
+{
+  "eventType": "click",
+  "path": "body > div#foo > span.bar"
+}
+```
+
 ##### `eventsScrollBound`
 
 number of scroll event bounds (number, with offenders)
+
+```json
+{
+  "element": "#document"
+}
+```
 
 
 ## [globalVariables](https://github.com/macbre/phantomas/tree/devel/modules/globalVariables/globalVariables.js)
@@ -515,9 +717,20 @@ number of scroll event bounds (number, with offenders)
 
 number of JS globals variables (number, with offenders)
 
+```json
+"jQuery"
+```
+
 ##### `globalVariablesFalsy`
 
 number of JS globals variables with falsy value (number, with offenders)
+
+```json
+{
+  "name": "falsy",
+  "value": false
+}
+```
 
 
 ## [headers](https://github.com/macbre/phantomas/tree/devel/modules/headers/headers.js)
@@ -527,6 +740,14 @@ number of JS globals variables with falsy value (number, with offenders)
 ##### `headersBiggerThanContent`
 
 number of responses with headers part bigger than the response body (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/blank.gif",
+  "contentSize": 43,
+  "headersSize": 287
+}
+```
 
 ##### `headersCount`
 
@@ -561,17 +782,48 @@ size of all headers (bytes)
 
 number of DOM read operations (number, with offenders)
 
+```json
+{
+  "functionName": "css",
+  "arguments": "[\"color\"]",
+  "contextPath": "body > div#foo > span.bar"
+}
+```
+
 ##### `jQueryDOMWriteReadSwitches`
 
 number of read operations that follow a series of write operations (will cause repaint and can cause reflow) (number, with offenders)
+
+```json
+{
+  "functionName": "css",
+  "arguments": "[\"color\"]",
+  "contextPath": "body > div#foo > span.bar"
+}
+```
 
 ##### `jQueryDOMWrites`
 
 number of DOM write operations (number, with offenders)
 
+```json
+{
+  "functionName": "css",
+  "arguments": "[{\"color\":\"red\",\"background\":\"green\"}]",
+  "contextPath": "body > div#foo > span.bar"
+}
+```
+
 ##### `jQueryEventTriggers`
 
 number of jQuery event triggers (number, with offenders)
+
+```json
+{
+  "type": "click",
+  "element": "body > div#foo > span.bar"
+}
+```
 
 ##### `jQueryOnDOMReadyFunctions`
 
@@ -581,6 +833,13 @@ number of functions bound to onDOMReady event (number, with offenders)
 
 number of calls to Sizzle (including those that will be resolved using querySelectorAll) (number, with offenders)
 
+```json
+{
+  "selector": "#foo .bar",
+  "element": "#document"
+}
+```
+
 ##### `jQueryVersion`
 
 version of jQuery framework (if loaded) (string)
@@ -589,9 +848,20 @@ version of jQuery framework (if loaded) (string)
 
 number of loaded jQuery "instances" (even in the same version) (number, with offenders)
 
+```json
+{
+  "version": "2.1.1",
+  "url": "http://127.0.0.1:8888/static/jquery-2.1.1.min.js"
+}
+```
+
 ##### `jQueryWindowOnLoadFunctions`
 
 number of functions bound to windowOnLoad event (number, with offenders)
+
+```json
+"http://127.0.0.1:8888/jquery.html:49:13"
+```
 
 
 ## [javaScriptBottlenecks](https://github.com/macbre/phantomas/tree/devel/modules/javaScriptBottlenecks/javaScriptBottlenecks.js)
@@ -604,9 +874,23 @@ Run phantomas with --spy-eval to count eval() calls (see issue #467)
 
 number of calls to either document.write or document.writeln (number, with offenders)
 
+```json
+{
+  "message": "document.write() used",
+  "caller": "http://127.0.0.1:8888/bottlenecks.html:11:11"
+}
+```
+
 ##### `evalCalls`
 
 number of calls to eval (either direct or via setTimeout / setInterval) (number, with offenders)
+
+```json
+{
+  "message": "eval() called directly",
+  "caller": "http://127.0.0.1:8888/bottlenecks.html:8:2"
+}
+```
 
 
 ## [jserrors](https://github.com/macbre/phantomas/tree/devel/modules/jserrors/jserrors.js)
@@ -635,6 +919,14 @@ number of requests not keeping the connection alive and slowing down the next re
 
 number of images displayed below the fold that can be lazy-loaded (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/blank.gif",
+  "node": "body > img#dot",
+  "offset": 900
+}
+```
+
 
 ## [localStorage](https://github.com/macbre/phantomas/tree/devel/modules/localStorage/localStorage.js)
 
@@ -643,6 +935,10 @@ number of images displayed below the fold that can be lazy-loaded (number, with 
 ##### `localStorageEntries`
 
 number of entries in local storage (number, with offenders)
+
+```json
+"foo"
+```
 
 
 ## [mainRequest](https://github.com/macbre/phantomas/tree/devel/modules/mainRequest/mainRequest.js)
@@ -692,6 +988,14 @@ size of the compressed content of all responses, i.e. what was transfered in pac
 
 number of gzipped HTTP responses (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/jquery-2.1.1.min.js",
+  "bodySize": 84245,
+  "transferedSize": 29415
+}
+```
+
 ##### `httpTrafficCompleted`
 
 time it took to receive the last byte of the last HTTP response (ms)
@@ -700,17 +1004,37 @@ time it took to receive the last byte of the last HTTP response (ms)
 
 number of HTTPS requests (number, with offenders)
 
+```json
+"https://httpbin.org/basic-auth/foo/bar"
+```
+
 ##### `notFound`
 
 number of HTTP 404 responses (number, with offenders)
+
+```json
+"http://127.0.0.1:8888/not_found/foo.js"
+```
 
 ##### `postRequests`
 
 number of POST requests (number, with offenders)
 
+```json
+"http://127.0.0.1:8888/static/style.css"
+```
+
 ##### `requests`
 
 total number of HTTP requests made (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/headers.html",
+  "type": "html",
+  "size": 1313
+}
+```
 
 
 ## [requestsStats](https://github.com/macbre/phantomas/tree/devel/modules/requestsStats/requestsStats.js)
@@ -724,6 +1048,13 @@ the time to the first byte of the slowest response (ms, with offenders)
 ##### `biggestResponse`
 
 the size of the biggest response (bytes, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/headers.html",
+  "size": 1313
+}
+```
 
 ##### `fastestResponse`
 
@@ -749,6 +1080,13 @@ the time to the first byte of the fastest response (ms, with offenders)
 
 the size of the smallest response (bytes, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/blank.gif",
+  "size": 330
+}
+```
+
 
 ## [requestsTo](https://github.com/macbre/phantomas/tree/devel/modules/requestsTo/requestsTo.js)
 
@@ -758,9 +1096,23 @@ the size of the smallest response (bytes, with offenders)
 
 number of domains used to make the page reach DomComplete state (number, with offenders)
 
+```json
+{
+  "domain": "127.0.0.1",
+  "requests": 2
+}
+```
+
 ##### `domainsToDomContentLoaded`
 
 number of domains used to make the page reach DomContentLoaded state (number, with offenders)
+
+```json
+{
+  "domain": "127.0.0.1",
+  "requests": 2
+}
+```
 
 ##### `domainsToFirstPaint`
 
@@ -787,6 +1139,13 @@ number of HTTP requests it took to make the first paint (number)
 
 number of static assets that were not gzipped (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/https-fonts.html",
+  "contentType": "text/html"
+}
+```
+
 ##### `assetsWithCookies`
 
 number of static assets requested from domains with cookie set (number, with offenders)
@@ -794,6 +1153,13 @@ number of static assets requested from domains with cookie set (number, with off
 ##### `assetsWithQueryString`
 
 number of static assets requested with query string (e.g. ?foo) in URL (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/mdn.png?cb=123",
+  "contentType": "image/png"
+}
+```
 
 ##### `multipleRequests`
 
@@ -803,9 +1169,23 @@ number of static assets that are requested more than once (number, with offender
 
 number of CSS assets smaller than 2 KiB that can be inlined or merged (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/style.css",
+  "size": 308
+}
+```
+
 ##### `smallImages`
 
 number of images smaller than 2 KiB that can be base64 encoded (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/blank.gif",
+  "size": 330
+}
+```
 
 ##### `smallJsFiles`
 
