@@ -1,6 +1,7 @@
 /**
  * Renders a serie of screenshots of page being loaded
- *
+ */
+/**
  * Please note that rendering each screenshot takes
  * several hundreds ms. Consider increasing default timeout.
  *
@@ -9,7 +10,7 @@
  * --film-strip-dir folder path to output film strip (default is ./filmstrip directory)
  * --film-strip-prefix film strip files name prefix (defaults to 'screenshot')
  *
- * Youcan pass a comma separated list of milliseconds when to trigger a screenshot.
+ * You can pass a comma separated list of milliseconds when to trigger a screenshot.
  * The time will be calculated relative to "responseEnd" event (issue #174)
  */
 'use strict';

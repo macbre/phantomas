@@ -1,8 +1,5 @@
 /**
  * Provides --phone, --phone-landscape, --tablet and --table-landscape options to force given device viewport and user agent.
- *
- * @see https://github.com/macbre/phantomas/issues/213
- * @see https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageemulateoptions
  */
 'use strict';
 
@@ -38,6 +35,7 @@ module.exports = function(phantomas) {
 	phantomas.log('Devices: %s provided - using "%s" profile: %j', device, profileName, devices[profileName]);
 
 	phantomas.on('init', async page => {
+		// @see https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageemulateoptions
 		await page.emulate(devices[profileName]);
 		phantomas.log('page.emulate() called');
 	});

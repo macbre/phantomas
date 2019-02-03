@@ -2,8 +2,6 @@
  * Log requests for build HAR output
  *
  * Depends on windowPerformance module!
- *
- * @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
  */
 'use strict';
 
@@ -17,6 +15,7 @@ var fs = require('fs');
  */
 
 function createHAR(page, creator) {
+	// @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
 	var address = page.address;
 	var title = page.title;
 	var startTime = page.startTime;

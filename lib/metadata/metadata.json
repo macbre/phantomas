@@ -71,15 +71,78 @@
       "arguments": "page"
     }
   },
+  "extensions": {
+    "cookies": {
+      "file": "/extensions/cookies/cookies.js",
+      "desc": "Support for cookies",
+      "options": []
+    },
+    "devices": {
+      "file": "/extensions/devices/devices.js",
+      "desc": "Provides --phone, --phone-landscape, --tablet and --table-landscape options to force given device viewport and user agent.",
+      "options": []
+    },
+    "filmStrip": {
+      "file": "/extensions/filmStrip/filmStrip.js",
+      "desc": "Renders a serie of screenshots of page being loaded",
+      "options": []
+    },
+    "har": {
+      "file": "/extensions/har/har.js",
+      "desc": "Log requests for build HAR output\nDepends on windowPerformance module!",
+      "options": []
+    },
+    "httpAuth": {
+      "file": "/extensions/httpAuth/httpAuth.js",
+      "desc": "Support for HTTP authentication",
+      "options": []
+    },
+    "pageSource": {
+      "file": "/extensions/pageSource/pageSource.js",
+      "desc": "Saves the source of page being loaded to a file\nPlease note that saving each file takes a few ms.\nConsider increasing default timeout.\nRun phantomas with --page-source option to use this module.",
+      "options": []
+    },
+    "postLoadDelay": {
+      "file": "/extensions/postLoadDelay/postLoadDelay.js",
+      "desc": "Delays report generation for a given time",
+      "options": []
+    },
+    "screenshot": {
+      "file": "/extensions/screenshot/screenshot.js",
+      "desc": "Renders a screenshot of the full page when it's fully loaded",
+      "options": []
+    },
+    "scroll": {
+      "file": "/extensions/scroll/scroll.js",
+      "desc": "Allow page to be scrolled after it is loaded\nPass --scroll as an option in CLI mode",
+      "options": []
+    },
+    "waitForEvent": {
+      "file": "/extensions/waitForEvent/waitForEvent.js",
+      "desc": "Delays report generation until given phantomas event is emitted (issue #453)",
+      "options": []
+    },
+    "waitForSelector": {
+      "file": "/extensions/waitForSelector/waitForSelector.js",
+      "desc": "Delays report generation until given CSS selector can be resolved (i.e. given element exists)",
+      "options": []
+    }
+  },
   "modules": {
     "navigationTiming": {
       "file": "/core/modules/navigationTiming/navigationTiming.js",
       "desc": "Emits \"milestone\" event on Navigation Timing related events:\n- domContentLoaded\n- domInteractive\n- domComplete\nCode taken from windowPerformance module",
+      "events": [],
       "metrics": []
     },
     "requestsMonitor": {
       "file": "/core/modules/requestsMonitor/requestsMonitor.js",
       "desc": "Simple HTTP requests monitor and analyzer",
+      "events": [
+        "send",
+        "base64recv",
+        "recv"
+      ],
       "metrics": [
         "requests",
         "gzipRequests",
@@ -94,6 +157,9 @@
     "timeToFirstByte": {
       "file": "/core/modules/timeToFirstByte/timeToFirstByte.js",
       "desc": "Takes a look at \"time to first (last) byte\" metrics",
+      "events": [
+        "responseEnd"
+      ],
       "metrics": [
         "timeToFirstByte",
         "timeToLastByte"
@@ -102,6 +168,7 @@
     "ajaxRequests": {
       "file": "/modules/ajaxRequests/ajaxRequests.js",
       "desc": "Analyzes AJAX requests",
+      "events": [],
       "metrics": [
         "ajaxRequests"
       ]
@@ -109,6 +176,7 @@
     "alerts": {
       "file": "/modules/alerts/alerts.js",
       "desc": "Meters number of invocations of window.alert, window.confirm, and\nwindow.prompt.",
+      "events": [],
       "metrics": [
         "windowAlerts",
         "windowConfirms",
@@ -118,6 +186,7 @@
     "analyzeCss": {
       "file": "/modules/analyzeCss/analyzeCss.js",
       "desc": "Adds CSS complexity metrics using analyze-css npm module.\nRun phantomas with --analyze-css option to use this module",
+      "events": [],
       "metrics": [
         "cssBase64Length",
         "cssRedundantBodySelectors",
@@ -161,6 +230,7 @@
     "assetsTypes": {
       "file": "/modules/assetsTypes/assetsTypes.js",
       "desc": "Analyzes number of requests and sizes of different types of assets",
+      "events": [],
       "metrics": [
         "htmlCount",
         "htmlSize",
@@ -185,6 +255,7 @@
     "blockDomains": {
       "file": "/modules/blockDomains/blockDomains.js",
       "desc": "Aborts requests to external resources or given domains\nDoes not emit any metrics",
+      "events": [],
       "metrics": [
         "blockedRequests"
       ]
@@ -192,6 +263,7 @@
     "cacheHits": {
       "file": "/modules/cacheHits/cacheHits.js",
       "desc": "Analyzes Age and X-Cache headers from caching servers like Squid or Varnish",
+      "events": [],
       "metrics": [
         "cacheHits",
         "cacheMisses",
@@ -201,6 +273,7 @@
     "caching": {
       "file": "/modules/caching/caching.js",
       "desc": "Analyzes HTTP caching headers",
+      "events": [],
       "metrics": [
         "oldCachingHeaders",
         "cachingNotSpecified",
@@ -212,6 +285,7 @@
     "console": {
       "file": "/modules/console/console.js",
       "desc": "Meters number of console logs",
+      "events": [],
       "metrics": [
         "consoleMessages"
       ]
@@ -219,6 +293,7 @@
     "cookies": {
       "file": "/modules/cookies/cookies.js",
       "desc": "cookies metrics",
+      "events": [],
       "metrics": [
         "cookiesSent",
         "cookiesRecv",
@@ -230,6 +305,7 @@
     "documentHeight": {
       "file": "/modules/documentHeight/documentHeight.js",
       "desc": "Measure document height",
+      "events": [],
       "metrics": [
         "documentHeight"
       ]
@@ -237,6 +313,7 @@
     "domains": {
       "file": "/modules/domains/domains.js",
       "desc": "Domains monitor",
+      "events": [],
       "metrics": [
         "domains",
         "maxRequestsPerDomain",
@@ -246,6 +323,7 @@
     "domComplexity": {
       "file": "/modules/domComplexity/domComplexity.js",
       "desc": "Analyzes DOM complexity",
+      "events": [],
       "metrics": [
         "bodyHTMLSize",
         "commentsSize",
@@ -262,6 +340,7 @@
     "domHiddenContent": {
       "file": "/modules/domHiddenContent/domHiddenContent.js",
       "desc": "Analyzes DOM hidden content",
+      "events": [],
       "metrics": [
         "hiddenContentSize",
         "hiddenImages"
@@ -270,6 +349,7 @@
     "domMutations": {
       "file": "/modules/domMutations/domMutations.js",
       "desc": "Analyzes DOM changes via MutationObserver API",
+      "events": [],
       "metrics": [
         "DOMmutationsInserts",
         "DOMmutationsRemoves",
@@ -279,6 +359,7 @@
     "domQueries": {
       "file": "/modules/domQueries/domQueries.js",
       "desc": "Analyzes DOM queries done via native DOM methods",
+      "events": [],
       "metrics": [
         "DOMqueries",
         "DOMqueriesWithoutResults",
@@ -294,6 +375,7 @@
     "events": {
       "file": "/modules/events/events.js",
       "desc": "Analyzes events bound to DOM elements",
+      "events": [],
       "metrics": [
         "eventsBound",
         "eventsDispatched",
@@ -303,6 +385,7 @@
     "globalVariables": {
       "file": "/modules/globalVariables/globalVariables.js",
       "desc": "Counts global JavaScript variables",
+      "events": [],
       "metrics": [
         "globalVariables",
         "globalVariablesFalsy"
@@ -311,6 +394,7 @@
     "headers": {
       "file": "/modules/headers/headers.js",
       "desc": "Analyzes HTTP headers in both requests and responses",
+      "events": [],
       "metrics": [
         "headersCount",
         "headersSentCount",
@@ -324,6 +408,7 @@
     "javaScriptBottlenecks": {
       "file": "/modules/javaScriptBottlenecks/javaScriptBottlenecks.js",
       "desc": "Reports the use of functions known to be serious performance bottlenecks in JS\n\nRun phantomas with --spy-eval to count eval() calls (see issue #467)",
+      "events": [],
       "metrics": [
         "documentWriteCalls",
         "evalCalls"
@@ -332,6 +417,7 @@
     "jQuery": {
       "file": "/modules/jQuery/jQuery.js",
       "desc": "Analyzes jQuery activity",
+      "events": [],
       "metrics": [
         "jQueryVersion",
         "jQueryVersionsLoaded",
@@ -347,6 +433,7 @@
     "jserrors": {
       "file": "/modules/jserrors/jserrors.js",
       "desc": "Meters the number of page errors, and provides traces as offenders for \"jsErrors\" metric",
+      "events": [],
       "metrics": [
         "jsErrors"
       ]
@@ -354,6 +441,7 @@
     "keepAlive": {
       "file": "/modules/keepAlive/keepAlive.js",
       "desc": "Analyzes if HTTP responses keep the connections alive.",
+      "events": [],
       "metrics": [
         "closedConnections"
       ]
@@ -361,6 +449,7 @@
     "lazyLoadableImages": {
       "file": "/modules/lazyLoadableImages/lazyLoadableImages.js",
       "desc": "Analyzes images and detects which one can be lazy-loaded (are below the fold)",
+      "events": [],
       "metrics": [
         "lazyLoadableImagesBelowTheFold"
       ]
@@ -368,6 +457,7 @@
     "localStorage": {
       "file": "/modules/localStorage/localStorage.js",
       "desc": "localStorage metrics",
+      "events": [],
       "metrics": [
         "localStorageEntries"
       ]
@@ -375,6 +465,7 @@
     "mainRequest": {
       "file": "/modules/mainRequest/mainRequest.js",
       "desc": "Analyzes bits of data pertaining to the main request only",
+      "events": [],
       "metrics": [
         "statusCodesTrail"
       ]
@@ -382,6 +473,7 @@
     "redirects": {
       "file": "/modules/redirects/redirects.js",
       "desc": "Analyzes HTTP redirects",
+      "events": [],
       "metrics": [
         "redirects",
         "redirectsTime"
@@ -390,6 +482,7 @@
     "requestsStats": {
       "file": "/modules/requestsStats/requestsStats.js",
       "desc": "Analyzes HTTP requests and generates stats metrics",
+      "events": [],
       "metrics": [
         "smallestResponse",
         "biggestResponse",
@@ -404,6 +497,7 @@
     "requestsTo": {
       "file": "/modules/requestsTo/requestsTo.js",
       "desc": "Number of requests it took to make the page enter DomContentLoaded and DomComplete states accordingly",
+      "events": [],
       "metrics": [
         "requestsToFirstPaint",
         "domainsToFirstPaint",
@@ -416,6 +510,7 @@
     "staticAssets": {
       "file": "/modules/staticAssets/staticAssets.js",
       "desc": "Analyzes static assets (CSS, JS and images)",
+      "events": [],
       "metrics": [
         "assetsNotGzipped",
         "assetsWithQueryString",
@@ -429,6 +524,7 @@
     "timeToFirst": {
       "file": "/modules/timeToFirst/timeToFirst.js",
       "desc": "Provides metrics for time to first image, CSS and JS file",
+      "events": [],
       "metrics": [
         "timeToFirstCss",
         "timeToFirstJs",
@@ -438,6 +534,7 @@
     "windowPerformance": {
       "file": "/modules/windowPerformance/windowPerformance.js",
       "desc": "Measure when the page reaches certain states",
+      "events": [],
       "metrics": [
         "domInteractive",
         "domContentLoaded",
@@ -1644,5 +1741,6 @@
   },
   "metricsCount": 172,
   "modulesCount": 34,
+  "extensionsCount": 11,
   "version": "2.0.0-beta"
 }
