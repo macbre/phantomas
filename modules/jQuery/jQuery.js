@@ -1,8 +1,5 @@
 /**
  * Analyzes jQuery activity
- *
- * @see http://code.jquery.com/jquery-1.10.2.js
- * @see http://code.jquery.com/jquery-2.1.1.js
  */
 /* global document: true, window: true */
 'use strict';

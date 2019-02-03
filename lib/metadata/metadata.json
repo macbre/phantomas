@@ -117,7 +117,7 @@
     },
     "analyzeCss": {
       "file": "/modules/analyzeCss/analyzeCss.js",
-      "desc": "Adds CSS complexity metrics using analyze-css npm module.\n\nRun phantomas with --analyze-css option to use this module",
+      "desc": "Adds CSS complexity metrics using analyze-css npm module.\nRun phantomas with --analyze-css option to use this module",
       "metrics": [
         "cssBase64Length",
         "cssRedundantBodySelectors",
@@ -200,7 +200,7 @@
     },
     "caching": {
       "file": "/modules/caching/caching.js",
-      "desc": "",
+      "desc": "Analyzes HTTP caching headers",
       "metrics": [
         "oldCachingHeaders",
         "cachingNotSpecified",
@@ -269,7 +269,7 @@
     },
     "domMutations": {
       "file": "/modules/domMutations/domMutations.js",
-      "desc": "",
+      "desc": "Analyzes DOM changes via MutationObserver API",
       "metrics": [
         "DOMmutationsInserts",
         "DOMmutationsRemoves",
@@ -323,7 +323,7 @@
     },
     "javaScriptBottlenecks": {
       "file": "/modules/javaScriptBottlenecks/javaScriptBottlenecks.js",
-      "desc": "",
+      "desc": "Reports the use of functions known to be serious performance bottlenecks in JS\n\nRun phantomas with --spy-eval to count eval() calls (see issue #467)",
       "metrics": [
         "documentWriteCalls",
         "evalCalls"
@@ -331,7 +331,7 @@
     },
     "jQuery": {
       "file": "/modules/jQuery/jQuery.js",
-      "desc": "",
+      "desc": "Analyzes jQuery activity",
       "metrics": [
         "jQueryVersion",
         "jQueryVersionsLoaded",
@@ -360,7 +360,7 @@
     },
     "lazyLoadableImages": {
       "file": "/modules/lazyLoadableImages/lazyLoadableImages.js",
-      "desc": "",
+      "desc": "Analyzes images and detects which one can be lazy-loaded (are below the fold)",
       "metrics": [
         "lazyLoadableImagesBelowTheFold"
       ]
@@ -437,7 +437,7 @@
     },
     "windowPerformance": {
       "file": "/modules/windowPerformance/windowPerformance.js",
-      "desc": "",
+      "desc": "Measure when the page reaches certain states",
       "metrics": [
         "domInteractive",
         "domContentLoaded",
