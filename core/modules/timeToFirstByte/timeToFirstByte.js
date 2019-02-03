@@ -1,5 +1,5 @@
 /**
- * TTFB / TTLB metrics
+ * Takes a look at "time to first (last) byte" metrics
  */
 'use strict';
 

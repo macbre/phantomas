@@ -77,13 +77,6 @@
       "desc": "Emits \"milestone\" event on Navigation Timing related events:\n- domContentLoaded\n- domInteractive\n- domComplete\nCode taken from windowPerformance module",
       "metrics": []
     },
-    "scope": {
-      "file": "/modules/localStorage/scope.js",
-      "desc": "",
-      "metrics": [
-        "localStorageEntries"
-      ]
-    },
     "requestsMonitor": {
       "file": "/core/modules/requestsMonitor/requestsMonitor.js",
       "desc": "Simple HTTP requests monitor and analyzer",
@@ -100,7 +93,7 @@
     },
     "timeToFirstByte": {
       "file": "/core/modules/timeToFirstByte/timeToFirstByte.js",
-      "desc": "",
+      "desc": "Takes a look at \"time to first (last) byte\" metrics",
       "metrics": [
         "timeToFirstByte",
         "timeToLastByte"
@@ -124,7 +117,7 @@
     },
     "analyzeCss": {
       "file": "/modules/analyzeCss/analyzeCss.js",
-      "desc": "",
+      "desc": "Adds CSS complexity metrics using analyze-css npm module.\n\nRun phantomas with --analyze-css option to use this module",
       "metrics": [
         "cssBase64Length",
         "cssRedundantBodySelectors",
