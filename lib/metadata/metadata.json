@@ -71,6 +71,390 @@
       "arguments": "page"
     }
   },
+  "modules": {
+    "navigationTiming": {
+      "file": "/core/modules/navigationTiming/navigationTiming.js",
+      "desc": "Emits \"milestone\" event on Navigation Timing related events:\n- domContentLoaded\n- domInteractive\n- domComplete\nCode taken from windowPerformance module",
+      "metrics": []
+    },
+    "scope": {
+      "file": "/modules/localStorage/scope.js",
+      "desc": "",
+      "metrics": [
+        "localStorageEntries"
+      ]
+    },
+    "requestsMonitor": {
+      "file": "/core/modules/requestsMonitor/requestsMonitor.js",
+      "desc": "Simple HTTP requests monitor and analyzer",
+      "metrics": [
+        "requests",
+        "gzipRequests",
+        "postRequests",
+        "httpsRequests",
+        "notFound",
+        "bodySize",
+        "contentLength",
+        "httpTrafficCompleted"
+      ]
+    },
+    "timeToFirstByte": {
+      "file": "/core/modules/timeToFirstByte/timeToFirstByte.js",
+      "desc": "",
+      "metrics": [
+        "timeToFirstByte",
+        "timeToLastByte"
+      ]
+    },
+    "ajaxRequests": {
+      "file": "/modules/ajaxRequests/ajaxRequests.js",
+      "desc": "Analyzes AJAX requests",
+      "metrics": [
+        "ajaxRequests"
+      ]
+    },
+    "alerts": {
+      "file": "/modules/alerts/alerts.js",
+      "desc": "Meters number of invocations of window.alert, window.confirm, and\nwindow.prompt.",
+      "metrics": [
+        "windowAlerts",
+        "windowConfirms",
+        "windowPrompts"
+      ]
+    },
+    "analyzeCss": {
+      "file": "/modules/analyzeCss/analyzeCss.js",
+      "desc": "",
+      "metrics": [
+        "cssBase64Length",
+        "cssRedundantBodySelectors",
+        "redundantChildNodesSelectors",
+        "cssColors",
+        "cssComments",
+        "cssCommentsLength",
+        "cssComplexSelectorsByAttribute",
+        "cssDuplicatedSelectors",
+        "cssDuplicatedProperties",
+        "cssEmptyRules",
+        "cssExpressions",
+        "cssOldIEFixes",
+        "cssImports",
+        "cssImportants",
+        "cssMediaQueries",
+        "cssMultiClassesSelectors",
+        "cssOldPropertyPrefixes",
+        "cssQualifiedSelectors",
+        "cssSpecificityIdAvg",
+        "cssSpecificityIdTotal",
+        "cssSpecificityClassAvg",
+        "cssSpecificityClassTotal",
+        "cssSpecificityTagAvg",
+        "cssSpecificityTagTotal",
+        "cssSelectorsByAttribute",
+        "cssSelectorsByClass",
+        "cssSelectorsById",
+        "cssSelectorsByPseudo",
+        "cssSelectorsByTag",
+        "cssLength",
+        "cssRules",
+        "cssSelectors",
+        "cssDeclarations",
+        "cssNotMinified",
+        "cssSelectorLengthAvg",
+        "cssParsingErrors",
+        "cssInlineStyles"
+      ]
+    },
+    "assetsTypes": {
+      "file": "/modules/assetsTypes/assetsTypes.js",
+      "desc": "Analyzes number of requests and sizes of different types of assets",
+      "metrics": [
+        "htmlCount",
+        "htmlSize",
+        "cssCount",
+        "cssSize",
+        "jsCount",
+        "jsSize",
+        "jsonCount",
+        "jsonSize",
+        "imageCount",
+        "imageSize",
+        "webfontCount",
+        "webfontSize",
+        "videoCount",
+        "videoSize",
+        "base64Count",
+        "base64Size",
+        "otherCount",
+        "otherSize"
+      ]
+    },
+    "blockDomains": {
+      "file": "/modules/blockDomains/blockDomains.js",
+      "desc": "Aborts requests to external resources or given domains\nDoes not emit any metrics",
+      "metrics": [
+        "blockedRequests"
+      ]
+    },
+    "cacheHits": {
+      "file": "/modules/cacheHits/cacheHits.js",
+      "desc": "Analyzes Age and X-Cache headers from caching servers like Squid or Varnish",
+      "metrics": [
+        "cacheHits",
+        "cacheMisses",
+        "cachePasses"
+      ]
+    },
+    "caching": {
+      "file": "/modules/caching/caching.js",
+      "desc": "",
+      "metrics": [
+        "oldCachingHeaders",
+        "cachingNotSpecified",
+        "cachingTooShort",
+        "cachingDisabled",
+        "cachingUseImmutable"
+      ]
+    },
+    "console": {
+      "file": "/modules/console/console.js",
+      "desc": "Meters number of console logs",
+      "metrics": [
+        "consoleMessages"
+      ]
+    },
+    "cookies": {
+      "file": "/modules/cookies/cookies.js",
+      "desc": "cookies metrics",
+      "metrics": [
+        "cookiesSent",
+        "cookiesRecv",
+        "domainsWithCookies",
+        "documentCookiesLength",
+        "documentCookiesCount"
+      ]
+    },
+    "documentHeight": {
+      "file": "/modules/documentHeight/documentHeight.js",
+      "desc": "Measure document height",
+      "metrics": [
+        "documentHeight"
+      ]
+    },
+    "domains": {
+      "file": "/modules/domains/domains.js",
+      "desc": "Domains monitor",
+      "metrics": [
+        "domains",
+        "maxRequestsPerDomain",
+        "medianRequestsPerDomain"
+      ]
+    },
+    "domComplexity": {
+      "file": "/modules/domComplexity/domComplexity.js",
+      "desc": "Analyzes DOM complexity",
+      "metrics": [
+        "bodyHTMLSize",
+        "commentsSize",
+        "whiteSpacesSize",
+        "DOMelementsCount",
+        "DOMelementMaxDepth",
+        "nodesWithInlineCSS",
+        "iframesCount",
+        "imagesScaledDown",
+        "imagesWithoutDimensions",
+        "DOMidDuplicated"
+      ]
+    },
+    "domHiddenContent": {
+      "file": "/modules/domHiddenContent/domHiddenContent.js",
+      "desc": "Analyzes DOM hidden content",
+      "metrics": [
+        "hiddenContentSize",
+        "hiddenImages"
+      ]
+    },
+    "domMutations": {
+      "file": "/modules/domMutations/domMutations.js",
+      "desc": "",
+      "metrics": [
+        "DOMmutationsInserts",
+        "DOMmutationsRemoves",
+        "DOMmutationsAttributes"
+      ]
+    },
+    "domQueries": {
+      "file": "/modules/domQueries/domQueries.js",
+      "desc": "Analyzes DOM queries done via native DOM methods",
+      "metrics": [
+        "DOMqueries",
+        "DOMqueriesWithoutResults",
+        "DOMqueriesById",
+        "DOMqueriesByClassName",
+        "DOMqueriesByTagName",
+        "DOMqueriesByQuerySelectorAll",
+        "DOMinserts",
+        "DOMqueriesDuplicated",
+        "DOMqueriesAvoidable"
+      ]
+    },
+    "events": {
+      "file": "/modules/events/events.js",
+      "desc": "Analyzes events bound to DOM elements",
+      "metrics": [
+        "eventsBound",
+        "eventsDispatched",
+        "eventsScrollBound"
+      ]
+    },
+    "globalVariables": {
+      "file": "/modules/globalVariables/globalVariables.js",
+      "desc": "Counts global JavaScript variables",
+      "metrics": [
+        "globalVariables",
+        "globalVariablesFalsy"
+      ]
+    },
+    "headers": {
+      "file": "/modules/headers/headers.js",
+      "desc": "Analyzes HTTP headers in both requests and responses",
+      "metrics": [
+        "headersCount",
+        "headersSentCount",
+        "headersRecvCount",
+        "headersSize",
+        "headersSentSize",
+        "headersRecvSize",
+        "headersBiggerThanContent"
+      ]
+    },
+    "javaScriptBottlenecks": {
+      "file": "/modules/javaScriptBottlenecks/javaScriptBottlenecks.js",
+      "desc": "",
+      "metrics": [
+        "documentWriteCalls",
+        "evalCalls"
+      ]
+    },
+    "jQuery": {
+      "file": "/modules/jQuery/jQuery.js",
+      "desc": "",
+      "metrics": [
+        "jQueryVersion",
+        "jQueryVersionsLoaded",
+        "jQueryOnDOMReadyFunctions",
+        "jQueryWindowOnLoadFunctions",
+        "jQuerySizzleCalls",
+        "jQueryEventTriggers",
+        "jQueryDOMReads",
+        "jQueryDOMWrites",
+        "jQueryDOMWriteReadSwitches"
+      ]
+    },
+    "jserrors": {
+      "file": "/modules/jserrors/jserrors.js",
+      "desc": "Meters the number of page errors, and provides traces as offenders for \"jsErrors\" metric",
+      "metrics": [
+        "jsErrors"
+      ]
+    },
+    "keepAlive": {
+      "file": "/modules/keepAlive/keepAlive.js",
+      "desc": "Analyzes if HTTP responses keep the connections alive.",
+      "metrics": [
+        "closedConnections"
+      ]
+    },
+    "lazyLoadableImages": {
+      "file": "/modules/lazyLoadableImages/lazyLoadableImages.js",
+      "desc": "",
+      "metrics": [
+        "lazyLoadableImagesBelowTheFold"
+      ]
+    },
+    "localStorage": {
+      "file": "/modules/localStorage/localStorage.js",
+      "desc": "localStorage metrics",
+      "metrics": [
+        "localStorageEntries"
+      ]
+    },
+    "mainRequest": {
+      "file": "/modules/mainRequest/mainRequest.js",
+      "desc": "Analyzes bits of data pertaining to the main request only",
+      "metrics": [
+        "statusCodesTrail"
+      ]
+    },
+    "redirects": {
+      "file": "/modules/redirects/redirects.js",
+      "desc": "Analyzes HTTP redirects",
+      "metrics": [
+        "redirects",
+        "redirectsTime"
+      ]
+    },
+    "requestsStats": {
+      "file": "/modules/requestsStats/requestsStats.js",
+      "desc": "Analyzes HTTP requests and generates stats metrics",
+      "metrics": [
+        "smallestResponse",
+        "biggestResponse",
+        "fastestResponse",
+        "slowestResponse",
+        "smallestLatency",
+        "biggestLatency",
+        "medianResponse",
+        "medianLatency"
+      ]
+    },
+    "requestsTo": {
+      "file": "/modules/requestsTo/requestsTo.js",
+      "desc": "Number of requests it took to make the page enter DomContentLoaded and DomComplete states accordingly",
+      "metrics": [
+        "requestsToFirstPaint",
+        "domainsToFirstPaint",
+        "requestsToDomContentLoaded",
+        "domainsToDomContentLoaded",
+        "requestsToDomComplete",
+        "domainsToDomComplete"
+      ]
+    },
+    "staticAssets": {
+      "file": "/modules/staticAssets/staticAssets.js",
+      "desc": "Analyzes static assets (CSS, JS and images)",
+      "metrics": [
+        "assetsNotGzipped",
+        "assetsWithQueryString",
+        "assetsWithCookies",
+        "smallImages",
+        "smallCssFiles",
+        "smallJsFiles",
+        "multipleRequests"
+      ]
+    },
+    "timeToFirst": {
+      "file": "/modules/timeToFirst/timeToFirst.js",
+      "desc": "Provides metrics for time to first image, CSS and JS file",
+      "metrics": [
+        "timeToFirstCss",
+        "timeToFirstJs",
+        "timeToFirstImage"
+      ]
+    },
+    "windowPerformance": {
+      "file": "/modules/windowPerformance/windowPerformance.js",
+      "desc": "",
+      "metrics": [
+        "domInteractive",
+        "domContentLoaded",
+        "domContentLoadedEnd",
+        "domComplete",
+        "timeBackend",
+        "timeFrontend"
+      ]
+    }
+  },
   "metrics": {
     "requests": {
       "desc": "total number of HTTP requests made",
