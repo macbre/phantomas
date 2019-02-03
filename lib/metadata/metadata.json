@@ -1,4 +1,26 @@
 {
+  "events": {
+    "send": {
+      "module": "requestsMonitor",
+      "desc": "request has been sent",
+      "arguments": "request"
+    },
+    "base64recv": {
+      "module": "requestsMonitor",
+      "desc": "base64-encoded \"response\" has been received",
+      "arguments": "entry, resp"
+    },
+    "recv": {
+      "module": "requestsMonitor",
+      "desc": "response has been received",
+      "arguments": "entry, resp"
+    },
+    "responseEnd": {
+      "module": "timeToFirstByte",
+      "desc": "The first response (that was not a redirect) fully received",
+      "arguments": "entry, res"
+    }
+  },
   "metrics": {
     "requests": {
       "desc": "total number of HTTP requests made",
