@@ -1,24 +1,74 @@
 {
   "events": {
+    "milestone": {
+      "file": "/core/modules/navigationTiming/scope.js",
+      "desc": "Page loading milestone has been reached: domInteractive, domReady and domComplete",
+      "arguments": "eventName"
+    },
     "send": {
-      "module": "requestsMonitor",
+      "file": "/core/modules/requestsMonitor/requestsMonitor.js",
       "desc": "request has been sent",
       "arguments": "request"
     },
     "base64recv": {
-      "module": "requestsMonitor",
+      "file": "/core/modules/requestsMonitor/requestsMonitor.js",
       "desc": "base64-encoded \"response\" has been received",
       "arguments": "entry, resp"
     },
     "recv": {
-      "module": "requestsMonitor",
+      "file": "/core/modules/requestsMonitor/requestsMonitor.js",
       "desc": "response has been received",
       "arguments": "entry, resp"
     },
     "responseEnd": {
-      "module": "timeToFirstByte",
+      "file": "/core/modules/timeToFirstByte/timeToFirstByte.js",
       "desc": "The first response (that was not a redirect) fully received",
       "arguments": "entry, res"
+    },
+    "domQuery": {
+      "file": "/modules/domQueries/scope.js",
+      "desc": "DOM query has been made",
+      "arguments": "type, query, fnName, context, hasNoResults"
+    },
+    "consoleLog": {
+      "file": "/lib/browser.js",
+      "desc": "`console.log` has been called in page's scope",
+      "arguments": "msg"
+    },
+    "jserror": {
+      "file": "/lib/browser.js",
+      "desc": "Emitted when an uncaught exception happens within the page",
+      "arguments": "message, trace"
+    },
+    "request": {
+      "file": "/lib/browser.js",
+      "desc": "Emitted when page is about to send HTTP request",
+      "arguments": "request"
+    },
+    "response": {
+      "file": "/lib/browser.js",
+      "desc": "Emitted when page received a HTTP response",
+      "arguments": "response"
+    },
+    "loaded": {
+      "file": "/lib/browser.js",
+      "desc": "Emitted when the page has been fully loaded",
+      "arguments": "this.page"
+    },
+    "metrics": {
+      "file": "/lib/browser.js",
+      "desc": "Emitted when Chromuim's page.metrics() has been called",
+      "arguments": "metrics"
+    },
+    "init": {
+      "file": "/lib/index.js",
+      "desc": "Browser's scope and modules are set up, the page is about to be loaded",
+      "arguments": "page, browser"
+    },
+    "beforeClose": {
+      "file": "/lib/index.js",
+      "desc": "Called before the Chromium (and all of its pages) is closed",
+      "arguments": "page"
     }
   },
   "metrics": {
