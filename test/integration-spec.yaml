@@ -333,6 +333,9 @@
     domainsToDomContentLoaded: 2
     requestsToDomComplete: 3
     domainsToDomComplete: 2
+    # test are made using a HTTP server running locally, it should be pretty fast to connect to it
+    performanceTimingConnect: 0
+    performanceTimingDNS: 0
   offenders:
     domainsToDomContentLoaded:
       - { domain: '127.0.0.1', requests: 2 }
