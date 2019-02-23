@@ -1,7 +1,7 @@
 Modules and metrics
 ===================
 
-This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (34 of them) and 172 metrics that they emit.
+This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (34 of them) and 173 metrics that they emit.
 
 When applicable, [offender](https://github.com/macbre/phantomas/issues/140) example is provided.
 
@@ -19,6 +19,17 @@ number of AJAX requests (number, with offenders)
 {
   "url": "/static/style.css",
   "method": "POST"
+}
+```
+
+##### `synchronousXHR`
+
+number of synchronous XMLHttpRequest (number, with offenders)
+
+```json
+{
+  "url": "inline-css.html",
+  "method": "GET"
 }
 ```
 
