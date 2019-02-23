@@ -4,8 +4,7 @@
 'use strict';
 
 module.exports = function(phantomas) {
-	var measured = false,
-		reqId = 1; // request ID to consider when calculating TTFB / TTLB
+	var measured = false;
 
 	phantomas.setMetric('timeToFirstByte'); // @desc time it took to receive the first byte of the first response (that was not a redirect)
 	phantomas.setMetric('timeToLastByte'); // @desc time it took to receive the last byte of the first response (that was not a redirect)
@@ -17,24 +16,18 @@ module.exports = function(phantomas) {
 		}
 
 		if (entry.isRedirect) {
-			// wait for the next request
-			reqId = entry.id + 1;
-
-			phantomas.log('Time to first byte: response #%d <%s> is a redirect (waiting for response #%d)', entry.id, entry.url, reqId);
+			phantomas.log('Time to first byte: <%s> is a redirect', entry.url);
 			return;
 		}
 
-		// check the first response which is not a redirect (issue #74)
-		if (entry.id === reqId) {
-			phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte, true);
-			phantomas.setMetric('timeToLastByte', entry.timeToLastByte, true);
+		phantomas.setMetric('timeToFirstByte', entry.timeToFirstByte, true);
+		phantomas.setMetric('timeToLastByte', entry.timeToLastByte, true);
 
-			measured = true;
+		measured = true;
 
-			phantomas.log('Time to first byte: set to %d ms for #%d request to <%s> (HTTP %d)', entry.timeToFirstByte, entry.id, entry.url, entry.status);
-			phantomas.log('Time to last byte: set to %d ms', entry.timeToLastByte);
+		phantomas.log('Time to first byte: set to %d ms for request to <%s> (HTTP %d)', entry.timeToFirstByte, entry.url, entry.status);
+		phantomas.log('Time to last byte: set to %d ms', entry.timeToLastByte);
 
-			phantomas.emit('responseEnd', entry, res); // @desc The first response (that was not a redirect) fully received
-		}
+		phantomas.emit('responseEnd', entry, res); // @desc The first response (that was not a redirect) fully received
 	});
 };
