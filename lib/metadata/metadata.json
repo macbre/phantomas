@@ -170,7 +170,8 @@
       "desc": "Analyzes AJAX requests",
       "events": [],
       "metrics": [
-        "ajaxRequests"
+        "ajaxRequests",
+        "synchronousXHR"
       ]
     },
     "alerts": {
@@ -614,6 +615,13 @@
     },
     "ajaxRequests": {
       "desc": "number of AJAX requests",
+      "offenders": true,
+      "unit": "number",
+      "module": "ajaxRequests",
+      "testsCovered": true
+    },
+    "synchronousXHR": {
+      "desc": "number of synchronous XMLHttpRequest",
       "offenders": true,
       "unit": "number",
       "module": "ajaxRequests",
@@ -1739,7 +1747,7 @@
       "testsCovered": false
     }
   },
-  "metricsCount": 172,
+  "metricsCount": 173,
   "modulesCount": 34,
   "extensionsCount": 11,
   "version": "2.0.0-beta"

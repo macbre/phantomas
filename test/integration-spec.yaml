@@ -437,6 +437,18 @@
   options:
     "wait-for-network-idle": true
 
+# synchronous AJAX requests (#618)
+- url: "/ajax.html"
+  metrics:
+    ajaxRequests: 2
+    synchronousXHR: 1
+  offenders:
+    ajaxRequests:
+      - { url: 'jquery.html', method: 'GET' }
+      - { url: 'inline-css.html', method: 'GET' }
+    synchronousXHR:
+      - { url: 'inline-css.html', method: 'GET' }
+
 # multiple cookies (#597)
 - url: "/cookies.html"
   options:
