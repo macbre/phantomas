@@ -541,6 +541,10 @@
         "domContentLoaded",
         "domContentLoadedEnd",
         "domComplete",
+        "performanceTimingConnect",
+        "performanceTimingDNS",
+        "performanceTimingPageLoad",
+        "performanceTimingTTFB",
         "timeBackend",
         "timeFrontend"
       ]
@@ -1734,6 +1738,30 @@
       "module": "windowPerformance",
       "testsCovered": false
     },
+    "performanceTimingConnect": {
+      "desc": "time it took to connect to the server before making the first HTTP request",
+      "unit": "ms",
+      "module": "windowPerformance",
+      "testsCovered": true
+    },
+    "performanceTimingDNS": {
+      "desc": "time it took to resolve the domain before making the first HTTP request",
+      "unit": "ms",
+      "module": "windowPerformance",
+      "testsCovered": true
+    },
+    "performanceTimingPageLoad": {
+      "desc": "time it took to fully load the page",
+      "unit": "ms",
+      "module": "windowPerformance",
+      "testsCovered": false
+    },
+    "performanceTimingTTFB": {
+      "desc": "time it took to receive the first byte of the first HTTP response",
+      "unit": "ms",
+      "module": "windowPerformance",
+      "testsCovered": false
+    },
     "timeBackend": {
       "desc": "time to the first byte compared to the total loading time",
       "unit": "%",
@@ -1747,7 +1775,7 @@
       "testsCovered": false
     }
   },
-  "metricsCount": 173,
+  "metricsCount": 177,
   "modulesCount": 34,
   "extensionsCount": 11,
   "version": "2.0.0-beta"

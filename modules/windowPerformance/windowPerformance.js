@@ -15,6 +15,12 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('domContentLoadedEnd'); // @desc time it took to finish handling of onDOMReady event @unreliable
 	phantomas.setMetric('domComplete'); // @desc time it took to load all page resources, the loading spinner has stopped spinning
 
+	// get values from Resource Timing API (issue #477)
+	phantomas.setMetric('performanceTimingConnect'); // @desc time it took to connect to the server before making the first HTTP request
+	phantomas.setMetric('performanceTimingDNS'); // @desc time it took to resolve the domain before making the first HTTP request
+	phantomas.setMetric('performanceTimingPageLoad'); // @desc time it took to fully load the page
+	phantomas.setMetric('performanceTimingTTFB'); // @desc time it took to receive the first byte of the first HTTP response
+
 	// backend vs frontend time
 	phantomas.setMetric('timeBackend'); // @desc time to the first byte compared to the total loading time [%]
 	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
@@ -40,6 +46,12 @@ module.exports = function(phantomas) {
 		phantomas.setMetric('domContentLoaded', timing.domContentLoadedEventStart - base);
 		phantomas.setMetric('domContentLoadedEnd', timing.domContentLoadedEventEnd - base);
 		phantomas.setMetric('domComplete', timing.domComplete - base);
+
+		// see #477
+		phantomas.setMetric('performanceTimingConnect', timing.connectEnd - timing.connectStart);
+		phantomas.setMetric('performanceTimingDNS', timing.domainLookupEnd - timing.domainLookupStart);
+		phantomas.setMetric('performanceTimingPageLoad', timing.loadEventStart - timing.navigationStart);
+		phantomas.setMetric('performanceTimingTTFB', timing.responseStart - timing.navigationStart);
 
 		/**
 		 * Emit metrics with backend vs frontend time
