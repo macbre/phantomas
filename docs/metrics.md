@@ -1,7 +1,7 @@
 Modules and metrics
 ===================
 
-This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (34 of them) and 173 metrics that they emit.
+This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (34 of them) and 177 metrics that they emit.
 
 When applicable, [offender](https://github.com/macbre/phantomas/issues/140) example is provided.
 
@@ -1252,6 +1252,22 @@ time it took to finish handling of onDOMReady event (ms)
 ##### `domInteractive`
 
 time it took to parse the HTML and construct the DOM (ms)
+
+##### `performanceTimingConnect`
+
+time it took to connect to the server before making the first HTTP request (ms)
+
+##### `performanceTimingDNS`
+
+time it took to resolve the domain before making the first HTTP request (ms)
+
+##### `performanceTimingPageLoad`
+
+time it took to fully load the page (ms)
+
+##### `performanceTimingTTFB`
+
+time it took to receive the first byte of the first HTTP response (ms)
 
 ##### `timeBackend`
 
