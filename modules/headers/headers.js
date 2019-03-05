@@ -43,6 +43,8 @@ module.exports = function(phantomas) {
 	phantomas.on('recv', function(entry) {
 		var headers = processHeaders(entry.headers);
 
+		phantomas.log('%s: %d / %d', entry.url, entry.headersSize, entry.transferedSize);
+
 		// phantomas.log('Headers: <%s> %d bytes', entry.url, headers.size);
 
 		phantomas.incrMetric('headersCount', headers.count);

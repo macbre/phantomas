@@ -1,7 +1,6 @@
 /**
  * Analyzes DOM queries done via native DOM methods
  */
-/* global Element: true, Document: true, Node: true, window: true */
 'use strict';
 
 module.exports = phantomas => {

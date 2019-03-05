@@ -1,7 +1,6 @@
 /**
  * Analyzes DOM complexity
  */
-/* global document: true, Node: true, window: true */
 'use strict';
 
 module.exports = function(phantomas) {

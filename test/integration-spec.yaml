@@ -33,7 +33,7 @@
 
   offenders:
     gzipRequests:
-      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29415 }
+      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29730 }
     htmlCount:
       - { url: 'http://127.0.0.1:8888/dom-operations.html', size: 2385 }
     cssCount:
@@ -185,7 +185,7 @@
     eventsScrollBound: 2
   offenders:
     gzipRequests:
-      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29415, bodySize: 84245 }
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29730, bodySize: 84245 }
     eventsDispatched:
       - { eventType: 'click', path: 'body > div#foo > span.bar' }
     eventsBound:
@@ -334,7 +334,6 @@
     requestsToDomComplete: 3
     domainsToDomComplete: 2
     # test are made using a HTTP server running locally, it should be pretty fast to connect to it
-    performanceTimingConnect: 0
     performanceTimingDNS: 0
   offenders:
     domainsToDomContentLoaded:
@@ -490,11 +489,11 @@
     headersCount: 20
     headersSentCount: 4
     headersRecvCount: 16
-    headersRecvSize: 578
-    headersBiggerThanContent: 1
-  offenders:
-    headersBiggerThanContent:
-     - { url: 'http://127.0.0.1:8888/static/blank.gif', contentSize: 43, headersSize: 287 }
+    headersRecvSize: 540
+#    headersBiggerThanContent: 1
+#  offenders:
+#    headersBiggerThanContent:
+#     - { url: 'http://127.0.0.1:8888/static/blank.gif', contentSize: 43, headersSize: 287 }
 
 # caching
 - url: "/caching.html"
@@ -509,8 +508,8 @@
 - url: "/headers.html"
   metrics:
     requests: 2
-    bodySize: 1065
-    contentLength: 1065 # these are equal as no gzip compression took place
+    bodySize: 1065  # uncompressed content of all responses (without headers)
+    contentLength: 1643 # transfered bytes
     smallestResponse: 330  # headers + body size
     biggestResponse: 1313
   offenders:
@@ -607,7 +606,7 @@
   options:
     phone: true
   metrics:
-    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3452.0 Mobile Safari/537.36'
+    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3679.0 Mobile Safari/537.36'
     viewport: '360x640'
 
 - url: "/devices.html"
@@ -615,7 +614,7 @@
   options:
     "phone-landscape": true
   metrics:
-    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3452.0 Mobile Safari/537.36'
+    userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3679.0 Mobile Safari/537.36'
     viewport: '640x360'
 
 - url: "/devices.html"

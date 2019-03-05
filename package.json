@@ -26,10 +26,10 @@
   "dependencies": {
     "analyze-css": "^0.12.7",
     "debug": "^4.1.1",
-    "puppeteer": "^1.11.0"
+    "puppeteer": "^1.13.0"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
+    "eslint": "^5.14.1",
     "glob": "^7.1.2",
     "http-serve": "^1.0.1",
     "js-beautify": "^1.6.14",

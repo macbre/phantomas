@@ -1,7 +1,6 @@
 /**
  * Analyzes DOM changes via MutationObserver API
  */
-/* global window: true, document: true, MutationObserver: true */
 'use strict';
 
 module.exports = phantomas => {

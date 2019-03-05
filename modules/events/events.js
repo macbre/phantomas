@@ -1,7 +1,6 @@
 /**
  * Analyzes events bound to DOM elements
  */
-/* global Document: true, Element: true, window: true */
 'use strict';
 
 module.exports = phantomas => {

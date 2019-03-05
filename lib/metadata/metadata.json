@@ -1423,7 +1423,7 @@
       "offenders": true,
       "unit": "number",
       "module": "headers",
-      "testsCovered": true
+      "testsCovered": false
     },
     "documentWriteCalls": {
       "desc": "number of calls to either document.write or document.writeln",
@@ -1742,7 +1742,7 @@
       "desc": "time it took to connect to the server before making the first HTTP request",
       "unit": "ms",
       "module": "windowPerformance",
-      "testsCovered": true
+      "testsCovered": false
     },
     "performanceTimingDNS": {
       "desc": "time it took to resolve the domain before making the first HTTP request",

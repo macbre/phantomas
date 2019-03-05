@@ -1,7 +1,6 @@
 /**
  * Measure document height
  */
-/* global document: true */
 'use strict';
 
 module.exports = function(phantomas) {
