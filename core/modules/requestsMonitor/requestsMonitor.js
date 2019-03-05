@@ -198,8 +198,9 @@ module.exports = function(phantomas) {
 
 		// that's the response size as reported by Chrome's dev tools (headers + compressed body)
 		// note: base64-encoded resources do not have "resp.headersText" set
-		entry.headersSize = (resp.headersText || '').length;
 		entry.responseSize = entry.transferedSize;
+
+		phantomas.log('headers: %j', resp);
 
 		entry = parseEntryUrl(entry);
 
@@ -234,10 +235,14 @@ module.exports = function(phantomas) {
 			phantomas.addOffender('postRequests', entry.url);
 		}
 
+		entry.headersSize = 0;
+
 		// response content type
 		// https://chromedevtools.github.io/devtools-protocol/tot/Network#type-ResourceType
 		Object.keys(entry.headers).forEach(headerName => {
 			const headerValue = entry.headers[headerName];
+
+			entry.headersSize += headerName.length + headerValue.length + 2 /* ": " */ + 2; /* line break - CR+LF */
 
 			switch(headerName) {
 				// detect content type
