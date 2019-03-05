@@ -1,7 +1,6 @@
 /**
  * Analyzes images and detects which one can be lazy-loaded (are below the fold)
  */
-/* global document: true, window: true */
 'use strict';
 
 module.exports = phantomas => {

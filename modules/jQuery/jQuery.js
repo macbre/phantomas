@@ -1,7 +1,6 @@
 /**
  * Analyzes jQuery activity
  */
-/* global document: true, window: true */
 'use strict';
 
 module.exports = function(phantomas) {

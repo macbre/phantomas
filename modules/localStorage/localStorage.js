@@ -1,7 +1,6 @@
 /**
  * localStorage metrics
  */
-/* global window: true */
 'use strict';
 
 module.exports = phantomas => {

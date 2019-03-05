@@ -39,7 +39,6 @@
  * setMetric('cssNotMinified') @desc [number] set to 1 if the provided CSS is not minified @optional @offenders
  * setMetric('cssSelectorLengthAvg') @desc [number] average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offenders
  */
-/* global document: true, window: true */
 'use strict';
 
 module.exports = function(phantomas) {

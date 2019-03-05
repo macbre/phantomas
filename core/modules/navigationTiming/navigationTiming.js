@@ -7,7 +7,6 @@
  *
  * Code taken from windowPerformance module
  */
-/* global document: true, window: true */
 'use strict';
 
 // no-op, see scope.js

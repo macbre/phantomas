@@ -1,7 +1,6 @@
 /**
  * Analyzes DOM hidden content
  */
-/* global document: true, Node: true, window: true */
 'use strict';
 
 module.exports = function(phantomas) {
