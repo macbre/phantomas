@@ -33,7 +33,7 @@
 
   offenders:
     gzipRequests:
-      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29415 }
+      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29730 }
     htmlCount:
       - { url: 'http://127.0.0.1:8888/dom-operations.html', size: 2385 }
     cssCount:
@@ -185,7 +185,7 @@
     eventsScrollBound: 2
   offenders:
     gzipRequests:
-      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29415, bodySize: 84245 }
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29730, bodySize: 84245 }
     eventsDispatched:
       - { eventType: 'click', path: 'body > div#foo > span.bar' }
     eventsBound:

@@ -199,7 +199,7 @@ module.exports = function(phantomas) {
 		// that's the response size as reported by Chrome's dev tools (headers + compressed body)
 		// note: base64-encoded resources do not have "resp.headersText" set
 		entry.headersSize = (resp.headersText || '').length;
-		entry.responseSize = entry.headersSize + entry.transferedSize;
+		entry.responseSize = entry.transferedSize;
 
 		entry = parseEntryUrl(entry);
 
