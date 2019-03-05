@@ -489,11 +489,11 @@
     headersCount: 20
     headersSentCount: 4
     headersRecvCount: 16
-    headersRecvSize: 578
-    headersBiggerThanContent: 1
-  offenders:
-    headersBiggerThanContent:
-     - { url: 'http://127.0.0.1:8888/static/blank.gif', contentSize: 43, headersSize: 287 }
+    headersRecvSize: 540
+#    headersBiggerThanContent: 1
+#  offenders:
+#    headersBiggerThanContent:
+#     - { url: 'http://127.0.0.1:8888/static/blank.gif', contentSize: 43, headersSize: 287 }
 
 # caching
 - url: "/caching.html"

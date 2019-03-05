@@ -1423,7 +1423,7 @@
       "offenders": true,
       "unit": "number",
       "module": "headers",
-      "testsCovered": true
+      "testsCovered": false
     },
     "documentWriteCalls": {
       "desc": "number of calls to either document.write or document.writeln",
