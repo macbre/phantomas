@@ -111,6 +111,7 @@ function addContentType(headerValue, entry) {
 		// @see http://stackoverflow.com/questions/2871655/proper-mime-type-for-fonts
 		case 'application/font-wof':
 		case 'application/font-woff':
+		case 'application/font-woff2':
 		case 'application/vnd.ms-fontobject':
 		case 'application/x-font-opentype':
 		case 'application/x-font-truetype':
@@ -119,6 +120,7 @@ function addContentType(headerValue, entry) {
 		case 'font/opentype':
 		case 'font/ttf':
 		case 'font/woff':
+		case 'font/woff2':
 			entry.type = 'webfont';
 			entry.isWebFont = true;
 
