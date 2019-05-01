@@ -12,9 +12,9 @@ before_install:
   # Enable user namespace cloning
   - "sysctl kernel.unprivileged_userns_clone=1"
   # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
-  - "export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true"
+  #- "export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true"
   # Point Phantomas to Chrome stable binary provided by Travis
-  - "export PHANTOMAS_CHROMIUM_EXECUTABLE=`which google-chrome-stable`"
+  #- "export PHANTOMAS_CHROMIUM_EXECUTABLE=`which google-chrome-stable`"
 
 before_script:
   - sh test/server-start.sh &
