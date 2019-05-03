@@ -17,10 +17,8 @@ WORKDIR /opt/phantomas
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# Puppeteer v1.15.0 works with Chromium 75 // keep in sync with version in package.json
-ENV PUPPETEER_VERSION 1.15.0
-
-RUN npm i --no-save puppeteer@$PUPPETEER_VERSION
+# Tell phantomas were Chromium binary is
+ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
 
 # Add user so we don't need --no-sandbox.
 RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
@@ -30,3 +28,12 @@ RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
 # Run everything after as non-privileged user.
 USER phantomas
 
+# Copy the content of the repository into a container
+COPY . /opt/phantomas
+
+# and install dependencies
+RUN npm i
+
+# test it (if needed)
+#RUN ./test/server-start.sh &
+#RUN sleep 2 && npm t
