@@ -14,6 +14,9 @@ RUN apk update && apk upgrade && \
 
 WORKDIR /opt/phantomas
 
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
 # Puppeteer v1.15.0 works with Chromium 75 // keep in sync with version in package.json
 ENV PUPPETEER_VERSION 1.15.0
 
