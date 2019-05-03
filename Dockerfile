@@ -30,11 +30,13 @@ RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
 # Run everything after as non-privileged user.
 USER phantomas
 
-# Copy the content of the repository into a container
-COPY . /opt/phantomas
-
-# and install dependencies
+# Install dependencies
+COPY package.json /opt/phantomas
+COPY package-lock.json /opt/phantomas
 RUN npm i
+
+# Copy the content of the rest of the repository into a container
+COPY . /opt/phantomas
 
 # test it (if needed)
 #RUN ./test/server-start.sh &
