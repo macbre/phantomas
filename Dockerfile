@@ -13,12 +13,14 @@ RUN apk update && apk upgrade && \
       ttf-freefont@edge
 
 WORKDIR /opt/phantomas
+ENV HOME /opt/phantomas
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# Tell phantomas were Chromium binary is
+# Tell phantomas where Chromium binary is and that we're in docker
 ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
+ENV DOCKERIZED yes
 
 # Add user so we don't need --no-sandbox.
 RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
