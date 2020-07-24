@@ -1,9 +1,10 @@
 # based on https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#running-on-alpine
-FROM node:10-alpine
+FROM node:14-alpine
 
-# Installs latest Chromium (72) package.
+# Installs latest Chromium package
+# https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
 RUN apk update && apk upgrade && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
+#    echo @ege http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
     apk add --no-cache \
       chromium@edge \
