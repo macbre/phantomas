@@ -42,3 +42,6 @@ COPY . /opt/phantomas
 # test it (if needed)
 #RUN ./test/server-start.sh &
 #RUN sleep 2 && npm t
+
+# Autorun chrome headless
+#ENTRYPOINT ["chromium-browser", "--headless", "--use-gl=swiftshader", "--disable-software-rasterizer", "--disable-dev-shm-usage"]
