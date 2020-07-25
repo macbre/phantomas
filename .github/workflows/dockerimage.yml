@@ -1,0 +1,16 @@
+name: Check if a Docker image can be built
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: |
+        docker build . --tag ${{ github.repository }}:$(date +%s)
+        docker images
