@@ -4,13 +4,14 @@ FROM node:14-alpine
 # Installs latest Chromium package
 # https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
 RUN apk update && apk upgrade && \
-#    echo @ege http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
+    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
     apk add --no-cache \
       chromium@edge \
-      nss@edge \
       freetype@edge \
       harfbuzz@edge \
+      libstdc++@edge \
+      nss@edge \
       ttf-freefont@edge
 
 WORKDIR /opt/phantomas
@@ -30,6 +31,7 @@ RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
 
 # Run everything after as non-privileged user.
 USER phantomas
+RUN chromium-browser --no-sandbox --version
 
 # Install dependencies
 COPY package.json /opt/phantomas
@@ -39,9 +41,6 @@ RUN npm i
 # Copy the content of the rest of the repository into a container
 COPY . /opt/phantomas
 
-# test it (if needed)
-#RUN ./test/server-start.sh &
-#RUN sleep 2 && npm t
-
 # Autorun chrome headless
-#ENTRYPOINT ["chromium-browser", "--headless", "--use-gl=swiftshader", "--disable-software-rasterizer", "--disable-dev-shm-usage"]
+ENTRYPOINT ["sh"]
+#CMD ["chromium-browser", "--no-sandbox", "--headless", "--use-gl=swiftshader", "--disable-software-rasterizer", "--disable-dev-shm-usage"]
