@@ -15,8 +15,8 @@ RUN apk update && apk upgrade && \
       tini@edge \
       ttf-freefont@edge
 
-WORKDIR /opt/phantomas
 ENV HOME /opt/phantomas
+WORKDIR $HOME
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
@@ -27,19 +27,18 @@ ENV DOCKERIZED yes
 
 # Add user so we don't need --no-sandbox.
 RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
-    && mkdir -p /opt/phantomas \
-    && chown -R phantomas:phantomas /opt/phantomas
+    && chown -R phantomas:phantomas $HOME
 
 # Run everything after as non-privileged user.
 USER phantomas
 RUN chromium-browser --no-sandbox --version
 
 # Install dependencies
-COPY package.json /opt/phantomas
-COPY package-lock.json /opt/phantomas
+COPY package.json .
+COPY package-lock.json .
 RUN npm i
 
 # Copy the content of the rest of the repository into a container
-COPY . /opt/phantomas
+COPY . .
 
 ENTRYPOINT ["tini", "--"]
