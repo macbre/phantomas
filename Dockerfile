@@ -12,6 +12,7 @@ RUN apk update && apk upgrade && \
       harfbuzz@edge \
       libstdc++@edge \
       nss@edge \
+      tini@edge \
       ttf-freefont@edge
 
 WORKDIR /opt/phantomas
@@ -41,6 +42,4 @@ RUN npm i
 # Copy the content of the rest of the repository into a container
 COPY . /opt/phantomas
 
-# Autorun chrome headless
-ENTRYPOINT ["sh"]
-#CMD ["chromium-browser", "--no-sandbox", "--headless", "--use-gl=swiftshader", "--disable-software-rasterizer", "--disable-dev-shm-usage"]
+ENTRYPOINT ["tini", "--"]
