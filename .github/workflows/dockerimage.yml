@@ -12,5 +12,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: |
-        docker build . --tag ${{ github.repository }}:$(date +%s)
+        docker build . --tag ${{ github.repository }}
         docker images
+
+    - name: Run tests inside the Docker container
+      run: |
+        docker run -it ${{ github.repository }} sh run_tests.sh
