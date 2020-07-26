@@ -17,4 +17,4 @@ jobs:
 
     - name: Run tests inside the Docker container
       run: |
-        docker run -it ${{ github.repository }} sh run_tests.sh
+        docker run ${{ github.repository }} sh run_tests.sh
