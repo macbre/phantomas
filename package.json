@@ -24,18 +24,18 @@
     "node": ">=8.0"
   },
   "dependencies": {
-    "analyze-css": "^0.12.7",
+    "analyze-css": "^0.12.10",
     "debug": "^4.1.1",
     "puppeteer": "^3.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.14.1",
+    "eslint": "^5.16.0",
     "glob": "^7.1.2",
     "http-serve": "^1.0.1",
-    "js-beautify": "^1.6.14",
+    "js-beautify": "^1.11.0",
     "js-yaml": "^3.13.1",
     "mockery": "^2.0.0",
-    "vows": "^0.8.2"
+    "vows": "^0.8.3"
   },
   "scripts": {
     "test": "vows --spec",
