@@ -62,5 +62,3 @@ RUN `find -name chrome` --no-sandbox --version
 
 # Copy the content of the rest of the repository into a container
 COPY . .
-
-ENTRYPOINT ["sh"]
