@@ -1,22 +1,41 @@
-# based on https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#running-on-alpine
-FROM node:14-alpine
+# We need glibc distro in order to run Chrome binaries provided by puppeteer npm module
+FROM node:14-slim
 
-# Installs latest Chromium package
-# https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
-
-RUN apk update && apk upgrade && apk add --no-cache tini
-
-#RUN apk update && apk upgrade && \
-#    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
-#    echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
-#    apk add --no-cache \
-#      chromium@edge \
-#      freetype@edge \
-#      harfbuzz@edge \
-#      libstdc++@edge \
-#      nss@edge \
-#      tini@edge \
-#      ttf-freefont@edge
+# install Chrome binaries depedencies
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
+  fonts-liberation \
+  libappindicator3-1 \
+  libasound2 \
+  libatk-bridge2.0-0 \
+  libatk1.0-0 \
+  libatspi2.0-0 \
+  libc6 \
+  libcairo2 \
+  libcups2 \
+  libdbus-1-3 \
+  libexpat1 \
+  libgcc1 \
+  libgdk-pixbuf2.0-0 \
+  libglib2.0-0 \
+  libgtk-3-0 \
+  libnspr4 \
+  libnss3 \
+  libpango-1.0-0 \
+  libpangocairo-1.0-0 \
+  libuuid1 \
+  libx11-6 \
+  libx11-xcb1 \
+  libxcb1 \
+  libxcomposite1 \
+  libxcursor1 \
+  libxdamage1 \
+  libxext6 \
+  libxfixes3 \
+  libxi6 \
+  libxrandr2 \
+  libxrender1 \
+  libxss1 \
+  libxtst6
 
 ENV HOME /opt/phantomas
 WORKDIR $HOME
@@ -28,21 +47,20 @@ WORKDIR $HOME
 #ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
 ENV DOCKERIZED yes
 
-# Add user so we don't need --no-sandbox.
-RUN addgroup -S phantomas && adduser -S -g phantomas phantomas \
-    && chown -R phantomas:phantomas $HOME
+RUN chown -R nobody:nogroup $HOME
 
 # Run everything after as non-privileged user.
-USER phantomas
+USER nobody
 
 # Install dependencies
 COPY package.json .
 COPY package-lock.json .
 RUN npm i
 
-RUN echo "Chrome installed in: "`find -name chrome`
+RUN ldd `find -name chrome`
+RUN `find -name chrome` --no-sandbox --version
 
 # Copy the content of the rest of the repository into a container
 COPY . .
 
-ENTRYPOINT ["tini", "--"]
+ENTRYPOINT ["sh"]
