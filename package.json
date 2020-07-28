@@ -30,10 +30,10 @@
   },
   "devDependencies": {
     "eslint": "^7.5.0",
-    "glob": "^7.1.2",
+    "glob": "^7.1.6",
     "http-serve": "^1.0.1",
     "js-beautify": "^1.11.0",
-    "js-yaml": "^3.13.1",
+    "js-yaml": "^3.14.0",
     "mockery": "^2.0.0",
     "vows": "^0.8.3"
   },
