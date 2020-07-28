@@ -26,6 +26,7 @@
   "dependencies": {
     "analyze-css": "^0.12.10",
     "debug": "^4.1.1",
+    "optimist-config-file": "^1.0.1",
     "puppeteer": "^5.2.1"
   },
   "devDependencies": {
