@@ -1,7 +1,6 @@
 /**
  * Measure when the page reaches certain states
  */
-/* global window: true */
 'use strict';
 
 module.exports = function(phantomas) {
