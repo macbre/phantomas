@@ -4,7 +4,8 @@
 'use strict';
 
 module.exports = function(phantomas) {
-	const devices = require('puppeteer/DeviceDescriptors'),
+  const puppeteer = require('puppeteer'),
+	  devices = puppeteer.devices,
 		// @see https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
 		availableDevices = {
 			'phone': 'Galaxy S5', // 360x640

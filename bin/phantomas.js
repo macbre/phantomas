@@ -159,7 +159,7 @@ function task(callback) {
 	});
 
 	// pipe --verbose messages to stderr
-	child.stderr.pipe(process.stderr);
+	// child.stderr.pipe(process.stderr);
 }
 
 // @see https://github.com/caolan/async#seriestasks-callback

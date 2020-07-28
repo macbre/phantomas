@@ -1,0 +1,7 @@
+Dockerfile
+docs/
+examples/
+node_modules/
+*.png
+*.html
+*.md

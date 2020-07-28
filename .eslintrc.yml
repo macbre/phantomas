@@ -228,7 +228,7 @@ rules:
   quote-props: 'off'
   quotes: 'off'
   radix: 'off'
-  require-atomic-updates: error
+  require-atomic-updates: 'off'
   require-await: 'off'
   require-jsdoc: 'off'
   require-unicode-regexp: 'off'

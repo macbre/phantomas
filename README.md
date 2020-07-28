@@ -1,4 +1,4 @@
-phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Build Status](https://api.travis-ci.org/macbre/phantomas.png?branch=devel)](http://travis-ci.org/macbre/phantomas) [![Known Vulnerabilities](https://snyk.io/test/github/macbre/phantomas/badge.svg)](https://snyk.io/test/github/macbre/phantomas)
+phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]()
 =========
 
 [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
