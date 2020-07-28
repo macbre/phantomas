@@ -25,10 +25,9 @@ module.exports = function(phantomas) {
 	phantomas.setMetric('timeFrontend'); // @desc time to window.load compared to the total loading time [%]
 
 	phantomas.on('beforeClose', async function() {
-		const performance = await phantomas.evaluate(() => {
-				return window.performance.toJSON();
-			}),
-			timing = performance.timing;
+		const timing = await phantomas.evaluate(() => {
+			return window.performance.timing.toJSON();
+		});
 
 		phantomas.log('window.performance timing: %j', timing);
 
