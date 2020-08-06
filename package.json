@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "2.0.0-beta",
+  "version": "2.0.0-alpha1",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
