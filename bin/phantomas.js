@@ -13,7 +13,6 @@ var phantomas = require('..'),
 	async = require('async'),
 	debug = require('debug')('phantomas:cli'),
 	program = require('optimist-config-file'),
-	ProgressBar = require('progress'),
 	options = {},
 	runs,
 	url = '';
@@ -57,7 +56,6 @@ program
 	.describe('disable-js', 'disable JavaScript on the page that will be loaded').boolean('disable-js')
 	.describe('no-externals', 'block requests to 3rd party domains').boolean('no-externals')
 	.describe('post-load-delay', 'wait X seconds before generating a report')
-	.describe('runs', 'number of runs to perform')
 	.describe('scroll', 'scroll down the page when it\'s loaded').boolean('scroll')
 	.describe('spy-eval', 'report calls to eval()').boolean('spy-eval')
 	.describe('stop-at-onload', 'stop phantomas immediately after onload event').boolean('stop-at-onload')
@@ -75,7 +73,6 @@ program
 	.describe('log', 'log to a given file')
 	.describe('page-source', '[experimental] save page source to file').boolean('page-source')
 	.describe('page-source-dir', '[experimental] folder path to output page source (default is ./html directory)')
-	.describe('progress', 'shows page loading progress bar (disables verbose mode)').boolean('progress')
 	.describe('reporter', 'output format / reporter').default('reporter', 'plain').alias('reporter', 'R').alias('reporter', 'format')
 	.describe('screenshot', 'render fully loaded page to a given file')
 	.describe('silent', 'don\'t write anything to the console').boolean('silent');
@@ -113,7 +110,6 @@ if (typeof options.url !== 'string' && typeof options.config === 'undefined') {
 }
 
 url = options.url;
-runs = parseInt(options.runs) || 1;
 
 delete options.url;
 delete options._;
@@ -123,18 +119,6 @@ delete options.$0;
 options['no-externals'] = options.externals === false;
 delete options.externals;
 
-// handle --progress option
-var bar;
-
-if (options.progress === true) {
-	options.verbose = false;
-
-	bar = new ProgressBar('[:bar] :percent :etas', {
-		total: 100 * runs,
-		width: 50
-	});
-}
-
 // add env variable to turn off ANSI colors when needed (#237)
 // suppress this behaviour by passing --colors option (issue #342)
 if (!process.stdout.isTTY && (options.colors !== true)) {
@@ -142,113 +126,28 @@ if (!process.stdout.isTTY && (options.colors !== true)) {
 	process.env.BW = 1;
 }
 
-// perform a single run
-function task(callback) {
-	// spawn phantomas process
-	var child = phantomas(url, options, function(err, data, results) {
-		callback(
-			null, // pass null even in case of an error to continue async.series processing (issue #380)
-			[err, results]
-		);
-	});
+// spawn phantomas process
+const promise = phantomas(url, options).
+	catch(err => {
+		debug('Error: %s', err);
+		process.exit(1);
+	}).
+	then(results => {
+		debug('Calling a reporter...');
+		debug('Metrics: %j', results.getMetrics());
 
-	child.on('progress', function(progress, inc) {
-		if (bar) {
-			bar.tick(inc);
-		}
-	});
+		const reporter = require('../core/reporter')(results, options);
 
-	// pipe --verbose messages to stderr
-	// child.stderr.pipe(process.stderr);
-}
+		// pass a function that reporter should call once done
+		const res = reporter.render();
 
-// @see https://github.com/caolan/async#seriestasks-callback
-var series = [];
+		needDrain = !process.stdout.write(res);
 
-debug('Preparing %d run(s)...', runs);
-
-for (var r = 0; r < runs; r++) {
-	series.push(task);
-}
-
-async.series(
-	series,
-	function(err, results) {
-		var debug = require('debug')('phantomas:runs'),
-			needDrain,
-			reporter,
-			res;
-
-		// results is a collection of the following entries:
-		// [ Error from the run, Results object]
-		debug('results [%d]: %j', results.length, results);
-
-		results = results.map(function(item, idx) {
-			var error = item[0],
-				result = item[1];
-
-			// detect errors in run results (issue #380)
-			if (error instanceof Error) {
-				debug('Run #%d did not complete - err #%d', idx + 1, error.message);
-				err = error.message;
-			}
-
-			// return results wrapper (if possible) - #528
-			return result;
-		});
-
-		// filter out "broken" results (issue #366)
-		results = results.filter(function(item) {
-			return typeof item !== 'undefined';
-		});
-
-		debug('err: %j', err);
-
-		// this function is called when phantomas is done with all runs
-		function doneFn() {
-			// pass error code from Chromium process
-			debug('Exiting with code #%d', err || 0);
-			process.exit(err);
-		}
-
-		if (typeof results[0] !== 'undefined') {
-			// we have at least one result - reset the error flag when in multiple runs mode (#380)
-			if (err > 250 && runs > 1) {
-				err = null;
-			}
-
-			// process JSON results by reporters
-			debug('%d of %d run(s) completed with exit code #%d', results.length, runs, err || 0);
-
-			// normalize results in a single run mode
-			if (runs === 1) {
-				results = results[0];
-			}
-
-			reporter = require('../core/reporter')(results, options);
-
-			debug('Calling a reporter...');
-
-			// pass a function that reporter should call once done
-			res = reporter.render(doneFn);
-
-			// reporter returned results, otherwise wait for doneFn to be called by reporter
-			if (typeof res !== 'undefined') {
-				needDrain = !process.stdout.write(res);
-
-				// If a stream.write(chunk) call returns false, then the 'drain' event will indicate when it is appropriate to begin writing more data to the stream.
-				// @see #596
-				if (needDrain) {
-					debug('Need to wait for stdout to be fully flushed...');
-					process.stdout.on('drain', doneFn);
-				} else {
-					doneFn();
-				}
-			} else {
-				debug('Waiting for the results...');
-			}
-		} else {
-			doneFn();
+		// If a stream.write(chunk) call returns false, then the 'drain' event will indicate when it is appropriate to begin writing more data to the stream.
+		// @see #596
+		if (needDrain) {
+			debug('Need to wait for stdout to be fully flushed...');
+			process.stdout.on('drain');
 		}
 	}
 );
