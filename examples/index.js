@@ -20,15 +20,14 @@ const promise = phantomas('http://127.0.0.1:8888/dom-operations.html', {
 // handle the promise
 promise.
 	then(results => {
-		//console.log('Metrics', results.getMetrics());
+		console.log('Metrics', results.getMetrics());
 		//console.log('Offenders', results.getAllOffenders());
 		console.log('Number of requests: %d', results.getMetric('requests'));
 		console.log('Failed asserts: %j', results.getFailedAsserts());
 	}).
-	catch(res => {
-		console.error(res);
-		console.log('Error code #%d', res.code);
-		process.exit(res.code);
+	catch(ex => {
+		console.error(ex);
+		process.exit(1);
 	});
 
 // events handling
