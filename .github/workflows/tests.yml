@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ phantomas-v2 ]
+    branches: [ devel ]
   pull_request:
-    branches: [ phantomas-v2 ]
+    branches: [ devel ]
 
 jobs:
   build:
