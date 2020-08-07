@@ -5,7 +5,7 @@ phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs
 
 ## Requirements
 
-* [NodeJS](http://nodejs.org) 8+
+* [NodeJS](http://nodejs.org) 12+
 
 ## Installation
 
