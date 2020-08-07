@@ -13,9 +13,21 @@ var topic = function() {
 vows.describe('Results wrapper').addBatch({
 	'Metrics': {
 		topic: topic,
+		'should be set to zero by default': function(results) {
+			results.setMetric('foo');
+			assert.strictEqual(results.getMetric('foo'), 0);
+		},
 		'should be correctly set': function(results) {
 			results.setMetric('foo', 'bar');
 			assert.strictEqual(results.getMetric('foo'), 'bar');
+		},
+		'avarage should be correctly calculated': () => {
+			const results = new Results();
+			results.addToAvgMetric('foo', 2);
+			results.addToAvgMetric('foo', 1);
+			results.addToAvgMetric('bar', 4);
+			assert.strictEqual(results.getMetric('foo'), 1.5);
+			assert.strictEqual(results.getMetric('bar'), 4);
 		},
 		'should be correctly set (with no casting)': function(results) {
 			results.setMetric('bar', null);
@@ -35,11 +47,11 @@ vows.describe('Results wrapper').addBatch({
 		topic: topic,
 		'should be registered': function(results) {
 			results.addOffender('metric', 'foo');
-			results.addOffender('metric', 'bar');
+			results.addOffender('metric', {'url': 'bar', 'size': 42});
 			results.addOffender('metric2', 'test');
 		},
 		'should be kept in order': function(results) {
-			assert.deepEqual(results.getOffenders('metric'), ['foo', 'bar']);
+			assert.deepEqual(results.getOffenders('metric'), ['foo', {'url': 'bar', 'size': 42}]);
 			assert.deepEqual(results.getOffenders('metric2'), ['test']);
 
 			assert.equal('undefined', typeof results.getOffenders('metric3'));

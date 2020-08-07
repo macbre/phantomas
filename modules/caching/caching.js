@@ -1,15 +1,12 @@
 /**
  * Analyzes HTTP caching headers
- *
- * @see https://developers.google.com/speed/docs/best-practices/caching
  */
 'use strict';
 
-exports.version = '0.2';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var cacheControlRegExp = /max-age=(\d+)/;
 
+	// @see https://developers.google.com/speed/docs/best-practices/caching
 	function getCachingTime(url, headers) {
 		// false means "no caching"
 		var ttl = false,
@@ -33,14 +30,12 @@ exports.module = function(phantomas) {
 					}
 					break;
 
-					// catch Expires and Pragma headers
-				case 'expires':
+				case 'expires': // catch Expires and Pragma headers
 				case 'pragma':
-					// and Varnish specific headers
-				case 'x-pass-expires':
+				case 'x-pass-expires': // and Varnish specific headers
 				case 'x-pass-cache-control':
 					phantomas.incrMetric('oldCachingHeaders'); // @desc number of responses with old, HTTP 1.0 caching headers (Expires and Pragma)
-					phantomas.addOffender('oldCachingHeaders', url + ' - ' + headerName + ': ' + value);
+					phantomas.addOffender('oldCachingHeaders', {url, headerName, value});
 					if (ttl === false) {
 						headerDate = Date.parse(value);
 						if (headerDate) ttl = Math.round((headerDate - now) / 1000);
@@ -61,7 +56,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('oldCachingHeaders');
 	phantomas.setMetric('cachingUseImmutable'); // @desc number of responses with a long TTL that can benefit from Cache-Control: immutable
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var ttl = getCachingTime(entry.url, entry.headers),
 			headerName;
 
@@ -75,7 +70,7 @@ exports.module = function(phantomas) {
 				phantomas.addOffender('cachingDisabled', entry.url);
 			} else if (ttl < 7 * 86400) {
 				phantomas.incrMetric('cachingTooShort');
-				phantomas.addOffender('cachingTooShort', entry.url + ' cached for ' + ttl + ' s');
+				phantomas.addOffender('cachingTooShort', {url: entry.url, ttl});
 			} else {
 				// long TTL, suggest the use of Cache-Control: immutable (issue #683)
 				for (headerName in entry.headers) {
@@ -84,7 +79,7 @@ exports.module = function(phantomas) {
 					if (headerName.toLowerCase() === 'cache-control') {
 						if (/,\s?immutable/.test(value) === false) {
 							phantomas.incrMetric('cachingUseImmutable');
-							phantomas.addOffender('cachingUseImmutable', entry.url + ' cached for ' + ttl + ' s');
+							phantomas.addOffender('cachingUseImmutable', {url: entry.url, ttl});
 						} else {
 							phantomas.log('caching: Cache-Control: immutable used for <%s>', entry.url);
 						}

@@ -3,18 +3,18 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	// monitor cookies in HTTP headers
-	var Collection = require('../../lib/collection'),
-		cookiesDomains = new Collection();
+	//var Collection = require('../../lib/collection'),
+		//cookiesDomains = new Collection();
 
 	phantomas.setMetric('cookiesSent'); // @desc length of cookies sent in HTTP requests @unreliable
 	phantomas.setMetric('cookiesRecv'); // @desc length of cookies received in HTTP responses
 	phantomas.setMetric('domainsWithCookies'); // @desc number of domains with cookies set
 	phantomas.setMetric('documentCookiesLength'); // @desc length of document.cookie
 	phantomas.setMetric('documentCookiesCount'); //@desc number of cookies in document.cookie
+
+	/**
 
 	phantomas.on('send', function(entry, res) {
 		res.headers.forEach(function(header) {
@@ -50,8 +50,6 @@ exports.module = function(phantomas) {
 
 	// domain cookies (accessible by the browser)
 	phantomas.on('report', function() {
-		/* global document: true, window: true */
-
 		// domains with cookies
 		cookiesDomains.forEach(function(domain, cnt) {
 			phantomas.incrMetric('domainsWithCookies');
@@ -77,4 +75,5 @@ exports.module = function(phantomas) {
 			}
 		});
 	});
+	**/
 };

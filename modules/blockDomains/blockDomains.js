@@ -5,10 +5,10 @@
  */
 'use strict';
 
-exports.version = '0.1';
+module.exports = function(phantomas) {
+	const { parse } = require('url');
 
-exports.module = function(phantomas) {
-	var ourDomain = false,
+	var ourDomain,
 
 		// --no-externals
 		noExternalsMode = (phantomas.getParam('no-externals') === true),
@@ -18,6 +18,10 @@ exports.module = function(phantomas) {
 		// --block-domain google-analytics.com
 		blockedDomains = phantomas.getParam('block-domain'),
 		blockedDomainsRegExp;
+
+	ourDomain = parse(phantomas.getParam('url')).hostname;
+
+	phantomas.setMetric('blockedRequests'); // @desc number of requests blocked due to domain filtering @optional
 
 	function checkBlock(domain) {
 		var blocked = false;
@@ -57,7 +61,7 @@ exports.module = function(phantomas) {
 	blockedDomains = (typeof blockedDomains === 'string') ? parseParameter(blockedDomains) : false;
 
 	if (noExternalsMode) {
-		phantomas.log('Block domains: working in --no-externals mode');
+		phantomas.log('Block domains: working in --no-externals mode ("%s" is our domain)', ourDomain);
 	}
 
 	if (allowedDomains !== false) {
@@ -70,22 +74,28 @@ exports.module = function(phantomas) {
 		blockedDomainsRegExp = new RegExp('(' + blockedDomains.join('|') + ')$');
 	}
 
-	// get the "main" domain from the first request (see issues #197 and #535)
-	phantomas.on('beforeSend', function(entry) {
-		if (!ourDomain) {
-			ourDomain = entry.domain;
-			phantomas.log('Block domains: assuming "%s" to be the main domain (from the first request sent)', ourDomain);
-		}
-	});
+	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagesetrequestinterceptionvalue
+	phantomas.on('init', async page => {
+		await page.setRequestInterception(true);
 
-	// check each request before sending
-	phantomas.on('beforeSend', function(entry) {
-		if (checkBlock(entry.domain)) {
-			entry.block();
+		page.on('request', interceptedRequest => {
+			const url = interceptedRequest.url(),
+				domain = parse(url).hostname;
 
-			// stats
-			phantomas.incrMetric('blockedRequests'); // @desc number of requests blocked due to domain filtering @optional
-			phantomas.addOffender('blockedRequests', entry.url);
-		}
+			if (checkBlock(domain)) {
+				interceptedRequest.abort();
+
+				phantomas.log('Request has been blocked: <%s>', url);
+
+				// stats
+				phantomas.incrMetric('blockedRequests');
+				phantomas.addOffender('blockedRequests', url);
+			}
+			else {
+				interceptedRequest.continue();
+			}
+		});
+
+		phantomas.log('Requests intercepting enabled');
 	});
 };

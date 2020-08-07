@@ -3,11 +3,9 @@
  */
 'use strict';
 
-exports.version = '0.3';
+const Stats = require('../../lib/fast-stats').Stats;
 
-var Stats = require('../../lib/fast-stats').Stats;
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var Collection = require('../../lib/collection'),
 		domains = new Collection();
 
@@ -15,7 +13,7 @@ exports.module = function(phantomas) {
 	phantomas.setMetric('maxRequestsPerDomain'); // @desc maximum number of requests fetched from a single domain
 	phantomas.setMetric('medianRequestsPerDomain'); // @desc median of number of requests fetched from each domain
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		var domain = entry.domain;
 
 		if (domain) {
@@ -24,13 +22,13 @@ exports.module = function(phantomas) {
 	});
 
 	// add metrics
-	phantomas.on('report', function() {
+	phantomas.on('report', () => {
 		var domainsRequests = new Stats();
 
-		domains.sort().forEach(function(name, cnt) {
-			phantomas.addOffender('domains', '%s: %d request(s)', name, cnt);
+		domains.sort().forEach(function(domain, requests) {
+			phantomas.addOffender('domains', {domain, requests});
 
-			domainsRequests.push(cnt);
+			domainsRequests.push(requests);
 		});
 
 		if (domains.getLength() > 0) {

@@ -1,1 +1,9 @@
+.github/
+docs/
 examples/
+test/
+
+.*
+*.html
+*.png
+*.sh

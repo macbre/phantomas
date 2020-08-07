@@ -1,6 +1,7 @@
 /**
  * Renders a serie of screenshots of page being loaded
- *
+ */
+/**
  * Please note that rendering each screenshot takes
  * several hundreds ms. Consider increasing default timeout.
  *
@@ -9,14 +10,12 @@
  * --film-strip-dir folder path to output film strip (default is ./filmstrip directory)
  * --film-strip-prefix film strip files name prefix (defaults to 'screenshot')
  *
- * Youcan pass a comma separated list of milliseconds when to trigger a screenshot.
+ * You can pass a comma separated list of milliseconds when to trigger a screenshot.
  * The time will be calculated relative to "responseEnd" event (issue #174)
  */
 'use strict';
 
-exports.version = '0.3';
-
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	if (!phantomas.getParam('film-strip')) {
 		phantomas.log('filmStrip: to enable screenshots of page being loaded run phantomas with --film-strip option');
 		return;

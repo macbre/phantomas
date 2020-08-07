@@ -1,7 +1,7 @@
 /**
  * phantomas browser "scope" with helper code
  *
- * Code below is executed in page's "scope" (injected by onInitialized() in core/phantomas.js)
+ * Code below is executed in page's "scope" (injected by lib/browser.js)
  */
 (function(scope) {
 	'use strict';
@@ -112,26 +112,7 @@
 		};
 
 		function sendMsg(type, data) {
-			// @see https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#oncallback
-			// Stability: EXPERIMENTAL - see issue #62
-			/**
-			if (typeof window.callPhantom === 'function') {
-				window.callPhantom({type: type, data: data});
-			}
-			**/
-
-			try {
-				// Prototype 1.6 (and Mootools 1.2 too) creates an Array.prototype.toJSON - issue #482
-				// @see http://stackoverflow.com/questions/710586/json-stringify-array-bizarreness-with-prototype-js
-				Array.prototype.toJSON = undefined;
-
-				origConsoleLog.call(console, 'msg:' + stringify({
-					type: type || false,
-					data: data || false
-				}));
-			} catch (e) {
-				throw new Error('phantomas: calling native console.log() failed ("' + e + '")!');
-			}
+			scope.__phantomas_emit('scopeMessage', type, data);
 		}
 
 		function log() {
@@ -139,18 +120,11 @@
 		}
 
 		function setMetric(name, value, isFinal) {
-			sendMsg('setMetric', {
-				name: name,
-				value: (typeof value !== 'undefined') ? value : 0,
-				isFinal: isFinal === true
-			});
+			sendMsg('setMetric', [name, typeof value !== 'undefined' ? value : 0, isFinal === true]);
 		}
 
 		function incrMetric(name, incr /* =1 */ ) {
-			sendMsg('incrMetric', {
-				name: name,
-				incr: incr || 1
-			});
+			sendMsg('incrMetric', [name, incr || 1]);
 		}
 
 		function addToAvgMetric(name, value) {
@@ -170,8 +144,9 @@
 			sendMsg('addOffender', Array.prototype.slice.apply(arguments));
 		}
 
-		function emit( /* eventName, arg1, arg2, ... */ ) {
-			sendMsg('emit', Array.prototype.slice.apply(arguments));
+		// see lib/index.js code that injects __phantomas_options into page scope
+		function getParam(param, _default) {
+			return scope.__phantomas_options[param] || _default;
 		}
 
 		// exports
@@ -181,7 +156,8 @@
 		phantomas.addToAvgMetric = addToAvgMetric;
 		phantomas.setMarkerMetric = setMarkerMetric;
 		phantomas.addOffender = addOffender;
-		phantomas.emit = emit;
+		phantomas.emit = scope.__phantomas_emit.bind(scope);
+		phantomas.getParam = getParam;
 	})();
 
 	/**
@@ -320,5 +296,5 @@
 	phantomas.getDOMPath = getDOMPath;
 	phantomas.nodeRunner = nodeRunner;
 
-	phantomas.log('phantomas scope injected');
+	phantomas.log('phantomas page scope initialized');
 })(window);

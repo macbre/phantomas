@@ -1,8 +1,7 @@
 /**
  * Test staticAssets module
  */
-var vows = require('vows'),
-	assert = require('assert'),
+const vows = require('vows'),
 	mock = require('./mock');
 
 var URL = 'http://example.com/';
@@ -59,7 +58,7 @@ addBatch({
 			status: 200,
 			isImage: true,
 			type: 'image',
-			contentLength: 32 * 1024
+			responseSize: 32 * 1024
 		}).report();
 	}, {
 		'smallImages': 0,
@@ -70,7 +69,7 @@ addBatch({
 			status: 200,
 			isImage: true,
 			type: 'image',
-			contentLength: 1024
+			responseSize: 1024
 		}).report();
 	}, {
 		'smallImages': 1,
@@ -81,7 +80,7 @@ addBatch({
 			status: 200,
 			isCSS: true,
 			type: 'css',
-			contentLength: 1024
+			responseSize: 1024
 		}).report();
 	}, {
 		'smallCssFiles': 1,
@@ -92,7 +91,7 @@ addBatch({
 			status: 200,
 			isJS: true,
 			type: 'js',
-			contentLength: 1024
+			responseSize: 1024
 		}).report();
 	}, {
 		'smallJsFiles': 1,

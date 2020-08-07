@@ -1,42 +1,44 @@
 /**
- * Saves the souce of page being loaded to a file
+ * Saves the source of page being loaded to a file
  *
  * Please note that saving each file takes a few ms.
  * Consider increasing default timeout.
  *
- * Run phantomas with --page-source option to use this module
+ * Run phantomas with --page-source option to use this module.
  */
 'use strict';
 
-exports.version = '0.1';
-
-exports.module = function(phantomas) {
+module.exports = phantomas => {
 	if (!phantomas.getParam('page-source')) {
 		phantomas.log('To enable page-source of page being loaded run phantomas with --page-source option');
 		return;
 	}
 
-	var util = phantomas.require('util'),
-		fs = require('fs'),
-		pageSourceOutputDir = 'html';
+	const fs = require('fs'),
+		format = require('util').format,
+		workingDirectory = require('process').cwd(),
+		// grab output dir from argument, defaults to working directory
+		pageSourceOutputDir = phantomas.getParam('page-source-dir', workingDirectory).replace(/\/+$/, ''),
+		path = format('%s/phantomas_%d.html', pageSourceOutputDir, Date.now());
 
-	// grab output dir from args
-	if (phantomas.getParam('page-source-dir')) {
-		pageSourceOutputDir = phantomas.getParam('page-source-dir').replace(/\/+$/, '');
-	}
+	phantomas.log('Will store page source in %s', path);
 
-	// save source data
-	phantomas.on('report', function() {
-		var now = Date.now(),
-			path = util.format(pageSourceOutputDir + '/%d.html', now);
+	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageevaluatepagefunction-args
+	phantomas.on('beforeClose', page => {
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+		return new Promise(async resolve => {
+			// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageevaluatepagefunction-args
+			const bodyHandle = await page.$('body');
+			const html = await page.evaluate(body => body.innerHTML, bodyHandle);
 
-		fs.write(path, phantomas.getSource(), 'w');
+			// phantomas.log(html);
+			fs.writeFileSync(path, html);
 
-		// verify that the file was really written
-		if (fs.isReadable(path)) {
-			phantomas.log('Page source: saved to %s in %d ms', path, Date.now() - now);
-		} else {
-			phantomas.log('Page source: saved to %s failed!', path);
-		}
+			phantomas.log('Page source stored in %s', path);
+
+			// let clients know that we stored the page source in a file
+			phantomas.emit('pageSource', path);
+			resolve();
+		});
 	});
 };

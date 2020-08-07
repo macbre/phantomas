@@ -2,12 +2,8 @@
  * Log requests for build HAR output
  *
  * Depends on windowPerformance module!
- *
- * @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
  */
 'use strict';
-
-exports.version = '0.1';
 
 var fs = require('fs');
 
@@ -19,6 +15,7 @@ var fs = require('fs');
  */
 
 function createHAR(page, creator) {
+	// @see: https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html
 	var address = page.address;
 	var title = page.title;
 	var startTime = page.startTime;
@@ -29,9 +26,8 @@ function createHAR(page, creator) {
 	resources.forEach(function(resource) {
 		var request = resource.request;
 		var response = resource.response;
-		var entry = resource.entry;
 
-		if (!request || !response || !entry) {
+		if (!request || !response) {
 			return;
 		}
 
@@ -57,29 +53,29 @@ function createHAR(page, creator) {
 				url: request.url,
 			},
 			response: {
-				bodySize: entry.contentLength,
+				bodySize: response.bodySize,
 				cookies: [],
 				headers: response.headers,
-				headersSize: -1,
+				headersSize: response.headersSize,
 				httpVersion: 'HTTP/1.1',
 				redirectURL: '',
-				status: entry.status,
-				statusText: entry.statusText,
+				status: response.status,
+				statusText: response.statusText,
 				content: {
-					mimeType: entry.contentType || '',
-					size: entry.bodySize, // uncompressed
-					text: entry.content || ''
+					mimeType: response.contentType || '',
+					size: response.bodySize, // uncompressed
+					text: ''
 				}
 			},
-			startedDateTime: entry.sendTime.toISOString(),
-			time: entry.timeToLastByte,
+			startedDateTime: resource.startTime && resource.startTime.toISOString(),
+			time: response.timeToLastByte,
 			timings: {
 				blocked: 0,
 				dns: -1,
 				connect: -1,
 				send: 0,
-				wait: entry.timeToFirstByte || 0,
-				receive: entry.receiveTime,
+				wait: 0, // response.timeToFirstByte || 0,
+				receive: 0, // response.receiveTime,
 				ssl: -1
 			}
 		});
@@ -106,11 +102,15 @@ function createHAR(page, creator) {
 }
 /** End **/
 
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 
 	var param = phantomas.getParam('har'),
 		path = '',
-		timeToLastByte = undefined;
+		timeToLastByte;
+
+	if (param === false) {
+		return;
+	}
 
 	var page = {
 		origin: undefined,
@@ -138,39 +138,44 @@ exports.module = function(phantomas) {
 
 	// --har
 	if (param === true) {
-		// defaults to "2013-12-07T20:15:01.521Z.har"
-		path = (new Date()).toJSON() + '.har';
+		// defaults to "phantomas_2013-12-07T20:15:01.521Z.har"
+		path = 'phantomas_' + (new Date()).toJSON() + '.har';
 	}
 	// --har [file name]
 	else {
 		path = param;
 	}
 
-	phantomas.log('HAR: will be stored in %s', path);
+	phantomas.log('Will be stored in %s', path);
 
 	phantomas.on('pageBeforeOpen', function(p) {
 		page.origin = p;
-	});
-
-	phantomas.on('pageOpen', function() {
-		page.startTime = new Date();
 	});
 
 	phantomas.on('loadFinished', function() {
 		page.endTime = new Date();
 	});
 
-	phantomas.on('send', function(entry, res) {
-		page.resources[res.id] = {
-			request: res,
+	phantomas.on('send', entry => {
+		const resId = entry._requestId;
+
+		page.resources[resId] = {
+			id: resId,
+			request: entry,
 			response: null,
-			entry: null
+			startTime: new Date(),
 		};
+
+		// a first request has been made?
+		if (typeof page.startTime === 'undefined') {
+			page.startTime = new Date();
+		}
 	});
 
-	phantomas.on('recv', function(entry, res) {
-		page.resources[res.id].response = res;
-		page.resources[res.id].entry = entry;
+	phantomas.on('recv', entry => {
+		const resId = entry.id;
+
+		page.resources[resId].response = entry;
 		timeToLastByte = entry.timeToLastByte;
 	});
 
@@ -188,28 +193,32 @@ exports.module = function(phantomas) {
 		}
 	});
 
-	phantomas.on('report', function() {
+	phantomas.on('report', () => {
+		// make resources list a real array
+		page.resources = Object.values(page.resources);
+
 		// Set endTime if page was not finished correctly
 		if (!page.endTime)
 			page.endTime = new Date();
 
 		// If metric 'windowOnLoadTime' hasn't been fired, compute it
-		if (!page.windowOnLoadTime)
-			page.windowOnLoadTime = page.endTime.getTime() - page.startTime.getTime();
+		//if (!page.windowOnLoadTime)
+		//	page.windowOnLoadTime = page.endTime.getTime() - page.startTime.getTime();
 
 		// If metric 'timeToLastByte' hasn't been fired, use last entry
 		if (!page.timeToLastByte)
 			page.timeToLastByte = timeToLastByte;
 
-		page.address = page.origin.url;
-		page.title = page.origin.title;
+		//page.address = page.origin.url;
+		//page.title = page.origin.title;
 
 		// Times (windowOnLoadTime, onDOMReadyTime) are relative to responseEnd entry
 		// in NavigationTiming (represented by timeToLastByte metric)
 		page.onLoad = page.timeToLastByte + page.windowOnLoadTime;
 		page.onContentLoad = page.timeToLastByte + page.onDOMReadyTime;
 
-		phantomas.log('HAR: generating for <%s> ("%s")', page.address, page.title);
+		phantomas.log('Generating for <%s> ("%s")', page.address, page.title);
+		phantomas.log('Page data: %j', page);
 
 		var har,
 			dump;
@@ -217,25 +226,33 @@ exports.module = function(phantomas) {
 		try {
 			har = createHAR(page, creator);
 		} catch (e) {
-			phantomas.log('HAR: failed to build - %s', e);
+			console.error(e);
+			phantomas.log('Failed to build - %s', e);
 			return;
 		}
+
+		phantomas.log('Result: %j', har);
 
 		try {
 			dump = JSON.stringify(har);
 		} catch (e) {
-			phantomas.log('HAR: failed to stringify HAR to JSON - %s!', e);
+			console.error(e);
+			phantomas.log('Failed to stringify HAR to JSON - %s!', e);
 			return;
 		}
 
-		phantomas.log("HAR: saving to '%s',,,", path);
+		phantomas.log("Saving to %s ...", path);
 		try {
-			fs.write(path, dump);
+			// https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options
+			fs.writeFileSync(path, dump);
 		} catch (e) {
-			phantomas.log('HAR: failed to save HAR - %s!', e);
+			console.error(e);
+			phantomas.log('Failed to save HAR - %s!', e);
 			return;
 		}
 
-		phantomas.log('HAR: done');
+		// let clients know that we save a HAR file
+		phantomas.emit('har', path);
+		phantomas.log('Done');
 	});
 };

@@ -3,20 +3,18 @@
  */
 'use strict';
 
-exports.version = '1.0';
+module.exports = function(phantomas) {
+	var username = phantomas.getParam('auth-user') || '',
+		password = phantomas.getParam('auth-pass') || '';
 
-exports.module = function(phantomas) {
-	var userName = phantomas.getParam('auth-user', '', 'string'),
-		password = phantomas.getParam('auth-pass', '', 'string');
-
-	if (userName === '' || password === '') {
+	if (username === '' || password === '') {
 		return;
 	}
 
-	phantomas.on('pageBeforeOpen', function(page) {
-		phantomas.log('Using HTTP auth: %s (pass: %s)', userName, new Array(password.length + 1).join('*'));
+	// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageauthenticatecredentials
+	phantomas.on('init', async page => {
+		await page.authenticate({username, password});
 
-		page.settings.userName = userName;
-		page.settings.password = password;
+		phantomas.log('Set HTTP authentication: %s (pass: %s)', username, new Array(password.length + 1).join('*'));
 	});
 };

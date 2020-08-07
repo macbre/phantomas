@@ -1,0 +1,14 @@
+<body>
+    <script src="/static/jquery-2.1.1.min.js"></script>
+    <script>
+        // https://api.jquery.com/jquery.getjson/
+        $.getJSON('/foo.json', function(resp) {
+            console.log('Ajax fetched');
+
+            setTimeout(function() {
+                console.log('Page fully loaded');
+                $('body').addClass('loaded');
+            }, 1000);
+        });
+    </script>
+</body>

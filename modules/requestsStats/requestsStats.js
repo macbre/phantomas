@@ -12,11 +12,9 @@
  */
 'use strict';
 
-exports.version = '0.3';
-
 var Stats = require('../../lib/fast-stats').Stats;
 
-exports.module = function(phantomas) {
+module.exports = function(phantomas) {
 	var stack = {};
 
 	// adds given entry under the "type" if given check function returns true
@@ -38,7 +36,7 @@ exports.module = function(phantomas) {
 	var responseTimes = new Stats(),
 		latencyTimes = new Stats();
 
-	phantomas.on('recv', function(entry, res) {
+	phantomas.on('recv', entry => {
 		// ignore anything different than HTTP 200
 		if (entry.status !== 200) {
 			return;
@@ -46,11 +44,11 @@ exports.module = function(phantomas) {
 
 		// size
 		pushToStack('smallestResponse', entry, function(stack, entry) {
-			return stack.contentLength > entry.contentLength;
+			return stack.responseSize > entry.responseSize;
 		});
 
 		pushToStack('biggestResponse', entry, function(stack, entry) {
-			return stack.contentLength < entry.contentLength;
+			return stack.responseSize < entry.responseSize;
 		});
 
 		// time (from sent to last byte)
@@ -94,29 +92,31 @@ exports.module = function(phantomas) {
 			'biggestLatency'
 		].forEach(function(metric) {
 			var entry = getFromStack(metric),
-				details = '';
+				offender = {
+					url: entry.url,
+				};
 
 			switch (metric) {
 				case 'smallestResponse':
 				case 'biggestResponse':
-					phantomas.setMetric(metric, entry.contentLength);
-					details = (entry.contentLength / 1024).toFixed(2) + ' kB';
+					phantomas.setMetric(metric, entry.responseSize);
+					offender.size = entry.responseSize; // [bytes]
 					break;
 
 				case 'fastestResponse':
 				case 'slowestResponse':
 					phantomas.setMetric(metric, entry.timeToLastByte);
-					details = entry.timeToLastByte + ' ms';
+					offender.timeToLastByte = entry.timeToLastByte; // [seconds]
 					break;
 
 				case 'smallestLatency':
 				case 'biggestLatency':
 					phantomas.setMetric(metric, entry.timeToFirstByte);
-					details = entry.timeToFirstByte + ' ms';
+					offender.timeToFirstByte = entry.timeToFirstByte; // [seconds]
 					break;
 			}
 
-			phantomas.addOffender(metric, entry.url + ' (' + details + ')');
+			phantomas.addOffender(metric, offender);
 		});
 
 		phantomas.setMetric('medianResponse', responseTimes.median());

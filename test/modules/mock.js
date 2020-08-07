@@ -9,6 +9,7 @@ var phantomas = function(name) {
 	this.emitter = new(require('events').EventEmitter)();
 	this.wasEmitted = {};
 	this.metrics = {};
+	this.offenders = {};
 
 	this.log = debug('phantomas:test:' + name);
 };
@@ -61,20 +62,30 @@ phantomas.prototype = {
 		return this.getMetric(name) === val;
 	},
 
-	// mock core PhantomJS events
+	addOffender: function(name, value) {
+		this.offenders[name] = this.offenders[name] || [];
+		this.offenders[name].push(value);
+	},
+
+	getOffenders: function(name) {
+		return this.offenders[name];
+	},
+
+	// mock core phantomas events
 	sendRequest: function(req) {
 		req = req || {};
-		req.id = req.id || 1;
+		req._requestId = req._requestId || 1;
 		req.method = req.method || 'GET';
 		req.url = req.url || 'http://example.com';
 		req.headers = req.headers || [];
+		req.timing = {};
+		req.headersText = '';
 
 		this.log('sendRequest: %j', req);
 
 		try {
-			this.emitter.emit('onResourceRequested', req, {
-				abort: noop
-			});
+			this.emitter.emit('request', req);
+			this.emitter.emit('response', req);
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -122,9 +133,6 @@ phantomas.prototype = {
 	},
 
 	// noop mocks
-	addOffender: function() {
-		this.log('addOffenders: %j', Array.prototype.slice.apply(arguments));
-	},
 	log: noop,
 	echo: noop,
 	evaluate: noop,
@@ -138,7 +146,7 @@ function initModule(name, isCore) {
 		instance = new phantomas(name);
 		def = require('../../' + (isCore ? 'core/modules' : 'modules') + '/' + name + '/' + name + '.js');
 
-		new(def.module)(instance);
+		new(def)(instance);
 	} catch (ex) {
 		console.log(ex);
 	}
@@ -152,6 +160,12 @@ function assertMetric(name, value) {
 	};
 }
 
+function assertOffender(name, value) {
+	return function(phantomas) {
+		assert.deepStrictEqual(phantomas.getOffenders(name), value);
+	};
+}
+
 module.exports = {
 	initModule: function(name) {
 		return initModule(name);
@@ -162,7 +176,7 @@ module.exports = {
 
 	assertMetric: assertMetric,
 
-	getContext: function(moduleName, topic, metricsCheck) {
+	getContext: function(moduleName, topic, metricsCheck, offendersCheck) {
 		var phantomas = initModule(moduleName),
 			context = {};
 
@@ -173,6 +187,11 @@ module.exports = {
 		Object.keys(metricsCheck || {}).forEach(function(name) {
 			var check = 'sets "' + name + '" metric correctly';
 			context[check] = assertMetric(name, metricsCheck[name]);
+		});
+
+		Object.keys(offendersCheck || {}).forEach(function(name) {
+			var check = 'sets "' + name + '" offender(s) correctly';
+			context[check] = assertOffender(name, offendersCheck[name]);
 		});
 
 		return context;

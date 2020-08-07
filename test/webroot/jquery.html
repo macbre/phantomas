@@ -24,7 +24,7 @@
 				click(function() {
 					$(this).parent().css({'background-color': 'blue'});
 				}).
-				load(function() {
+				on('load', function() {
 					// foo
 				});
 
@@ -46,8 +46,8 @@
 			});
 		});
 
-		$(window).load(function() {
-			console.log('window loaded');
+		$(window).on('load', function() {
+			// console.log('window loaded');
 		});
 	</script>
 </body>

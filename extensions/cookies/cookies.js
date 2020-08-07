@@ -1,31 +1,21 @@
 /**
  * Support for cookies
  */
-/* global phantom: true */
 'use strict';
 
-exports.version = '1.2';
+module.exports = function(phantomas) {
 
-exports.module = function(phantomas) {
-
-	var cookiesJar = phantomas.getParam('cookies', [], 'object'),
-		COOKIE_SEPARATOR = '|';
-
-	// setup cookies handling
-	function initCookies() {
-		// cookie handling via command line and config.json
-		phantom.cookiesEnabled = true;
-
-		// handles multiple cookies from config.json, and used for storing
-		// constructed cookies from command line.
-
+	function parseCookies(domain) {
 		// --cookie='bar=foo;domain=url'
 		// for multiple cookies, please use pipe-separated string (issue #667)
 		// --cookie='foo=42|test=123'
-		var cookieParam = phantomas.getParam('cookie', false, 'string');
+		const COOKIE_SEPARATOR = '|',
+			cookieParam = phantomas.getParam('cookie', false),
+			cookiesJar = [];
 
 		if (cookieParam !== false) {
 			phantomas.log('Cookies: parsing "cookie" parameter'); // issue #667
+			phantomas.log('Cookies: %j', cookieParam);
 
 			cookieParam.split(COOKIE_SEPARATOR).forEach(function(cookieParam) {
 				// Parse cookie. at minimum, need a key=value pair, and a domain.
@@ -51,44 +41,34 @@ exports.module = function(phantomas) {
 					} else {
 						cookie[frag[0]] = frag[1];
 					}
+
+					cookie.domain = domain;
 				}
 
 				// see injectCookies for validation
 				cookiesJar.push(cookie);
 			});
 		}
+
+		return cookiesJar;
 	}
 
-	// add cookies, if any, providing a domain shim
-	function injectCookies() {
-		if (cookiesJar && cookiesJar.length > 0) {
-			// @see http://nodejs.org/docs/latest/api/url.html
-			var parseUrl = phantomas.require('url').parse;
+	phantomas.on('init', async page => {
+		const url = phantomas.getParam('url'),
+			// https://nodejs.org/docs/latest/api/url.html#url_legacy_url_api
+			domain = require('url').parse(url).hostname;
 
-			cookiesJar.forEach(function(cookie) {
-				// phantomjs required attrs: *name, *value, *domain
-				if (!cookie.name || !cookie.value) {
-					throw 'this cookie is missing a name or value property: ' + JSON.stringify(cookie);
-				}
+		// domain field in cookies needs to be set
+		// https://github.com/miyakogi/pyppeteer/issues/94#issuecomment-403261859
+		const cookies = parseCookies(domain);
 
-				if (!cookie.domain) {
-					var parsed = parseUrl(phantomas.url),
-						root = (parsed.hostname || '').replace(/^www/, ''); // strip www
+		phantomas.log('Cookies: %j', cookies);
 
-					cookie.domain = root;
-					phantomas.log('Cookies: domain fallback applied - %s', root);
-				}
+		// https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagesetcookiecookies
+		if (cookies.length > 0) {
+			await page.setCookie(...cookies);
 
-				if (!phantom.addCookie(cookie)) {
-					// In PhantomJS 2.1, the addCookie function always returns false (#597).
-					//throw 'PhantomJS could not add cookie: ' + JSON.stringify(cookie);
-				}
-
-				phantomas.log('Cookies: set ' + JSON.stringify(cookie));
-			});
+			phantomas.log('Cookies: set up');
 		}
-	}
-
-	initCookies();
-	phantomas.on('pageBeforeOpen', injectCookies);
+	});
 };

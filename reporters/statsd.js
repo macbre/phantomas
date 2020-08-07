@@ -16,8 +16,7 @@
 var StatsD = require('node-statsd').StatsD;
 
 module.exports = function(results, reporterOptions, options) {
-	var client,
-		debug = require('debug')('phantomas:reporter:statsd'),
+	var debug = require('debug')('phantomas:reporter:statsd'),
 		params;
 
 	// -R statsd:<host>:<port>:<prefix>
