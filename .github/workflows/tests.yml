@@ -33,3 +33,6 @@ jobs:
         sh test/server-start.sh &
         npm test
         npm run-script lint
+
+    - name: Check that bin/phantomas.js works
+      run: ./bin/phantomas.js http://127.0.0.1:8888/ --pretty | grep "generator" -A4
