@@ -87,9 +87,9 @@ Please refer to **[/Troubleshooting.md](https://github.com/macbre/phantomas/blob
 
 ## For developers
 
-* [Project's wiki](https://github.com/macbre/phantomas/wiki)
-* Description of [events fired by phantomas core](https://github.com/macbre/phantomas/wiki/Events)
-* Description of [helper functions available to the browser in window.__phantomas](https://github.com/macbre/phantomas/wiki/Phantomas-scope)
+* [`docs/` directory](https://github.com/macbre/phantomas/blob/devel/docs)
+* Description of [events fired by phantomas core](https://github.com/macbre/phantomas/blob/devel/docs/events.md)
+* [List of **all metrics** and modules](https://github.com/macbre/phantomas/blob/devel/docs/metrics.md)
 
 ## Let's make Web a bit faster!
 
