@@ -132,22 +132,20 @@ const promise = phantomas(url, options).
 		debug('Error: %s', err);
 		process.exit(1);
 	}).
-	then(results => {
+	then(async results => {
 		debug('Calling a reporter...');
 		debug('Metrics: %j', results.getMetrics());
 
-		const reporter = require('../core/reporter')(results, options);
+		const reporter = require('../reporters/json')(results, options);
+		const res = await reporter.render();
 
-		// pass a function that reporter should call once done
-		const res = reporter.render();
-
-		needDrain = !process.stdout.write(res);
+		const needDrain = !process.stdout.write(res);
 
 		// If a stream.write(chunk) call returns false, then the 'drain' event will indicate when it is appropriate to begin writing more data to the stream.
 		// @see #596
 		if (needDrain) {
 			debug('Need to wait for stdout to be fully flushed...');
-			process.stdout.on('drain');
+			// process.stdout.on('drain');
 		}
 	}
 );
