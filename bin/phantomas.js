@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * PhantomJS-based web performance metrics collector
+ * Headless Chromium-based web performance metrics collector and monitoring tool
  *
  * Run "node phantomas.js" to get help
  *
@@ -20,7 +20,7 @@ var phantomas = require('..'),
 
 // parse options
 program
-	.usage('PhantomJS-based web performance metrics collector\n\nphantomas <url> [options]')
+	.usage('Headless Chromium-based web performance metrics collector and monitoring tool\n\nphantomas <url> [options]')
 	// mandatory
 	.header('General options')
 	.describe('url', 'Set URL to work with').string('url')
@@ -28,7 +28,7 @@ program
 	.describe('version', 'Show version number and quit').boolean('version').alias('version', 'V')
 	.describe('help', 'This help text').boolean('help').alias('help', 'h')
 	.describe('verbose', 'print debug messages to the console').boolean('verbose').alias('verbose', 'v')
-	.describe('debug', 'run PhantomJS in debug mode').default('debug')
+	.describe('debug', 'run phantomas in debug mode').default('debug')
 	.describe('modules', 'run selected modules only [moduleOne],[moduleTwo],...')
 	.describe('include-dirs', 'load modules from specified directories [dirOne],[dirTwo],...')
 	.describe('skip-modules', 'skip selected modules [moduleOne],[moduleTwo],...')
@@ -39,7 +39,7 @@ program
 	.describe('engine', '[experimental] select engine used to run the phantomas [webkit|gecko]').string('engine')
 	.describe('phone', 'force viewport and user agent of a mobile phone')
 	.describe('tablet', 'force viewport and user agent of a tablet')
-	.describe('viewport', 'phantomJS viewport dimensions [width]x[height [default: 1280x1024]')
+	.describe('viewport', 'viewport dimensions [width]x[height [default: 1280x1024]')
 	.describe('user-agent', 'provide a custom user agent')
 	.header('HTTP options')
 	.describe('auth-user', 'sets the user name used for HTTP authentication')
@@ -206,7 +206,7 @@ async.series(
 
 		// this function is called when phantomas is done with all runs
 		function doneFn() {
-			// pass error code from PhantomJS process
+			// pass error code from Chromium process
 			debug('Exiting with code #%d', err || 0);
 			process.exit(err);
 		}

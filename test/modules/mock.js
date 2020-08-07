@@ -71,7 +71,7 @@ phantomas.prototype = {
 		return this.offenders[name];
 	},
 
-	// mock core PhantomJS events
+	// mock core phantomas events
 	sendRequest: function(req) {
 		req = req || {};
 		req._requestId = req._requestId || 1;
