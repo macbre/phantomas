@@ -31,6 +31,8 @@ jobs:
     - name: Run tests
       run: |
         docker run --detach --rm -p 0.0.0.0:8888:8888 -v "$PWD":/app -w /app node:12-alpine ./test/server-start.sh
+        sleep 2
+        docker ps
 
         DEBUG=phantomas:modules:requestsMonitor* ./examples/index.js
         npm test
