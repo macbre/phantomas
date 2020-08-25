@@ -1,5 +1,5 @@
 # We need glibc distro in order to run Chrome binaries provided by puppeteer npm module
-FROM node:14-slim
+FROM node:12-slim
 
 # install Chrome binaries depedencies
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
