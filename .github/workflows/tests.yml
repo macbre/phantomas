@@ -30,7 +30,8 @@ jobs:
 
     - name: Run tests
       run: |
-        sh test/server-start.sh &
+        docker run --detach --rm -p 0.0.0.0:8888:8888 -v "$PWD":/app -w /app node:12-alpine ./test/server-start.sh
+
         DEBUG=phantomas:modules:requestsMonitor* ./examples/index.js
         npm test
         npm run-script lint
