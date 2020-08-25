@@ -31,6 +31,7 @@ jobs:
     - name: Run tests
       run: |
         sh test/server-start.sh &
+        DEBUG=phantomas:modules:requestsMonitor* ./examples/index.js
         npm test
         npm run-script lint
 
