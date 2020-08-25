@@ -1,6 +1,8 @@
 phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas)
 =========
 
+[![Foo](https://xscode.com/assets/promo-banner.svg)](https://xscode.com/macbre/phantomas)
+
 [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Requirements
