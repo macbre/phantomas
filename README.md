@@ -1,8 +1,6 @@
 phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas)
 =========
 
-[![Foo](https://xscode.com/assets/promo-banner.svg)](https://xscode.com/macbre/phantomas)
-
 [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Requirements
@@ -16,6 +14,12 @@ npm install phantomas
 ```
 
 > This will install [a recent version of Chromium](https://github.com/GoogleChrome/puppeteer#installation) supported by `puppeteer` module.
+
+## Support
+
+[![Foo](https://raw.githubusercontent.com/macbre/phantomas/devel/docs/phantomas-banner.png)](https://xscode.com/macbre/phantomas)
+
+**You can get [support for phantomas](https://xscode.com/macbre/phantomas) via xs:code.**
 
 ## Usage example
 
