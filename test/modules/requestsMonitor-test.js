@@ -139,8 +139,13 @@ vows.describe('requestMonitor').addBatch({
 		topic: sendContentType('video/webm'),
 		'isVideo is set': assertField('isVideo', true)
 	},
-	'Web font is properly detected (via MIME)': {
+	'WOFF font is properly detected (via MIME)': {
 		topic: sendContentType('application/font-woff'),
+		'isWebFont is set': assertField('isWebFont', true),
+		'isTTF is not set': assertField('isTTF', undefined)
+	},
+	'WOFF2 font is properly detected (via MIME)': {
+		topic: sendContentType('application/font-woff2'),
 		'isWebFont is set': assertField('isWebFont', true),
 		'isTTF is not set': assertField('isTTF', undefined)
 	},
