@@ -30,7 +30,7 @@ jobs:
 
     - name: Run tests
       run: |
-        ./test/server-start.sh &
+        ./test/server-start.sh
 
         npm test
         npm run-script lint
