@@ -1,5 +1,10 @@
-PORT=8888
 DIR=`dirname $0`
 
-$DIR/../node_modules/.bin/http-server $DIR/webroot -p $PORT -c 84600 --gzip --log-ip
+cd $DIR
+docker-compose -f nginx-docker-compose.yaml up -d
 
+# wait for it...
+sleep 5
+docker ps
+
+curl -svo /dev/null 0.0.0.0:8888 --compressed

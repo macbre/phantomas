@@ -1,0 +1,11 @@
+version: '3.2'
+
+services:
+  nginx:
+    image: macbre/nginx-brotli:1.18.0
+    ports:
+      - "8888:80"
+    volumes:
+      # see nginx-static.conf
+      - './webroot:/static'
+      - './nginx-static.conf:/etc/nginx/conf.d/nginx-static.conf'

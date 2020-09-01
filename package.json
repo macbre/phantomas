@@ -40,7 +40,6 @@
   "devDependencies": {
     "eslint": "^7.6.0",
     "glob": "^7.1.6",
-    "http-server": "^0.12.3",
     "js-beautify": "^1.11.0",
     "mockery": "^2.0.0",
     "vows": "^0.8.3"

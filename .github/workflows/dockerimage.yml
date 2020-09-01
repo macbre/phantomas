@@ -17,4 +17,6 @@ jobs:
 
     - name: Run tests inside the Docker container
       run: |
-        docker run ${{ github.repository }} ./run_tests.sh
+        ./test/server-start.sh
+
+        docker run --network=host ${{ github.repository }} npm t
