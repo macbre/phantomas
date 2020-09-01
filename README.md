@@ -107,7 +107,7 @@ Please refer to **[/Troubleshooting.md](https://github.com/macbre/phantomas/blob
 
 ## Metrics
 
-> Please refer to [`/docs/metrics.md` file]((https://github.com/macbre/phantomas/blob/devel/docs/metrics.md)) for **a full, up-to-date list of all available modules and metrics** that phantomas emits.
+> Please refer to [`/docs/metrics.md` file](https://github.com/macbre/phantomas/blob/devel/docs/metrics.md) for **a full, up-to-date list of all available modules and metrics** that phantomas emits.
 
 ## For developers
 
