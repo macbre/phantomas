@@ -380,8 +380,6 @@
     imageSize: 342
     requests: 2
   offenders:
-    htmlCount:
-      - { url: 'http://127.0.0.1:8888/after-onload.html', size: 582 }
     imageCount:
       - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
 
@@ -391,12 +389,12 @@
     "wait-for-network-idle": true
   metrics:
     imageCount: 2
-    imageSize: 210032
+    imageSize: 21032
     requests: 3
   offenders:
     imageCount:
       - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
-      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20690 }
 
 # lazy-loadable-images.html (#494)
 - url: "/lazy-loadable-images.html"
@@ -488,10 +486,10 @@
 - url: "/headers.html"
   metrics:
     requests: 2
-    headersCount: 20
+    headersCount: 24
     headersSentCount: 4
-    headersRecvCount: 16
-    headersRecvSize: 540
+    headersRecvCount: 20
+    headersRecvSize: 571
 #    headersBiggerThanContent: 1
 #  offenders:
 #    headersBiggerThanContent:
@@ -504,24 +502,24 @@
     cachingTooShort: 1
   offenders:
     cachingTooShort:
-     - { url: 'http://127.0.0.1:8888/static/mdn.png', ttl: 84600 }
+     - { url: 'http://127.0.0.1:8888/static/mdn.png', ttl: 86400 }
 
 # requestsStats
 - url: "/headers.html"
   metrics:
     requests: 2
     bodySize: 1065  # uncompressed content of all responses (without headers)
-    contentLength: 1643 # transfered bytes
-    smallestResponse: 330  # headers + body size
-    biggestResponse: 1313
+    contentLength: 1198 # transfered bytes
+    smallestResponse: 342  # headers + body size
+    biggestResponse: 856
   offenders:
     requests:
-      - { url: 'http://127.0.0.1:8888/headers.html', type: 'html', size: 1313 }
-      - { url: 'http://127.0.0.1:8888/static/blank.gif', type: 'image', size: 330 }
+      - { url: 'http://127.0.0.1:8888/headers.html', type: 'html', size: 895 }
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', type: 'image', size: 342 }
     smallestResponse:
-      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
     biggestResponse:
-      - { url: 'http://127.0.0.1:8888/headers.html', size: 1313 }
+      - { url: 'http://127.0.0.1:8888/headers.html', size: 895 }
 
 # iframes
 - url: "/iframe.html"
