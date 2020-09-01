@@ -28,19 +28,26 @@ const phantomas = require('phantomas'),
     promise = phantomas('http://example.com/');
 
 promise.
-	then(results => {
-		console.log('Metrics', results.getMetrics());
-		console.log('Offenders', results.getAllOffenders());
+    then(results => {
+        console.log('Metrics', results.getMetrics());
+        console.log('Offenders', results.getAllOffenders());
     }).
     catch(res => {
-		console.error(res);
+        console.error(res);
     });
 
 // events handling
 promise.on('recv', response => {
-	console.log('Response: %s %s [%s]', response.method, response.url, response.contentType);
+    console.log('Response: %s %s [%s]', response.method, response.url, response.contentType);
+});
+
+// including the custom one emitted by phantomas modules
+promise.on('domQuery', (type, query) => {
+        console.log('DOM query by %s - "%s"', type, query);
 });
 ```
+
+Or run `./examples/index.js`.
 
 ### Development version
 
@@ -50,6 +57,17 @@ To get the latest development version of phantomas (and install all required dep
 git clone git@github.com:macbre/phantomas.git
 npm install
 ```
+
+#### Running tests
+
+First you need to start a local nginx container that will serve static assets used by integration tests suite. Then simply run `npm t`:
+
+```
+./test/server-start.sh
+npm t
+```
+
+All pull requests that are filed for this repository will have tests run via GitHub Actions.
 
 ## Having problems?
 
@@ -89,7 +107,7 @@ Please refer to **[/Troubleshooting.md](https://github.com/macbre/phantomas/blob
 
 ## Metrics
 
-> Please refer to `/docs/metrics.md` file for **a full, up-to-date list of all available modules and metrics** that phantomas emits.
+> Please refer to [`/docs/metrics.md` file]((https://github.com/macbre/phantomas/blob/devel/docs/metrics.md)) for **a full, up-to-date list of all available modules and metrics** that phantomas emits.
 
 ## For developers
 
