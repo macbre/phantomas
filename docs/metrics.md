@@ -256,7 +256,7 @@ number of CSS responses (number, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/static/style.css",
-  "size": 308
+  "size": 320
 }
 ```
 
@@ -271,7 +271,7 @@ number of HTML responses (number, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/dom-operations.html",
-  "size": 2385
+  "size": 946
 }
 ```
 
@@ -286,7 +286,7 @@ number of image responses (number, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/static/blank.gif",
-  "size": 330
+  "size": 342
 }
 ```
 
@@ -301,7 +301,7 @@ number of JS responses (number, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/static/jquery-2.1.1.min.js",
-  "size": 29730
+  "size": 29734
 }
 ```
 
@@ -316,7 +316,7 @@ number of JSON responses (number, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/foo.json",
-  "size": 333
+  "size": 345
 }
 ```
 
@@ -399,7 +399,7 @@ number of responses with too short (less than a week) caching time (number, with
 ```json
 {
   "url": "http://127.0.0.1:8888/static/mdn.png",
-  "ttl": 84600
+  "ttl": 86400
 }
 ```
 
@@ -752,14 +752,6 @@ number of JS globals variables with falsy value (number, with offenders)
 
 number of responses with headers part bigger than the response body (number, with offenders)
 
-```json
-{
-  "url": "http://127.0.0.1:8888/static/blank.gif",
-  "contentSize": 43,
-  "headersSize": 287
-}
-```
-
 ##### `headersCount`
 
 number of requests and responses headers (number)
@@ -1001,9 +993,9 @@ number of gzipped HTTP responses (number, with offenders)
 
 ```json
 {
-  "url": "http://127.0.0.1:8888/static/jquery-2.1.1.min.js",
-  "bodySize": 84245,
-  "transferedSize": 29415
+  "url": "http://127.0.0.1:8888/dom-operations.html",
+  "bodySize": 2094,
+  "transferedSize": 946
 }
 ```
 
@@ -1043,7 +1035,7 @@ total number of HTTP requests made (number, with offenders)
 {
   "url": "http://127.0.0.1:8888/headers.html",
   "type": "html",
-  "size": 1313
+  "size": 856
 }
 ```
 
@@ -1063,7 +1055,7 @@ the size of the biggest response (bytes, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/headers.html",
-  "size": 1313
+  "size": 856
 }
 ```
 
@@ -1094,7 +1086,7 @@ the size of the smallest response (bytes, with offenders)
 ```json
 {
   "url": "http://127.0.0.1:8888/static/blank.gif",
-  "size": 330
+  "size": 342
 }
 ```
 
@@ -1150,13 +1142,6 @@ number of HTTP requests it took to make the first paint (number)
 
 number of static assets that were not gzipped (number, with offenders)
 
-```json
-{
-  "url": "http://127.0.0.1:8888/https-fonts.html",
-  "contentType": "text/html"
-}
-```
-
 ##### `assetsWithCookies`
 
 number of static assets requested from domains with cookie set (number, with offenders)
@@ -1183,7 +1168,7 @@ number of CSS assets smaller than 2 KiB that can be inlined or merged (number, w
 ```json
 {
   "url": "http://127.0.0.1:8888/static/style.css",
-  "size": 308
+  "size": 320
 }
 ```
 
@@ -1194,7 +1179,7 @@ number of images smaller than 2 KiB that can be base64 encoded (number, with off
 ```json
 {
   "url": "http://127.0.0.1:8888/static/blank.gif",
-  "size": 330
+  "size": 342
 }
 ```
 
