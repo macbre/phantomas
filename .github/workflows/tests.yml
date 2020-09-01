@@ -31,9 +31,6 @@ jobs:
     - name: Run tests
       run: |
         ./test/server-start.sh &
-        sleep 5
-        docker ps
-        curl -svo /dev/null 0.0.0.0:8888
 
         npm test
         npm run-script lint

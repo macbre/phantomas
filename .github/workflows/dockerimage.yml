@@ -18,8 +18,5 @@ jobs:
     - name: Run tests inside the Docker container
       run: |
         ./test/server-start.sh &
-        sleep 5
-        docker ps
-        curl -svo /dev/null 0.0.0.0:8888
 
         docker run --network=host ${{ github.repository }} npm t
