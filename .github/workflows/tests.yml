@@ -30,7 +30,7 @@ jobs:
 
     - name: Run tests
       run: |
-        docker run --detach --rm -p 0.0.0.0:8888:8888 -v "$PWD":/app -w /app node:12-alpine ./test/server-start.sh
+        ./test/server-start.sh &
         sleep 5
         docker ps
         curl -svo /dev/null 0.0.0.0:8888
