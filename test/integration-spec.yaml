@@ -13,13 +13,13 @@
     cookie: "bar=foo;domain=url"
   metrics:
     requests: 3
-    gzipRequests: 1
+    gzipRequests: 2
     htmlCount: 1
-    htmlSize: 2385
+    htmlSize: 946
     cssCount: 1
-    cssSize: 308
+    cssSize: 320
     jsCount: 1
-    jsSize: 29730  # compressed
+    jsSize: 29734  # compressed
     domains: 1
     DOMqueries: 20
     DOMqueriesById: 6
@@ -33,13 +33,14 @@
 
   offenders:
     gzipRequests:
-      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29730 }
+      - {url: 'http://127.0.0.1:8888/dom-operations.html', bodySize: 2094, transferedSize: 946 }
+      - {url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', bodySize: 84245, transferedSize: 29734 }
     htmlCount:
-      - { url: 'http://127.0.0.1:8888/dom-operations.html', size: 2385 }
+      - { url: 'http://127.0.0.1:8888/dom-operations.html', size: 946 }
     cssCount:
-      - { url: 'http://127.0.0.1:8888/static/style.css', size: 308 }
+      - { url: 'http://127.0.0.1:8888/static/style.css', size: 320 }
     jsCount:
-      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', size: 29730 }
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', size: 29734 }
 
     DOMqueriesById:
       - { id: 'foo', node: '#document' }
@@ -174,7 +175,7 @@
 # jQuery and events (#440 / #451)
 - url: "/jquery.html"
   metrics:
-    gzipRequests: 1
+    gzipRequests: 2
     jQueryVersion: "2.1.1"
     jQueryOnDOMReadyFunctions: 1
     jQueryWindowOnLoadFunctions: 1
@@ -185,7 +186,8 @@
     eventsScrollBound: 2
   offenders:
     gzipRequests:
-      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29730, bodySize: 84245 }
+      - { url: 'http://127.0.0.1:8888/jquery.html', transferedSize: 761, bodySize: 1027 }
+      - { url: 'http://127.0.0.1:8888/static/jquery-2.1.1.min.js', transferedSize: 29734, bodySize: 84245 }
     eventsDispatched:
       - { eventType: 'click', path: 'body > div#foo > span.bar' }
     eventsBound:
@@ -375,13 +377,13 @@
   label: "/after-onload.html"
   metrics:
     imageCount: 1
-    imageSize: 330
+    imageSize: 342
     requests: 2
   offenders:
     htmlCount:
-      - { url: 'http://127.0.0.1:8888/after-onload.html', size: 658 }
+      - { url: 'http://127.0.0.1:8888/after-onload.html', size: 582 }
     imageCount:
-      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
 
 - url: "/after-onload.html"
   label: "/after-onload.html (with --wait-for-network-idle)"
@@ -389,11 +391,11 @@
     "wait-for-network-idle": true
   metrics:
     imageCount: 2
-    imageSize: 21009
+    imageSize: 210032
     requests: 3
   offenders:
     imageCount:
-      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
       - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
 
 # lazy-loadable-images.html (#494)
