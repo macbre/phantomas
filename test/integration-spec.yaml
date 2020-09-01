@@ -514,12 +514,12 @@
     biggestResponse: 856
   offenders:
     requests:
-      - { url: 'http://127.0.0.1:8888/headers.html', type: 'html', size: 895 }
+      - { url: 'http://127.0.0.1:8888/headers.html', type: 'html', size: 856 }
       - { url: 'http://127.0.0.1:8888/static/blank.gif', type: 'image', size: 342 }
     smallestResponse:
       - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
     biggestResponse:
-      - { url: 'http://127.0.0.1:8888/headers.html', size: 895 }
+      - { url: 'http://127.0.0.1:8888/headers.html', size: 856 }
 
 # iframes
 - url: "/iframe.html"
@@ -538,8 +538,8 @@
     otherCount: 1  # with HTTP 404 response we can't determine the type
   offenders:
     requests:
-      - { url: 'http://127.0.0.1:8888/not-found.html', type: 'html', size: 362 }
-      - { url: 'http://127.0.0.1:8888/not_found/foo.js', type: 'other', size: 130 }
+      - { url: 'http://127.0.0.1:8888/not-found.html', type: 'html', size: 380 }
+      - { url: 'http://127.0.0.1:8888/not_found/foo.js', type: 'html', size: 177 }
     notFound:
       - 'http://127.0.0.1:8888/not_found/foo.js'
 
@@ -564,12 +564,12 @@
     ajaxRequests: 1
     consoleMessages: 2
     jsonCount: 1
-    jsonSize: 333
+    jsonSize: 345
   offenders:
     ajaxRequests:
       - { url: '/foo.json', method: 'GET' }
     jsonCount:
-      - { url: 'http://127.0.0.1:8888/foo.json', size: 333 }
+      - { url: 'http://127.0.0.1:8888/foo.json', size: 345 }
     consoleMessages:
       - 'log:["Ajax fetched"]'
       - 'log:["Page fully loaded"]'
@@ -591,7 +591,7 @@
     imageCount: 1
   offenders:
     imageCount:
-      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20679 }
+      - { url: 'http://127.0.0.1:8888/static/mdn.png', size: 20690 }
     consoleMessages:
       - 'log:["Lazy loading /static/mdn.png"]'
 
@@ -646,9 +646,6 @@
       - { domain: '127.0.0.1', requests: 1 }
       - { domain: 'fonts.googleapis.com', requests: 1 }
       - { domain: 'fonts.gstatic.com', requests: 1 }
-    assetsNotGzipped:
-      # CSS response is compressed using "brotli"
-      - { url: 'http://127.0.0.1:8888/https-fonts.html', contentType: 'text/html' }
 
 # staticAssets
 - url: "/assets.html"
@@ -656,9 +653,9 @@
     assetsWithQueryString:
       - { url: 'http://127.0.0.1:8888/static/mdn.png?cb=123', contentType: 'image/png' }
     smallImages:
-      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 330 }
+      - { url: 'http://127.0.0.1:8888/static/blank.gif', size: 342 }
     smallCssFiles:
-      - { url: 'http://127.0.0.1:8888/static/style.css', size: 308 }
+      - { url: 'http://127.0.0.1:8888/static/style.css', size: 320 }
 
 # authentication
 - url: "https://httpbin.org/basic-auth/foo/bar"
