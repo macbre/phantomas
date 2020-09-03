@@ -1,0 +1,33 @@
+<body>
+	<!-- 404 -->
+	<script src="/static/foo.min.js"></script>
+
+	<!-- jQuery -->
+	<!-- older one + multiple copies -->
+	<script src="//code.jquery.com/jquery-1.4.4.js"></script>
+	<script src="/static/jquery-1.4.4.min.js"></script>
+
+	<script src="/static/jquery-2.1.1.min.js"></script>
+
+	<!-- images -->
+	<img id="img" class="lazy" src="/static/mdn.png" width=250>
+	<img class="lazy" src="/static/mdn-no-cache.png" width=250>
+	<img id="img" class="lazy" src="/static/mdn-short-cache.png" width=250>
+
+	<div class="hidden" style="display: none">
+		Lorem ipsum
+	</div>
+
+	<script>
+		var global_variable_foo = 42;
+
+		$.ajax('/foo.json').then((resp) => {
+			console.log('ajax loaded');
+			console.dir(resp);
+		});
+
+		var img = $('.lazy');
+
+		unknown_function_called();
+	</script>
+</body>

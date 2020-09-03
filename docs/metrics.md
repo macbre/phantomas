@@ -388,9 +388,17 @@ number of cache passes (number, with offenders)
 
 number of responses with caching disabled (max-age=0) (number, with offenders)
 
+```json
+"http://0.0.0.0:8888/static/mdn-no-cache.png"
+```
+
 ##### `cachingNotSpecified`
 
 number of responses with no caching header sent (no Cache-Control header) (number, with offenders)
+
+```json
+"http://0.0.0.0:8888/static/jquery-1.4.4.min.js"
+```
 
 ##### `cachingTooShort`
 
@@ -407,9 +415,24 @@ number of responses with too short (less than a week) caching time (number, with
 
 number of responses with a long TTL that can benefit from Cache-Control: immutable (number, with offenders)
 
+```json
+{
+  "url": "http://code.jquery.com/jquery-1.4.4.js",
+  "ttl": 315360000
+}
+```
+
 ##### `oldCachingHeaders`
 
 number of responses with old, HTTP 1.0 caching headers (Expires and Pragma) (number, with offenders)
+
+```json
+{
+  "url": "http://0.0.0.0:8888/_make_docs.html",
+  "headerName": "expires",
+  "value": "Fri, 04 Sep 2020 19:05:48 GMT"
+}
+```
 
 
 ## [console](https://github.com/macbre/phantomas/tree/devel/modules/console/console.js)
@@ -467,6 +490,10 @@ the page height (px)
 
 maximum level on nesting of HTML element node (number, with offenders)
 
+```json
+"body > script[0]"
+```
+
 ##### `DOMelementsCount`
 
 total number of HTML element nodes (number)
@@ -474,6 +501,13 @@ total number of HTML element nodes (number)
 ##### `DOMidDuplicated`
 
 number of duplicated IDs found in DOM (number, with offenders)
+
+```json
+{
+  "id": "img",
+  "count": 2
+}
+```
 
 ##### `bodyHTMLSize`
 
@@ -511,6 +545,10 @@ number of <img> nodes that have images scaled down in HTML (number, with offende
 ##### `imagesWithoutDimensions`
 
 number of <img> nodes without both width and height attribute (number, with offenders)
+
+```json
+"%s <%s>"
+```
 
 ##### `nodesWithInlineCSS`
 
@@ -632,6 +670,13 @@ number of document.getElementById calls (number, with offenders)
 
 number of document.querySelector(All) calls (number, with offenders)
 
+```json
+{
+  "selector": ".TEST",
+  "node": "div"
+}
+```
+
 ##### `DOMqueriesByTagName`
 
 number of document.getElementsByTagName calls (number, with offenders)
@@ -657,6 +702,14 @@ number of DOM queries called more than once (number, with offenders)
 ##### `DOMqueriesWithoutResults`
 
 number of DOM queries that returned nothing (number, with offenders)
+
+```json
+{
+  "query": "#script1599159948406",
+  "node": "#document",
+  "function": "getElementById"
+}
+```
 
 
 ## [domains](https://github.com/macbre/phantomas/tree/devel/modules/domains/domains.js)
@@ -832,6 +885,10 @@ number of jQuery event triggers (number, with offenders)
 
 number of functions bound to onDOMReady event (number, with offenders)
 
+```json
+"HTMLDocument.DOMContentLoaded (http://code.jquery.com/jquery-1.4.4.js:875:10)"
+```
+
 ##### `jQuerySizzleCalls`
 
 number of calls to Sizzle (including those that will be resolved using querySelectorAll) (number, with offenders)
@@ -903,6 +960,10 @@ number of calls to eval (either direct or via setTimeout / setInterval) (number,
 ##### `jsErrors`
 
 number of JavaScript errors (number, with offenders)
+
+```json
+"ReferenceError: unknown_function_called is not defined -     at http://0.0.0.0:8888/_make_docs.html:31:3"
+```
 
 
 ## [keepAlive](https://github.com/macbre/phantomas/tree/devel/modules/keepAlive/keepAlive.js)
@@ -1048,6 +1109,13 @@ total number of HTTP requests made (number, with offenders)
 
 the time to the first byte of the slowest response (ms, with offenders)
 
+```json
+{
+  "url": "http://code.jquery.com/jquery-1.4.4.js",
+  "timeToFirstByte": 56.247
+}
+```
+
 ##### `biggestResponse`
 
 the size of the biggest response (bytes, with offenders)
@@ -1063,6 +1131,13 @@ the size of the biggest response (bytes, with offenders)
 
 the time to the last byte of the fastest response (ms, with offenders)
 
+```json
+{
+  "url": "http://0.0.0.0:8888/static/mdn.png",
+  "timeToLastByte": 0.0169750000059139
+}
+```
+
 ##### `medianLatency`
 
 median value of time to the first byte for all responses (ms, with offenders)
@@ -1075,9 +1150,23 @@ median value of time to the last byte for all responses (ms, with offenders)
 
 the time to the last byte of the slowest response (ms, with offenders)
 
+```json
+{
+  "url": "http://code.jquery.com/jquery-1.4.4.js",
+  "timeToLastByte": 0.141459999998915
+}
+```
+
 ##### `smallestLatency`
 
 the time to the first byte of the fastest response (ms, with offenders)
+
+```json
+{
+  "url": "http://0.0.0.0:8888/foo.json",
+  "timeToFirstByte": 0.24500000000000055
+}
+```
 
 ##### `smallestResponse`
 
@@ -1142,6 +1231,13 @@ number of HTTP requests it took to make the first paint (number)
 
 number of static assets that were not gzipped (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/jquery-1.4.4.min.js",
+  "contentType": "application/javascript"
+}
+```
+
 ##### `assetsWithCookies`
 
 number of static assets requested from domains with cookie set (number, with offenders)
@@ -1200,9 +1296,17 @@ time it took to receive the last byte of the first CSS (ms, with offenders)
 
 time it took to receive the last byte of the first image (ms, with offenders)
 
+```json
+"http://0.0.0.0:8888/static/mdn.png received in NaN ms"
+```
+
 ##### `timeToFirstJs`
 
 time it took to receive the last byte of the first JS (ms, with offenders)
+
+```json
+"http://0.0.0.0:8888/static/jquery-1.4.4.min.js received in NaN ms"
+```
 
 
 ## [timeToFirstByte](https://github.com/macbre/phantomas/tree/devel/core/modules/timeToFirstByte/timeToFirstByte.js)
