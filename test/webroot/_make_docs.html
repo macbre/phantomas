@@ -1,0 +1,25 @@
+<body>
+	<!-- 404 -->
+	<script src="/static/foo.min.js"></script>
+
+	<!-- jQuery -->
+	<!-- older one + multiple copies -->
+	<script src="//code.jquery.com/jquery-1.4.4.js"></script>
+	<script src="/static/jquery-1.4.4.min.js"></script>
+
+	<script src="/static/jquery-2.1.1.min.js"></script>
+
+	<!-- images -->
+	<img class="lazy" data-src="/static/mdn.png" width=250>
+	<img class="lazy" data-src="/static/mdn-no-cache.png" width=250>
+	<img class="lazy" data-src="/static/mdn-short-cache.png" width=250>
+
+	<script>
+		var global_variable_foo = 42;
+
+		$.ajax('/foo.json').then((resp) => {
+			console.log('ajax loaded');
+			console.dir(resp);
+		});
+	</script>
+</body>

@@ -1142,6 +1142,13 @@ number of HTTP requests it took to make the first paint (number)
 
 number of static assets that were not gzipped (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/jquery-1.4.4.min.js",
+  "contentType": "application/javascript"
+}
+```
+
 ##### `assetsWithCookies`
 
 number of static assets requested from domains with cookie set (number, with offenders)
