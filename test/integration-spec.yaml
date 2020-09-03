@@ -279,6 +279,10 @@
     jQueryVersion: "1.4.4"
     jQuerySizzleCalls: 0
     jQueryEventTriggers: 0
+  offenders:
+    assetsNotGzipped:
+      # this JS response is not gzipped deliberately, refer to nginx-static.conf
+      - { url: 'http://127.0.0.1:8888/static/jquery-1.4.4.min.js', contentType: 'application/javascript' }
 
 # --wait-for-selector
 #- url: "/"
