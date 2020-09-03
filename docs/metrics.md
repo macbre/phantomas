@@ -388,6 +388,10 @@ number of cache passes (number, with offenders)
 
 number of responses with caching disabled (max-age=0) (number, with offenders)
 
+```json
+"http://0.0.0.0:8888/static/mdn-no-cache.png"
+```
+
 ##### `cachingNotSpecified`
 
 number of responses with no caching header sent (no Cache-Control header) (number, with offenders)
@@ -426,7 +430,7 @@ number of responses with old, HTTP 1.0 caching headers (Expires and Pragma) (num
 {
   "url": "http://0.0.0.0:8888/_make_docs.html",
   "headerName": "expires",
-  "value": "Fri, 04 Sep 2020 18:54:24 GMT"
+  "value": "Fri, 04 Sep 2020 19:05:48 GMT"
 }
 ```
 
@@ -497,6 +501,13 @@ total number of HTML element nodes (number)
 ##### `DOMidDuplicated`
 
 number of duplicated IDs found in DOM (number, with offenders)
+
+```json
+{
+  "id": "img",
+  "count": 2
+}
+```
 
 ##### `bodyHTMLSize`
 
@@ -694,7 +705,7 @@ number of DOM queries that returned nothing (number, with offenders)
 
 ```json
 {
-  "query": "#script1599159264627",
+  "query": "#script1599159948406",
   "node": "#document",
   "function": "getElementById"
 }
@@ -951,7 +962,7 @@ number of calls to eval (either direct or via setTimeout / setInterval) (number,
 number of JavaScript errors (number, with offenders)
 
 ```json
-"ReferenceError: unknown_function_called is not defined -     at http://0.0.0.0:8888/_make_docs.html:25:3"
+"ReferenceError: unknown_function_called is not defined -     at http://0.0.0.0:8888/_make_docs.html:31:3"
 ```
 
 
@@ -1101,7 +1112,7 @@ the time to the first byte of the slowest response (ms, with offenders)
 ```json
 {
   "url": "http://code.jquery.com/jquery-1.4.4.js",
-  "timeToFirstByte": 44.483999999999995
+  "timeToFirstByte": 56.247
 }
 ```
 
@@ -1122,8 +1133,8 @@ the time to the last byte of the fastest response (ms, with offenders)
 
 ```json
 {
-  "url": "http://0.0.0.0:8888/static/jquery-2.1.1.min.js",
-  "timeToLastByte": 0.013810999997076578
+  "url": "http://0.0.0.0:8888/static/mdn.png",
+  "timeToLastByte": 0.0169750000059139
 }
 ```
 
@@ -1142,7 +1153,7 @@ the time to the last byte of the slowest response (ms, with offenders)
 ```json
 {
   "url": "http://code.jquery.com/jquery-1.4.4.js",
-  "timeToLastByte": 0.14400900000327965
+  "timeToLastByte": 0.141459999998915
 }
 ```
 
@@ -1152,8 +1163,8 @@ the time to the first byte of the fastest response (ms, with offenders)
 
 ```json
 {
-  "url": "http://0.0.0.0:8888/static/jquery-1.4.4.min.js",
-  "timeToFirstByte": 0.17999999999999994
+  "url": "http://0.0.0.0:8888/foo.json",
+  "timeToFirstByte": 0.24500000000000055
 }
 ```
 
@@ -1285,12 +1296,16 @@ time it took to receive the last byte of the first CSS (ms, with offenders)
 
 time it took to receive the last byte of the first image (ms, with offenders)
 
+```json
+"http://0.0.0.0:8888/static/mdn.png received in NaN ms"
+```
+
 ##### `timeToFirstJs`
 
 time it took to receive the last byte of the first JS (ms, with offenders)
 
 ```json
-"http://0.0.0.0:8888/static/jquery-2.1.1.min.js received in NaN ms"
+"http://0.0.0.0:8888/static/jquery-1.4.4.min.js received in NaN ms"
 ```
 
 

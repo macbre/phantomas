@@ -10,9 +10,13 @@
 	<script src="/static/jquery-2.1.1.min.js"></script>
 
 	<!-- images -->
-	<img class="lazy" data-src="/static/mdn.png" width=250>
-	<img class="lazy" data-src="/static/mdn-no-cache.png" width=250>
-	<img class="lazy" data-src="/static/mdn-short-cache.png" width=250>
+	<img id="img" class="lazy" src="/static/mdn.png" width=250>
+	<img class="lazy" src="/static/mdn-no-cache.png" width=250>
+	<img id="img" class="lazy" src="/static/mdn-short-cache.png" width=250>
+
+	<div class="hidden" style="display: none">
+		Lorem ipsum
+	</div>
 
 	<script>
 		var global_variable_foo = 42;
@@ -21,6 +25,8 @@
 			console.log('ajax loaded');
 			console.dir(resp);
 		});
+
+		var img = $('.lazy');
 
 		unknown_function_called();
 	</script>

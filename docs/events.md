@@ -145,8 +145,8 @@ Arguments passed to the event:
     "mixedContentType": "none",
     "initialPriority": "VeryHigh",
     "referrerPolicy": "no-referrer-when-downgrade",
-    "_requestId": "44313333F946E2485EF4C77910721BEA",
-    "_timestamp": 36942.597286,
+    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
+    "_timestamp": 37626.385811,
     "_type": "Document",
     "_initiator": {
       "type": "other"
@@ -171,8 +171,8 @@ Arguments passed to the event:
     "mixedContentType": "none",
     "initialPriority": "VeryHigh",
     "referrerPolicy": "no-referrer-when-downgrade",
-    "_requestId": "44313333F946E2485EF4C77910721BEA",
-    "_timestamp": 36942.597286,
+    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
+    "_timestamp": 37626.385811,
     "_type": "Document",
     "_initiator": {
       "type": "other"
@@ -193,17 +193,17 @@ Arguments passed to the event:
     "statusText": "OK",
     "headers": {
       "Server": "nginx",
-      "Date": "Thu, 03 Sep 2020 18:54:24 GMT",
+      "Date": "Thu, 03 Sep 2020 19:05:48 GMT",
       "Content-Type": "text/html",
-      "Last-Modified": "Thu, 03 Sep 2020 18:54:21 GMT",
+      "Last-Modified": "Thu, 03 Sep 2020 19:03:57 GMT",
       "Transfer-Encoding": "chunked",
       "Connection": "keep-alive",
-      "ETag": "W/\"5f513bdd-2b0\"",
-      "Expires": "Fri, 04 Sep 2020 18:54:24 GMT",
+      "ETag": "W/\"5f513e1d-30f\"",
+      "Expires": "Fri, 04 Sep 2020 19:05:48 GMT",
       "Cache-Control": "max-age=86400",
       "Content-Encoding": "gzip"
     },
-    "headersText": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Thu, 03 Sep 2020 18:54:24 GMT\r\nContent-Type: text/html\r\nLast-Modified: Thu, 03 Sep 2020 18:54:21 GMT\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nETag: W/\"5f513bdd-2b0\"\r\nExpires: Fri, 04 Sep 2020 18:54:24 GMT\r\nCache-Control: max-age=86400\r\nContent-Encoding: gzip\r\n\r\n",
+    "headersText": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Thu, 03 Sep 2020 19:05:48 GMT\r\nContent-Type: text/html\r\nLast-Modified: Thu, 03 Sep 2020 19:03:57 GMT\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nETag: W/\"5f513e1d-30f\"\r\nExpires: Fri, 04 Sep 2020 19:05:48 GMT\r\nCache-Control: max-age=86400\r\nContent-Encoding: gzip\r\n\r\n",
     "mimeType": "text/html",
     "requestHeaders": {
       "Host": "0.0.0.0:8888",
@@ -224,34 +224,34 @@ Arguments passed to the event:
     "fromDiskCache": false,
     "fromServiceWorker": false,
     "fromPrefetchCache": false,
-    "encodedDataLength": 656,
+    "encodedDataLength": 720,
     "timing": {
-      "requestTime": 36942.622307,
+      "requestTime": 37626.406329,
       "proxyStart": -1,
       "proxyEnd": -1,
-      "dnsStart": 1.15,
-      "dnsEnd": 1.164,
-      "connectStart": 1.164,
-      "connectEnd": 1.439,
+      "dnsStart": 0.626,
+      "dnsEnd": 0.632,
+      "connectStart": 0.632,
+      "connectEnd": 0.755,
       "sslStart": -1,
       "sslEnd": -1,
       "workerStart": -1,
       "workerReady": -1,
       "workerFetchStart": -1,
       "workerRespondWithSettled": -1,
-      "sendStart": 1.576,
-      "sendEnd": 1.687,
+      "sendStart": 0.806,
+      "sendEnd": 0.849,
       "pushStart": 0,
       "pushEnd": 0,
-      "receiveHeadersEnd": 2.433
+      "receiveHeadersEnd": 1.232
     },
-    "responseTime": 1599159264422.292,
+    "responseTime": 1599159948205.253,
     "protocol": "http/1.1",
     "securityState": "insecure",
-    "_requestId": "44313333F946E2485EF4C77910721BEA",
-    "dataLength": 688,
+    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
+    "dataLength": 783,
     "chunks": 1,
-    "_timestamp": 36942.625934
+    "_timestamp": 37626.40802
   }
 ]
 ```
@@ -263,31 +263,31 @@ Arguments passed to the event:
 ```json
 [
   {
-    "id": "44313333F946E2485EF4C77910721BEA",
+    "id": "0B271D0BC8685F24DCFC465B8A138FED",
     "url": "http://0.0.0.0:8888/_make_docs.html",
     "method": "GET",
     "headers": {
       "server": "nginx",
-      "date": "Thu, 03 Sep 2020 18:54:24 GMT",
+      "date": "Thu, 03 Sep 2020 19:05:48 GMT",
       "content-type": "text/html",
-      "last-modified": "Thu, 03 Sep 2020 18:54:21 GMT",
+      "last-modified": "Thu, 03 Sep 2020 19:03:57 GMT",
       "transfer-encoding": "chunked",
       "connection": "keep-alive",
-      "etag": "W/\"5f513bdd-2b0\"",
-      "expires": "Fri, 04 Sep 2020 18:54:24 GMT",
+      "etag": "W/\"5f513e1d-30f\"",
+      "expires": "Fri, 04 Sep 2020 19:05:48 GMT",
       "cache-control": "max-age=86400",
       "content-encoding": "gzip"
     },
-    "bodySize": 688,
-    "transferedSize": 656,
-    "responseSize": 656,
+    "bodySize": 783,
+    "transferedSize": 720,
+    "responseSize": 720,
     "type": "html",
     "protocol": "http",
     "domain": "0.0.0.0",
     "query": null,
-    "stalled": 1.576,
-    "timeToFirstByte": 0.7459999999999998,
-    "timeToLastByte": 0.028648000006796792,
+    "stalled": 0.806,
+    "timeToFirstByte": 0.383,
+    "timeToLastByte": 0.022209000002476387,
     "headersSize": 293,
     "contentType": "text/html",
     "isHTML": true,
@@ -301,17 +301,17 @@ Arguments passed to the event:
     "statusText": "OK",
     "headers": {
       "Server": "nginx",
-      "Date": "Thu, 03 Sep 2020 18:54:24 GMT",
+      "Date": "Thu, 03 Sep 2020 19:05:48 GMT",
       "Content-Type": "text/html",
-      "Last-Modified": "Thu, 03 Sep 2020 18:54:21 GMT",
+      "Last-Modified": "Thu, 03 Sep 2020 19:03:57 GMT",
       "Transfer-Encoding": "chunked",
       "Connection": "keep-alive",
-      "ETag": "W/\"5f513bdd-2b0\"",
-      "Expires": "Fri, 04 Sep 2020 18:54:24 GMT",
+      "ETag": "W/\"5f513e1d-30f\"",
+      "Expires": "Fri, 04 Sep 2020 19:05:48 GMT",
       "Cache-Control": "max-age=86400",
       "Content-Encoding": "gzip"
     },
-    "headersText": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Thu, 03 Sep 2020 18:54:24 GMT\r\nContent-Type: text/html\r\nLast-Modified: Thu, 03 Sep 2020 18:54:21 GMT\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nETag: W/\"5f513bdd-2b0\"\r\nExpires: Fri, 04 Sep 2020 18:54:24 GMT\r\nCache-Control: max-age=86400\r\nContent-Encoding: gzip\r\n\r\n",
+    "headersText": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Thu, 03 Sep 2020 19:05:48 GMT\r\nContent-Type: text/html\r\nLast-Modified: Thu, 03 Sep 2020 19:03:57 GMT\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nETag: W/\"5f513e1d-30f\"\r\nExpires: Fri, 04 Sep 2020 19:05:48 GMT\r\nCache-Control: max-age=86400\r\nContent-Encoding: gzip\r\n\r\n",
     "mimeType": "text/html",
     "requestHeaders": {
       "Host": "0.0.0.0:8888",
@@ -332,34 +332,34 @@ Arguments passed to the event:
     "fromDiskCache": false,
     "fromServiceWorker": false,
     "fromPrefetchCache": false,
-    "encodedDataLength": 656,
+    "encodedDataLength": 720,
     "timing": {
-      "requestTime": 36942.622307,
+      "requestTime": 37626.406329,
       "proxyStart": -1,
       "proxyEnd": -1,
-      "dnsStart": 1.15,
-      "dnsEnd": 1.164,
-      "connectStart": 1.164,
-      "connectEnd": 1.439,
+      "dnsStart": 0.626,
+      "dnsEnd": 0.632,
+      "connectStart": 0.632,
+      "connectEnd": 0.755,
       "sslStart": -1,
       "sslEnd": -1,
       "workerStart": -1,
       "workerReady": -1,
       "workerFetchStart": -1,
       "workerRespondWithSettled": -1,
-      "sendStart": 1.576,
-      "sendEnd": 1.687,
+      "sendStart": 0.806,
+      "sendEnd": 0.849,
       "pushStart": 0,
       "pushEnd": 0,
-      "receiveHeadersEnd": 2.433
+      "receiveHeadersEnd": 1.232
     },
-    "responseTime": 1599159264422.292,
+    "responseTime": 1599159948205.253,
     "protocol": "http/1.1",
     "securityState": "insecure",
-    "_requestId": "44313333F946E2485EF4C77910721BEA",
-    "dataLength": 688,
+    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
+    "dataLength": 783,
     "chunks": 1,
-    "_timestamp": 36942.625934
+    "_timestamp": 37626.40802
   }
 ]
 ```
@@ -389,8 +389,18 @@ Arguments passed to the event:
 [
   "ReferenceError: unknown_function_called is not defined",
   [
-    "    at http://0.0.0.0:8888/_make_docs.html:25:3"
+    "    at http://0.0.0.0:8888/_make_docs.html:31:3"
   ]
+]
+```
+
+### milestone
+
+Arguments passed to the event:
+
+```json
+[
+  "domInteractive"
 ]
 ```
 
@@ -401,18 +411,18 @@ Arguments passed to the event:
 ```json
 [
   {
-    "Timestamp": 36942.916316,
+    "Timestamp": 37626.694852,
     "Documents": 3,
     "Frames": 1,
     "JSEventListeners": 22,
-    "Nodes": 207,
+    "Nodes": 210,
     "LayoutCount": 13,
     "RecalcStyleCount": 14,
-    "LayoutDuration": 0.004754,
-    "RecalcStyleDuration": 0.001125,
-    "ScriptDuration": 0.058053,
-    "TaskDuration": 0.139957,
-    "JSHeapUsedSize": 3054448,
+    "LayoutDuration": 0.00499,
+    "RecalcStyleDuration": 0.000911,
+    "ScriptDuration": 0.067885,
+    "TaskDuration": 0.141758,
+    "JSHeapUsedSize": 3166096,
     "JSHeapTotalSize": 5652480
   }
 ]
