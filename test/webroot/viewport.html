@@ -1,0 +1,9 @@
+<body>
+    <script>
+        (phantomas => {
+            phantomas.setMetric('userAgent', navigator.userAgent);
+            phantomas.setMetric('viewport', window.innerWidth + 'x' + window.innerHeight);
+            phantomas.setMetric('devicePixelRatio', window.devicePixelRatio);
+        })(window.__phantomas);
+    </script>
+</body>
