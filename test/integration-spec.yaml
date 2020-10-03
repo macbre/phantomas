@@ -611,6 +611,7 @@
   metrics:
     userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36'
     viewport: '360x640'
+    devicePixelRatio: 3
 
 - url: "/devices.html"
   label: "/devices.html (with --phone-landscape)"
@@ -619,6 +620,7 @@
   metrics:
     userAgent: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36'
     viewport: '640x360'
+    devicePixelRatio: 3
 
 - url: "/devices.html"
   label: "/devices.html (with --tablet)"
@@ -627,6 +629,7 @@
   metrics:
     userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
     viewport: '800x1280'
+    devicePixelRatio: 2
 
 - url: "/devices.html"
   label: "/devices.html (with --tablet-landscape)"
@@ -635,6 +638,7 @@
   metrics:
     userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
     viewport: '1280x800'
+    devicePixelRatio: 2
 
 # viewport
 - url: "/devices.html"
@@ -643,6 +647,7 @@
     viewport: '1100x700'
   metrics:
     viewport: '1100x700'
+    devicePixelRatio: 1
 
 # viewport
 - url: "/devices.html"
