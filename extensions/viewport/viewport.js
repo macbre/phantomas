@@ -11,26 +11,26 @@
 
 module.exports = function(phantomas) {
 
-	const viewport = phantomas.getParam('viewport');
+    const viewport = phantomas.getParam('viewport');
 
-	if (viewport === undefined) {
-		phantomas.log('No viewport option specified, will use the device default viewport');
-		return;
-	}
+    if (viewport === undefined) {
+        phantomas.log('No viewport option specified, will use the device default viewport');
+        return;
+    }
 
-	phantomas.log('Viewport: %s provided', viewport);
+    phantomas.log('Viewport: %s provided', viewport);
 
-	const viewportValues = viewport.split('x');
-	const options = {
-		width: viewportValues[0],
-		height: viewportValues[1],
-		deviceScaleFactor: viewportValues[2] || 1
-	};
+    const viewportValues = viewport.split('x');
+    const options = {
+        width: parseInt(viewportValues[0], 10),
+        height: parseInt(viewportValues[1], 10),
+        deviceScaleFactor: parseFloat(viewportValues[2]) || 1
+    };
 
-	phantomas.on('init', async page => {
+    phantomas.on('init', async page => {
 
-		// @see https://github.com/puppeteer/puppeteer/blob/v1.11.0/docs/api.md#pagesetviewportviewport
-		await page.setViewport(options);
-		phantomas.log('page.setViewport() called with options %j', options);
-	});
+        // @see https://github.com/puppeteer/puppeteer/blob/v1.11.0/docs/api.md#pagesetviewportviewport
+        await page.setViewport(options);
+        phantomas.log('page.setViewport() called with options %j', options);
+    });
 };
