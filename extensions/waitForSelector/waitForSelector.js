@@ -18,6 +18,6 @@ module.exports = function(phantomas) {
 	phantomas.on('beforeClose', page => {
 		phantomas.log('Waiting for "%s"...', selector);
 
-		return page.waitFor(selector => !!document.querySelector(selector), {}, selector);
+		return page.waitForSelector(selector);
 	});
 };
