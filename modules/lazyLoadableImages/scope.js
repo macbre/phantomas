@@ -2,7 +2,7 @@
 
     phantomas.spyEnabled(false, 'setting up which images can be lazy-loaded analysis');
 
-    window.addEventListener('load', () => {
+    window.addEventListener('beforeunload', () => {
         phantomas.spyEnabled(false, 'analyzing which images can be lazy-loaded');
 
         var images = document.body.getElementsByTagName('img'),
