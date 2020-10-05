@@ -636,6 +636,33 @@
     userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
     viewport: '1280x800'
 
+# viewport
+- url: "/viewport.html"
+  label: "/viewport.html (with --viewport 1100x700)"
+  options:
+    viewport: '1100x700'
+  metrics:
+    viewport: '1100x700'
+    devicePixelRatio: 1
+
+# viewport
+- url: "/viewport.html"
+  label: "/viewport.html (with --viewport 1100x700x2)"
+  options:
+    viewport: '1100x700x2'
+  metrics:
+    viewport: '1100x700'
+    devicePixelRatio: 2
+
+# viewport
+- url: "/viewport.html"
+  label: "/viewport.html (with --viewport 1100x700x2.5)"
+  options:
+    viewport: '1100x700x2.5'
+  metrics:
+    viewport: '1100x700'
+    devicePixelRatio: 2.5
+
 # https and webfonts
 - url: "/https-fonts.html"
   options:
