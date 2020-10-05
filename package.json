@@ -40,15 +40,14 @@
   "devDependencies": {
     "eslint": "^7.6.0",
     "glob": "^7.1.6",
-    "js-beautify": "^1.11.0",
     "mockery": "^2.0.0",
+    "prettier": "2.1.2",
     "vows": "^0.8.3"
   },
   "scripts": {
     "test": "vows --spec",
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "eslint core/ modules/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
-    "beautify": "js-beautify -r bin/phantomas.js core/*.js examples/*.js extensions/*/*.js lib/*.js lib/engines/*.js lib/metadata/*.js modules/*/*.js reporters/*.js scripts/*.js test/*.js test/*/*.js",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js"
   }
