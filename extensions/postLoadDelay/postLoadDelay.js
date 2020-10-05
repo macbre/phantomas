@@ -17,6 +17,6 @@ module.exports = function(phantomas) {
 	phantomas.on('beforeClose', page => {
 		phantomas.log('Sleeping for %d seconds', delay);
 
-		return page.waitFor(delay * 1000);
+		return page.waitForTimeout(delay * 1000);
 	});
 };
