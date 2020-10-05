@@ -2,7 +2,7 @@
 
     phantomas.spyEnabled(false, 'setting up which images can be lazy-loaded analysis');
 
-    window.addEventListener('load', () => {
+    window.addEventListener('beforeunload', () => {
         phantomas.spyEnabled(false, 'analyzing which images can be lazy-loaded');
 
         var images = document.body.getElementsByTagName('img'),
@@ -19,15 +19,15 @@
         for (i = 0; i < len; i++) {
             // @see https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
             offset = images[i].getBoundingClientRect().top;
-            src = images[i].getAttribute('src');
+
+            // use currentSrc instead of src to handle pictures or srcset syntaxes
+            // @see https://stackoverflow.com/questions/35586728/detect-used-srcset-or-picture-tag-source-with-javascript
+            src = images[i].currentSrc;
 
             // ignore base64-encoded images
             if (src === null || src === '' || /^data:/.test(src)) {
                 continue;
             }
-
-            // this will give us a full URL to the image
-            src = images[i].src;
 
             path = phantomas.getDOMPath(images[i]);
 
