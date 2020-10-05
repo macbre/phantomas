@@ -49,6 +49,7 @@
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "eslint core/ modules/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
-    "make-docs": "DEBUG=docs node lib/metadata/make_docs.js"
+    "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",
+    "prettier": "npx prettier --write ."
   }
 }
