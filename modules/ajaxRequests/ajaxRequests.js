@@ -1,9 +1,9 @@
 /**
  * Analyzes AJAX requests
  */
-'use strict';
+"use strict";
 
-module.exports = function(phantomas) {
-	phantomas.setMetric('ajaxRequests'); // @desc number of AJAX requests @offenders
-	phantomas.setMetric('synchronousXHR'); // @desc number of synchronous XMLHttpRequest @offenders
+module.exports = function (phantomas) {
+  phantomas.setMetric("ajaxRequests"); // @desc number of AJAX requests @offenders
+  phantomas.setMetric("synchronousXHR"); // @desc number of synchronous XMLHttpRequest @offenders
 };
