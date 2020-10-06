@@ -10,11 +10,10 @@ Please fork from ``devel`` branch when proposing changes to phantomas.
 * follow JSHint guidelines
 * write / update unit tests when necessary
 * update README.md when necessary
-* make sure the code validates (``npm run-script lint``) and unit tests pass (``./test/server-start.sh`` and ``npm test``)
+* make sure the code lints (``npm run lint``), validates (``npm run lint``) and unit tests pass (``./test/server-start.sh`` and ``npm test``)
 * register new dependencies in ``package.json`` (``npm install --save ...`` will be happy to assist you)
-* use tabs for indentations
-* run ``npm run-script beautify`` to format the code
 * make a pull request
+* CI checks will validate and test your code automatically
 
 ## Adding a metric
 
