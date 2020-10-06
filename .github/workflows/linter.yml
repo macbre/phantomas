@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       env:
         # Tell Puppeteer to skip installing Chrome, not really needed for linting
-        ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       run: npm ci
 
     - name: Run prettier
