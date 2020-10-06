@@ -1,0 +1,24 @@
+on:
+  push:
+    branches: [ devel ]
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run prettier
+      run: npx prettier --check .
+      
+    - name: Run eslint
+      run: npm run lint
