@@ -1,3 +1,5 @@
+name: Linters
+
 on:
   push:
     branches: [ devel ]
