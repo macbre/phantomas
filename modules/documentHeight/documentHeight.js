@@ -1,8 +1,8 @@
 /**
  * Measure document height
  */
-'use strict';
+"use strict";
 
-module.exports = function(phantomas) {
-	phantomas.setMetric('documentHeight'); // @desc the page height [px]
+module.exports = function (phantomas) {
+  phantomas.setMetric("documentHeight"); // @desc the page height [px]
 };

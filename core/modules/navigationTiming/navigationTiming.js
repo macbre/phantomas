@@ -7,7 +7,7 @@
  *
  * Code taken from windowPerformance module
  */
-'use strict';
+"use strict";
 
 // no-op, see scope.js
 module.exports = () => {};

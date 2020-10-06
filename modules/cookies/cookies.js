@@ -1,20 +1,20 @@
 /**
  * cookies metrics
  */
-'use strict';
+"use strict";
 
-module.exports = function(phantomas) {
-	// monitor cookies in HTTP headers
-	//var Collection = require('../../lib/collection'),
-		//cookiesDomains = new Collection();
+module.exports = function (phantomas) {
+  // monitor cookies in HTTP headers
+  //var Collection = require('../../lib/collection'),
+  //cookiesDomains = new Collection();
 
-	phantomas.setMetric('cookiesSent'); // @desc length of cookies sent in HTTP requests @unreliable
-	phantomas.setMetric('cookiesRecv'); // @desc length of cookies received in HTTP responses
-	phantomas.setMetric('domainsWithCookies'); // @desc number of domains with cookies set
-	phantomas.setMetric('documentCookiesLength'); // @desc length of document.cookie
-	phantomas.setMetric('documentCookiesCount'); //@desc number of cookies in document.cookie
+  phantomas.setMetric("cookiesSent"); // @desc length of cookies sent in HTTP requests @unreliable
+  phantomas.setMetric("cookiesRecv"); // @desc length of cookies received in HTTP responses
+  phantomas.setMetric("domainsWithCookies"); // @desc number of domains with cookies set
+  phantomas.setMetric("documentCookiesLength"); // @desc length of document.cookie
+  phantomas.setMetric("documentCookiesCount"); //@desc number of cookies in document.cookie
 
-	/**
+  /**
 
 	phantomas.on('send', function(entry, res) {
 		res.headers.forEach(function(header) {
