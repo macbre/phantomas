@@ -327,6 +327,6 @@
   phantomas.log(
     "phantomas page scope initialized for <%s> (is an iframe: %s)",
     window.location.toString(),
-    window.parent == window
+    window.parent !== window
   );
 })(window);
