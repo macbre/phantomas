@@ -324,5 +324,9 @@
   phantomas.getDOMPath = getDOMPath;
   phantomas.nodeRunner = nodeRunner;
 
-  phantomas.log("phantomas page scope initialized");
+  phantomas.log(
+    "phantomas page scope initialized for <%s> (is an iframe: %s)",
+    window.location.toString(),
+    window.parent !== window
+  );
 })(window);
