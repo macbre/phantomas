@@ -1,4 +1,10 @@
 (function(phantomas) {
+
+    // Prevent events from being sent from an iframe. Only from the main document.
+    if (window.parent !== window || window.location.href === 'about:blank') {
+        return;
+    }
+
     function emit(eventName) {
         phantomas.log('Navigation Timing milestone: %s', eventName);
         phantomas.emit('milestone', eventName); // @desc Page loading milestone has been reached: domInteractive, domReady and domComplete
