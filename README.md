@@ -1,4 +1,4 @@
-phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas)
+phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 =========
 
 [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)

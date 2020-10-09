@@ -12,6 +12,12 @@
 		footer {
 			position: relative;
 		}
+
+		picture {
+			height: 100px;
+		}
+
+
 	</style>
 </head>
 <body>
@@ -30,5 +36,14 @@
 		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D"><!-- ignore base64-encoded images -->
 		<img src="/static/example.svg" height="50" width="50">
 		<img lzld-src="/static/lazyloaded.jpg" width=60 height=40 /><!-- ignore images with no source -->
+		<br>
+		<!-- pick the right source in a picture tag -->
+		<picture>
+			<source srcset="/static/75x120.jpg" media="(max-width: 99999px)">
+ 			<img src="/static/75x50.jpg">
+		</picture>
+		<br>
+		<!-- pick the right source if a srcset is specified -->		
+		<img src="/static/75x50.jpg" srcset="/static/75x50.jpg 75w, /static/150x100.jpg 150w" sizes="150px" width="150" height="100"/>
 	</footer>
 </body>

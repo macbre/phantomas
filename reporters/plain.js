@@ -4,153 +4,170 @@
  * Options:
  *  no-color - disable ANSI colors
  */
-'use strict';
+"use strict";
 
-var colors = require('../lib/ansicolors'),
-	metrics = require('../lib/index').metadata.metrics,
-	fold = require('travis-fold'),
-	rpad = require('../core/pads').rpad,
-	OK = '✓',
-	ERR = '✗';
+var colors = require("../lib/ansicolors"),
+  metrics = require("../lib/index").metadata.metrics,
+  fold = require("travis-fold"),
+  rpad = require("../core/pads").rpad,
+  OK = "✓",
+  ERR = "✗";
 
 function getMetricUnit(metricName) {
-	var entry = metrics[metricName];
-	return (typeof entry !== 'undefined' && entry.unit !== 'number' && entry.unit !== 'string') ? entry.unit : false;
+  var entry = metrics[metricName];
+  return typeof entry !== "undefined" &&
+    entry.unit !== "number" &&
+    entry.unit !== "string"
+    ? entry.unit
+    : false;
 }
 
-module.exports = function(results, reporterOptions) {
-	var isMultiple = Array.isArray(results),
-		noColor = (reporterOptions['no-color'] === true);
+module.exports = function (results, reporterOptions) {
+  var isMultiple = Array.isArray(results),
+    noColor = reporterOptions["no-color"] === true;
 
-	function formatSingleRunResults(results) {
-		var res = [];
+  function formatSingleRunResults(results) {
+    var res = [];
 
-		if (noColor) {
-			colors.disable();
-		}
+    if (noColor) {
+      colors.disable();
+    }
 
-		// header
-		res.push(results.getGenerator() + ' metrics for <' + results.getUrl() + '>:');
-		res.push('');
+    // header
+    res.push(
+      results.getGenerator() + " metrics for <" + results.getUrl() + ">:"
+    );
+    res.push("");
 
-		// metrics
-		fold.pushStart(res, 'metrics');
+    // metrics
+    fold.pushStart(res, "metrics");
 
-		results.getMetricsNames().forEach(function(metric) {
-			var line = ' ' + metric + ': ' + results.getMetric(metric),
-				unit = getMetricUnit(metric);
+    results.getMetricsNames().forEach(function (metric) {
+      var line = " " + metric + ": " + results.getMetric(metric),
+        unit = getMetricUnit(metric);
 
-			if (unit !== false) {
-				line += ' ' + colors.brightBlack(unit);
-			}
+      if (unit !== false) {
+        line += " " + colors.brightBlack(unit);
+      }
 
-			// check asserts
-			if (results.hasAssertion(metric)) {
-				if (results.assert(metric)) {
-					line = colors.brightGreen(OK + line);
-				} else {
-					line = rpad(ERR + line, 50) + 'Assertion failed! Expected to be less than or equal: ' + results.getAssertion(metric);
-					line = colors.brightRed(line);
-				}
-			} else {
-				line = '*' + line;
-			}
+      // check asserts
+      if (results.hasAssertion(metric)) {
+        if (results.assert(metric)) {
+          line = colors.brightGreen(OK + line);
+        } else {
+          line =
+            rpad(ERR + line, 50) +
+            "Assertion failed! Expected to be less than or equal: " +
+            results.getAssertion(metric);
+          line = colors.brightRed(line);
+        }
+      } else {
+        line = "*" + line;
+      }
 
-			res.push(line);
-		});
+      res.push(line);
+    });
 
-		fold.pushEnd(res, 'metrics');
-		res.push('');
+    fold.pushEnd(res, "metrics");
+    res.push("");
 
-		// offenders
-		var offenders = results.getAllOffenders();
-		fold.pushStart(res, 'offenders');
+    // offenders
+    var offenders = results.getAllOffenders();
+    fold.pushStart(res, "offenders");
 
-		Object.keys(offenders).forEach(function(metric) {
-			var LIMIT = 50,
-				offenders = results.getOffenders(metric),
-				len = offenders.length;
+    Object.keys(offenders).forEach(function (metric) {
+      var LIMIT = 50,
+        offenders = results.getOffenders(metric),
+        len = offenders.length;
 
-			res.push(colors.brightGreen('Offenders for ' + metric + ' (' + results.getMetric(metric) + '):'));
+      res.push(
+        colors.brightGreen(
+          "Offenders for " + metric + " (" + results.getMetric(metric) + "):"
+        )
+      );
 
-			// limit the ammount of offenders emitted
-			offenders.slice(0, LIMIT).forEach(function(msg) {
-				res.push(' * ' + msg);
-			});
+      // limit the ammount of offenders emitted
+      offenders.slice(0, LIMIT).forEach(function (msg) {
+        res.push(" * " + msg);
+      });
 
-			if (len > LIMIT) {
-				res.push(colors.brightBlack('(' + (len - LIMIT) + ' more)'));
-			}
+      if (len > LIMIT) {
+        res.push(colors.brightBlack("(" + (len - LIMIT) + " more)"));
+      }
 
-			res.push('');
-		});
+      res.push("");
+    });
 
-		fold.pushEnd(res, 'offenders');
+    fold.pushEnd(res, "offenders");
 
-		return fold.wrap(
-			results.getUrl(),
-			res.join('\n').trim()
-		) + '\n';
-	}
+    return fold.wrap(results.getUrl(), res.join("\n").trim()) + "\n";
+  }
 
-	function formatMultipleRunResults(results) {
-		var AsciiTable = require('ascii-table'),
-			format = require('util').format,
-			stats = new(require('../lib/stats'))(),
-			runs = results.length,
-			table;
+  function formatMultipleRunResults(results) {
+    var AsciiTable = require("ascii-table"),
+      format = require("util").format,
+      stats = new (require("../lib/stats"))(),
+      runs = results.length,
+      table;
 
-		// table title and heading
-		table = new AsciiTable();
-		table.setTitle(format('Report from %d run(s) for <%s> using %s', runs, results[0].getUrl(), results[0].getGenerator()));
-		table.setTitleAlignLeft();
+    // table title and heading
+    table = new AsciiTable();
+    table.setTitle(
+      format(
+        "Report from %d run(s) for <%s> using %s",
+        runs,
+        results[0].getUrl(),
+        results[0].getGenerator()
+      )
+    );
+    table.setTitleAlignLeft();
 
-		var heading = [];
-		heading.push(AsciiTable.alignCenter('Metric', 30));
+    var heading = [];
+    heading.push(AsciiTable.alignCenter("Metric", 30));
 
-		stats.getAvailableStats().forEach(function(name) {
-			heading.push(AsciiTable.alignCenter(name, 12));
-		});
+    stats.getAvailableStats().forEach(function (name) {
+      heading.push(AsciiTable.alignCenter(name, 12));
+    });
 
-		table.setHeading(heading);
+    table.setHeading(heading);
 
-		// metrics stats
-		for (var i = 0; i < runs; i++) {
-			stats.pushMetrics(results[i].getMetrics());
-		}
+    // metrics stats
+    for (var i = 0; i < runs; i++) {
+      stats.pushMetrics(results[i].getMetrics());
+    }
 
-		// generate rows (one for each metric)
-		stats.getMetrics().forEach(function(metricName) {
-			var row = [],
-				metricStats = stats.getMetricStats(metricName),
-				unit = getMetricUnit(metricName),
-				heading = metricName;
+    // generate rows (one for each metric)
+    stats.getMetrics().forEach(function (metricName) {
+      var row = [],
+        metricStats = stats.getMetricStats(metricName),
+        unit = getMetricUnit(metricName),
+        heading = metricName;
 
-			if (unit !== false) {
-				heading += ' [' + unit + ']';
-			}
+      if (unit !== false) {
+        heading += " [" + unit + "]";
+      }
 
-			row.push(heading);
+      row.push(heading);
 
-			Object.keys(metricStats).forEach(function(stat) {
-				row.push(metricStats[stat]);
-			});
+      Object.keys(metricStats).forEach(function (stat) {
+        row.push(metricStats[stat]);
+      });
 
-			table.addRow(row);
-		});
+      table.addRow(row);
+    });
 
-		return table.toString() + "\n";
-	}
+    return table.toString() + "\n";
+  }
 
-	// public API
-	return {
-		handlesMultiple: true,
-		render: function() {
-			if (!isMultiple) {
-				return formatSingleRunResults(results);
-			} else {
-				return formatMultipleRunResults(results);
-			}
-		}
-	};
+  // public API
+  return {
+    handlesMultiple: true,
+    render: function () {
+      if (!isMultiple) {
+        return formatSingleRunResults(results);
+      } else {
+        return formatMultipleRunResults(results);
+      }
+    },
+  };
 };

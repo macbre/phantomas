@@ -4,46 +4,46 @@
  * Options:
  *  pretty - pretty print the JSON
  */
-'use strict';
+"use strict";
 
-module.exports = function(results, reporterOptions) {
-	function formatSingleRunResults(results) {
-		var res = {
-			generator: results.getGenerator(),
-			url: results.getUrl(),
-			metrics: results.getMetrics(),
-			offenders: results.getAllOffenders(),
-			asserts: false
-		};
+module.exports = function (results, reporterOptions) {
+  function formatSingleRunResults(results) {
+    var res = {
+      generator: results.getGenerator(),
+      url: results.getUrl(),
+      metrics: results.getMetrics(),
+      offenders: results.getAllOffenders(),
+      asserts: false,
+    };
 
-		// add asserts
-		var asserts = results.getAsserts(),
-			failedAsserts;
+    // add asserts
+    var asserts = results.getAsserts(),
+      failedAsserts;
 
-		if (Object.keys(asserts).length > 0) {
-			failedAsserts = results.getFailedAsserts();
+    if (Object.keys(asserts).length > 0) {
+      failedAsserts = results.getFailedAsserts();
 
-			res.asserts = {
-				rules: asserts,
-				failedCount: failedAsserts.length,
-				failedAsserts: failedAsserts,
-			};
-		}
+      res.asserts = {
+        rules: asserts,
+        failedCount: failedAsserts.length,
+        failedAsserts: failedAsserts,
+      };
+    }
 
-		return res;
-	}
+    return res;
+  }
 
-	// public API
-	return {
-		render: async function() {
-			const res = formatSingleRunResults(results);
+  // public API
+  return {
+    render: async function () {
+      const res = formatSingleRunResults(results);
 
-			// -R json:pretty
-			if (reporterOptions.pretty === true) {
-				return JSON.stringify(res, null, 2);
-			} else {
-				return JSON.stringify(res);
-			}
-		}
-	};
+      // -R json:pretty
+      if (reporterOptions.pretty === true) {
+        return JSON.stringify(res, null, 2);
+      } else {
+        return JSON.stringify(res);
+      }
+    },
+  };
 };

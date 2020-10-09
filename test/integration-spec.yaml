@@ -339,8 +339,6 @@
     domainsToDomContentLoaded: 2
     requestsToDomComplete: 3
     domainsToDomComplete: 2
-    # test are made using a HTTP server running locally, it should be pretty fast to connect to it
-    performanceTimingDNS: 0
   offenders:
     domainsToDomContentLoaded:
       - { domain: '127.0.0.1', requests: 2 }
@@ -403,11 +401,13 @@
 # lazy-loadable-images.html (#494)
 - url: "/lazy-loadable-images.html"
   metrics:
-    lazyLoadableImagesBelowTheFold: 2
+    lazyLoadableImagesBelowTheFold: 4
   offenders:
     lazyLoadableImagesBelowTheFold:
       - { url: 'http://127.0.0.1:8888/static/blank.gif', node: 'body > img#dot', offset: 900 }
       - { url: 'http://127.0.0.1:8888/static/example.svg', node: 'body > footer[2] > img[3]', offset: 1526 }
+      - { url: 'http://127.0.0.1:8888/static/75x120.jpg', node: 'body > footer[2] > picture[6] > img[1]', offset: 1580 }
+      - { url: 'http://127.0.0.1:8888/static/150x100.jpg', node: 'body > footer[2] > img[8]', offset: 1700 }
 
 # JS globals (#482)
 - url: "/js-globals.html"
@@ -635,6 +635,33 @@
   metrics:
     userAgent: 'Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true'
     viewport: '1280x800'
+
+# viewport
+- url: "/viewport.html"
+  label: "/viewport.html (with --viewport 1100x700)"
+  options:
+    viewport: '1100x700'
+  metrics:
+    viewport: '1100x700'
+    devicePixelRatio: 1
+
+# viewport
+- url: "/viewport.html"
+  label: "/viewport.html (with --viewport 1100x700x2)"
+  options:
+    viewport: '1100x700x2'
+  metrics:
+    viewport: '1100x700'
+    devicePixelRatio: 2
+
+# viewport
+- url: "/viewport.html"
+  label: "/viewport.html (with --viewport 1100x700x2.5)"
+  options:
+    viewport: '1100x700x2.5'
+  metrics:
+    viewport: '1100x700'
+    devicePixelRatio: 2.5
 
 # https and webfonts
 - url: "/https-fonts.html"

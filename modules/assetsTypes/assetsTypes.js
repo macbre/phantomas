@@ -20,29 +20,39 @@
  * setMetric('otherCount') @desc number of other responses @offenders
  * setMetric('otherSize')  @desc size of other responses (with compression)
  */
-'use strict';
+"use strict";
 
 module.exports = (phantomas) => {
-	['html', 'css', 'js', 'json', 'image', 'video', 'webfont', 'base64', 'other'].forEach(key => {
-		phantomas.setMetric(key + 'Count');
-		phantomas.setMetric(key + 'Size');
-	});
+  [
+    "html",
+    "css",
+    "js",
+    "json",
+    "image",
+    "video",
+    "webfont",
+    "base64",
+    "other",
+  ].forEach((key) => {
+    phantomas.setMetric(key + "Count");
+    phantomas.setMetric(key + "Size");
+  });
 
-	phantomas.on('recv', entry => {
-		// that's the response size as reported by Chrome's dev tools (headers + compressed body)
-		var size = entry.responseSize;
+  phantomas.on("recv", (entry) => {
+    // that's the response size as reported by Chrome's dev tools (headers + compressed body)
+    var size = entry.responseSize;
 
-		phantomas.incrMetric(entry.type + 'Count');
-		phantomas.incrMetric(entry.type + 'Size', size);
+    phantomas.incrMetric(entry.type + "Count");
+    phantomas.incrMetric(entry.type + "Size", size);
 
-		phantomas.addOffender(entry.type + 'Count', {
-			url: entry.url,
-			size: size
-		});
-	});
+    phantomas.addOffender(entry.type + "Count", {
+      url: entry.url,
+      size: size,
+    });
+  });
 
-	phantomas.on('base64recv', entry => {
-		phantomas.incrMetric('base64Count');
-		phantomas.incrMetric('base64Size', entry.bodySize);
-	});
+  phantomas.on("base64recv", (entry) => {
+    phantomas.incrMetric("base64Count");
+    phantomas.incrMetric("base64Size", entry.bodySize);
+  });
 };

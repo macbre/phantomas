@@ -8,34 +8,34 @@
  *
  * ./screenshot.js <URL>
  */
-var phantomas = require('..'),
-	run,
-	url = process.argv[2];
+var phantomas = require(".."),
+  run,
+  url = process.argv[2];
 
-if (typeof url !== 'string') {
-	console.log('Usage:\n\t./screenshot.js <URL>');
-	process.exit(1);
+if (typeof url !== "string") {
+  console.log("Usage:\n\t./screenshot.js <URL>");
+  process.exit(1);
 }
 
 run = phantomas(url, {
-	'screenshot': true
-	//'screenshot': __dirname + '/screenshot.png'
+  screenshot: true,
+  //'screenshot': __dirname + '/screenshot.png'
 });
 
 // handle the promise
-run.
-then(function(res) {
-	console.log('Done with exit code: %d', res.code);
-}).
-fail(function(res) {
-	console.log('Exit code #%d', res.code);
-	process.exit(res.code);
-}).
-progress(function(progress) {
-	console.log('Loading progress: %d%', progress * 100);
-}).
-done();
+run
+  .then(function (res) {
+    console.log("Done with exit code: %d", res.code);
+  })
+  .fail(function (res) {
+    console.log("Exit code #%d", res.code);
+    process.exit(res.code);
+  })
+  .progress(function (progress) {
+    console.log("Loading progress: %d%", progress * 100);
+  })
+  .done();
 
-run.on('screenshot', function(path, time) {
-	console.log('Screenshot saved to %s (rendered in %d ms)', path, time);
+run.on("screenshot", function (path, time) {
+  console.log("Screenshot saved to %s (rendered in %d ms)", path, time);
 });

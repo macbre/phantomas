@@ -39,36 +39,38 @@
  * setMetric('cssNotMinified') @desc [number] set to 1 if the provided CSS is not minified @optional @offenders
  * setMetric('cssSelectorLengthAvg') @desc [number] average length of selector (e.g. for ``.foo .bar, #test div > span { color: red }`` will be set as 2.5) @optional @offenders
  */
-'use strict';
+"use strict";
 
-module.exports = function(phantomas) {
-	if (phantomas.getParam('analyze-css') !== true) {
-		phantomas.log('To enable CSS in-depth metrics please run phantomas with --analyze-css option');
-		return;
-	}
+module.exports = function (phantomas) {
+  if (phantomas.getParam("analyze-css") !== true) {
+    phantomas.log(
+      "To enable CSS in-depth metrics please run phantomas with --analyze-css option"
+    );
+    return;
+  }
 
-	// load analyze-css module
-	// https://www.npmjs.com/package/analyze-css
-	const analyzer = require('analyze-css');
-	phantomas.log('Using version %s', analyzer.version);
+  // load analyze-css module
+  // https://www.npmjs.com/package/analyze-css
+  const analyzer = require("analyze-css");
+  phantomas.log("Using version %s", analyzer.version);
 
-	phantomas.setMetric('cssParsingErrors'); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
-	phantomas.setMetric('cssInlineStyles'); // @desc number of inline styles @optional
+  phantomas.setMetric("cssParsingErrors"); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
+  phantomas.setMetric("cssInlineStyles"); // @desc number of inline styles @optional
 
-	function ucfirst(str) {
-		// http://kevin.vanzonneveld.net
-		// +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-		// +   bugfixed by: Onno Marsman
-		// +   improved by: Brett Zamir (http://brett-zamir.me)
-		// *     example 1: ucfirst('kevin van zonneveld');
-		// *     returns 1: 'Kevin van zonneveld'
-		str += '';
-		var f = str.charAt(0).toUpperCase();
-		return f + str.substr(1);
-	}
+  function ucfirst(str) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // +   improved by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: ucfirst('kevin van zonneveld');
+    // *     returns 1: 'Kevin van zonneveld'
+    str += "";
+    var f = str.charAt(0).toUpperCase();
+    return f + str.substr(1);
+  }
 
-	function analyzeCss(css, context, callback) {
-		/**
+  function analyzeCss(css, context, callback) {
+    /**
 		// force JSON output format
 		options.push('--json');
 
@@ -90,112 +92,127 @@ module.exports = function(phantomas) {
 		}
 		**/
 
-		// https://www.npmjs.com/package/analyze-css#commonjs-module
-		var options = {};
+    // https://www.npmjs.com/package/analyze-css#commonjs-module
+    var options = {};
 
-		new analyzer(css, options, function(err, results) {
-			var offenderSrc = context || '[inline CSS]';
+    new analyzer(css, options, function (err, results) {
+      var offenderSrc = context || "[inline CSS]";
 
-			if (err !== null) {
-				phantomas.log('analyzeCss: sub-process failed! - %s', err);
+      if (err !== null) {
+        phantomas.log("analyzeCss: sub-process failed! - %s", err);
 
-				// report failed CSS parsing (issue #494(
-				var offender = offenderSrc;
-				if (err.message) { // Error object returned
-					if (err.message.indexOf('Unable to parse JSON string') > 0) {
-						offender += ' (analyzeCss output error)';
-					}
-				} else { // Error string returned (stderror)
-					if (err.indexOf('CSS parsing failed') > 0 || err.indexOf('is an invalid expression') > 0) {
-						offender += ' (' + err.trim() + ')';
-					} else if (err.indexOf('Empty CSS was provided') > 0) {
-						offender += ' (Empty CSS was provided)';
-					}
-				}
+        // report failed CSS parsing (issue #494(
+        var offender = offenderSrc;
+        if (err.message) {
+          // Error object returned
+          if (err.message.indexOf("Unable to parse JSON string") > 0) {
+            offender += " (analyzeCss output error)";
+          }
+        } else {
+          // Error string returned (stderror)
+          if (
+            err.indexOf("CSS parsing failed") > 0 ||
+            err.indexOf("is an invalid expression") > 0
+          ) {
+            offender += " (" + err.trim() + ")";
+          } else if (err.indexOf("Empty CSS was provided") > 0) {
+            offender += " (Empty CSS was provided)";
+          }
+        }
 
-				phantomas.incrMetric('cssParsingErrors');
-				phantomas.addOffender('cssParsingErrors', offender);
+        phantomas.incrMetric("cssParsingErrors");
+        phantomas.addOffender("cssParsingErrors", offender);
 
-				callback();
-				return;
-			}
+        callback();
+        return;
+      }
 
-			phantomas.log('Got results for %s from %s', offenderSrc, results.generator);
+      phantomas.log(
+        "Got results for %s from %s",
+        offenderSrc,
+        results.generator
+      );
 
-			var metrics = results.metrics || {},
-				offenders = results.offenders || {};
+      var metrics = results.metrics || {},
+        offenders = results.offenders || {};
 
-			Object.keys(metrics).forEach(function(metric) {
-				var metricPrefixed = 'css' + ucfirst(metric);
+      Object.keys(metrics).forEach(function (metric) {
+        var metricPrefixed = "css" + ucfirst(metric);
 
-				if (/Avg$/.test(metricPrefixed)) {
-					// update the average value (see #641)
-					phantomas.addToAvgMetric(metricPrefixed, metrics[metric]);
-				} else {
-					// increase metrics
-					phantomas.incrMetric(metricPrefixed, metrics[metric]);
-				}
+        if (/Avg$/.test(metricPrefixed)) {
+          // update the average value (see #641)
+          phantomas.addToAvgMetric(metricPrefixed, metrics[metric]);
+        } else {
+          // increase metrics
+          phantomas.incrMetric(metricPrefixed, metrics[metric]);
+        }
 
-				// and add offenders
-				if (typeof offenders[metric] !== 'undefined') {
-					offenders[metric].forEach(function(msg) {
-						phantomas.addOffender(metricPrefixed, {url: offenderSrc, value: msg});
-					});
-				}
-				// add more offenders (#578)
-				else {
-					switch (metricPrefixed) {
-						case 'cssLength':
-						case 'cssRules':
-						case 'cssSelectors':
-						case 'cssDeclarations':
-						case 'cssNotMinified':
-						case 'cssSelectorLengthAvg':
-						case 'cssSpecificityIdAvg':
-						case 'cssSpecificityClassAvg':
-						case 'cssSpecificityTagAvg':
-							phantomas.addOffender(metricPrefixed, {url: offenderSrc, value: metrics[metric]});
-							break;
-					}
-				}
-			});
+        // and add offenders
+        if (typeof offenders[metric] !== "undefined") {
+          offenders[metric].forEach(function (msg) {
+            phantomas.addOffender(metricPrefixed, {
+              url: offenderSrc,
+              value: msg,
+            });
+          });
+        }
+        // add more offenders (#578)
+        else {
+          switch (metricPrefixed) {
+            case "cssLength":
+            case "cssRules":
+            case "cssSelectors":
+            case "cssDeclarations":
+            case "cssNotMinified":
+            case "cssSelectorLengthAvg":
+            case "cssSpecificityIdAvg":
+            case "cssSpecificityClassAvg":
+            case "cssSpecificityTagAvg":
+              phantomas.addOffender(metricPrefixed, {
+                url: offenderSrc,
+                value: metrics[metric],
+              });
+              break;
+          }
+        }
+      });
 
-			callback();
-		});
-	}
+      callback();
+    });
+  }
 
-	// prepare a list of CSS stylesheets (both external and inline)
-	var stylesheets = [];
+  // prepare a list of CSS stylesheets (both external and inline)
+  var stylesheets = [];
 
-	phantomas.on('recv', async (entry, res) => {
-		if (entry.isCSS) {
-			// defer getting the response content and pass it to the analyze-css module
-			stylesheets.push({content: res.getContent, url: entry.url});
-		}
-	});
+  phantomas.on("recv", async (entry, res) => {
+    if (entry.isCSS) {
+      // defer getting the response content and pass it to the analyze-css module
+      stylesheets.push({ content: res.getContent, url: entry.url });
+    }
+  });
 
-	phantomas.on('inlinecss', css => stylesheets.push({inline: css}));
+  phantomas.on("inlinecss", (css) => stylesheets.push({ inline: css }));
 
-	// ok, now let's analyze the collect CSS
-	phantomas.on('beforeClose', () => {
-		var promises = [];
+  // ok, now let's analyze the collect CSS
+  phantomas.on("beforeClose", () => {
+    var promises = [];
 
-		stylesheets.forEach(entry => {
-			promises.push(
-				new Promise(async resolve => {
-					var css = entry.inline;
-					phantomas.log('Analyzing %s', entry.url || 'inline CSS');
+    stylesheets.forEach((entry) => {
+      promises.push(
+        new Promise(async (resolve) => {
+          var css = entry.inline;
+          phantomas.log("Analyzing %s", entry.url || "inline CSS");
 
-					if (entry.content) {
-						css = await entry.content();
-					}
+          if (entry.content) {
+            css = await entry.content();
+          }
 
-					analyzeCss(css, entry.url, resolve);
-				})
-			);
-		});
+          analyzeCss(css, entry.url, resolve);
+        })
+      );
+    });
 
-		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-		return Promise.all(promises);
-	});
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+    return Promise.all(promises);
+  });
 };
