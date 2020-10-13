@@ -10,11 +10,9 @@
 "use strict";
 
 var phantomas = require(".."),
-  async = require("async"),
   debug = require("debug")("phantomas:cli"),
   program = require("optimist-config-file"),
   options = {},
-  runs,
   url = "";
 
 // parse options
@@ -209,7 +207,7 @@ if (!process.stdout.isTTY && options.colors !== true) {
 }
 
 // spawn phantomas process
-const promise = phantomas(url, options)
+phantomas(url, options)
   .catch((err) => {
     debug("Error: %s", err);
     process.exit(1);
