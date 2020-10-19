@@ -32,27 +32,32 @@ program
 
   .option("-v, --verbose", "print debug messages to the console")
   .option("-d, --debug", "run phantomas in debug mode")
-  .option("--modules <modules>", "run selected modules only [moduleOne],[moduleTwo],...")
+  .option(
+    "--modules <modules>",
+    "run selected modules only [moduleOne],[moduleTwo],..."
+  )
   .option(
     "--include-dirs <dirs>",
     "load modules from specified directories [dirOne],[dirTwo],..."
   )
-  .option("--skip-modules <modules>", "skip selected modules [moduleOne],[moduleTwo],...")
-  /**
   .option(
-    "config",
-    "uses JSON or YAML-formatted config file to set parameters"
+    "--skip-modules <modules>",
+    "skip selected modules [moduleOne],[moduleTwo],..."
   )
-  .string("config")
+
+  // .option(
+  //   "config",
+  //   "uses JSON or YAML-formatted config file to set parameters"
+  // )
+  // .string("config")
   // optional params
-  .header("Client options")
-  .option("phone", "force viewport and user agent of a mobile phone")
-  .option("tablet", "force viewport and user agent of a tablet")
-  .option(
-    "viewport",
-    "viewport dimensions [width]x[height [default: 1280x1024]"
-  )
-  .option("user-agent", "provide a custom user agent")
+
+  //.header("Client options")
+  .option("--phone", "force viewport and user agent of a mobile phone")
+  .option("--tablet", "force viewport and user agent of a tablet")
+  .option("--viewport <width x height>", "viewport dimensions", "1280x1024")
+  .option("--user-agent <user agent>", "provide a custom user agent");
+/**
   .header("HTTP options")
   .option("auth-user", "sets the user name used for HTTP authentication")
   .option("auth-pass", "sets the password used for HTTP authentication")
@@ -147,7 +152,7 @@ program
   .option("screenshot", "render fully loaded page to a given file")
   .option("silent", "don't write anything to the console")
   .boolean("silent");
- */;
+ */
 
 // handle --config (issue #209)
 //program.setConfigFile("config");
@@ -164,7 +169,7 @@ debug("opts: %j", options);
 
 // handle URL passed without --url option (#249)
 if (typeof options.url === "undefined" && process.argv.length >= 3) {
-  if (process.argv[2].indexOf("-") === false) {
+  if (process.argv[2].indexOf("-") < 0) {
     options.url = process.argv[2];
   }
 }
@@ -180,6 +185,7 @@ url = options.url;
 debug("url: %s", url);
 
 delete options.url;
+delete options.version;
 
 // handle --no-foo options
 options["no-externals"] = options.externals === false;
