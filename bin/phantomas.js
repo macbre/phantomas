@@ -165,7 +165,7 @@ debug("opts: %j", options);
 
 // handle URL passed without --url option (#249)
 if (typeof options.url === "undefined" && process.argv.length >= 3) {
-  if (process.argv[2].indexOf("-") < 0) {
+  if (!process.argv[2].startsWith("-")) {
     options.url = process.argv[2];
   }
 }
