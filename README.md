@@ -106,7 +106,9 @@ Please refer to **[/Troubleshooting.md](https://github.com/macbre/phantomas/blob
 
 ## Usage
 
-> phantomas comes as a CommonJS module ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module)) that you can use in your nodejs projects.
+phantomas comes as a **CommonJS module** ([see API docs](https://github.com/macbre/phantomas/wiki/npm-module)) that you can use in your nodejs projects.
+
+You can also use it as a **command line tool**. Run `phantomas -h` for more details.
 
 ## Metrics
 
