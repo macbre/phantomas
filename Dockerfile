@@ -10,6 +10,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
   && apk add \
     chromium
 
+RUN which chromium-browser
+RUN chromium-browser --no-sandbox --version
+
 # Set up a working directory
 ENV HOME /opt/phantomas
 WORKDIR $HOME
@@ -22,15 +25,13 @@ USER nobody
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Tell phantomas where Chromium binary is and that we're in docker
-ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser	
+ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
 ENV DOCKERIZED yes
 
 # Install dependencies
 COPY package.json .
 COPY package-lock.json .
 RUN npm i
-
-RUN chromium-browser --no-sandbox --version
 
 # Copy the content of the rest of the repository into a container
 COPY . .
