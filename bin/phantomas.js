@@ -9,197 +9,183 @@
  */
 "use strict";
 
-var phantomas = require(".."),
-  async = require("async"),
-  debug = require("debug")("phantomas:cli"),
-  program = require("optimist-config-file"),
-  options = {},
-  runs,
-  url = "";
+const { program } = require("commander"),
+  phantomas = require(".."),
+  debug = require("debug")("phantomas:cli");
+
+var url = "";
 
 // parse options
 program
-  .usage(
-    "Headless Chromium-based web performance metrics collector and monitoring tool\n\nphantomas <url> [options]"
+  .name("phantomas")
+  .description(
+    "Headless Chromium-based web performance metrics collector and monitoring tool"
   )
+  .version(phantomas.version)
+  .usage("--url <url> [options]")
+
+  //
+  // https://www.npmjs.com/package/commander#common-option-types-boolean-and-value
+  //
+
   // mandatory
-  .header("General options")
-  .describe("url", "Set URL to work with")
-  .string("url")
-  // version / help
-  .describe("version", "Show version number and quit")
-  .boolean("version")
-  .alias("version", "V")
-  .describe("help", "This help text")
-  .boolean("help")
-  .alias("help", "h")
-  .describe("verbose", "print debug messages to the console")
-  .boolean("verbose")
-  .alias("verbose", "v")
-  .describe("debug", "run phantomas in debug mode")
-  .default("debug")
-  .describe("modules", "run selected modules only [moduleOne],[moduleTwo],...")
-  .describe(
-    "include-dirs",
+  .option("--url <url>", "Set URL to work with")
+
+  .option("-v, --verbose", "print debug messages to the console")
+  .option("-d, --debug", "run phantomas in debug mode")
+  .option(
+    "--modules <modules>",
+    "run selected modules only [moduleOne],[moduleTwo],..."
+  )
+  .option(
+    "--include-dirs <dirs>",
     "load modules from specified directories [dirOne],[dirTwo],..."
   )
-  .describe("skip-modules", "skip selected modules [moduleOne],[moduleTwo],...")
-  .describe(
-    "config",
-    "uses JSON or YAML-formatted config file to set parameters"
+  .option(
+    "--skip-modules <modules>",
+    "skip selected modules [moduleOne],[moduleTwo],..."
   )
-  .string("config")
+
+  // .option(
+  //   "config",
+  //   "uses JSON or YAML-formatted config file to set parameters"
+  // )
+  // .string("config")
   // optional params
-  .header("Client options")
-  // --engine=[webkit|gecko]
-  .describe(
-    "engine",
-    "[experimental] select engine used to run the phantomas [webkit|gecko]"
+
+  // Client options
+  .option("--phone", "force viewport and user agent of a mobile phone")
+  .option("--tablet", "force viewport and user agent of a tablet")
+  .option("--viewport <width x height>", "viewport dimensions", "1280x1024")
+  .option("--user-agent <user agent>", "provide a custom user agent")
+
+  // HTTP options
+  .option(
+    "--auth-user <user>",
+    "sets the user name used for HTTP authentication"
   )
-  .string("engine")
-  .describe("phone", "force viewport and user agent of a mobile phone")
-  .describe("tablet", "force viewport and user agent of a tablet")
-  .describe(
-    "viewport",
-    "viewport dimensions [width]x[height [default: 1280x1024]"
+  .option(
+    "--auth-pass <password>",
+    "sets the password used for HTTP authentication"
   )
-  .describe("user-agent", "provide a custom user agent")
-  .header("HTTP options")
-  .describe("auth-user", "sets the user name used for HTTP authentication")
-  .describe("auth-pass", "sets the password used for HTTP authentication")
-  .describe(
-    "cookie",
+  .option(
+    "--cookie <cookies>",
     'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")'
   )
-  .describe(
-    "cookies-file",
+  .option(
+    "--cookies-file <file>",
     "specifies the file name to store the persistent Cookies"
   )
-  .describe(
-    "ignore-ssl-errors",
+  .option(
+    "--ignore-ssl-errors",
     "ignores SSL errors, such as expired or self-signed certificate errors"
   )
-  .describe(
-    "proxy",
+  .option(
+    "--proxy <host:port>",
     "specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)"
   )
-  .describe(
-    "proxy-auth",
-    "specifies the authentication information for the proxy (e.g. --proxy-auth=username:password)"
+  .option(
+    "--proxy-auth <username:password>",
+    "specifies the authentication information for the proxy"
   )
-  .describe(
-    "proxy-type",
+  .option(
+    "--proxy-type <type>",
     "specifies the type of the proxy server [http|socks5|none]"
   )
-  .describe(
-    "ssl-protocol",
+  .option(
+    "--ssl-protocol <protocol>",
     "sets the SSL protocol for secure connections [sslv3|sslv2|tlsv1|any]"
   )
-  .default("ssl-protocol", "any")
-  .header("Runtime options")
-  .describe(
-    "allow-domain",
+
+  // Runtime options
+  .option(
+    "--allow-domain <domain>",
     "allow requests to given domain(s) - aka whitelist [domain],[domain],..."
   )
-  .describe(
-    "block-domain",
+  .option(
+    "--block-domain <domain>",
     "disallow requests to given domain(s) - aka blacklist [domain],[domain],..."
   )
-  .describe("disable-js", "disable JavaScript on the page that will be loaded")
-  .boolean("disable-js")
-  .describe("no-externals", "block requests to 3rd party domains")
-  .boolean("no-externals")
-  .describe("post-load-delay", "wait X seconds before generating a report")
-  .describe("scroll", "scroll down the page when it's loaded")
-  .boolean("scroll")
-  .describe("spy-eval", "report calls to eval()")
-  .boolean("spy-eval")
-  .describe("stop-at-onload", "stop phantomas immediately after onload event")
-  .boolean("stop-at-onload")
-  .describe("timeout", "timeout for phantomas run")
-  .default("timeout", 15)
-  .describe(
-    "wait-for-event",
+  .option("--disable-js", "disable JavaScript on the page that will be loaded")
+  .option("--no-externals", "block requests to 3rd party domains")
+  .option("--post-load-delay <N>", "wait X seconds before generating a report")
+  .option("--scroll", "scroll down the page when it's loaded")
+  .option("--spy-eval", "report calls to eval()")
+  .option("--stop-at-onload", "stop phantomas immediately after onload event")
+  .option("--timeout <seconds>", "timeout for phantomas run", 15)
+  .option(
+    "--wait-for-event <event>",
     "wait for a given phantomas event before generating a report"
   )
-  .describe(
-    "wait-for-selector",
+  .option(
+    "--wait-for-selector <selector>",
     "wait for an element matching given CSS selector before generating a report"
   )
-  .describe("scroll", "scroll down the page when it's loaded")
-  .boolean("scroll")
-  .describe("socket", "[experimental] use provided UNIX socket for IPC")
-  .header("Output and reporting")
-  .describe("analyze-css", "[experimental] emit in-depth CSS metrics")
-  .boolean("analyze-css")
-  .describe("colors", "forces ANSI colors even when output is piped")
-  .boolean("colors")
-  .describe(
-    "film-strip",
+  .option("--scroll", "scroll down the page when it's loaded")
+
+  // Output and reporting
+  .option("--analyze-css", "emit in-depth CSS metrics")
+  .option("--colors", "forces ANSI colors even when output is piped")
+  .option(
+    "--film-strip",
     "register film strip when page is loading (a comma separated list of milliseconds can be passed)"
   )
-  .boolean("film-strip")
-  .describe(
-    "film-strip-dir",
+  .option(
+    "--film-strip-dir <dir>",
     "folder path to output film strip (default is ./filmstrip directory)"
   )
-  .describe("har", "save HAR to a given file")
-  .describe("log", "log to a given file")
-  .describe("page-source", "[experimental] save page source to file")
-  .boolean("page-source")
-  .describe(
-    "page-source-dir",
-    "[experimental] folder path to output page source (default is ./html directory)"
+  .option("--har <file>", "save HAR to a given file")
+  .option("--log <file>", "log to a given file")
+  .option("--page-source", "save page source to file")
+  .option(
+    "--page-source-dir <dir>",
+    "folder path to output page source (default is ./html directory)"
   )
-  .describe("reporter", "output format / reporter")
-  .default("reporter", "plain")
-  .alias("reporter", "R")
-  .alias("reporter", "format")
-  .describe("screenshot", "render fully loaded page to a given file")
-  .describe("silent", "don't write anything to the console")
-  .boolean("silent");
+  .option(
+    "-R, --reporter, --format <reporter>",
+    "output format / reporter",
+    "plain"
+  )
+  .option("--pretty", "render formatted JSON")
+  .option("--screenshot", "render fully loaded page to a given file")
+  .option("-s, --silent", "don't write anything to the console");
 
 // handle --config (issue #209)
-program.setConfigFile("config");
+//program.setConfigFile("config");
 
 // handle env variables (issue #685)
-program.setReplacementVars(process.env);
+//program.setReplacementVars(process.env);
 
 // parse it
-options = program.parse(process.argv);
+program.parse(process.argv);
+var options = program.opts();
 
-// show version number
-if (options.version === true) {
-  console.log("phantomas v%s", phantomas.version);
-  process.exit(0);
-}
-
-// show help
-if (options.help === true) {
-  program.showHelp();
-  process.exit(0);
-}
+debug("argv: %j", process.argv);
+debug("opts: %j", options);
 
 // handle URL passed without --url option (#249)
-if (typeof options._[2] === "string") {
-  options.url = options._[2];
+if (typeof options.url === "undefined" && process.argv.length >= 3) {
+  if (process.argv[2].indexOf("-") < 0) {
+    options.url = process.argv[2];
+  }
 }
-
-// --url is mandatory -> show help
-if (typeof options.url !== "string" && typeof options.config === "undefined") {
-  program.showHelp();
-  process.exit(255);
-}
-
-url = options.url;
-
-delete options.url;
-delete options._;
-delete options.$0;
 
 // handle --no-foo options
 options["no-externals"] = options.externals === false;
 delete options.externals;
+
+// --url is mandatory -> show help
+if (typeof options.url !== "string" && typeof options.config === "undefined") {
+  debug("URL not provided - show help and leave");
+  program.outputHelp();
+  process.exit(1);
+}
+
+url = options.url;
+debug("url: %s", url);
+
+delete options.url;
+delete options.version;
 
 // add env variable to turn off ANSI colors when needed (#237)
 // suppress this behaviour by passing --colors option (issue #342)
@@ -209,7 +195,7 @@ if (!process.stdout.isTTY && options.colors !== true) {
 }
 
 // spawn phantomas process
-const promise = phantomas(url, options)
+phantomas(url, options)
   .catch((err) => {
     debug("Error: %s", err);
     process.exit(1);
