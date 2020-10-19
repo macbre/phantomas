@@ -30,7 +30,6 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm i
 
-RUN ldd `find -name chrome`
 RUN `find -name chrome` --no-sandbox --version
 
 # Copy the content of the rest of the repository into a container
