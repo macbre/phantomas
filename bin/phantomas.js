@@ -28,19 +28,17 @@ program
   //
 
   // mandatory
-  .option("--url <url>", "Set URL to work with");
-/**
-  .option("verbose", "print debug messages to the console")
-  .boolean("verbose")
-  .alias("verbose", "v")
-  .option("debug", "run phantomas in debug mode")
-  .default("debug")
-  .option("modules", "run selected modules only [moduleOne],[moduleTwo],...")
+  .option("--url <url>", "Set URL to work with")
+
+  .option("-v, --verbose", "print debug messages to the console")
+  .option("-d, --debug", "run phantomas in debug mode")
+  .option("--modules <modules>", "run selected modules only [moduleOne],[moduleTwo],...")
   .option(
-    "include-dirs",
+    "--include-dirs <dirs>",
     "load modules from specified directories [dirOne],[dirTwo],..."
   )
-  .option("skip-modules", "skip selected modules [moduleOne],[moduleTwo],...")
+  .option("--skip-modules <modules>", "skip selected modules [moduleOne],[moduleTwo],...")
+  /**
   .option(
     "config",
     "uses JSON or YAML-formatted config file to set parameters"
@@ -149,7 +147,8 @@ program
   .option("screenshot", "render fully loaded page to a given file")
   .option("silent", "don't write anything to the console")
   .boolean("silent");
- */
+ */;
+
 // handle --config (issue #209)
 //program.setConfigFile("config");
 
@@ -165,7 +164,9 @@ debug("opts: %j", options);
 
 // handle URL passed without --url option (#249)
 if (typeof options.url === "undefined" && process.argv.length >= 3) {
-  options.url = process.argv[2];
+  if (process.argv[2].indexOf("-") === false) {
+    options.url = process.argv[2];
+  }
 }
 
 // --url is mandatory -> show help
