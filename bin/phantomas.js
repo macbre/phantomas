@@ -146,6 +146,7 @@ program
     "output format / reporter",
     "plain"
   )
+  .option("--pretty", "render formatted JSON")
   .option("--screenshot", "render fully loaded page to a given file")
   .option("-s, --silent", "don't write anything to the console");
 
