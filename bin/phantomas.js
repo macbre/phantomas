@@ -56,7 +56,7 @@ program
   // Client options
   .option("--phone", "force viewport and user agent of a mobile phone")
   .option("--tablet", "force viewport and user agent of a tablet")
-  .option("--viewport <width x height>", "viewport dimensions", "1280x1024")
+  .option("--viewport <width x height>", "viewport dimensions", "800x600")
   .option("--user-agent <user agent>", "provide a custom user agent")
 
   // HTTP options
