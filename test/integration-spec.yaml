@@ -405,9 +405,9 @@
   offenders:
     lazyLoadableImagesBelowTheFold:
       - { url: 'http://127.0.0.1:8888/static/blank.gif', node: 'body > img#dot', offset: 900 }
-      - { url: 'http://127.0.0.1:8888/static/example.svg', node: 'body > footer[2] > img[3]', offset: 1526 }
-      - { url: 'http://127.0.0.1:8888/static/75x120.jpg', node: 'body > footer[2] > picture[6] > img[1]', offset: 1580 }
-      - { url: 'http://127.0.0.1:8888/static/150x100.jpg', node: 'body > footer[2] > img[8]', offset: 1700 }
+      - { url: 'http://127.0.0.1:8888/static/example.svg', node: 'body > footer[2] > img[2]', offset: 1578 }
+      - { url: 'http://127.0.0.1:8888/static/75x120.jpg', node: 'body > footer[2] > picture[4] > img[1]', offset: 1508 }
+      - { url: 'http://127.0.0.1:8888/static/150x100.jpg', node: 'body > footer[2] > img[5]', offset: 1528 }
 
 # JS globals (#482)
 - url: "/js-globals.html"

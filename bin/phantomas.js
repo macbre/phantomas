@@ -56,7 +56,7 @@ program
   // Client options
   .option("--phone", "force viewport and user agent of a mobile phone")
   .option("--tablet", "force viewport and user agent of a tablet")
-  .option("--viewport <width x height>", "viewport dimensions", "1280x1024")
+  .option("--viewport <width x height>", "viewport dimensions", "800x600")
   .option("--user-agent <user agent>", "provide a custom user agent")
 
   // HTTP options
@@ -165,7 +165,7 @@ debug("opts: %j", options);
 
 // handle URL passed without --url option (#249)
 if (typeof options.url === "undefined" && process.argv.length >= 3) {
-  if (process.argv[2].indexOf("-") < 0) {
+  if (!process.argv[2].startsWith("-")) {
     options.url = process.argv[2];
   }
 }
