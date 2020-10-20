@@ -8,7 +8,13 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
   && echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/main" >> /etc/apk/repositories \
   && apk upgrade -U -a \
   && apk add \
-    chromium
+    chromium \
+    ca-certificates \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    nss \
+    ttf-freefont
 
 RUN which chromium-browser
 RUN chromium-browser --no-sandbox --version
