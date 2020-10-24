@@ -4,8 +4,7 @@ on: [push]
 
 jobs:
 
-  build:
-
+  build_docker_image:
     runs-on: ubuntu-latest
 
     steps:
