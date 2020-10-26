@@ -25,7 +25,7 @@ npm install phantomas@next
 You can use [phantomas Docker image](https://hub.docker.com/r/macbre/phantomas):
 
 ```
-docker push macbre/phantomas:latest
+docker pull macbre/phantomas:latest
 ```
 
 ## Support
