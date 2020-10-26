@@ -33,12 +33,12 @@ var suite = vows.describe("Integration tests").addBatch({
         .on("error", self.callback);
     },
     "should be up and running": function (err, res) {
-      assert.equal(
+      assert.strictEqual(
         typeof res !== "undefined",
         true,
         "responses to the request"
       );
-      assert.equal(res.statusCode, 200, "responses with HTTP 200");
+      assert.strictEqual(res.statusCode, 200, "responses with HTTP 200");
     },
   },
 });
