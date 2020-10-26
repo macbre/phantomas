@@ -788,10 +788,10 @@
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
 
 # authentication
-- url: "https://httpbin.org/basic-auth/foo/bar"
-  label: "httpbin's /basic-auth"
-  # the following promise rejection is expected
-  error: "HTTP response code from <https://httpbin.org/basic-auth/foo/bar> is 401"
+# - url: "https://httpbin.org/basic-auth/foo/bar"
+#   label: "httpbin's /basic-auth"
+#   # the following promise rejection is expected
+#   error: "HTTP response code from <https://httpbin.org/basic-auth/foo/bar> is 401"
 
 - url: "https://httpbin.org/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
