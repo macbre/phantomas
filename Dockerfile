@@ -37,7 +37,7 @@ ENV DOCKERIZED yes
 # Install dependencies
 COPY package.json .
 COPY package-lock.json .
-RUN npm i
+RUN npm ci
 
 # Copy the content of the rest of the repository into a container
 COPY . .
