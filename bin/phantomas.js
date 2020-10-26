@@ -198,7 +198,8 @@ if (!process.stdout.isTTY && options.colors !== true) {
 phantomas(url, options)
   .catch((err) => {
     debug("Error: %s", err);
-    process.exit(1);
+    console.error("" + err);
+    process.exit(2);
   })
   .then(async (results) => {
     debug("Calling a reporter...");
