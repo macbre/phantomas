@@ -37,6 +37,4 @@ jobs:
       run: ./bin/phantomas.js http://127.0.0.1:8888/ --pretty | grep "generator" -A4
 
     - name: Check that bin/phantomas.js handles errors correctly
-      run: |
-        ./bin/phantomas.js http://127.0.0.1:1234/ 2>&1 | grep "net::ERR_CONNECTION_REFUSED at http://127.0.0.1:1234"
-        ./bin/phantomas.js http://127.0.0.1:8888/not_found 2>&1 | grep "Error: Navigation failed because browser has disconnected!"
+      run: ./bin/phantomas.js http://127.0.0.1:1234/ 2>&1 | grep "net::ERR_CONNECTION_REFUSED at http://127.0.0.1:1234"
