@@ -1,7 +1,10 @@
-FROM node:14-alpine3.12
+# https://hub.docker.com/_/node
+FROM node:15-alpine3.12
 
 # Installs latest Chromium package.
 # https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
+ENV CHROMIUM_VERSION 86.0.4240.111-r0
+
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
