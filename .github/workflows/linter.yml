@@ -15,6 +15,19 @@ jobs:
       with:
         node-version: 14.x
 
+    # https://github.com/actions/cache/blob/main/examples.md#using-multiple-systems-and-npm-config
+    - name: Get npm cache directory
+      id: npm-cache
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+    - name: npm cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Install dependencies
       env:
         # Tell Puppeteer to skip installing Chrome, not really needed for linting
