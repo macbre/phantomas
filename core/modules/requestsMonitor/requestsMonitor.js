@@ -315,10 +315,10 @@ module.exports = function (phantomas) {
       }
 
       // HTTP and TLS protocols version
-        entry.httpVersion = resp.protocol;
-        if (resp.securityDetails) {
-          entry.tlsVersion = resp.securityDetails.protocol;
-        }
+      entry.httpVersion = resp.protocol;
+      if (resp.securityDetails) {
+        entry.tlsVersion = resp.securityDetails.protocol;
+      }
 
       // requests stats
       if (!entry.isBase64) {
