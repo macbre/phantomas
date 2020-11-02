@@ -4,8 +4,7 @@ on: [push]
 
 jobs:
 
-  build:
-
+  build_docker_image:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,4 +18,7 @@ jobs:
       run: |
         ./test/server-start.sh
 
-        docker run --network=host ${{ github.repository }} npm t
+        docker run \
+          --network=host \
+          --security-opt seccomp=$(pwd)/chrome-seccomp.json \
+          ${{ github.repository }} npm t
