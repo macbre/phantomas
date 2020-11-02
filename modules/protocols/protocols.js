@@ -5,8 +5,7 @@
 
 module.exports = function (phantomas) {
   var domains = new Map(),
-    beforeDomReady = true,
-    isFirstRequest = true;
+    beforeDomReady = true;
 
   phantomas.setMetric("mainDomainHttpProtocol"); // @desc HTTP protocol used by the main domain (string)
   phantomas.setMetric("oldHttpProtocol"); // @desc number of domains using HTTP/1.0 or 1.1
