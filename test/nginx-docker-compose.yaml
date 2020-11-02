@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 services:
   nginx:
@@ -8,5 +8,5 @@ services:
       - "8888:80"
     volumes:
       # see nginx-static.conf
-      - './webroot:/static'
-      - './nginx-static.conf:/etc/nginx/conf.d/nginx-static.conf'
+      - "./webroot:/static"
+      - "./nginx-static.conf:/etc/nginx/conf.d/nginx-static.conf"

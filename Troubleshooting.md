@@ -19,6 +19,10 @@ service procps restart
 
 > See https://github.com/iridium-browser/tracker/issues/208#issuecomment-450572959 for more details. 
 
+### When running inside a Docker container
+
+Please refer to https://github.com/Zenika/alpine-chrome#-the-best-with-seccomp.
+
 ## Debugging
 
 Before reporting an issue please run phantomas in verbose and debug mode:

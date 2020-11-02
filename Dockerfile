@@ -1,64 +1,46 @@
-# We need glibc distro in order to run Chrome binaries provided by puppeteer npm module
-FROM node:14-stretch-slim
+# https://hub.docker.com/_/node
+FROM node:15-alpine3.12
 
-# install Chrome binaries depedencies
-RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-  fonts-liberation \
-  libappindicator3-1 \
-  libasound2 \
-  libatk-bridge2.0-0 \
-  libatk1.0-0 \
-  libatspi2.0-0 \
-  libc6 \
-  libcairo2 \
-  libcups2 \
-  libdbus-1-3 \
-  libexpat1 \
-  libgcc1 \
-  libgdk-pixbuf2.0-0 \
-  libglib2.0-0 \
-  libgtk-3-0 \
-  libnspr4 \
-  libnss3 \
-  libpango-1.0-0 \
-  libpangocairo-1.0-0 \
-  libuuid1 \
-  libx11-6 \
-  libx11-xcb1 \
-  libxcb1 \
-  libxcomposite1 \
-  libxcursor1 \
-  libxdamage1 \
-  libxext6 \
-  libxfixes3 \
-  libxi6 \
-  libxrandr2 \
-  libxrender1 \
-  libxss1 \
-  libxtst6
+# Installs latest Chromium package.
+# https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
+ENV CHROMIUM_VERSION 86.0.4240.111-r0
 
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+  && echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/main" >> /etc/apk/repositories \
+  && apk upgrade -U -a \
+  && apk add \
+    chromium \
+    ca-certificates \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    nss \
+    ttf-freefont
+
+RUN which chromium-browser
+RUN chromium-browser --no-sandbox --version
+
+# Set up a working directory
 ENV HOME /opt/phantomas
 WORKDIR $HOME
-
-# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
-#ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-
-# Tell phantomas where Chromium binary is and that we're in docker
-#ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
-ENV DOCKERIZED yes
-
-RUN chown -R nobody:nogroup $HOME
+RUN chown -R nobody:nogroup .
 
 # Run everything after as non-privileged user.
 USER nobody
 
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed binary
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
+# Tell phantomas where Chromium binary is and that we're in docker
+ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
+ENV DOCKERIZED yes
+
 # Install dependencies
 COPY package.json .
 COPY package-lock.json .
-RUN npm i
-
-RUN ldd `find -name chrome`
-RUN `find -name chrome` --no-sandbox --version
+RUN npm ci
 
 # Copy the content of the rest of the repository into a container
 COPY . .
