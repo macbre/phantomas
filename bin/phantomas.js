@@ -173,7 +173,8 @@ delete options.externals;
 if (typeof options.url !== "string" && typeof options.config === "undefined") {
   debug("URL not provided - show help and leave");
   program.outputHelp();
-  process.exit(1);
+  process.exitCode = 1;
+  return;
 }
 
 url = options.url;
@@ -194,7 +195,7 @@ phantomas(url, options)
   .catch((err) => {
     debug("Error: %s", err);
     console.error("" + err);
-    process.exit(2);
+    process.exitCode = 2;
   })
   .then(async (results) => {
     debug("Calling the JSON reporter...");
