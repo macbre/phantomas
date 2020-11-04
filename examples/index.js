@@ -25,8 +25,7 @@ promise
     console.log("Failed asserts: %j", results.getFailedAsserts());
   })
   .catch((ex) => {
-    console.error(ex);
-    process.exit(1);
+    throw ex;
   });
 
 // events handling

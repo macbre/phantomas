@@ -13,7 +13,8 @@ var phantomas = require(".."),
 
 if (typeof url !== "string") {
   console.log("Usage:\n\t./screenshot.js <URL>");
-  process.exit(1);
+  process.exitCode = 1;
+  return;
 }
 
 run = phantomas(url, {
@@ -28,7 +29,7 @@ run
   })
   .fail(function (res) {
     console.log("Exit code #%d", res.code);
-    process.exit(res.code);
+    process.exitCode = res.code;
   })
   .progress(function (progress) {
     console.log("Loading progress: %d%", progress * 100);
