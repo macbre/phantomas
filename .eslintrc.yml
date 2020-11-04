@@ -4,6 +4,7 @@ env:
   browser: true
 extends:
   - 'eslint:recommended'
+  - 'plugin:node/recommended'
   - 'prettier'
 rules:
   no-async-promise-executor: 'off'
