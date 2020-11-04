@@ -4,6 +4,9 @@
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
+  "bin": {
+    "phantomas": "./bin/phantomas.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/macbre/phantomas.git"
