@@ -1,4 +1,3 @@
-
 /**
  * Example script that uses phantomas npm module
  * to render a screenshot of a given webpage

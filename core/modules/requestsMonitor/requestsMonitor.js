@@ -35,7 +35,7 @@ function parseEntryUrl(entry) {
 
     entry.protocol = parsed.protocol.replace(":", ""); // e.g. "http:"
     entry.domain = parsed.hostname;
-    entry.query = parsed.search.substring(1)
+    entry.query = parsed.search.substring(1);
 
     if (entry.protocol === "https") {
       entry.isSSL = true;

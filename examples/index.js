@@ -1,4 +1,3 @@
-
 /**
  * Example script that uses phantomas npm module with promise pattern
  */
