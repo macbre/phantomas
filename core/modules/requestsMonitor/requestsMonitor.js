@@ -24,19 +24,18 @@ function lowerCaseHeaders(headers) {
 
 // parse given URL to get protocol and domain
 function parseEntryUrl(entry) {
-  const parseUrl = require("url").parse;
   var parsed;
 
   // asset type
   entry.type = "other";
 
   if (entry.url.indexOf("data:") !== 0) {
-    // @see http://nodejs.org/api/url.html#url_url
-    parsed = parseUrl(entry.url) || {};
+    // @see https://nodejs.org/api/url.html#url_class_url
+    parsed = new URL(entry.url) || {};
 
-    entry.protocol = parsed.protocol.replace(":", "");
+    entry.protocol = parsed.protocol.replace(":", ""); // e.g. "http:"
     entry.domain = parsed.hostname;
-    entry.query = parsed.query;
+    entry.query = parsed.search.substring(1);
 
     if (entry.protocol === "https") {
       entry.isSSL = true;

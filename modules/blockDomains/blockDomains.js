@@ -6,8 +6,6 @@
 "use strict";
 
 module.exports = function (phantomas) {
-  const { parse } = require("url");
-
   var ourDomain,
     // --no-externals
     noExternalsMode = phantomas.getParam("no-externals") === true,
@@ -18,7 +16,7 @@ module.exports = function (phantomas) {
     blockedDomains = phantomas.getParam("block-domain"),
     blockedDomainsRegExp;
 
-  ourDomain = parse(phantomas.getParam("url")).hostname;
+  ourDomain = new URL(phantomas.getParam("url")).hostname;
 
   phantomas.setMetric("blockedRequests"); // @desc number of requests blocked due to domain filtering @optional
 
@@ -82,7 +80,7 @@ module.exports = function (phantomas) {
 
     page.on("request", (interceptedRequest) => {
       const url = interceptedRequest.url(),
-        domain = parse(url).hostname;
+        domain = new URL(url).hostname;
 
       if (checkBlock(domain)) {
         interceptedRequest.abort();
