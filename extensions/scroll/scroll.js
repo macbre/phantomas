@@ -3,7 +3,6 @@
  *
  * Pass --scroll as an option in CLI mode
  */
-/* global document: true, window: true */
 "use strict";
 
 module.exports = function (phantomas) {
