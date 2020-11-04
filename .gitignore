@@ -12,3 +12,4 @@ phantomas_*.html
 node_modules
 npm-debug.log
 .idea
+.eslintcache

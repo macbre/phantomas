@@ -51,7 +51,7 @@
   "scripts": {
     "test": "vows --spec",
     "unit-test": "vows test/modules/*-test.js --spec",
-    "lint": "eslint bin/ core/ modules/ test/*.js test/*/*-test.js lib/*.js lib/metadata/*.js reporters/ examples/",
+    "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",
     "prettier": "npx prettier --write ."

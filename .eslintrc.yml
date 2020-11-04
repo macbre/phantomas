@@ -6,6 +6,8 @@ extends:
   - 'eslint:recommended'
   - 'plugin:node/recommended'
   - 'prettier'
+ignorePatterns:
+  - 'test/webroot/**'
 rules:
   no-async-promise-executor: 'off'
   no-empty:
