@@ -1,10 +1,9 @@
 /**
  * Test requestsMonitor core module
  */
-var vows = require("vows"),
+const vows = require("vows"),
   assert = require("assert"),
-  mock = require("./mock"),
-  extend = require("util")._extend;
+  mock = require("./mock");
 
 function sendReq(url, extra) {
   return function () {
@@ -15,7 +14,7 @@ function sendReq(url, extra) {
       ret = entry;
     });
     phantomas.sendRequest(
-      extend(
+      Object.extend(
         {
           url: url,
         },
