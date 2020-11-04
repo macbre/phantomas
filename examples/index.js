@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 /**
  * Example script that uses phantomas npm module with promise pattern
