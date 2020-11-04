@@ -14,7 +14,7 @@ function sendReq(url, extra) {
       ret = entry;
     });
     phantomas.sendRequest(
-      Object.extend(
+      Object.assign(
         {
           url: url,
         },
