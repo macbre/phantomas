@@ -54,8 +54,7 @@ module.exports = function (phantomas) {
 
   phantomas.on("init", async (page) => {
     const url = phantomas.getParam("url"),
-      // https://nodejs.org/docs/latest/api/url.html#url_legacy_url_api
-      domain = require("url").parse(url).hostname;
+      domain = new URL(url).hostname;
 
     // domain field in cookies needs to be set
     // https://github.com/miyakogi/pyppeteer/issues/94#issuecomment-403261859
