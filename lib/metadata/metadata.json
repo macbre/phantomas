@@ -117,6 +117,11 @@
       "desc": "Allow page to be scrolled after it is loaded\nPass --scroll as an option in CLI mode",
       "options": []
     },
+    "viewport": {
+      "file": "/extensions/viewport/viewport.js",
+      "desc": "Provides the --viewport option to set any device resolution and pixel density ratio.\nIf the user sets a viewport size as well as a device option (--phone, --tablet, ...),\nwe assume that he or she wants to overwrite the device values.\nTwo syntaxes are supported:\n - 1200x800 will set a 1x pixel density ratio\n - 1200x800x2 will set the given ratio (float values such as 1.5 are accepted)",
+      "options": []
+    },
     "waitForEvent": {
       "file": "/extensions/waitForEvent/waitForEvent.js",
       "desc": "Delays report generation until given phantomas event is emitted (issue #453)",
