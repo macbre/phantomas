@@ -143,7 +143,11 @@
     "requestsMonitor": {
       "file": "/core/modules/requestsMonitor/requestsMonitor.js",
       "desc": "Simple HTTP requests monitor and analyzer",
-      "events": ["send", "base64recv", "recv"],
+      "events": [
+        "send",
+        "base64recv",
+        "recv"
+      ],
       "metrics": [
         "requests",
         "gzipRequests",
@@ -158,20 +162,32 @@
     "timeToFirstByte": {
       "file": "/core/modules/timeToFirstByte/timeToFirstByte.js",
       "desc": "Takes a look at \"time to first (last) byte\" metrics",
-      "events": ["responseEnd"],
-      "metrics": ["timeToFirstByte", "timeToLastByte"]
+      "events": [
+        "responseEnd"
+      ],
+      "metrics": [
+        "timeToFirstByte",
+        "timeToLastByte"
+      ]
     },
     "ajaxRequests": {
       "file": "/modules/ajaxRequests/ajaxRequests.js",
       "desc": "Analyzes AJAX requests",
       "events": [],
-      "metrics": ["ajaxRequests", "synchronousXHR"]
+      "metrics": [
+        "ajaxRequests",
+        "synchronousXHR"
+      ]
     },
     "alerts": {
       "file": "/modules/alerts/alerts.js",
       "desc": "Meters number of invocations of window.alert, window.confirm, and\nwindow.prompt.",
       "events": [],
-      "metrics": ["windowAlerts", "windowConfirms", "windowPrompts"]
+      "metrics": [
+        "windowAlerts",
+        "windowConfirms",
+        "windowPrompts"
+      ]
     },
     "analyzeCss": {
       "file": "/modules/analyzeCss/analyzeCss.js",
@@ -246,13 +262,19 @@
       "file": "/modules/blockDomains/blockDomains.js",
       "desc": "Aborts requests to external resources or given domains\nDoes not emit any metrics",
       "events": [],
-      "metrics": ["blockedRequests"]
+      "metrics": [
+        "blockedRequests"
+      ]
     },
     "cacheHits": {
       "file": "/modules/cacheHits/cacheHits.js",
       "desc": "Analyzes Age and X-Cache headers from caching servers like Squid or Varnish",
       "events": [],
-      "metrics": ["cacheHits", "cacheMisses", "cachePasses"]
+      "metrics": [
+        "cacheHits",
+        "cacheMisses",
+        "cachePasses"
+      ]
     },
     "caching": {
       "file": "/modules/caching/caching.js",
@@ -270,7 +292,9 @@
       "file": "/modules/console/console.js",
       "desc": "Meters number of console logs",
       "events": [],
-      "metrics": ["consoleMessages"]
+      "metrics": [
+        "consoleMessages"
+      ]
     },
     "cookies": {
       "file": "/modules/cookies/cookies.js",
@@ -288,13 +312,19 @@
       "file": "/modules/documentHeight/documentHeight.js",
       "desc": "Measure document height",
       "events": [],
-      "metrics": ["documentHeight"]
+      "metrics": [
+        "documentHeight"
+      ]
     },
     "domains": {
       "file": "/modules/domains/domains.js",
       "desc": "Domains monitor",
       "events": [],
-      "metrics": ["domains", "maxRequestsPerDomain", "medianRequestsPerDomain"]
+      "metrics": [
+        "domains",
+        "maxRequestsPerDomain",
+        "medianRequestsPerDomain"
+      ]
     },
     "domComplexity": {
       "file": "/modules/domComplexity/domComplexity.js",
@@ -317,7 +347,10 @@
       "file": "/modules/domHiddenContent/domHiddenContent.js",
       "desc": "Analyzes DOM hidden content",
       "events": [],
-      "metrics": ["hiddenContentSize", "hiddenImages"]
+      "metrics": [
+        "hiddenContentSize",
+        "hiddenImages"
+      ]
     },
     "domMutations": {
       "file": "/modules/domMutations/domMutations.js",
@@ -349,13 +382,20 @@
       "file": "/modules/events/events.js",
       "desc": "Analyzes events bound to DOM elements",
       "events": [],
-      "metrics": ["eventsBound", "eventsDispatched", "eventsScrollBound"]
+      "metrics": [
+        "eventsBound",
+        "eventsDispatched",
+        "eventsScrollBound"
+      ]
     },
     "globalVariables": {
       "file": "/modules/globalVariables/globalVariables.js",
       "desc": "Counts global JavaScript variables",
       "events": [],
-      "metrics": ["globalVariables", "globalVariablesFalsy"]
+      "metrics": [
+        "globalVariables",
+        "globalVariablesFalsy"
+      ]
     },
     "headers": {
       "file": "/modules/headers/headers.js",
@@ -373,9 +413,12 @@
     },
     "javaScriptBottlenecks": {
       "file": "/modules/javaScriptBottlenecks/javaScriptBottlenecks.js",
-      "desc": "Reports the use of functions known to be serious performance bottlenecks in JS\n\nRun phantomas with --spy-eval to count eval() calls (see issue #467)",
+      "desc": "Reports the use of functions known to be serious performance bottlenecks in JS\nRun phantomas with --spy-eval to count eval() calls (see issue #467)",
       "events": [],
-      "metrics": ["documentWriteCalls", "evalCalls"]
+      "metrics": [
+        "documentWriteCalls",
+        "evalCalls"
+      ]
     },
     "jQuery": {
       "file": "/modules/jQuery/jQuery.js",
@@ -397,37 +440,61 @@
       "file": "/modules/jserrors/jserrors.js",
       "desc": "Meters the number of page errors, and provides traces as offenders for \"jsErrors\" metric",
       "events": [],
-      "metrics": ["jsErrors"]
+      "metrics": [
+        "jsErrors"
+      ]
     },
     "keepAlive": {
       "file": "/modules/keepAlive/keepAlive.js",
       "desc": "Analyzes if HTTP responses keep the connections alive.",
       "events": [],
-      "metrics": ["closedConnections"]
+      "metrics": [
+        "closedConnections"
+      ]
     },
     "lazyLoadableImages": {
       "file": "/modules/lazyLoadableImages/lazyLoadableImages.js",
       "desc": "Analyzes images and detects which one can be lazy-loaded (are below the fold)",
       "events": [],
-      "metrics": ["lazyLoadableImagesBelowTheFold"]
+      "metrics": [
+        "lazyLoadableImagesBelowTheFold"
+      ]
     },
     "localStorage": {
       "file": "/modules/localStorage/localStorage.js",
       "desc": "localStorage metrics",
       "events": [],
-      "metrics": ["localStorageEntries"]
+      "metrics": [
+        "localStorageEntries"
+      ]
     },
     "mainRequest": {
       "file": "/modules/mainRequest/mainRequest.js",
       "desc": "Analyzes bits of data pertaining to the main request only",
       "events": [],
-      "metrics": ["statusCodesTrail"]
+      "metrics": [
+        "statusCodesTrail"
+      ]
+    },
+    "protocols": {
+      "file": "/modules/protocols/protocols.js",
+      "desc": "Checks versions of HTTP and TLS protocols",
+      "events": [],
+      "metrics": [
+        "mainDomainHttpProtocol",
+        "oldHttpProtocol",
+        "mainDomainTlsProtocol",
+        "oldTlsProtocol"
+      ]
     },
     "redirects": {
       "file": "/modules/redirects/redirects.js",
       "desc": "Analyzes HTTP redirects",
       "events": [],
-      "metrics": ["redirects", "redirectsTime"]
+      "metrics": [
+        "redirects",
+        "redirectsTime"
+      ]
     },
     "requestsStats": {
       "file": "/modules/requestsStats/requestsStats.js",
@@ -475,7 +542,11 @@
       "file": "/modules/timeToFirst/timeToFirst.js",
       "desc": "Provides metrics for time to first image, CSS and JS file",
       "events": [],
-      "metrics": ["timeToFirstCss", "timeToFirstJs", "timeToFirstImage"]
+      "metrics": [
+        "timeToFirstCss",
+        "timeToFirstJs",
+        "timeToFirstImage"
+      ]
     },
     "windowPerformance": {
       "file": "/modules/windowPerformance/windowPerformance.js",
@@ -992,7 +1063,7 @@
       "offenders": true,
       "unit": "number",
       "module": "assetsTypes",
-      "testsCovered": true
+      "testsCovered": false
     },
     "otherSize": {
       "desc": "size of other responses (with compression)",
@@ -1480,6 +1551,32 @@
       "module": "mainRequest",
       "testsCovered": false
     },
+    "mainDomainHttpProtocol": {
+      "desc": "HTTP protocol used by the main domain",
+      "unit": "string",
+      "module": "protocols",
+      "testsCovered": true
+    },
+    "oldHttpProtocol": {
+      "desc": "number of domains using HTTP/1.0 or 1.1",
+      "offenders": true,
+      "unit": "number",
+      "module": "protocols",
+      "testsCovered": true
+    },
+    "mainDomainTlsProtocol": {
+      "desc": "TLS protocol used by the main domain",
+      "unit": "string",
+      "module": "protocols",
+      "testsCovered": true
+    },
+    "oldTlsProtocol": {
+      "desc": "number of domains using TLS 1.1 or 1.2",
+      "offenders": true,
+      "unit": "number",
+      "module": "protocols",
+      "testsCovered": true
+    },
     "redirects": {
       "desc": "number of HTTP redirects (either 301, 302 or 303)",
       "offenders": true,
@@ -1693,7 +1790,7 @@
       "desc": "time it took to resolve the domain before making the first HTTP request",
       "unit": "ms",
       "module": "windowPerformance",
-      "testsCovered": true
+      "testsCovered": false
     },
     "performanceTimingPageLoad": {
       "desc": "time it took to fully load the page",
@@ -1720,8 +1817,8 @@
       "testsCovered": false
     }
   },
-  "metricsCount": 177,
-  "modulesCount": 34,
-  "extensionsCount": 11,
-  "version": "2.0.0-beta"
+  "metricsCount": 181,
+  "modulesCount": 35,
+  "extensionsCount": 12,
+  "version": "2.0.0"
 }

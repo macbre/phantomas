@@ -1,7 +1,7 @@
 Modules and metrics
 ===================
 
-This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (34 of them) and 177 metrics that they emit.
+This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (35 of them) and 181 metrics that they emit.
 
 When applicable, [offender](https://github.com/macbre/phantomas/issues/140) example is provided.
 
@@ -1021,6 +1021,43 @@ comma-separated list of HTTP status codes that main request followed through (co
 - domInteractive
 - domComplete
 Code taken from windowPerformance module
+
+
+## [protocols](https://github.com/macbre/phantomas/tree/devel/modules/protocols/protocols.js)
+
+> Checks versions of HTTP and TLS protocols
+
+##### `mainDomainHttpProtocol`
+
+HTTP protocol used by the main domain (string)
+
+##### `mainDomainTlsProtocol`
+
+TLS protocol used by the main domain (string)
+
+##### `oldHttpProtocol`
+
+number of domains using HTTP/1.0 or 1.1 (number, with offenders)
+
+```json
+{
+  "domain": "https://127.0.0.1:8889",
+  "httpVersion": "http/1.1",
+  "requests": 1
+}
+```
+
+##### `oldTlsProtocol`
+
+number of domains using TLS 1.1 or 1.2 (number, with offenders)
+
+```json
+{
+  "domain": "https://127.0.0.1:8889",
+  "tlsVersion": "TLS 1.1",
+  "beforeDomReady": true
+}
+```
 
 
 ## [redirects](https://github.com/macbre/phantomas/tree/devel/modules/redirects/redirects.js)

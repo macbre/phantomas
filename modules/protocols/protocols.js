@@ -1,5 +1,5 @@
 /**
- * Domains monitor
+ * Checks versions of HTTP and TLS protocols
  */
 "use strict";
 
@@ -7,9 +7,9 @@ module.exports = function (phantomas) {
   var domains = new Map(),
     beforeDomReady = true;
 
-  phantomas.setMetric("mainDomainHttpProtocol"); // @desc HTTP protocol used by the main domain (string)
+  phantomas.setMetric("mainDomainHttpProtocol"); // @desc HTTP protocol used by the main domain [string]
   phantomas.setMetric("oldHttpProtocol"); // @desc number of domains using HTTP/1.0 or 1.1
-  phantomas.setMetric("mainDomainTlsProtocol"); // @desc TLS protocol used by the main domain (string)
+  phantomas.setMetric("mainDomainTlsProtocol"); // @desc TLS protocol used by the main domain [string]
   phantomas.setMetric("oldTlsProtocol"); // @desc number of domains using TLS 1.1 or 1.2
 
   // spy all requests
