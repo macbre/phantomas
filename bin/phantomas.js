@@ -141,11 +141,6 @@ program
     "--page-source-dir <dir>",
     "folder path to output page source (default is ./html directory)"
   )
-  .option(
-    "-R, --reporter, --format <reporter>",
-    "output format / reporter",
-    "plain"
-  )
   .option("--pretty", "render formatted JSON")
   .option("--screenshot", "render fully loaded page to a given file")
   .option("-s, --silent", "don't write anything to the console");
@@ -178,7 +173,8 @@ delete options.externals;
 if (typeof options.url !== "string" && typeof options.config === "undefined") {
   debug("URL not provided - show help and leave");
   program.outputHelp();
-  process.exit(1);
+  process.exitCode = 1;
+  return;
 }
 
 url = options.url;
@@ -199,12 +195,13 @@ phantomas(url, options)
   .catch((err) => {
     debug("Error: %s", err);
     console.error("" + err);
-    process.exit(2);
+    process.exitCode = 2;
   })
   .then(async (results) => {
-    debug("Calling a reporter...");
+    debug("Calling the JSON reporter...");
     debug("Metrics: %j", results.getMetrics());
 
+    // TODO: handle more reporters
     const reporter = require("../reporters/json")(results, options);
     const res = await reporter.render();
 
