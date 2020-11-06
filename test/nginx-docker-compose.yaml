@@ -6,7 +6,10 @@ services:
     image: macbre/nginx-brotli:1.19.3
     ports:
       - "8888:80"
+      - "8889:443"
     volumes:
       # see nginx-static.conf
       - "./webroot:/static"
       - "./nginx-static.conf:/etc/nginx/conf.d/nginx-static.conf"
+      - "./ssl-certificate/localhost.crt:/etc/nginx/localhost.crt"
+      - "./ssl-certificate/localhost.key:/etc/nginx/localhost.key"
