@@ -816,9 +816,17 @@
     oldTlsProtocol: 1
   offenders:
     oldHttpProtocol:
-      - { domain: "https://127.0.0.1:8889", httpVersion: "http/1.1", requests: 1 }
+      - {
+          domain: "https://127.0.0.1:8889",
+          httpVersion: "http/1.1",
+          requests: 1,
+        }
     oldTlsProtocol:
-      - { domain: "https://127.0.0.1:8889", tlsVersion: "TLS 1.1", beforeDomReady: true }
+      - {
+          domain: "https://127.0.0.1:8889",
+          tlsVersion: "TLS 1.1",
+          beforeDomReady: true,
+        }
 
 #
 # integration-test-extra section
