@@ -1,7 +1,6 @@
 /**
  * Delays report generation until given CSS selector can be resolved (i.e. given element exists)
  */
-/* global document: true */
 "use strict";
 
 module.exports = function (phantomas) {

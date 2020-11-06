@@ -28,7 +28,7 @@ module.exports = function (phantomas) {
       .replace(/\/+$/, ""),
     filmStripPrefix = phantomas
       .getParam("film-strip-prefix", "screenshot", "string")
-      .replace(/[^a-z0-9\-]+/gi, "-");
+      .replace(/[^a-z0-9-]+/gi, "-");
 
   var zoomFactor = phantomas.getParam("film-strip-zoom-factor", 0.5);
   phantomas.setZoom(zoomFactor);

@@ -2,6 +2,7 @@
 docs/
 examples/
 test/
+lib/metadata/*.js
 
 .*
 *.html
