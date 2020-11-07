@@ -155,6 +155,7 @@ Introductions to phantomas and use cases:
 * [Grunt.js for the Enterprise - Vol.1: Frontend Performance with Phantomas](http://www.slideshare.net/DavidAm/grunt-js-for-the-enterprise) (by David Amend)
 * [Automated Frontend Testing at DrupalCon Austin 2014](https://austin2014.drupal.org/session/automated-frontend-testing) (+video)
 * [Phantomas: Fais-moi un strip !](https://wooster.checkmy.ws/2014/01/phantomas-performance-website/) (in French)
+* [Untangle the JavaScript spaghetti code with YellowLabTools](https://gmetais.github.io/yellowlabtools/2014/11/18/untangle_the_js_spaghetti_code.html)
 
 ### Videos
 
