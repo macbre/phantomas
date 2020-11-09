@@ -3,7 +3,7 @@ version: "3.2"
 services:
   nginx:
     # https://hub.docker.com/r/macbre/nginx-brotli
-    image: macbre/nginx-brotli:1.19.3
+    image: macbre/nginx-brotli:1.19.4
     ports:
       - "8888:80"
       - "8889:443"
