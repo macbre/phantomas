@@ -4,7 +4,7 @@
     "setting up which images can be lazy-loaded analysis"
   );
 
-  window.addEventListener("beforeunload", () => {
+  window.addEventListener("load", () => {
     phantomas.spyEnabled(false, "analyzing which images can be lazy-loaded");
 
     var images = document.body.getElementsByTagName("img"),
