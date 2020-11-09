@@ -1,4 +1,5 @@
 test/webroot/
 *.md
 *.yml
+*.yaml
 *.json
