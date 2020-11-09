@@ -808,7 +808,7 @@
 - url: "https://127.0.0.1:8889"
   label: "localhost but https version"
   options:
-    ignore-ssl-errors: true
+    ignoreSslErrors: true
   metrics:
     mainDomainHttpProtocol: "http/1.1"
     oldHttpProtocol: 1
@@ -817,13 +817,13 @@
   offenders:
     oldHttpProtocol:
       - {
-          domain: "https://127.0.0.1:8889",
+          domain: "https://127.0.0.1",
           httpVersion: "http/1.1",
           requests: 1,
         }
     oldTlsProtocol:
       - {
-          domain: "https://127.0.0.1:8889",
+          domain: "https://127.0.0.1",
           tlsVersion: "TLS 1.1",
           beforeDomReady: true,
         }
