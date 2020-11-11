@@ -1,7 +1,7 @@
 /**
  * Provides the --viewport option to set any device resolution and pixel density ratio.
  * If the user sets a viewport size as well as a device option (--phone, --tablet, ...),
- * we assume that he/she wants to overwrite the device values.
+ * we assume that he or she wants to overwrite the device values.
  *
  * Two syntaxes are supported:
  *  - 1200x800 will set a 1x pixel density ratio
