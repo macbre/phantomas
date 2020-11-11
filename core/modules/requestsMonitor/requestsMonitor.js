@@ -313,6 +313,12 @@ module.exports = function (phantomas) {
           break;
       }
 
+      // HTTP and TLS protocols version
+      entry.httpVersion = resp.protocol;
+      if (resp.securityDetails) {
+        entry.tlsVersion = resp.securityDetails.protocol;
+      }
+
       // requests stats
       if (!entry.isBase64) {
         phantomas.incrMetric("requests");

@@ -804,6 +804,30 @@
     httpsRequests:
       - "https://httpbin.org/basic-auth/foo/bar"
 
+# protocols
+- url: "https://127.0.0.1:8889"
+  label: "localhost but https version"
+  options:
+    ignoreSslErrors: true
+  metrics:
+    mainDomainHttpProtocol: "http/1.1"
+    oldHttpProtocol: 1
+    mainDomainTlsProtocol: "TLS 1.1"
+    oldTlsProtocol: 1
+  offenders:
+    oldHttpProtocol:
+      - {
+          domain: "https://127.0.0.1",
+          httpVersion: "http/1.1",
+          requests: 1,
+        }
+    oldTlsProtocol:
+      - {
+          domain: "https://127.0.0.1",
+          tlsVersion: "TLS 1.1",
+          beforeDomReady: true,
+        }
+
 #
 # integration-test-extra section
 #
