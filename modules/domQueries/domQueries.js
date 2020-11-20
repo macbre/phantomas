@@ -19,27 +19,24 @@ module.exports = (phantomas) => {
   //
 
   // report DOM queries that return no results (issue #420)
-  phantomas.on("domQuery", function (
-    type,
-    query,
-    fnName,
-    context,
-    hasNoResults
-  ) {
-    // ignore DOM queries within DOM fragments (used internally by jQuery)
-    if (context.indexOf("body") !== 0 && context.indexOf("#document") !== 0) {
-      return;
-    }
+  phantomas.on(
+    "domQuery",
+    function (type, query, fnName, context, hasNoResults) {
+      // ignore DOM queries within DOM fragments (used internally by jQuery)
+      if (context.indexOf("body") !== 0 && context.indexOf("#document") !== 0) {
+        return;
+      }
 
-    if (hasNoResults === true) {
-      phantomas.incrMetric("DOMqueriesWithoutResults");
-      phantomas.addOffender("DOMqueriesWithoutResults", {
-        query,
-        node: context,
-        function: fnName,
-      });
+      if (hasNoResults === true) {
+        phantomas.incrMetric("DOMqueriesWithoutResults");
+        phantomas.addOffender("DOMqueriesWithoutResults", {
+          query,
+          node: context,
+          function: fnName,
+        });
+      }
     }
-  });
+  );
 
   // count DOM queries by either ID, tag name, class name and selector query
   // @see https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-doctype
