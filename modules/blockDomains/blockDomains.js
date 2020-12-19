@@ -74,27 +74,29 @@ module.exports = function (phantomas) {
     blockedDomainsRegExp = new RegExp("(" + blockedDomains.join("|") + ")$");
   }
 
-  // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagesetrequestinterceptionvalue
-  phantomas.on("init", async (page) => {
-    await page.setRequestInterception(true);
+  if (noExternalsMode || allowedDomains !== false || blockedDomains !== false) {
+    // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagesetrequestinterceptionvalue
+    phantomas.on("init", async (page) => {
+      await page.setRequestInterception(true);
 
-    page.on("request", (interceptedRequest) => {
-      const url = interceptedRequest.url(),
-        domain = new URL(url).hostname;
+      page.on("request", (interceptedRequest) => {
+        const url = interceptedRequest.url(),
+          domain = new URL(url).hostname;
 
-      if (checkBlock(domain)) {
-        interceptedRequest.abort();
+        if (checkBlock(domain)) {
+          interceptedRequest.abort();
 
-        phantomas.log("Request has been blocked: <%s>", url);
+          phantomas.log("Request has been blocked: <%s>", url);
 
-        // stats
-        phantomas.incrMetric("blockedRequests");
-        phantomas.addOffender("blockedRequests", url);
-      } else {
-        interceptedRequest.continue();
-      }
+          // stats
+          phantomas.incrMetric("blockedRequests");
+          phantomas.addOffender("blockedRequests", url);
+        } else {
+          interceptedRequest.continue();
+        }
+      });
+
+      phantomas.log("Requests intercepting enabled");
     });
-
-    phantomas.log("Requests intercepting enabled");
-  });
+  }
 };

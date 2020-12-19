@@ -188,6 +188,11 @@ module.exports = function (phantomas) {
       const resId = resp._requestId,
         request = requests[resId];
 
+      if (resp.fromDiskCache === true) {
+        phantomas.log("response from disk cache ignored: %j", resp);
+        return;
+      }
+
       var entry = {
         id: resId,
         url: resp.url,
