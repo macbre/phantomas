@@ -1,19 +1,19 @@
 <head>
-    <link rel="preload" href="static/jquery-1.4.4.min.js" as="script">
-    <script src="static/jquery-1.4.4.min.js"></script>
+    <link rel="preload" href="static/jquery-2.1.1.min.js" as="script">
+    <script src="static/jquery-2.1.1.min.js"></script>
 </head>
 <body>
 
     <script>
         var link = document.createElement('link');
         link.rel = 'preload';
-        link.href = 'static/jquery-1.4.4.min.js';
+        link.href = 'static/jquery-2.1.1.min.js';
         link.as = 'script';
         document.head.appendChild(link);
 
         setTimeout(() => {
             var script = document.createElement('script');
-            script.src = 'static/jquery-1.4.4.min.js';
+            script.src = 'static/jquery-2.1.1.min.js';
             document.head.appendChild(script);
         }, 100);
     </script>

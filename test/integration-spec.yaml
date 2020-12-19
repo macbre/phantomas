@@ -832,12 +832,12 @@
 - url: "/browser-caching.html"
   metrics:
     requests: 2
-    bodySize: 79191
-    contentLength: 79367
+    bodySize: 84835
+    contentLength: 30251
   offenders:
     requests:
-      - { url: "http://127.0.0.1:8888/browser-caching.html", type: "html", size: 518 }
-      - { url: "http://127.0.0.1:8888/static/jquery-1.4.4.min.js", type: "js", size: 78849 }
+      - { url: "http://127.0.0.1:8888/browser-caching.html", type: "html", size: 517 }
+      - { url: "http://127.0.0.1:8888/static/jquery-2.1.1.min.js", type: "js", size: 29734 }
 
 #
 # integration-test-extra section
