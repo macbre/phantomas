@@ -34,13 +34,11 @@ function parseEntryUrl(entry) {
     entry.domain = false;
     entry.protocol = false;
     entry.isBase64 = true;
-
   } else if (entry.url.indexOf("blob:") === 0) {
     // blob image or video
     entry.domain = false;
     entry.protocol = false;
     entry.isBlob = true;
-
   } else {
     parsed = new URL(entry.url) || {};
 
