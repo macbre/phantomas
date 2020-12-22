@@ -7,12 +7,17 @@
 
 module.exports = function (phantomas) {
 
+  // Converts seconds into milliseconds
+  function milliseconds(value) {
+    return Math.round(value * 1000);
+  }
+
   phantomas.on("metrics", (metrics) => {
     phantomas.setMetric("layoutCount", metrics.LayoutCount); // @desc total number of full or partial page layout
-    phantomas.setMetric("layoutDuration", metrics.LayoutDuration); // @desc combined durations in seconds of all page layouts
+    phantomas.setMetric("layoutDuration", milliseconds(metrics.LayoutDuration)); // @desc combined durations of all page layouts
     phantomas.setMetric("recalcStyleCount", metrics.RecalcStyleCount); // @desc total number of page style recalculations
-    phantomas.setMetric("recalcStyleDuration", metrics.RecalcStyleDuration); // @desc combined duration in seconds of all page style recalculations
-    phantomas.setMetric("scriptDuration", metrics.ScriptDuration); // @desc combined duration in seconds of JavaScript execution
-    phantomas.setMetric("taskDuration", metrics.TaskDuration); // @desc combined duration in seconds of all tasks performed by the browser
+    phantomas.setMetric("recalcStyleDuration", milliseconds(metrics.RecalcStyleDuration)); // @desc combined duration of all page style recalculations
+    phantomas.setMetric("scriptDuration", milliseconds(metrics.ScriptDuration)); // @desc combined duration of JavaScript execution
+    phantomas.setMetric("taskDuration", milliseconds(metrics.TaskDuration)); // @desc combined duration of all tasks performed by the browser
   });
 };
