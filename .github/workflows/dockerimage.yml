@@ -1,6 +1,9 @@
 name: Check if a Docker image can be built
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ devel ]
+  pull_request:
 
 jobs:
 
