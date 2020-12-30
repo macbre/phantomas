@@ -9,9 +9,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
     - name: Build the Docker image
+      env:
+        # @see https://testdriven.io/blog/faster-ci-builds-with-docker-cache/
+        CACHE_IMAGE: macbre/phantomas:latest
       run: |
-        docker build . --tag ${{ github.repository }}
+        docker pull $CACHE_IMAGE
+        docker build . \
+          --cache-from $CACHE_IMAGE \
+          --tag ${{ github.repository }}
         docker images
 
     - name: Run tests inside the Docker container
