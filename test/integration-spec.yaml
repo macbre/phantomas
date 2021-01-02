@@ -839,6 +839,11 @@
       - { url: "http://127.0.0.1:8888/browser-caching.html", type: "html", size: 517 }
       - { url: "http://127.0.0.1:8888/static/jquery-2.1.1.min.js", type: "js", size: 29734 }
 
+# don't call MutationObserver on <object> tags
+- url: "/svg-as-object.html"
+  metrics:
+    jsErrors: 0
+
 #
 # integration-test-extra section
 #
