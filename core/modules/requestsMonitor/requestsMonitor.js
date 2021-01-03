@@ -29,8 +29,17 @@ function parseEntryUrl(entry) {
   // asset type
   entry.type = "other";
 
-  if (entry.url.indexOf("data:") !== 0) {
-    // @see https://nodejs.org/api/url.html#url_class_url
+  if (entry.url.indexOf("data:") === 0) {
+    // base64 encoded data
+    entry.domain = false;
+    entry.protocol = false;
+    entry.isBase64 = true;
+  } else if (entry.url.indexOf("blob:") === 0) {
+    // blob image or video
+    entry.domain = false;
+    entry.protocol = false;
+    entry.isBlob = true;
+  } else {
     parsed = new URL(entry.url) || {};
 
     entry.protocol = parsed.protocol.replace(":", ""); // e.g. "http:"
@@ -40,11 +49,6 @@ function parseEntryUrl(entry) {
     if (entry.protocol === "https") {
       entry.isSSL = true;
     }
-  } else {
-    // base64 encoded data
-    entry.domain = false;
-    entry.protocol = false;
-    entry.isBase64 = true;
   }
 
   return entry;
@@ -230,7 +234,7 @@ module.exports = function (phantomas) {
        *
        * "Throughout this work, time is measured in milliseconds"
        */
-      if (!entry.isBase64) {
+      if (!entry.isBase64 && !entry.isBlob) {
         // resp.timing is empty when handling data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D
         assert(
           typeof resp.timing !== "undefined",
@@ -325,7 +329,7 @@ module.exports = function (phantomas) {
       }
 
       // requests stats
-      if (!entry.isBase64) {
+      if (!entry.isBase64 && !entry.isBlob) {
         phantomas.incrMetric("requests");
         phantomas.addOffender("requests", {
           url: entry.url,
@@ -353,6 +357,8 @@ module.exports = function (phantomas) {
 
       if (entry.isBase64) {
         phantomas.emit("base64recv", entry, resp); // @desc base64-encoded "response" has been received
+      } else if (entry.isBlob) {
+        // Do nothing
       } else {
         phantomas.log(
           "recv: HTTP %d <%s> [%s]",
