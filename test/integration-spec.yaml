@@ -506,14 +506,15 @@
     globalVariables: ["a_global", "falsy", "foo"]
     globalVariablesFalsy:
       - { name: "falsy", value: false }
-# JS redirects (#550)
+# JS redirects (#550 + #846)
 - url: "/js-redirect.html"
   metrics:
-    requests: 2
+    requests: 3
     htmlCount: 2
     jsErrors: 0
   options:
     "wait-for-network-idle": true
+    "analyze-css": true
 
 # AJAX requests (#622)
 - url: "/jquery-ajax.html"
@@ -843,6 +844,12 @@
 - url: "/svg-as-object.html"
   metrics:
     jsErrors: 0
+
+# screenshot path error
+- url: "/jquery.html"
+  label: "invalid screenshot path"
+  options:
+    screenshot: "non-existing-path/screenshot.png"
 
 #
 # integration-test-extra section

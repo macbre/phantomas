@@ -40,13 +40,19 @@ module.exports = function (phantomas) {
       };
       phantomas.log("Will take screenshot, options: %j", options);
 
-      // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagescreenshotoptions
-      await page.screenshot(options);
+      try {
+        // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagescreenshotoptions
+        await page.screenshot(options);
 
-      phantomas.log("Screenshot stored in %s", path);
+        phantomas.log("Screenshot stored in %s", path);
 
-      // let clients know that we stored the page source in a file
-      phantomas.emit("screenshot", path);
+        // let clients know that we stored the page source in a file
+        phantomas.emit("screenshot", path);
+      } catch (err) {
+        phantomas.log("Error while taking the screenshot");
+        phantomas.log(err);
+      }
+
       resolve();
     });
   });
