@@ -207,7 +207,11 @@ module.exports = function (phantomas) {
             css = await entry.content();
           }
 
-          analyzeCss(css, entry.url, resolve);
+          if (css) {
+            analyzeCss(css, entry.url, resolve);
+          } else {
+            resolve();
+          }
         })
       );
     });

@@ -1,8 +1,13 @@
+<head>
+	<link rel="stylesheet" href="static/style.css" />
+</head>
 <body>
 	<script>
 		var url = '/js-globals.html';
 
-		console.log('Redirecting to %s', url);
-		document.location = url;
+		setTimeout(() => {
+			console.log('Redirecting to %s', url);
+			document.location = url;
+		}, 100);
 	</script>
 </body>
