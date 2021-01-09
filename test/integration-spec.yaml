@@ -845,6 +845,12 @@
   metrics:
     jsErrors: 0
 
+# screenshot path error
+- url: "/jquery.html"
+  label: "invalid screenshot path"
+  options:
+    screenshot: "non-existing-path/screenshot.png"
+
 #
 # integration-test-extra section
 #
