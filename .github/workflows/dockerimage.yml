@@ -17,6 +17,9 @@ jobs:
       env:
         # @see https://testdriven.io/blog/faster-ci-builds-with-docker-cache/
         CACHE_IMAGE: macbre/phantomas:latest
+        # @see https://docs.docker.com/develop/develop-images/build_enhancements/
+        COMPOSE_DOCKER_CLI_BUILD: "1"
+        DOCKER_BUILDKIT: "1"
       run: |
         docker pull $CACHE_IMAGE
         docker build . \
