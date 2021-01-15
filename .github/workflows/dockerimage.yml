@@ -22,7 +22,7 @@ jobs:
       run: |
         docker build . \
           --cache-from macbre/phantomas:latest \
-          --build-arg BUILDKIT_INLINE_CACHE=1
+          --build-arg BUILDKIT_INLINE_CACHE=1 \
           --tag ${{ github.repository }}
         docker images
 
