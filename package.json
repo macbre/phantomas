@@ -32,7 +32,7 @@
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
     "async": "^3.2.0",
-    "commander": "^6.1.0",
+    "commander": "^7.0.0",
     "csv-string": "^4.0.1",
     "debug": "^4.1.1",
     "js-yaml": "^4.0.0",
