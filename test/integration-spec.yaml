@@ -851,6 +851,17 @@
   options:
     screenshot: "non-existing-path/screenshot.png"
 
+# videos
+- url: "/videos.html"
+  metrics:
+    videoCount: 2
+    videoSize: 10535
+    requests: 3
+  offenders:
+    videoCount:
+      - { url: "http://127.0.0.1:8888/static/stickman.webm", size: 3750 }
+      - { url: "http://127.0.0.1:8888/static/stickman.mp4", size: 6785 }
+
 #
 # integration-test-extra section
 #

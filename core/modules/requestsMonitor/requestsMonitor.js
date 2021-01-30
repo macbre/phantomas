@@ -106,6 +106,7 @@ function addContentType(headerValue, entry) {
       break;
 
     case "video/webm":
+    case "video/mp4":
       entry.type = "video";
       entry.isVideo = true;
       break;
