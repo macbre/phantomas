@@ -37,7 +37,7 @@
     "debug": "^4.1.1",
     "js-yaml": "^4.0.0",
     "node-statsd": "0.1.1",
-    "puppeteer": "^5.3.1"
+    "puppeteer": "^7.0.0"
   },
   "devDependencies": {
     "eslint": "^7.6.0",
