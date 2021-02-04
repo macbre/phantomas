@@ -20,10 +20,7 @@ jobs:
         COMPOSE_DOCKER_CLI_BUILD: "1"
         DOCKER_BUILDKIT: "1"
       run: |
-        docker build . \
-          --cache-from macbre/phantomas:latest \
-          --build-arg BUILDKIT_INLINE_CACHE=1 \
-          --tag ${{ github.repository }}
+        docker build . --tag ${{ github.repository }}
         docker images
 
     - name: Run tests inside the Docker container
