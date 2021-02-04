@@ -5,14 +5,22 @@
 
 module.exports = function (phantomas) {
   const workingDirectory = require("process").cwd(),
-    param = phantomas.getParam("screenshot");
+    param = phantomas.getParam("screenshot"),
+    fullPage = phantomas.getParam("fullPageScreenshot");
   var path = "";
 
   if (typeof param === "undefined") {
     phantomas.log(
-      "Screenshot: to enable screenshot of the fully loaded page run phantomas with --screenshot option"
+      "Screenshot: to enable screenshot of the page run phantomas with --screenshot option"
     );
     return;
+  }
+
+  if (fullPage === true) {
+    // the full page option is now disabled by default (bug #853)
+    phantomas.log(
+      "Screenshot: --full-page-screenshot option enabled. Please note that the option can cause layout bugs and lazyloadableImagesUnderTheFold miscount"
+    );
   }
 
   // --screenshot
@@ -36,17 +44,23 @@ module.exports = function (phantomas) {
       const options = {
         path: path,
         type: "png",
-        fullPage: true, // takes a screenshot of the full scrollable page
+        fullPage: fullPage === true,
       };
       phantomas.log("Will take screenshot, options: %j", options);
 
-      // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagescreenshotoptions
-      await page.screenshot(options);
+      try {
+        // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pagescreenshotoptions
+        await page.screenshot(options);
 
-      phantomas.log("Screenshot stored in %s", path);
+        phantomas.log("Screenshot stored in %s", path);
 
-      // let clients know that we stored the page source in a file
-      phantomas.emit("screenshot", path);
+        // let clients know that we stored the page source in a file
+        phantomas.emit("screenshot", path);
+      } catch (err) {
+        phantomas.log("Error while taking the screenshot");
+        phantomas.log(err);
+      }
+
       resolve();
     });
   });

@@ -12,10 +12,9 @@ phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs
 #### Via npm
 
 <a href="https://www.npmjs.com/package/phantomas" title="latest"><img alt="latest" src="https://img.shields.io/npm/v/phantomas/latest.svg" /></a>
-<a href="https://www.npmjs.com/package/phantomas/v/next" title="next"><img alt="next" src="https://img.shields.io/npm/v/phantomas/next.svg" /></a>
 
 ```
-npm install phantomas@next
+npm install phantomas
 ```
 
 > This will install [a recent version of Chromium](https://github.com/GoogleChrome/puppeteer#installation) supported by `puppeteer` module.

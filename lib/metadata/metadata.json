@@ -308,6 +308,19 @@
         "documentCookiesCount"
       ]
     },
+    "cpuTasks": {
+      "file": "/modules/cpuTasks/cpuTasks.js",
+      "desc": "",
+      "events": [],
+      "metrics": [
+        "layoutCount",
+        "layoutDuration",
+        "recalcStyleCount",
+        "recalcStyleDuration",
+        "scriptDuration",
+        "taskDuration"
+      ]
+    },
     "documentHeight": {
       "file": "/modules/documentHeight/documentHeight.js",
       "desc": "Measure document height",
@@ -1174,6 +1187,42 @@
       "module": "cookies",
       "testsCovered": false
     },
+    "layoutCount": {
+      "desc": "total number of full or partial page layout",
+      "unit": "number",
+      "module": "cpuTasks",
+      "testsCovered": false
+    },
+    "layoutDuration": {
+      "desc": "combined durations of all page layouts",
+      "unit": "ms",
+      "module": "cpuTasks",
+      "testsCovered": false
+    },
+    "recalcStyleCount": {
+      "desc": "total number of page style recalculations",
+      "unit": "number",
+      "module": "cpuTasks",
+      "testsCovered": false
+    },
+    "recalcStyleDuration": {
+      "desc": "combined duration of all page style recalculations",
+      "unit": "ms",
+      "module": "cpuTasks",
+      "testsCovered": false
+    },
+    "scriptDuration": {
+      "desc": "combined duration of JavaScript execution",
+      "unit": "ms",
+      "module": "cpuTasks",
+      "testsCovered": false
+    },
+    "taskDuration": {
+      "desc": "combined duration of all tasks performed by the browser",
+      "unit": "ms",
+      "module": "cpuTasks",
+      "testsCovered": false
+    },
     "documentHeight": {
       "desc": "the page height",
       "unit": "px",
@@ -1817,8 +1866,8 @@
       "testsCovered": false
     }
   },
-  "metricsCount": 181,
-  "modulesCount": 35,
+  "metricsCount": 187,
+  "modulesCount": 36,
   "extensionsCount": 12,
   "version": "2.0.0"
 }

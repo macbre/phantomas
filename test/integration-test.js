@@ -45,7 +45,7 @@ var suite = vows.describe("Integration tests").addBatch({
 
 // register tests from spec file
 var raw = fs.readFileSync(__dirname + "/integration-spec.yaml").toString(),
-  spec = yaml.safeLoad(raw);
+  spec = yaml.load(raw);
 
 spec.forEach(function (test) {
   var batch = {},

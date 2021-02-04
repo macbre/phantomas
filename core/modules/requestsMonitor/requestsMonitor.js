@@ -29,8 +29,17 @@ function parseEntryUrl(entry) {
   // asset type
   entry.type = "other";
 
-  if (entry.url.indexOf("data:") !== 0) {
-    // @see https://nodejs.org/api/url.html#url_class_url
+  if (entry.url.indexOf("data:") === 0) {
+    // base64 encoded data
+    entry.domain = false;
+    entry.protocol = false;
+    entry.isBase64 = true;
+  } else if (entry.url.indexOf("blob:") === 0) {
+    // blob image or video
+    entry.domain = false;
+    entry.protocol = false;
+    entry.isBlob = true;
+  } else {
     parsed = new URL(entry.url) || {};
 
     entry.protocol = parsed.protocol.replace(":", ""); // e.g. "http:"
@@ -40,11 +49,6 @@ function parseEntryUrl(entry) {
     if (entry.protocol === "https") {
       entry.isSSL = true;
     }
-  } else {
-    // base64 encoded data
-    entry.domain = false;
-    entry.protocol = false;
-    entry.isBase64 = true;
   }
 
   return entry;
@@ -102,6 +106,7 @@ function addContentType(headerValue, entry) {
       break;
 
     case "video/webm":
+    case "video/mp4":
       entry.type = "video";
       entry.isVideo = true;
       break;
@@ -188,6 +193,11 @@ module.exports = function (phantomas) {
       const resId = resp._requestId,
         request = requests[resId];
 
+      if (resp.fromDiskCache === true) {
+        phantomas.log("response from disk cache ignored: %j", resp);
+        return;
+      }
+
       var entry = {
         id: resId,
         url: resp.url,
@@ -225,7 +235,7 @@ module.exports = function (phantomas) {
        *
        * "Throughout this work, time is measured in milliseconds"
        */
-      if (!entry.isBase64) {
+      if (!entry.isBase64 && !entry.isBlob) {
         // resp.timing is empty when handling data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D
         assert(
           typeof resp.timing !== "undefined",
@@ -320,7 +330,7 @@ module.exports = function (phantomas) {
       }
 
       // requests stats
-      if (!entry.isBase64) {
+      if (!entry.isBase64 && !entry.isBlob) {
         phantomas.incrMetric("requests");
         phantomas.addOffender("requests", {
           url: entry.url,
@@ -348,6 +358,8 @@ module.exports = function (phantomas) {
 
       if (entry.isBase64) {
         phantomas.emit("base64recv", entry, resp); // @desc base64-encoded "response" has been received
+      } else if (entry.isBlob) {
+        // Do nothing
       } else {
         phantomas.log(
           "recv: HTTP %d <%s> [%s]",

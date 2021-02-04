@@ -1,7 +1,7 @@
 Modules and metrics
 ===================
 
-This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (35 of them) and 181 metrics that they emit.
+This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (36 of them) and 187 metrics that they emit.
 
 When applicable, [offender](https://github.com/macbre/phantomas/issues/140) example is provided.
 
@@ -471,6 +471,35 @@ length of document.cookie (bytes)
 ##### `domainsWithCookies`
 
 number of domains with cookies set (number, with offenders)
+
+
+## [cpuTasks](https://github.com/macbre/phantomas/tree/devel/modules/cpuTasks/cpuTasks.js)
+
+> 
+
+##### `layoutCount`
+
+total number of full or partial page layout (number)
+
+##### `layoutDuration`
+
+combined durations in seconds of all page layouts (ms)
+
+##### `recalcStyleCount`
+
+total number of page style recalculations (number)
+
+##### `recalcStyleDuration`
+
+combined duration in seconds of all page style recalculations (ms)
+
+##### `scriptDuration`
+
+combined duration in seconds of JavaScript execution (ms)
+
+##### `taskDuration`
+
+combined duration in seconds of all tasks performed by the browser (ms)
 
 
 ## [documentHeight](https://github.com/macbre/phantomas/tree/devel/modules/documentHeight/documentHeight.js)

@@ -506,14 +506,15 @@
     globalVariables: ["a_global", "falsy", "foo"]
     globalVariablesFalsy:
       - { name: "falsy", value: false }
-# JS redirects (#550)
+# JS redirects (#550 + #846)
 - url: "/js-redirect.html"
   metrics:
-    requests: 2
+    requests: 3
     htmlCount: 2
     jsErrors: 0
   options:
     "wait-for-network-idle": true
+    "analyze-css": true
 
 # AJAX requests (#622)
 - url: "/jquery-ajax.html"
@@ -827,6 +828,39 @@
           tlsVersion: "TLS 1.1",
           beforeDomReady: true,
         }
+
+# don't count requests cached by browser
+- url: "/browser-caching.html"
+  metrics:
+    requests: 2
+    bodySize: 84835
+    contentLength: 30251
+  offenders:
+    requests:
+      - { url: "http://127.0.0.1:8888/browser-caching.html", type: "html", size: 517 }
+      - { url: "http://127.0.0.1:8888/static/jquery-2.1.1.min.js", type: "js", size: 29734 }
+
+# don't call MutationObserver on <object> tags
+- url: "/svg-as-object.html"
+  metrics:
+    jsErrors: 0
+
+# screenshot path error
+- url: "/jquery.html"
+  label: "invalid screenshot path"
+  options:
+    screenshot: "non-existing-path/screenshot.png"
+
+# videos
+- url: "/videos.html"
+  metrics:
+    videoCount: 2
+    videoSize: 10535
+    requests: 3
+  offenders:
+    videoCount:
+      - { url: "http://127.0.0.1:8888/static/stickman.webm", size: 3750 }
+      - { url: "http://127.0.0.1:8888/static/stickman.mp4", size: 6785 }
 
 #
 # integration-test-extra section
