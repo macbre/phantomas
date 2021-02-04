@@ -142,7 +142,11 @@ program
     "folder path to output page source (default is ./html directory)"
   )
   .option("--pretty", "render formatted JSON")
-  .option("--screenshot", "render fully loaded page to a given file")
+  .option(
+    "--screenshot <file>",
+    "render the viewport to a given file once fully loaded"
+  )
+  .option("--full-page-screenshot", "enlarge the screenshot to full page")
   .option("-s, --silent", "don't write anything to the console");
 
 // handle --config (issue #209)
