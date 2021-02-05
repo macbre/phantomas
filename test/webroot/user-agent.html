@@ -1,13 +1,12 @@
 <body>
     <script>
-        console.log(navigator.userAgent);
-        console.log(window.outerWidth, window.outerHeight);
-
         const match = navigator.userAgent.match(/Mozilla\/5\.0 \((.*)\) AppleWebKit\/(.*) \(KHTML, like Gecko\) Chrome\/(.*) Safari\/(.*) Phantomas\/(.*)/);
 
         (phantomas => {
-            phantomas.setMetric('device', match[1]);
-            phantomas.setMetric('viewport', window.outerWidth + 'x' + window.outerHeight);
+            if (match !== null) {
+                phantomas.setMetric('device', match[1]);    
+            }
+            phantomas.setMetric('userAgent', navigator.userAgent);
         })(window.__phantomas);
     </script>
 </body>

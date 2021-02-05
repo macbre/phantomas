@@ -707,7 +707,7 @@
   options:
     phone: true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36"
+    device: "Linux; Android 10; SM-G981B"
     viewport: "360x640"
 
 - url: "/devices.html"
@@ -715,7 +715,7 @@
   options:
     "phone-landscape": true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36"
+    device: "Linux; Android 10; SM-G981B"
     viewport: "640x360"
 
 - url: "/devices.html"
@@ -723,7 +723,7 @@
   options:
     tablet: true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true"
+    device: "Linux; Android 10; SM-T870"
     viewport: "800x1280"
 
 - url: "/devices.html"
@@ -731,7 +731,7 @@
   options:
     "tablet-landscape": true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true"
+    device: "Linux; Android 10; SM-T870"
     viewport: "1280x800"
 
 # viewport
@@ -865,36 +865,32 @@
 # user-agent
 - url: "/user-agent.html"
   label: "default desktop user agent"
-  offenders:
-    consoleMessages:
-      - 'log:["Device: Windows NT 10.0; Win64; x64"]'
+  metrics:
+    device: 'Windows NT 10.0; Win64; x64'
 
 # user-agent
 - url: "/user-agent.html"
   label: "phone user agent"
   options:
     phone: true
-  offenders:
-    consoleMessages:
-      - 'log:["Device: Linux; Android 10; SM-G981B"]'
+  metrics:
+    device: 'Linux; Android 10; SM-G981B'
 
 #user-agent
 - url: "/user-agent.html"
   label: "tablet user agent"
   options:
     tablet: true
-  offenders:
-    consoleMessages:
-      - 'log:["Device: Linux; Android 10; SM-T870"]'
+  metrics:
+    device: 'Linux; Android 10; SM-T870'
 
 # user-agent
 - url: "/user-agent.html"
   label: "custom user agent"
   options:
     "user-agent": "customized!"
-  offenders:
-    consoleMessages:
-      - 'log:["customized!"]'
+  metric:
+    userAgent: 'customized!'
 
 # user-agent
 - url: "/user-agent.html"
@@ -902,9 +898,8 @@
   options:
     phone: true
     "user-agent": "customized!"
-  offenders:
-    consoleMessages:
-      - 'log:["customized!"]'
+  metric:
+    userAgent: 'customized!'
 
 #
 # integration-test-extra section
