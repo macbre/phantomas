@@ -31,7 +31,10 @@ module.exports = function (phantomas) {
   // it can contain <Platform>, <BrowserVersion> and <PhantomasVersion> if needed
   const param = phantomas.getParam("user-agent");
   if (typeof param !== "undefined") {
-    phantomas.log('userAgent: --user-agent option detected with value %s', param);
+    phantomas.log(
+      "userAgent: --user-agent option detected with value %s",
+      param
+    );
     userAgent = param;
   }
 
@@ -39,7 +42,7 @@ module.exports = function (phantomas) {
     const browserVersion = await browser.version();
     // browserVersion will look like HeadlessChrome/88.0.4298.0
     // let's keep the number only:
-    const versionNumber = browserVersion.split('/')[1];
+    const versionNumber = browserVersion.split("/")[1];
 
     userAgent = userAgent.replace("<Platform>", platform);
     userAgent = userAgent.replace("<BrowserVersion>", versionNumber);
