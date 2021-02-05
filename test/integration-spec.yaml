@@ -862,6 +862,50 @@
       - { url: "http://127.0.0.1:8888/static/stickman.webm", size: 3750 }
       - { url: "http://127.0.0.1:8888/static/stickman.mp4", size: 6785 }
 
+# user-agent
+- url: "/user-agent.html"
+  label: "default desktop user agent"
+  offenders:
+    consoleMessages:
+      - 'log:["Device: Windows NT 10.0; Win64; x64"]'
+
+# user-agent
+- url: "/user-agent.html"
+  label: "phone user agent"
+  options:
+    phone: true
+  offenders:
+    consoleMessages:
+      - 'log:["Device: Linux; Android 10; SM-G981B"]'
+
+#user-agent
+- url: "/user-agent.html"
+  label: "tablet user agent"
+  options:
+    tablet: true
+  offenders:
+    consoleMessages:
+      - 'log:["Device: Linux; Android 10; SM-T870"]'
+
+# user-agent
+- url: "/user-agent.html"
+  label: "custom user agent"
+  options:
+    "user-agent": "customized!"
+  offenders:
+    consoleMessages:
+      - 'log:["customized!"]'
+
+# user-agent
+- url: "/user-agent.html"
+  label: "custom user agent (overwrites mobile)"
+  options:
+    phone: true
+    "user-agent": "customized!"
+  offenders:
+    consoleMessages:
+      - 'log:["customized!"]'
+
 #
 # integration-test-extra section
 #
