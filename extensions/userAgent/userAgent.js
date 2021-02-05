@@ -1,5 +1,5 @@
 /**
- * Sets a user agent according to --user-agent or -phone or -tablet options
+ * Sets a user agent according to --user-agent or --phone or --tablet options
  */
 "use strict";
 
