@@ -3,7 +3,7 @@ FROM node:lts-alpine3.13
 
 # Installs latest Chromium package.
 # https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
-ENV CHROMIUM_VERSION 86.0.4240.111-r0
+ENV CHROMIUM_VERSION 88.0.4324.182-r0
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
