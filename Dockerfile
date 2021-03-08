@@ -42,5 +42,13 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm ci
 
+ARG COMMIT_SHA="dev"
+ENV COMMIT_SHA ${COMMIT_SHA}
+
+# label the image with branch name and commit hash
+LABEL maintainer="maciej.brencz@gmail.com"
+LABEL org.opencontainers.image.source="https://github.com/macbre/phantomas"
+LABEL org.opencontainers.image.revision="${COMMIT_SHA}"
+
 # Copy the content of the rest of the repository into a container
 COPY . .
