@@ -145,18 +145,19 @@ program
 // handle env variables (issue #685)
 //program.setReplacementVars(process.env);
 
-function parseArgv(argv) {
+function parseArgv(args) {
   // parse provided options
-  program.parse(argv);
+  debug("argv: %j", args);
+  program.parse(args);
 
   // make sure options are not "camelCased" but "have-dashes" instead (issue #863)
   let options = decamelizeOptions(program.opts());
-  debug("opts: %j", options);
+  debug("decamelzed opts: %j", options);
 
   // handle URL passed without --url option (#249)
-  if (typeof options.url === "undefined" && process.argv.length >= 3) {
-    if (!process.argv[2].startsWith("-")) {
-      options.url = process.argv[2];
+  if (typeof options.url === "undefined" && args.length >= 3) {
+    if (!args[2].startsWith("-")) {
+      options.url = args[2];
     }
   }
 
@@ -165,6 +166,8 @@ function parseArgv(argv) {
   delete options.externals;
 
   delete options.version;
+
+  debug("opts: %j", options);
   return options;
 }
 

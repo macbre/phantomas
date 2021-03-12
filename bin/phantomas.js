@@ -16,7 +16,6 @@ const { program, parseArgv } = require("./program"),
 var url = "";
 
 // parse command line arguments
-debug("argv: %j", process.argv);
 let options = parseArgv(process.argv);
 
 // --url is mandatory -> show help
