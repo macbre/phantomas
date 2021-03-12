@@ -10,6 +10,7 @@
 "use strict";
 
 const { program } = require("commander"),
+  { decamelizeOptions } = require("./utils"),
   phantomas = require(".."),
   debug = require("debug")("phantomas:cli");
 
@@ -157,7 +158,9 @@ program
 
 // parse it
 program.parse(process.argv);
-var options = program.opts();
+
+// make sure options are not "camelCased" but "have-dashes" instead (issue #863)
+var options = decamelizeOptions(program.opts());
 
 debug("argv: %j", process.argv);
 debug("opts: %j", options);

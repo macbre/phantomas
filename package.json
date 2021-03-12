@@ -35,6 +35,7 @@
     "commander": "^7.0.0",
     "csv-string": "^4.0.1",
     "debug": "^4.1.1",
+    "decamelize": "^5.0.0",
     "js-yaml": "^4.0.0",
     "node-statsd": "0.1.1",
     "puppeteer": "^8.0.0"
