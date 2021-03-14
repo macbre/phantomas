@@ -24,6 +24,18 @@ function screenshot(phantomas, batch) {
 
   phantomas.on("screenshot", (_path) => {
     path = _path;
+
+    if (path.indexOf("screenshot-relative.png") >= 0) {
+      // If the screenshot path is provided as relative,
+      // it should be inside the project's folder.
+      path = require("process").cwd() + "/screenshot-relative.png";
+    }
+
+    if (path.indexOf("/tmp/screenshot-absolute.png") === 0) {
+      // If the screenshot path starts with a slash,
+      // it should be absolute.
+      path = "/tmp/screenshot-absolute.png";
+    }
   });
 
   batch["PNG file should be saved"] = () => {

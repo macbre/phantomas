@@ -915,7 +915,21 @@
 
 # screenshot
 - url: "/image-scaling.html"
-  label: "image-scaling.html (with --screenshot)"
+  label: "image-scaling.html (with --screenshot true)"
   options:
     screenshot: true
+  assertFunction: screenshot
+
+# screenshot in a folder inside the project
+- url: "/image-scaling.html"
+  label: "image-scaling.html (with --screenshot relative path)"
+  options:
+    screenshot: "screenshot-relative.png"
+  assertFunction: screenshot
+
+# screenshot in a folder outside of the project
+- url: "/image-scaling.html"
+  label: "image-scaling.html (with --screenshot absolute path)"
+  options:
+    screenshot: "/tmp/screenshot-absolute.png"
   assertFunction: screenshot
