@@ -44,6 +44,44 @@ vows
           }
         );
       },
+      "should handle --url option": function (parseArgv) {
+        assert.deepStrictEqual(
+          parseArgv(
+            DEFAULT_ARGV.concat(["--url=http://example.foo/bar", "--phone"])
+          ),
+          {
+            viewport: "800x600",
+            timeout: 15,
+            "no-externals": false,
+            url: "http://example.foo/bar",
+            phone: true,
+          }
+        );
+      },
+      "should detect URL without --url option": function (parseArgv) {
+        assert.deepStrictEqual(
+          parseArgv(
+            DEFAULT_ARGV.concat(["http://example.foo/bar", "--tablet"])
+          ),
+          {
+            viewport: "800x600",
+            timeout: 15,
+            "no-externals": false,
+            url: "http://example.foo/bar",
+            tablet: true,
+          }
+        );
+      },
+      "should handle --no-externals": function (parseArgv) {
+        assert.deepStrictEqual(
+          parseArgv(DEFAULT_ARGV.concat(["--no-externals"])),
+          {
+            viewport: "800x600",
+            timeout: 15,
+            "no-externals": true,
+          }
+        );
+      },
     },
   })
   .export(module);
