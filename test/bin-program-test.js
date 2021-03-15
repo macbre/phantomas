@@ -32,6 +32,18 @@ vows
           }
         );
       },
+      "should handle --dashed-flags": function (parseArgv) {
+        assert.deepStrictEqual(
+          parseArgv(DEFAULT_ARGV.concat(["--ignore-ssl-errors", "--phone"])),
+          {
+            viewport: "800x600",
+            timeout: 15,
+            "no-externals": false,
+            "ignore-ssl-errors": true,
+            phone: true,
+          }
+        );
+      },
     },
   })
   .export(module);
