@@ -9,7 +9,7 @@
  */
 "use strict";
 
-const { program, parseArgv } = require("./program"),
+const { getProgram, parseArgv } = require("./program"),
   phantomas = require(".."),
   debug = require("debug")("phantomas:cli");
 
@@ -21,7 +21,7 @@ let options = parseArgv(process.argv);
 // --url is mandatory -> show help
 if (typeof options.url !== "string" && typeof options.config === "undefined") {
   debug("URL not provided - show help and leave");
-  program.outputHelp();
+  getProgram().outputHelp();
   process.exitCode = 1;
   return;
 }
