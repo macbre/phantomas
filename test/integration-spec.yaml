@@ -809,7 +809,7 @@
 - url: "https://127.0.0.1:8889"
   label: "localhost but https version"
   options:
-    ignoreSslErrors: true
+    ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "http/1.1"
     oldHttpProtocol: 1
