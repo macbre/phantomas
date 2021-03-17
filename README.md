@@ -131,7 +131,6 @@ You can also use it as a **command line tool**. Run `phantomas -h` for more deta
 
 * [Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html) (by Yahoo!)
 * [Web Performance Best Practices](https://developers.google.com/speed/docs/best-practices/rules_intro) (by Google)
-* [Writing Efficient CSS](http://developer.mozilla.org/en/Writing_Efficient_CSS) (by Mozilla)
 * [Planet Performance](http://www.perfplanet.com/) - news and views from the web performance blogosphere
 * [Performance of 3rd Party Content](http://stevesouders.com/p3pc/) (by Steve Souders)
 * [Profiling CSS for fun and profit. Optimization notes.](http://perfectionkills.com/profiling-css-for-fun-and-profit-optimization-notes/)
