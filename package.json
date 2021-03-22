@@ -27,7 +27,7 @@
     "node": ">=12.0"
   },
   "dependencies": {
-    "analyze-css": "^0.12.10",
+    "analyze-css": "^0.13.0",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
