@@ -11,7 +11,8 @@ module.exports = function (phantomas) {
     assetsReqCounter = new Collection(),
     cookieDomains = new Collection(),
     // TODO: use 3pc database with tracking services
-    trackingUrls = /google-analytics.com\/__utm.gif|pixel.quantserve.com\/pixel/;
+    trackingUrls =
+      /google-analytics.com\/__utm.gif|pixel.quantserve.com\/pixel/;
 
   phantomas.setMetric("assetsNotGzipped"); // @desc number of static assets that were not gzipped
   phantomas.setMetric("assetsWithQueryString"); // @desc number of static assets requested with query string (e.g. ?foo) in URL
