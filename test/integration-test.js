@@ -92,22 +92,29 @@ spec.forEach(function (test) {
 
   // check metrics
   Object.keys(test.metrics || {}).forEach(function (name) {
-    batch[batchName][
-      'should have "' + name + '" metric properly set'
-    ] = function (err, results) {
-      assert.ok(!(err instanceof Error), "Error should not be thrown: " + err);
-      assert.strictEqual(results.getMetric(name), test.metrics[name]);
-    };
+    batch[batchName]['should have "' + name + '" metric properly set'] =
+      function (err, results) {
+        assert.ok(
+          !(err instanceof Error),
+          "Error should not be thrown: " + err
+        );
+        assert.strictEqual(results.getMetric(name), test.metrics[name]);
+      };
   });
 
   // check offenders
   Object.keys(test.offenders || {}).forEach(function (name) {
-    batch[batchName][
-      'should have "' + name + '" offender(s) properly set'
-    ] = function (err, results) {
-      assert.ok(!(err instanceof Error), "Error should not be thrown: " + err);
-      assert.deepStrictEqual(results.getOffenders(name), test.offenders[name]);
-    };
+    batch[batchName]['should have "' + name + '" offender(s) properly set'] =
+      function (err, results) {
+        assert.ok(
+          !(err instanceof Error),
+          "Error should not be thrown: " + err
+        );
+        assert.deepStrictEqual(
+          results.getOffenders(name),
+          test.offenders[name]
+        );
+      };
   });
 
   suite.addBatch(batch);
