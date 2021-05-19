@@ -2,11 +2,13 @@ version: "3.2"
 
 services:
   nginx:
-    # https://hub.docker.com/r/macbre/nginx-brotli
-    image: macbre/nginx-brotli:1.19.10
+    # https://github.com/macbre/docker-nginx-brotli#quic--http3-support
+    image: macbre/nginx-brotli:1.19.6-http3
     ports:
       - "8888:80"
-      - "8889:443"
+      - "8889:443" # for old HTTP/1.1 with old TLS
+      - "9000:444/tcp"
+      - "9000:444/udp" # for quic and http/3
     volumes:
       # see nginx-static.conf
       - "./webroot:/static"
