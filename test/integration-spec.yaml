@@ -841,6 +841,18 @@
     mainDomainTlsProtocol: "TLS 1.3"
     oldTlsProtocol: 0
 
+# http/3
+# - url: "https://127.0.0.1:9001" # TODO
+- url: "https://gf.dev/http3-test"
+  label: "h3"
+  options:
+    ignore-ssl-errors: true
+  metrics:
+    mainDomainHttpProtocol: "h3"
+    oldHttpProtocol: 0
+    mainDomainTlsProtocol: "QUIC"
+    oldTlsProtocol: 0
+
 # don't count requests cached by browser
 - url: "/browser-caching.html"
   metrics:

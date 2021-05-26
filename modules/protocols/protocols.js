@@ -5,6 +5,7 @@
 
 module.exports = function (phantomas) {
   var domains = new Map(),
+    mainDomain = undefined,
     beforeDomReady = true;
 
   phantomas.setMetric("mainDomainHttpProtocol"); // @desc HTTP protocol used by the main domain [string]
@@ -18,7 +19,14 @@ module.exports = function (phantomas) {
       var domain = (entry.isSSL ? "https://" : "http://") + entry.domain;
 
       if (domains.size === 0) {
+        mainDomain = domain;
+        phantomas.log("Our main domain is now %s", mainDomain);
+      }
+
+      if (domain == mainDomain) {
         // our first request represents the main domain
+        // h3 protocol is used for subsequent requests for the same domain
+        // we need to keep updating these metrics on each response we get
         phantomas.setMetric("mainDomainHttpProtocol", entry.httpVersion);
         phantomas.setMetric("mainDomainTlsProtocol", entry.tlsVersion);
       }
@@ -41,6 +49,11 @@ module.exports = function (phantomas) {
       } else {
         // just increment the number of requests
         domains.get(domain).requests++;
+
+        // h3 protocol is used for subsequent requests for the same domain
+        // initial ones are performed using h2
+        domains.get(domain).httpVersion = entry.httpVersion;
+        domains.get(domain).tlsVersion = entry.tlsVersion;
       }
     }
   });
