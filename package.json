@@ -45,6 +45,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
     "glob": "^7.1.6",
+    "jest": "^27.0.1",
     "mockery": "^2.0.0",
     "prettier": "2.3.0",
     "vows": "^0.8.3"
