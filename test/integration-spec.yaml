@@ -806,6 +806,7 @@
       - "https://httpbin.org/basic-auth/foo/bar"
 
 # protocols
+# http/1.1 (legacy one)
 - url: "https://127.0.0.1:8889"
   label: "localhost but https version"
   options:
@@ -828,6 +829,29 @@
           tlsVersion: "TLS 1.1",
           beforeDomReady: true,
         }
+
+# http/2
+- url: "https://127.0.0.1:9000"
+  label: "localhost h2 version"
+  options:
+    ignore-ssl-errors: true
+  metrics:
+    mainDomainHttpProtocol: "h2"
+    oldHttpProtocol: 0
+    mainDomainTlsProtocol: "TLS 1.3"
+    oldTlsProtocol: 0
+
+# http/3
+# - url: "https://127.0.0.1:9001" # TODO
+- url: "https://gf.dev/http3-test"
+  label: "h3"
+  options:
+    ignore-ssl-errors: true
+  metrics:
+    mainDomainHttpProtocol: "h3-29"
+    oldHttpProtocol: 0
+    mainDomainTlsProtocol: "QUIC"
+    oldTlsProtocol: 0
 
 # don't count requests cached by browser
 - url: "/browser-caching.html"
