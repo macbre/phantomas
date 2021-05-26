@@ -51,7 +51,9 @@
     "vows": "^0.8.3"
   },
   "scripts": {
-    "test": "vows --spec",
+    "test": "npm run test:jest;  npm run test:vows",
+    "test:vows": "vows --spec",
+    "test:jest": "jest test/",
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
