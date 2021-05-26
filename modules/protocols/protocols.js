@@ -55,7 +55,7 @@ module.exports = function (phantomas) {
   // set metrics
   phantomas.on("report", () => {
     domains.forEach(function (value, key) {
-      // As of 2020, h2 is the latest protocol, h3 is coming
+      // As of 2020, h2 is the latest protocol, h3 is coming in 2021
       if (value.httpVersion.indexOf("http/1") === 0) {
         phantomas.incrMetric("oldHttpProtocol");
         phantomas.addOffender("oldHttpProtocol", {
