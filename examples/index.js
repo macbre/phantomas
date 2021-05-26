@@ -41,7 +41,7 @@ promise.on("recv", (response) => {
     response.method,
     response.url,
     response.contentType,
-    response.httpVersion,
+    response.httpVersion
   );
 });
 
