@@ -848,7 +848,7 @@
   options:
     ignore-ssl-errors: true
   metrics:
-    mainDomainHttpProtocol: "h3"
+    mainDomainHttpProtocol: "h3-29"
     oldHttpProtocol: 0
     mainDomainTlsProtocol: "QUIC"
     oldTlsProtocol: 0
