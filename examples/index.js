@@ -2,12 +2,13 @@
  * Example script that uses phantomas npm module with promise pattern
  */
 const phantomas = require("..");
+const url = process.argv[2] || "http://127.0.0.1:8888/dom-operations.html";
 
 console.log("phantomas v%s loaded from %s", phantomas.version, phantomas.path);
+console.log("Opening <%s> ...", url);
 
-const promise = phantomas("http://127.0.0.1:8888/dom-operations.html", {
-  "analyze-css": true,
-  "assert-requests": 1,
+const promise = phantomas(url, {
+  "ignore-ssl-errors": true,
 });
 
 //console.log('Results: %s', promise);
@@ -36,10 +37,11 @@ promise.on("milestone", (milestone) => {
 
 promise.on("recv", (response) => {
   console.log(
-    "Response: %s %s [%s]",
+    "Response: %s %s [%s %s]",
     response.method,
     response.url,
-    response.contentType
+    response.contentType,
+    response.httpVersion,
   );
 });
 
