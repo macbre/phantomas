@@ -1,13 +1,12 @@
 /**
  * Test cacheHits module
  */
-const vows = require("vows"),
-  mock = require("./mock");
+const mock = require("./mock"),
+  { describe } = require("@jest/globals");
 
-vows
-  .describe("cacheHits")
-  .addBatch({
-    "no caching headers": mock.getContext(
+describe("cacheHits", () => {
+  describe("no caching headers", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -21,8 +20,11 @@ vows
         cacheMisses: 0,
         cachePasses: 0,
       }
-    ),
-    "Age header (hit)": mock.getContext(
+    );
+  });
+
+  describe("Age header (hit)", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -38,8 +40,11 @@ vows
         cacheMisses: 0,
         cachePasses: 0,
       }
-    ),
-    "Age + X-Cache header (hit)": mock.getContext(
+    );
+  });
+
+  describe("Age + X-Cache header (hit)", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -56,8 +61,11 @@ vows
         cacheMisses: 0,
         cachePasses: 0,
       }
-    ),
-    "Age header (0 seconds)": mock.getContext(
+    );
+  });
+
+  describe("Age header (0 seconds)", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -73,8 +81,11 @@ vows
         cacheMisses: 1,
         cachePasses: 0,
       }
-    ),
-    hits: mock.getContext(
+    );
+  });
+
+  describe("hits", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -90,8 +101,11 @@ vows
         cacheMisses: 0,
         cachePasses: 0,
       }
-    ),
-    "hits (following the miss)": mock.getContext(
+    );
+  });
+
+  describe("hits (following the miss)", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -107,8 +121,11 @@ vows
         cacheMisses: 0,
         cachePasses: 0,
       }
-    ),
-    misses: mock.getContext(
+    );
+  });
+
+  describe("misses", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -124,8 +141,11 @@ vows
         cacheMisses: 1,
         cachePasses: 0,
       }
-    ),
-    passes: mock.getContext(
+    );
+  });
+
+  describe("passes", () => {
+    mock.getContext(
       "cacheHits",
       function (phantomas) {
         return phantomas
@@ -141,6 +161,6 @@ vows
         cacheMisses: 0,
         cachePasses: 1,
       }
-    ),
-  })
-  .export(module);
+    );
+  });
+});

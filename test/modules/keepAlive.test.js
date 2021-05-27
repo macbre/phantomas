@@ -1,9 +1,8 @@
 /**
  * Test cacheHits module
  */
-const mock = require("./mock");
-
-const { describe } = require("@jest/globals");
+const mock = require("./mock"),
+  { describe } = require("@jest/globals");
 
 describe("keepAlive", () => {
   describe("connection closed, no more requests", () => {
