@@ -850,9 +850,7 @@
     ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "h3-29"
-    oldHttpProtocol: 0
     mainDomainTlsProtocol: "QUIC"
-    oldTlsProtocol: 0
 
 # don't count requests cached by browser
 - url: "/browser-caching.html"
