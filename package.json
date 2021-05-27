@@ -53,7 +53,7 @@
   "scripts": {
     "test": "npm run test:jest;  npm run test:vows",
     "test:vows": "vows --spec",
-    "test:jest": "jest test/",
+    "test:jest": "jest test/ --verbose",
     "unit-test": "vows test/modules/*-test.js --spec",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
