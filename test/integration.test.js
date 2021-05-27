@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const {describe, it, test} = require('@jest/globals');
+const { describe, it, test } = require("@jest/globals");
 
 const assert = require("assert"),
   fs = require("fs"),
@@ -45,8 +45,6 @@ describe("Test server healthcheck", () => {
     });
   });
 });
-
-
 
 // register tests from spec file
 var raw = fs.readFileSync(__dirname + "/integration-spec.yaml").toString(),
@@ -100,7 +98,11 @@ spec.forEach(function (test) {
 
       // check metrics
       Object.keys(test.metrics || {}).forEach((name) => {
-        assert.strictEqual(results.getMetric(name), test.metrics[name], `Checking metric ${name}`);
+        assert.strictEqual(
+          results.getMetric(name),
+          test.metrics[name],
+          `Checking metric ${name}`
+        );
       });
 
       // check offenders
@@ -113,5 +115,4 @@ spec.forEach(function (test) {
       });
     });
   });
-
 });

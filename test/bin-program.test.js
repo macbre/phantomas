@@ -4,7 +4,7 @@
 const assert = require("assert"),
   { parseArgv } = require("../bin/program");
 
-const {test} = require('@jest/globals');
+const { test } = require("@jest/globals");
 
 const DEFAULT_ARGV = ["/usr/bin/node", "/opt/phantomas/bin/phantomas.js"];
 
