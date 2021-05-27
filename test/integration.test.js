@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const { describe, it, test } = require("@jest/globals");
+const { beforeAll, describe, it, test } = require("@jest/globals");
 
 const assert = require("assert"),
   fs = require("fs"),
@@ -34,7 +34,7 @@ describe("Test server healthcheck", () => {
 
       const opts = isHttps ? { rejectUnauthorized: false } : {};
 
-      await new Promise((resolve, reject) => {
+      await new Promise((resolve) => {
         client.get(url, opts, (res) => {
           const { statusCode } = res;
           assert.strictEqual(statusCode, 200, "responds with HTTP 200");

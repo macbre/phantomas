@@ -2,7 +2,7 @@
  * Test staticAssets module
  */
 const mock = require("./mock"),
-  { describe, it } = require("@jest/globals");
+  { describe } = require("@jest/globals");
 
 var URL = "http://example.com/";
 

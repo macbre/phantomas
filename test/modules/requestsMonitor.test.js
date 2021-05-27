@@ -27,7 +27,7 @@ function recvBase64(url) {
   var phantomas = mock.initCoreModule("requestsMonitor"),
     ret = false;
 
-  phantomas.on("base64recv", function (entry, _) {
+  phantomas.on("base64recv", function (entry) {
     ret = entry;
   });
   phantomas.recvRequest({ url });

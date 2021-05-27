@@ -4,7 +4,7 @@
 const assert = require("assert"),
   debug = require("debug"),
   noop = () => {},
-  { beforeAll, test } = require("@jest/globals");
+  { test } = require("@jest/globals");
 
 var phantomas = function (name) {
   this.emitter = new (require("events").EventEmitter)();

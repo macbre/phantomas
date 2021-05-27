@@ -4,6 +4,8 @@
 var assert = require("assert"),
   Results = require("../core/results");
 
+const { describe, it } = require("@jest/globals");
+
 describe("Metrics", () => {
   const results = new Results();
 
