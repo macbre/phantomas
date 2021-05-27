@@ -50,68 +50,73 @@ describe("Test server healthcheck", () => {
 var raw = fs.readFileSync(__dirname + "/integration-spec.yaml").toString(),
   spec = yaml.load(raw);
 
-spec = spec.slice(0, 5); // DEBUG!!!
+spec = spec.slice(0, 10); // DEBUG!!!
 
-spec.forEach(function (test) {
-  var testCaseName = test.label || test.url;
+describe("Integration tests", () => {
 
-  describe(testCaseName, () => {
+  spec.forEach(function (test) {
+    const testCaseName = test.label || test.url;
     const url = test.url[0] == "/" ? WEBROOT + test.url : test.url;
 
     // assert the expected errors
     if (test.error) {
-      it("should reject a promise", async () => {
-        try {
-          await phantomas(url, test.options || {});
-        } catch (err) {
-          assert.ok(err instanceof Error);
+      describe(testCaseName, () => {
+        it("should reject a promise", async () => {
+          try {
+            await phantomas(url, test.options || {});
+          } catch (err) {
+            assert.ok(err instanceof Error);
 
-          if (err instanceof String) {
-            assert.ok(
-              err.message.indexOf(test.error) === 0,
-              test.error + " should be raised, got: " + err.message
-            );
+            if (err instanceof String) {
+              assert.ok(
+                err.message.indexOf(test.error) === 0,
+                test.error + " should be raised, got: " + err.message
+              );
+            }
           }
-        }
+        });
       });
 
       return;
     }
 
-    it("should resolve a promise and get results", async () => {
-      const promise = phantomas(url, test.options || {});
+    describe(testCaseName, () => {
+      it("should resolve a promise and get results", async () => {
+        const promise = phantomas(url, test.options || {});
 
-      // if (test.assertFunction) {
-      //   extras[test.assertFunction](promise, batch[batchName]);
-      // }
+        // take additional logic for this test from integration-test-extra.js module
+        if (test.assertFunction) {
+          extras[test.assertFunction](promise);
+        }
 
-      const results = await promise;
+        const results = await promise;
 
-      assert.ok(
-        !(results instanceof Error),
-        "No error should be thrown: got " + results
-      );
-      assert.ok(
-        results.getMetric instanceof Function,
-        "Results wrapper should be passed"
-      );
-
-      // check metrics
-      Object.keys(test.metrics || {}).forEach((name) => {
-        assert.strictEqual(
-          results.getMetric(name),
-          test.metrics[name],
-          `Checking metric ${name}`
+        assert.ok(
+          !(results instanceof Error),
+          "No error should be thrown: got " + results
         );
-      });
-
-      // check offenders
-      Object.keys(test.offenders || {}).forEach((name) => {
-        assert.deepStrictEqual(
-          results.getOffenders(name),
-          test.offenders[name],
-          `Checking offenders for ${name}`
+        assert.ok(
+          results.getMetric instanceof Function,
+          "Results wrapper should be passed"
         );
+
+        // check metrics
+        Object.keys(test.metrics || {}).forEach((name) => {
+          assert.strictEqual(
+            results.getMetric(name),
+            test.metrics[name],
+            `Checking "${name}" metric`
+          );
+        });
+
+        // check offenders
+        Object.keys(test.offenders || {}).forEach((name) => {
+          assert.deepStrictEqual(
+            results.getOffenders(name),
+            test.offenders[name],
+            `Checking offenders for "${name}" metric`
+          );
+        });
       });
     });
   });
