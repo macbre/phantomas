@@ -3,14 +3,13 @@
  */
 "use strict";
 
-var vows = require("vows"),
-  assert = require("assert"),
+var assert = require("assert"),
   fs = require("fs"),
   yaml = require("js-yaml"),
-  phantomas = require(".."),
-  extras = require("./integration-test-extra");
+  phantomas = require("..");
 
-var WEBROOT = "http://127.0.0.1:8888"; // see start-server.sh
+const TEST_HOST = "127.0.0.1";
+var WEBROOT = `http://${TEST_HOST}:8888`; // see start-server.sh
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -19,30 +18,30 @@ process.on("unhandledRejection", (err) => {
   throw err;
 });
 
-// run the test
-var suite = vows.describe("Integration tests").addBatch({
-  "test server": {
-    topic: function () {
-      var http = require("http"),
-        self = this;
+describe("Test server healthcheck", () => {
+  [
+    WEBROOT,
+    // `https://${TEST_HOST}:8889`, // this has a really old TLS
+    `https://${TEST_HOST}:9000`,
+    `https://${TEST_HOST}:9001`,
+  ].forEach((url) => {
+    it(`should be up and running at <${url}>`, (done) => {
+      const isHttps = url.startsWith("https://");
+      const client = require(isHttps ? "https" : "http");
 
-      http
-        .get(WEBROOT + "/", function (res) {
-          self.callback(null, res);
-        })
-        .on("error", self.callback);
-    },
-    "should be up and running": function (err, res) {
-      assert.strictEqual(
-        typeof res !== "undefined",
-        true,
-        "responses to the request"
-      );
-      assert.strictEqual(res.statusCode, 200, "responses with HTTP 200");
-    },
-  },
+      const opts = isHttps ? { rejectUnauthorized: false } : {};
+
+      client.get(url, opts, (res) => {
+        const { statusCode } = res;
+        assert.strictEqual(statusCode, 200, "responds with HTTP 200");
+
+        done();
+      });
+    });
+  });
 });
 
+/**
 // register tests from spec file
 var raw = fs.readFileSync(__dirname + "/integration-spec.yaml").toString(),
   spec = yaml.load(raw);
@@ -60,9 +59,9 @@ spec.forEach(function (test) {
         .then((res) => this.callback(null, res))
         .catch((err) => this.callback(null, err));
 
-      if (test.assertFunction) {
-        extras[test.assertFunction](promise, batch[batchName]);
-      }
+      // if (test.assertFunction) {
+      //   extras[test.assertFunction](promise, batch[batchName]);
+      // }
     },
     "should be generated": (err, res) => {
       assert.ok(
@@ -121,3 +120,4 @@ spec.forEach(function (test) {
 });
 
 suite.export(module);
+**/
