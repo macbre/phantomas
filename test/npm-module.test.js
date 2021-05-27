@@ -6,6 +6,8 @@
 var assert = require("assert"),
   phantomas = require("..");
 
+const {describe, it} = require('@jest/globals');
+
 const URL = "http://127.0.0.1:8888/";
 
 describe("CommonJS module's promise", () => {

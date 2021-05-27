@@ -4,6 +4,8 @@
 const assert = require("assert"),
   { decamelizeOptions } = require("../bin/utils");
 
+const {test} = require('@jest/globals');
+
 test("should decamelize options", () => {
   const opts = decamelizeOptions({
     url: "http://foo.com",
