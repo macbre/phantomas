@@ -56,5 +56,8 @@
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",
     "prettier": "npx prettier --write ."
+  },
+  "jest": {
+    "verbose": true
   }
 }
