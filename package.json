@@ -47,14 +47,11 @@
     "glob": "^7.1.6",
     "jest": "^27.0.1",
     "mockery": "^2.0.0",
-    "prettier": "2.3.0",
-    "vows": "^0.8.3"
+    "prettier": "2.3.0"
   },
   "scripts": {
-    "test": "npm run test:jest;  npm run test:vows",
-    "test:vows": "vows --spec",
-    "test:jest": "jest test/ --verbose",
-    "unit-test": "vows test/modules/*-test.js --spec",
+    "test": "jest test/ --verbose",
+    "unit-test": "jest test/modules/ --verbose",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",

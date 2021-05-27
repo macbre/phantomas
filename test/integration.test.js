@@ -6,7 +6,8 @@
 var assert = require("assert"),
   fs = require("fs"),
   yaml = require("js-yaml"),
-  phantomas = require("..");
+  phantomas = require(".."),
+  extras = require("./integration-test-extra");
 
 const TEST_HOST = "127.0.0.1";
 var WEBROOT = `http://${TEST_HOST}:8888`; // see start-server.sh
