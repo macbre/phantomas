@@ -1,13 +1,12 @@
 /**
  * Tests mainRequest module
  */
-const vows = require("vows"),
-  mock = require("./mock");
+const mock = require("./mock"),
+  { describe } = require("@jest/globals");
 
-vows
-  .describe("mainRequest")
-  .addBatch({
-    "redirect request": mock.getContext(
+describe("mainRequest", () => {
+  describe("redirect request", () => {
+    mock.getContext(
       "mainRequest",
       function (phantomas) {
         return phantomas
@@ -28,8 +27,10 @@ vows
       {
         statusCodesTrail: "301,200",
       }
-    ),
-    "long redirect request": mock.getContext(
+    );
+  });
+  describe("long redirect request", () => {
+    mock.getContext(
       "mainRequest",
       function (phantomas) {
         return phantomas
@@ -56,8 +57,10 @@ vows
       {
         statusCodesTrail: "301,302,404",
       }
-    ),
-    "non-redirect (e.g. terminal) first request": mock.getContext(
+    );
+  });
+  describe("non-redirect (e.g. terminal) first request", () => {
+    mock.getContext(
       "mainRequest",
       function (phantomas) {
         return phantomas
@@ -72,8 +75,10 @@ vows
       {
         statusCodesTrail: "200",
       }
-    ),
-    "multiple requests": mock.getContext(
+    );
+  });
+  describe("multiple requests", () => {
+    mock.getContext(
       "mainRequest",
       function (phantomas) {
         return phantomas
@@ -94,6 +99,6 @@ vows
       {
         statusCodesTrail: "200",
       }
-    ),
-  })
-  .export(module);
+    );
+  });
+});
