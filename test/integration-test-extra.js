@@ -3,7 +3,11 @@ const assert = require("assert"),
 
 function pageSource(phantomas) {
   phantomas.on("pageSource", (path) => {
-    assert.strictEqual(typeof path, "string", "pageSource event should get a path");
+    assert.strictEqual(
+      typeof path,
+      "string",
+      "pageSource event should get a path"
+    );
 
     // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
     const content = fs.readFileSync(path, { encoding: "utf-8" });
@@ -29,7 +33,11 @@ function screenshot(phantomas) {
       path = "/tmp/screenshot-absolute.png";
     }
 
-    assert.strictEqual(typeof path, "string", "screenshot event should get a path");
+    assert.strictEqual(
+      typeof path,
+      "string",
+      "screenshot event should get a path"
+    );
     assert.ok(fs.existsSync(path), "The file should exist");
     assert.ok(path.match(/.png$/), "The file should be a PNG");
 

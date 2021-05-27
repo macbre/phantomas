@@ -50,10 +50,9 @@ describe("Test server healthcheck", () => {
 var raw = fs.readFileSync(__dirname + "/integration-spec.yaml").toString(),
   spec = yaml.load(raw);
 
-spec = spec.slice(0, 10); // DEBUG!!!
+// spec = spec.slice(0, 5); // DEBUG!!!
 
 describe("Integration tests", () => {
-
   spec.forEach(function (test) {
     const testCaseName = test.label || test.url;
     const url = test.url[0] == "/" ? WEBROOT + test.url : test.url;
@@ -81,16 +80,20 @@ describe("Integration tests", () => {
     }
 
     describe(testCaseName, () => {
-      it("should resolve a promise and get results", async () => {
-        const promise = phantomas(url, test.options || {});
+      let promise, results;
+
+      beforeAll(async () => {
+        promise = phantomas(url, test.options || {});
 
         // take additional logic for this test from integration-test-extra.js module
         if (test.assertFunction) {
           extras[test.assertFunction](promise);
         }
 
-        const results = await promise;
+        results = await promise;
+      });
 
+      it("should get results from a promise", async () => {
         assert.ok(
           !(results instanceof Error),
           "No error should be thrown: got " + results
@@ -99,22 +102,21 @@ describe("Integration tests", () => {
           results.getMetric instanceof Function,
           "Results wrapper should be passed"
         );
+      });
 
-        // check metrics
-        Object.keys(test.metrics || {}).forEach((name) => {
-          assert.strictEqual(
-            results.getMetric(name),
-            test.metrics[name],
-            `Checking "${name}" metric`
-          );
+      // check metrics
+      Object.keys(test.metrics || {}).forEach((name) => {
+        it(`should have "${name}" metric set properly`, () => {
+          assert.strictEqual(results.getMetric(name), test.metrics[name]);
         });
+      });
 
-        // check offenders
-        Object.keys(test.offenders || {}).forEach((name) => {
+      // check offenders
+      Object.keys(test.offenders || {}).forEach((name) => {
+        it(`should have offenders for "${name}" metric set properly`, () => {
           assert.deepStrictEqual(
             results.getOffenders(name),
-            test.offenders[name],
-            `Checking offenders for "${name}" metric`
+            test.offenders[name]
           );
         });
       });
