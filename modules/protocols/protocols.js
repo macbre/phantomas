@@ -81,9 +81,13 @@ module.exports = function (phantomas) {
       // As of 2020, TLS 1.3 is the latest protocol and it brings speed improvements over 1.2
       if (value.tlsVersion) {
         // parse version number
-        var tlsVersion = parseFloat(value.tlsVersion.substring(4));
+        var tlsVersion =
+          value.tlsVersion === "QUIC"
+            ? "quic"
+            : parseFloat(value.tlsVersion.substring(4));
+        phantomas.log(`tlsVersion for ${key} domain is ${tlsVersion}`);
 
-        if (tlsVersion < 1.3) {
+        if (tlsVersion !== "quic" && tlsVersion < 1.3) {
           phantomas.incrMetric("oldTlsProtocol");
           phantomas.addOffender("oldTlsProtocol", {
             domain: key,

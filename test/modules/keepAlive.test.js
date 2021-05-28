@@ -1,13 +1,12 @@
 /**
  * Test cacheHits module
  */
-const vows = require("vows"),
-  mock = require("./mock");
+const mock = require("./mock"),
+  { describe } = require("@jest/globals");
 
-vows
-  .describe("keepAlive")
-  .addBatch({
-    "connection closed, no more requests": mock.getContext(
+describe("keepAlive", () => {
+  describe("connection closed, no more requests", () => {
+    mock.getContext(
       "keepAlive",
       function (phantomas) {
         return phantomas
@@ -28,30 +27,11 @@ vows
       {
         closedConnections: 0,
       }
-    ),
-    "connection closed, more requests": mock.getContext(
-      "keepAlive",
-      function (phantomas) {
-        return phantomas
-          .recv({
-            protocol: "http",
-            domain: "foo.net",
-            url: "http://foo.net/",
-            headers: {
-              Connection: "close",
-            },
-          })
-          .send({
-            protocol: "http",
-            domain: "foo.net",
-          })
-          .report();
-      },
-      {
-        closedConnections: 1,
-      }
-    ),
-    "connection not closed, more requests": mock.getContext(
+    );
+  });
+
+  describe("connection not closed, more requests", () => {
+    mock.getContext(
       "keepAlive",
       function (phantomas) {
         return phantomas
@@ -70,6 +50,6 @@ vows
       {
         closedConnections: 0,
       }
-    ),
-  })
-  .export(module);
+    );
+  });
+});

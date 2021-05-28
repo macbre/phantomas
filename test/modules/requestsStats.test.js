@@ -1,13 +1,12 @@
 /**
  * Test requestsStats core module
  */
-var vows = require("vows"),
-  mock = require("./mock");
+const mock = require("./mock"),
+  { describe } = require("@jest/globals");
 
-vows
-  .describe("requestsStats")
-  .addBatch({
-    module: mock.getContext(
+describe("requestsStats", () => {
+  describe("module", () => {
+    mock.getContext(
       "requestsStats",
       (phantomas) => {
         var requests = [
@@ -46,6 +45,6 @@ vows
         medianResponse: 5,
         medianLatency: 2,
       }
-    ),
-  })
-  .export(module);
+    );
+  });
+});

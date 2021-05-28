@@ -7,6 +7,13 @@
     jsErrors: 0
     asserts: 10
 
+
+# authentication
+- url: "/_401"
+  label: "basic-auth required"
+  error: true # "HTTP response code from <http://127.0.0.1:8888/_401> is 401"
+
+
 # DOM operations
 - url: "/dom-operations.html"
   options:
@@ -788,12 +795,6 @@
     smallCssFiles:
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
 
-# authentication
-# - url: "https://httpbin.org/basic-auth/foo/bar"
-#   label: "httpbin's /basic-auth"
-#   # the following promise rejection is expected
-#   error: "HTTP response code from <https://httpbin.org/basic-auth/foo/bar> is 401"
-
 - url: "https://httpbin.org/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
   options:
@@ -849,9 +850,7 @@
     ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "h3-29"
-    oldHttpProtocol: 0
     mainDomainTlsProtocol: "QUIC"
-    oldTlsProtocol: 0
 
 # don't count requests cached by browser
 - url: "/browser-caching.html"

@@ -1,30 +1,26 @@
 const assert = require("assert"),
   fs = require("fs");
 
-function pageSource(phantomas, batch) {
-  var path;
-
-  phantomas.on("pageSource", (_path) => {
-    path = _path;
-  });
-
-  batch["HTML file with page should be saved"] = () => {
-    assert.ok(typeof path === "string", "pageSource event should get a path");
+function pageSource(phantomas) {
+  phantomas.on("pageSource", (path) => {
+    assert.strictEqual(
+      typeof path,
+      "string",
+      "pageSource event should get a path"
+    );
 
     // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
     const content = fs.readFileSync(path, { encoding: "utf-8" });
     // console.log(content);
 
     assert.ok(content.indexOf('<h1 id="foo">bar</h1>') > -1);
-  };
+
+    fs.rmSync && fs.rmSync(path); // fs.rmSync is not available in Node.js 12.x
+  });
 }
 
-function screenshot(phantomas, batch) {
-  var path;
-
-  phantomas.on("screenshot", (_path) => {
-    path = _path;
-
+function screenshot(phantomas) {
+  phantomas.on("screenshot", (path) => {
     if (path.indexOf("screenshot-relative.png") >= 0) {
       // If the screenshot path is provided as relative,
       // it should be inside the project's folder.
@@ -36,13 +32,17 @@ function screenshot(phantomas, batch) {
       // it should be absolute.
       path = "/tmp/screenshot-absolute.png";
     }
-  });
 
-  batch["PNG file should be saved"] = () => {
-    assert.ok(typeof path === "string", "screenshot event should get a path");
+    assert.strictEqual(
+      typeof path,
+      "string",
+      "screenshot event should get a path"
+    );
     assert.ok(fs.existsSync(path), "The file should exist");
     assert.ok(path.match(/.png$/), "The file should be a PNG");
-  };
+
+    fs.rmSync && fs.rmSync(path); // fs.rmSync is not available in Node.js 12.x
+  });
 }
 
 module.exports = {

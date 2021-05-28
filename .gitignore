@@ -9,6 +9,7 @@ examples/*.png
 
 phantomas_*.html
 
+coverage/
 node_modules
 npm-debug.log
 .idea
