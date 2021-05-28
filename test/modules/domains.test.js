@@ -1,13 +1,12 @@
 /**
  * Test domains module
  */
-const vows = require("vows"),
-  mock = require("./mock");
+const mock = require("./mock"),
+  { describe } = require("@jest/globals");
 
-vows
-  .describe("domains")
-  .addBatch({
-    module: mock.getContext(
+describe("domains", () => {
+  describe("module", () => {
+    mock.getContext(
       "domains",
       function (phantomas) {
         var domains = [];
@@ -40,6 +39,6 @@ vows
         domains: 3,
         maxRequestsPerDomain: 6,
       }
-    ),
-  })
-  .export(module);
+    );
+  });
+});

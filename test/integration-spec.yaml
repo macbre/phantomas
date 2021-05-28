@@ -7,6 +7,13 @@
     jsErrors: 0
     asserts: 10
 
+
+# authentication
+- url: "/_401"
+  label: "basic-auth required"
+  error: true # "HTTP response code from <http://127.0.0.1:8888/_401> is 401"
+
+
 # DOM operations
 - url: "/dom-operations.html"
   options:
@@ -707,7 +714,7 @@
   options:
     phone: true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36"
+    device: "Linux; Android 10; SM-G981B"
     viewport: "360x640"
 
 - url: "/devices.html"
@@ -715,7 +722,7 @@
   options:
     "phone-landscape": true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36"
+    device: "Linux; Android 10; SM-G981B"
     viewport: "640x360"
 
 - url: "/devices.html"
@@ -723,7 +730,7 @@
   options:
     tablet: true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true"
+    device: "Linux; Android 10; SM-T870"
     viewport: "800x1280"
 
 - url: "/devices.html"
@@ -731,7 +738,7 @@
   options:
     "tablet-landscape": true
   metrics:
-    userAgent: "Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true"
+    device: "Linux; Android 10; SM-T870"
     viewport: "1280x800"
 
 # viewport
@@ -788,12 +795,6 @@
     smallCssFiles:
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
 
-# authentication
-# - url: "https://httpbin.org/basic-auth/foo/bar"
-#   label: "httpbin's /basic-auth"
-#   # the following promise rejection is expected
-#   error: "HTTP response code from <https://httpbin.org/basic-auth/foo/bar> is 401"
-
 - url: "https://httpbin.org/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
   options:
@@ -806,10 +807,11 @@
       - "https://httpbin.org/basic-auth/foo/bar"
 
 # protocols
+# http/1.1 (legacy one)
 - url: "https://127.0.0.1:8889"
   label: "localhost but https version"
   options:
-    ignoreSslErrors: true
+    ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "http/1.1"
     oldHttpProtocol: 1
@@ -828,6 +830,27 @@
           tlsVersion: "TLS 1.1",
           beforeDomReady: true,
         }
+
+# http/2
+- url: "https://127.0.0.1:9000"
+  label: "localhost h2 version"
+  options:
+    ignore-ssl-errors: true
+  metrics:
+    mainDomainHttpProtocol: "h2"
+    oldHttpProtocol: 0
+    mainDomainTlsProtocol: "TLS 1.3"
+    oldTlsProtocol: 0
+
+# http/3
+# - url: "https://127.0.0.1:9001" # TODO
+- url: "https://gf.dev/http3-test"
+  label: "h3"
+  options:
+    ignore-ssl-errors: true
+  metrics:
+    mainDomainHttpProtocol: "h3-29"
+    mainDomainTlsProtocol: "QUIC"
 
 # don't count requests cached by browser
 - url: "/browser-caching.html"
@@ -862,6 +885,45 @@
       - { url: "http://127.0.0.1:8888/static/stickman.webm", size: 3750 }
       - { url: "http://127.0.0.1:8888/static/stickman.mp4", size: 6785 }
 
+# user-agent
+- url: "/user-agent.html"
+  label: "default desktop user agent"
+  metrics:
+    device: 'Windows NT 10.0; Win64; x64'
+
+# user-agent
+- url: "/user-agent.html"
+  label: "phone user agent"
+  options:
+    phone: true
+  metrics:
+    device: 'Linux; Android 10; SM-G981B'
+
+#user-agent
+- url: "/user-agent.html"
+  label: "tablet user agent"
+  options:
+    tablet: true
+  metrics:
+    device: 'Linux; Android 10; SM-T870'
+
+# user-agent
+- url: "/user-agent.html"
+  label: "custom user agent"
+  options:
+    "user-agent": "customized!"
+  metric:
+    userAgent: 'customized!'
+
+# user-agent
+- url: "/user-agent.html"
+  label: "custom user agent (overwrites mobile)"
+  options:
+    phone: true
+    "user-agent": "customized!"
+  metric:
+    userAgent: 'customized!'
+
 #
 # integration-test-extra section
 #
@@ -876,7 +938,21 @@
 
 # screenshot
 - url: "/image-scaling.html"
-  label: "image-scaling.html (with --screenshot)"
+  label: "image-scaling.html (with --screenshot true)"
   options:
     screenshot: true
+  assertFunction: screenshot
+
+# screenshot in a folder inside the project
+- url: "/image-scaling.html"
+  label: "image-scaling.html (with --screenshot relative path)"
+  options:
+    screenshot: "screenshot-relative.png"
+  assertFunction: screenshot
+
+# screenshot in a folder outside of the project
+- url: "/image-scaling.html"
+  label: "image-scaling.html (with --screenshot absolute path)"
+  options:
+    screenshot: "/tmp/screenshot-absolute.png"
   assertFunction: screenshot

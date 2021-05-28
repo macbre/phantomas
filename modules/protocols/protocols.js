@@ -5,6 +5,7 @@
 
 module.exports = function (phantomas) {
   var domains = new Map(),
+    mainDomain = undefined,
     beforeDomReady = true;
 
   phantomas.setMetric("mainDomainHttpProtocol"); // @desc HTTP protocol used by the main domain [string]
@@ -18,7 +19,14 @@ module.exports = function (phantomas) {
       var domain = (entry.isSSL ? "https://" : "http://") + entry.domain;
 
       if (domains.size === 0) {
+        mainDomain = domain;
+        phantomas.log("Our main domain is now %s", mainDomain);
+      }
+
+      if (domain == mainDomain) {
         // our first request represents the main domain
+        // h3 protocol is used for subsequent requests for the same domain
+        // we need to keep updating these metrics on each response we get
         phantomas.setMetric("mainDomainHttpProtocol", entry.httpVersion);
         phantomas.setMetric("mainDomainTlsProtocol", entry.tlsVersion);
       }
@@ -41,6 +49,11 @@ module.exports = function (phantomas) {
       } else {
         // just increment the number of requests
         domains.get(domain).requests++;
+
+        // h3 protocol is used for subsequent requests for the same domain
+        // initial ones are performed using h2
+        domains.get(domain).httpVersion = entry.httpVersion;
+        domains.get(domain).tlsVersion = entry.tlsVersion;
       }
     }
   });
@@ -55,7 +68,7 @@ module.exports = function (phantomas) {
   // set metrics
   phantomas.on("report", () => {
     domains.forEach(function (value, key) {
-      // As of 2020, h2 is the latest protocol, h3 is coming
+      // As of 2020, h2 is the latest protocol, h3 is coming in 2021
       if (value.httpVersion.indexOf("http/1") === 0) {
         phantomas.incrMetric("oldHttpProtocol");
         phantomas.addOffender("oldHttpProtocol", {
@@ -68,9 +81,13 @@ module.exports = function (phantomas) {
       // As of 2020, TLS 1.3 is the latest protocol and it brings speed improvements over 1.2
       if (value.tlsVersion) {
         // parse version number
-        var tlsVersion = parseFloat(value.tlsVersion.substring(4));
+        var tlsVersion =
+          value.tlsVersion === "QUIC"
+            ? "quic"
+            : parseFloat(value.tlsVersion.substring(4));
+        phantomas.log(`tlsVersion for ${key} domain is ${tlsVersion}`);
 
-        if (tlsVersion < 1.3) {
+        if (tlsVersion !== "quic" && tlsVersion < 1.3) {
           phantomas.incrMetric("oldTlsProtocol");
           phantomas.addOffender("oldTlsProtocol", {
             domain: key,

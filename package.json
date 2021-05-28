@@ -1,11 +1,11 @@
 {
   "name": "phantomas",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
   "bin": {
-    "phantomas": "./bin/phantomas.js"
+    "phantomas": "bin/phantomas.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "node": ">=12.0"
   },
   "dependencies": {
-    "analyze-css": "^0.12.10",
+    "analyze-css": "^0.13.0",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
@@ -35,25 +35,29 @@
     "commander": "^7.0.0",
     "csv-string": "^4.0.1",
     "debug": "^4.1.1",
+    "decamelize": "^5.0.0",
     "js-yaml": "^4.0.0",
     "node-statsd": "0.1.1",
-    "puppeteer": "^7.0.0"
+    "puppeteer": "^9.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.6.0",
-    "eslint-config-prettier": "^7.0.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
     "glob": "^7.1.6",
+    "jest": "^27.0.1",
     "mockery": "^2.0.0",
-    "prettier": "2.2.1",
-    "vows": "^0.8.3"
+    "prettier": "2.3.0"
   },
   "scripts": {
-    "test": "vows --spec",
-    "unit-test": "vows test/modules/*-test.js --spec",
+    "test": "jest test/ --verbose",
+    "unit-test": "jest test/modules/ --verbose",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",
     "prettier": "npx prettier --write ."
+  },
+  "jest": {
+    "verbose": true
   }
 }

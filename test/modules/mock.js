@@ -1,9 +1,10 @@
 /**
  * Defines phantomas global API mock
  */
-var assert = require("assert"),
+const assert = require("assert"),
   debug = require("debug"),
-  noop = function () {};
+  noop = () => {},
+  { test } = require("@jest/globals");
 
 var phantomas = function (name) {
   this.emitter = new (require("events").EventEmitter)();
@@ -185,23 +186,22 @@ module.exports = {
   assertMetric: assertMetric,
 
   getContext: function (moduleName, topic, metricsCheck, offendersCheck) {
-    var phantomas = initModule(moduleName),
-      context = {};
+    // mock phantomas with just a single module loaded
+    const phantomas = initModule(moduleName);
 
-    context.topic = function () {
-      return topic(phantomas);
-    };
+    // execute mocked phantomas with mocked requests (as defined by the test case)
+    topic(phantomas);
 
     Object.keys(metricsCheck || {}).forEach(function (name) {
-      var check = 'sets "' + name + '" metric correctly';
-      context[check] = assertMetric(name, metricsCheck[name]);
+      test(`sets "${name}" metric correctly`, () => {
+        assertMetric(name, metricsCheck[name]);
+      });
     });
 
     Object.keys(offendersCheck || {}).forEach(function (name) {
-      var check = 'sets "' + name + '" offender(s) correctly';
-      context[check] = assertOffender(name, offendersCheck[name]);
+      test(`sets "${name}" offender(s) correctly`, () => {
+        assertOffender(name, offendersCheck[name]);
+      });
     });
-
-    return context;
   },
 };

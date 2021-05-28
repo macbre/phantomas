@@ -21,10 +21,14 @@ jobs:
         DOCKER_BUILDKIT: "1"
       run: |
         docker build . \
-          --cache-from macbre/phantomas:latest \
-          --build-arg BUILDKIT_INLINE_CACHE=1 \
-          --tag ${{ github.repository }}
+           --cache-from macbre/phantomas:latest \
+           --build-arg COMMIT_SHA=$(git rev-parse --short HEAD) \
+           --tag ${{ github.repository }}
+
+    - name: Inspect built image
+      run: |
         docker images
+        docker inspect --format='{{json .Config.Labels}}' ${{ github.repository }} | jq
 
     - name: Run tests inside the Docker container
       run: |

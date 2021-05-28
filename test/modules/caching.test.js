@@ -1,14 +1,13 @@
 /**
  * Test caching module
  */
-const vows = require("vows"),
-  mock = require("./mock"),
+const mock = require("./mock"),
+  { describe } = require("@jest/globals"),
   URL = "http://127.0.0.1:8888/static/mdn.png";
 
-vows
-  .describe("caching")
-  .addBatch({
-    "caching not specified": mock.getContext(
+describe("caching", () => {
+  describe("caching not specified", () => {
+    mock.getContext(
       "caching",
       function (phantomas) {
         return phantomas
@@ -27,8 +26,10 @@ vows
       {
         cachingNotSpecified: [URL],
       }
-    ),
-    "old caching header used (Expires)": mock.getContext(
+    );
+  });
+  describe("old caching header used (Expires)", () => {
+    mock.getContext(
       "caching",
       function (phantomas) {
         return phantomas
@@ -49,8 +50,10 @@ vows
       {
         cachingDisabled: [URL],
       }
-    ),
-    "old caching header used (Pragma)": mock.getContext(
+    );
+  });
+  describe("old caching header used (Pragma)", () => {
+    mock.getContext(
       "caching",
       function (phantomas) {
         return phantomas
@@ -77,8 +80,10 @@ vows
         ],
         cachingNotSpecified: [URL],
       }
-    ),
-    "caching too short": mock.getContext(
+    );
+  });
+  describe("caching too short", () => {
+    mock.getContext(
       "caching",
       function (phantomas) {
         return phantomas
@@ -98,8 +103,10 @@ vows
       {
         cachingTooShort: [{ url: URL, ttl: 600 }],
       }
-    ),
-    "caching not too short (but without immutable)": mock.getContext(
+    );
+  });
+  describe("caching not too short (but without immutable)", () => {
+    mock.getContext(
       "caching",
       function (phantomas) {
         return phantomas
@@ -119,8 +126,10 @@ vows
       {
         cachingUseImmutable: [{ url: URL, ttl: 2592000 }],
       }
-    ),
-    "caching not too short (and use immutable)": mock.getContext(
+    );
+  });
+  describe("caching not too short (and use immutable)", () => {
+    mock.getContext(
       "caching",
       function (phantomas) {
         return phantomas
@@ -137,6 +146,6 @@ vows
         cachingTooShort: 0,
         cachingUseImmutable: 0,
       }
-    ),
-  })
-  .export(module);
+    );
+  });
+});

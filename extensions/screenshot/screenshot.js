@@ -35,7 +35,11 @@ module.exports = function (phantomas) {
     path = param;
   }
 
-  path = workingDirectory + "/" + path;
+  // deal with relative paths
+  if (path.indexOf("/") !== 0) {
+    path = workingDirectory + "/" + path;
+  }
+
   phantomas.log("Screenshot will be saved in %s", path);
 
   phantomas.on("beforeClose", (page) => {
