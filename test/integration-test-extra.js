@@ -15,7 +15,7 @@ function pageSource(phantomas) {
 
     assert.ok(content.indexOf('<h1 id="foo">bar</h1>') > -1);
 
-    fs.rmSync(path);
+    fs.rmSync && fs.rmSync(path); // fs.rmSync is not available in Node.js 12.x
   });
 }
 
@@ -41,7 +41,7 @@ function screenshot(phantomas) {
     assert.ok(fs.existsSync(path), "The file should exist");
     assert.ok(path.match(/.png$/), "The file should be a PNG");
 
-    fs.rmSync(path);
+    fs.rmSync && fs.rmSync(path); // fs.rmSync is not available in Node.js 12.x
   });
 }
 
