@@ -33,6 +33,8 @@ module.exports = (phantomas) => {
     return new Promise(async (resolve) => {
       // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageevaluatepagefunction-args
       const bodyHandle = await page.$("body");
+
+      /* istanbul ignore next */
       const html = await page.evaluate((body) => body.innerHTML, bodyHandle);
 
       // phantomas.log(html);
