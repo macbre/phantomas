@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function localStorageScope(phantomas) {
   window.addEventListener("load", () => {
     try {
       var entries = Object.keys(window.localStorage);

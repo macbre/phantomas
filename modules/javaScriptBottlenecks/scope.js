@@ -1,4 +1,4 @@
-(async (phantomas) => {
+(async function javaScriptBottlenecksScope(phantomas) {
   // spy calls to eval only when requested (issue #467)
   var spyEval = (await phantomas.getParam("spy-eval")) === true;
 

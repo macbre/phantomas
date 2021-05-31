@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function domQueriesScope(phantomas) {
   phantomas.log("domQueries: initializing page scope code");
 
   function querySpy(type, query, fnName, context, hasNoResults) {
