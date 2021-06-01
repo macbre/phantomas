@@ -1,6 +1,8 @@
 /**
  * Defines phantomas global API mock
  */
+/* istanbul ignore file */
+
 const assert = require("assert"),
   debug = require("debug"),
   noop = () => {},
