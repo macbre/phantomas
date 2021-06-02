@@ -51,7 +51,7 @@
   },
   "scripts": {
     "test": "jest test/ --coverage --detectOpenHandles",
-    "unit-test": "jest test/modules/ --coverage --detectOpenHandles",
+    "unit-test": "jest test/results.test.js test/modules/ --coverage --detectOpenHandles",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",
