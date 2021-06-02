@@ -175,3 +175,19 @@ describe("Asserts", () => {
     );
   });
 });
+
+describe("Setters and getters", () => {
+  const results = new Results();
+
+  it("setUrl/getUrl", () => {
+    const URL = "https://example.com";
+    results.setUrl(URL);
+    assert.strictEqual(results.getUrl(), URL);
+  });
+
+  it("setGenerator/getGenerator", () => {
+    const GENERATOR = "phantomas/" + require("../.").version;
+    results.setGenerator(GENERATOR);
+    assert.strictEqual(results.getGenerator(), GENERATOR);
+  });
+});
