@@ -69,6 +69,11 @@ describe("Offenders", () => {
     results.addOffender("metric", "foo");
     results.addOffender("metric", { url: "bar", size: 42 });
     results.addOffender("metric2", "test");
+
+    assert.deepStrictEqual(results.getAllOffenders(), {
+      metric: ["foo", { url: "bar", size: 42 }],
+      metric2: ["test"],
+    });
   });
 
   it("should be kept in order", () => {
