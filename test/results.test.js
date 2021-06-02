@@ -68,6 +68,8 @@ describe("Offenders", () => {
   it("should be registered", () => {
     results.addOffender("metric", "foo");
     results.addOffender("metric", { url: "bar", size: 42 });
+    results.setMetric("metric", 42);
+
     results.addOffender("metric2", "test");
 
     assert.deepStrictEqual(results.getAllOffenders(), {
