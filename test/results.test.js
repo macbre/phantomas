@@ -191,3 +191,21 @@ describe("Setters and getters", () => {
     assert.strictEqual(results.getGenerator(), GENERATOR);
   });
 });
+
+describe("Results", () => {
+  const results = new Results({
+    generator: "phantomas/1.2.3",
+    asserts: { metric: 40 },
+    metrics: { metric: 42, foo: "bar" },
+    offenders: { foo: ["bar is foo"] },
+    url: "https://example.com",
+  });
+
+  it("are pre-filled", () => {
+    assert.strictEqual(results.getGenerator(), "phantomas/1.2.3");
+    assert.strictEqual(results.getMetric("foo"), "bar");
+    assert.ok(results.assert("metric") === false, "metric > 40");
+    assert.deepStrictEqual(results.getOffenders("foo"), ["bar is foo"]);
+    assert.strictEqual(results.getUrl(), "https://example.com");
+  });
+});
