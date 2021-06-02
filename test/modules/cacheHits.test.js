@@ -104,6 +104,26 @@ describe("cacheHits", () => {
     );
   });
 
+  describe("Age header (string)", () => {
+    mock.getContext(
+      "cacheHits",
+      function (phantomas) {
+        return phantomas
+          .recv({
+            headers: {
+              Age: "foo",
+            },
+          })
+          .report();
+      },
+      {
+        cacheHits: 0,
+        cacheMisses: 0,
+        cachePasses: 0,
+      }
+    );
+  });
+
   describe("hits", () => {
     mock.getContext(
       "cacheHits",

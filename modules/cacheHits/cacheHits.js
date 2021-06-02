@@ -16,7 +16,7 @@ module.exports = function (phantomas) {
     // X-Cache:HIT, HIT
     // X-Cache:arsenic miss (0)
     // Age: 170221
-    const age = parseInt(entry.headers.Age, 10),
+    const age = parseInt(entry.headers.Age, 10) || false,
       xCacheHeader = (entry.headers["X-Cache"] || "").toLowerCase();
 
     if (xCacheHeader !== "") {
