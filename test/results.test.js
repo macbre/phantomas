@@ -45,6 +45,21 @@ describe("Metrics", () => {
       bar: 42,
     });
   });
+
+  it("should increment a metric", () => {
+    results.setMetric("bar", 42);
+
+    results.incrMetric("bar");
+    assert.strictEqual(results.getMetric("bar"), 43);
+
+    results.incrMetric("bar", 10);
+    assert.strictEqual(results.getMetric("bar"), 53);
+  });
+
+  it("should increment even not existing metric", () => {
+    results.incrMetric("not-existing-metric");
+    assert.strictEqual(results.getMetric("not-existing-metric"), 1);
+  });
 });
 
 describe("Offenders", () => {
