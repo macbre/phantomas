@@ -5,7 +5,7 @@ const mock = require("./mock"),
   { describe } = require("@jest/globals");
 
 describe("domains", () => {
-  describe("module", () => {
+  describe("calculates domains properly", () => {
     mock.getContext(
       "domains",
       function (phantomas) {
@@ -38,6 +38,26 @@ describe("domains", () => {
       {
         domains: 3,
         maxRequestsPerDomain: 6,
+        medianRequestsPerDomain: 3,
+      }
+    );
+  });
+
+  describe("handles responses without 'domain' property", () => {
+    mock.getContext(
+      "domains",
+      function (phantomas) {
+        phantomas.recv({
+          domain: undefined,
+        });
+
+        // calculate metrics
+        return phantomas.report();
+      },
+      {
+        domains: 0,
+        maxRequestsPerDomain: 0,
+        medianRequestsPerDomain: 0,
       }
     );
   });
