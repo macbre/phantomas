@@ -210,4 +210,20 @@ describe("Results", () => {
     assert.deepStrictEqual(results.getOffenders("foo"), ["bar is foo"]);
     assert.strictEqual(results.getUrl(), "https://example.com");
   });
+
+  it("defaults asserts entry to {}", () => {
+    const results = new Results({});
+
+    assert.deepStrictEqual(results.getAsserts(), {});
+  });
+
+  it("setAsserts() defaults to {}", () => {
+    const results = new Results({});
+
+    results.setAsserts({ foo: 42 });
+    assert.deepStrictEqual(results.getAsserts(), { foo: 42 });
+
+    results.setAsserts();
+    assert.deepStrictEqual(results.getAsserts(), {});
+  });
 });
