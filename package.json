@@ -36,6 +36,7 @@
     "csv-string": "^4.0.1",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",
+    "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
     "node-statsd": "0.1.1",
     "puppeteer": "^10.0.0"
