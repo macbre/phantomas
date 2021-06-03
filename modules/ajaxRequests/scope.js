@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function ajaxRequestsScope(phantomas) {
   phantomas.spy(
     window.XMLHttpRequest.prototype,
     "open",

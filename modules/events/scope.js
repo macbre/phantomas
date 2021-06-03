@@ -1,4 +1,5 @@
-(function (phantomas) {
+/* istanbul ignore next */
+(function eventsScope(phantomas) {
   // spy calls to EventTarget.addEventListener
   // @see https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
   function eventSpy(eventType) {

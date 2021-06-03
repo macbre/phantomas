@@ -36,6 +36,7 @@
     "csv-string": "^4.0.1",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",
+    "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
     "node-statsd": "0.1.1",
     "puppeteer": "^10.0.0"
@@ -50,14 +51,22 @@
     "prettier": "2.3.0"
   },
   "scripts": {
-    "test": "jest test/ --verbose",
-    "unit-test": "jest test/modules/ --verbose",
+    "test": "jest test/ --coverage --detectOpenHandles",
+    "unit-test": "jest test/results.test.js test/modules/ --coverage --detectOpenHandles",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",
     "prettier": "npx prettier --write ."
   },
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "coverageThreshold": {
+      "global": {
+        "statements": 90,
+        "branches": 85,
+        "functions": 90,
+        "lines": 90
+      }
+    }
   }
 }

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 const assert = require("assert"),
   fs = require("fs");
 

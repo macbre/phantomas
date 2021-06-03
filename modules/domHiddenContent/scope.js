@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function domHiddenContentScope(phantomas) {
   phantomas.spyEnabled(false, "initializing hidden content analysis");
 
   window.addEventListener("load", () => {

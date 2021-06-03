@@ -9,15 +9,18 @@ module.exports = function (phantomas) {
   phantomas.setMetric("cachePasses"); // @desc number of cache passes @offenders
 
   phantomas.on("recv", (entry) => {
-    var age, xCacheHeader, isHit, isMiss, isPass;
+    let isHit, isMiss, isPass;
 
     // parser response headers
     //
     // X-Cache:HIT, HIT
     // X-Cache:arsenic miss (0)
     // Age: 170221
-    age = parseInt(entry.headers.Age, 10);
-    xCacheHeader = (entry.headers["X-Cache"] || "").toLowerCase();
+    const age =
+        typeof entry.headers.Age !== "undefined"
+          ? parseInt(entry.headers.Age, 10)
+          : undefined,
+      xCacheHeader = (entry.headers["X-Cache"] || "").toLowerCase();
 
     if (xCacheHeader !== "") {
       isHit = xCacheHeader.indexOf("hit") > -1;

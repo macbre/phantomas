@@ -3,7 +3,8 @@
  *
  * Code below is executed in page's "scope" (injected by lib/browser.js)
  */
-(function (scope) {
+/* istanbul ignore next */
+(function coreScope(scope) {
   "use strict";
 
   // create a scope

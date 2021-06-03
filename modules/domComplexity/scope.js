@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function domComplexityScope(phantomas) {
   phantomas.spyEnabled(false, "initializing domComplexity metrics");
 
   window.addEventListener("load", () => {

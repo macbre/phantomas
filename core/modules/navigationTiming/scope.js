@@ -1,4 +1,5 @@
-(function (phantomas) {
+/* istanbul ignore next */
+(function navigationTimingScope(phantomas) {
   // Prevent events from being sent from an iframe. Only from the main document.
   if (window.parent !== window || window.location.href === "about:blank") {
     return;

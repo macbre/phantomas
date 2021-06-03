@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function jQueryScope(phantomas) {
   // read & write DOM operations (issue #436)
   function spyReadsAndWrites(jQuery) {
     var TYPE_SET = "write",

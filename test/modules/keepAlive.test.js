@@ -52,4 +52,34 @@ describe("keepAlive", () => {
       }
     );
   });
+
+  describe("keepAlive", () => {
+    describe("connection closed, more requests", () => {
+      mock.getContext(
+        "keepAlive",
+        function (phantomas) {
+          return phantomas
+            .recv({
+              protocol: "http",
+              domain: "foo.net",
+              url: "http://foo.net/path",
+              headers: {
+                Connection: "close",
+              },
+            })
+            .send({
+              protocol: "http",
+              domain: "foo.net",
+            })
+            .report();
+        },
+        {
+          closedConnections: 1,
+        },
+        {
+          closedConnections: ["http://foo.net/path"],
+        }
+      );
+    });
+  });
 });

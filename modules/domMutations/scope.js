@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function DOMmutationsScope(phantomas) {
   if ("MutationObserver" in window) {
     // wait for DOM ready
     document.addEventListener("readystatechange", function () {

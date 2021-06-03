@@ -45,6 +45,21 @@ describe("Metrics", () => {
       bar: 42,
     });
   });
+
+  it("should increment a metric", () => {
+    results.setMetric("bar", 42);
+
+    results.incrMetric("bar");
+    assert.strictEqual(results.getMetric("bar"), 43);
+
+    results.incrMetric("bar", 10);
+    assert.strictEqual(results.getMetric("bar"), 53);
+  });
+
+  it("should increment even not existing metric", () => {
+    results.incrMetric("not-existing-metric");
+    assert.strictEqual(results.getMetric("not-existing-metric"), 1);
+  });
 });
 
 describe("Offenders", () => {
@@ -53,7 +68,14 @@ describe("Offenders", () => {
   it("should be registered", () => {
     results.addOffender("metric", "foo");
     results.addOffender("metric", { url: "bar", size: 42 });
+    results.setMetric("metric", 42);
+
     results.addOffender("metric2", "test");
+
+    assert.deepStrictEqual(results.getAllOffenders(), {
+      metric: ["foo", { url: "bar", size: 42 }],
+      metric2: ["test"],
+    });
   });
 
   it("should be kept in order", () => {
@@ -153,5 +175,55 @@ describe("Asserts", () => {
       ["foo", "bar"],
       "two asserts are not meet"
     );
+  });
+});
+
+describe("Setters and getters", () => {
+  const results = new Results();
+
+  it("setUrl/getUrl", () => {
+    const URL = "https://example.com";
+    results.setUrl(URL);
+    assert.strictEqual(results.getUrl(), URL);
+  });
+
+  it("setGenerator/getGenerator", () => {
+    const GENERATOR = "phantomas/" + require("../.").version;
+    results.setGenerator(GENERATOR);
+    assert.strictEqual(results.getGenerator(), GENERATOR);
+  });
+});
+
+describe("Results", () => {
+  const results = new Results({
+    generator: "phantomas/1.2.3",
+    asserts: { metric: 40 },
+    metrics: { metric: 42, foo: "bar" },
+    offenders: { foo: ["bar is foo"] },
+    url: "https://example.com",
+  });
+
+  it("are pre-filled", () => {
+    assert.strictEqual(results.getGenerator(), "phantomas/1.2.3");
+    assert.strictEqual(results.getMetric("foo"), "bar");
+    assert.ok(results.assert("metric") === false, "metric > 40");
+    assert.deepStrictEqual(results.getOffenders("foo"), ["bar is foo"]);
+    assert.strictEqual(results.getUrl(), "https://example.com");
+  });
+
+  it("defaults asserts entry to {}", () => {
+    const results = new Results({});
+
+    assert.deepStrictEqual(results.getAsserts(), {});
+  });
+
+  it("setAsserts() defaults to {}", () => {
+    const results = new Results({});
+
+    results.setAsserts({ foo: 42 });
+    assert.deepStrictEqual(results.getAsserts(), { foo: 42 });
+
+    results.setAsserts();
+    assert.deepStrictEqual(results.getAsserts(), {});
   });
 });

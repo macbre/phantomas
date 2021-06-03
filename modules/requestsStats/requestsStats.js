@@ -12,7 +12,7 @@
  */
 "use strict";
 
-var Stats = require("../../lib/fast-stats").Stats;
+var Stats = require("fast-stats").Stats;
 
 module.exports = function (phantomas) {
   var stack = {};

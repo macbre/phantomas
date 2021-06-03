@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function globalVariablesScope(phantomas) {
   // get the list of initial, built-in global variables
   var allowed = [],
     varName;

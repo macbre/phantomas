@@ -21,7 +21,10 @@ module.exports = function (phantomas) {
     return new Promise(async (resolve) => {
       phantomas.log("Scrolling the page...");
 
+      /* istanbul ignore next */
       await page.evaluate(() => document.body.scrollIntoView(false));
+
+      /* istanbul ignore next */
       const scrollOffset = await page.evaluate(() => document.body.scrollTop);
 
       // wait for lazy loading to do its job

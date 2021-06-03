@@ -1,4 +1,4 @@
-((phantomas) => {
+(function lazyLoadableImages(phantomas) {
   phantomas.spyEnabled(
     false,
     "setting up which images can be lazy-loaded analysis"
