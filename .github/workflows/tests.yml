@@ -56,7 +56,15 @@ jobs:
       run: |
         cat /tmp/npm-test.log | grep '|' | head -n4
         cat /tmp/npm-test.log | grep '|' | grep -v '100 |      100 |     100 |     10' | grep '\.js'
- 
+
+    # https://github.com/marketplace/actions/coveralls-github-action
+    # upload coverage report for just one of Node.js version matrix runs
+    - name: Upload coverage report to Coveralls
+      if: matrix.node-version == '16.x'
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+        github-token: ${{ github.token }}
+
     - name: Check that bin/phantomas.js works
       run: ./bin/phantomas.js http://127.0.0.1:8888/ --pretty | grep "generator" -A4
 
