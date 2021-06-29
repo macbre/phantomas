@@ -35,7 +35,7 @@ docker pull macbre/phantomas:latest
 Or you can fetch from [GitHub's Containers registry](https://github.com/macbre/phantomas/pkgs/container/phantomas)
 
 ```
-docker pull ghcr.io/pigs-will-fly/docker-python:latest
+docker pull ghcr.io/macbre/phantomas:latest
 ```
 
 ## Support
