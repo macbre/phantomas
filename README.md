@@ -31,6 +31,12 @@ You can use [phantomas Docker image](https://hub.docker.com/r/macbre/phantomas):
 docker pull macbre/phantomas:latest
 ```
 
+Or you can fetch from [GitHub's Containers registry](https://github.com/macbre/phantomas/pkgs/container/phantomas)
+
+```
+docker pull ghcr.io/pigs-will-fly/docker-python:latest
+```
+
 ## Support
 
 [![Foo](https://raw.githubusercontent.com/macbre/phantomas/devel/docs/phantomas-banner.png)](https://xscode.com/macbre/phantomas)

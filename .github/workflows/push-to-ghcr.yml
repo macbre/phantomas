@@ -1,0 +1,56 @@
+name: Publish Docker image to ghcr.io public repository
+
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on:
+  # push: # debug
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    # https://docs.github.com/en/actions/guides/publishing-docker-images#publishing-images-to-github-packages
+    env:
+        REGISTRY: ghcr.io
+        IMAGE_NAME: ${{ github.repository }}
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Log in to the Container registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set commit tag that will be used to tag a specific version
+      run: |
+        export COMMIT_TAG=${GITHUB_REF:10}
+        # export COMMIT_TAG=v2.3.0 # debug
+        echo "COMMIT_TAG=${COMMIT_TAG//v/}" >> $GITHUB_ENV # remove "v" suffix
+
+    - name: Show env variables
+      run: |
+        env | sort
+
+    # https://github.com/marketplace/actions/build-and-push-docker-images
+    - name: "Build and push Docker image (tag: ${{ env.COMMIT_TAG }})"
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.COMMIT_TAG }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        build-args: |
+          GITHUB_SHA=${GITHUB_SHA}
+        cache-from: |
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+    - name: Inspect an image
+      run: |
+        docker images | head -n3
+        docker inspect --format='{{json .Config.Labels}}' ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest | jq
