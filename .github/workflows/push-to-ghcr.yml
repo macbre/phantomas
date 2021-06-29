@@ -2,7 +2,7 @@ name: Publish Docker image to ghcr.io public repository
 
 # https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:
-  push: # debug
+  # push: # debug
   release:
     types: [ published ]
 
