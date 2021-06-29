@@ -13,17 +13,16 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    # https://github.com/marketplace/actions/build-and-push-docker-images
     - name: Build the Docker image
-      env:
-        # @see https://testdriven.io/blog/faster-ci-builds-with-docker-cache/
-        # @see https://docs.docker.com/develop/develop-images/build_enhancements/
-        COMPOSE_DOCKER_CLI_BUILD: "1"
-        DOCKER_BUILDKIT: "1"
-      run: |
-        docker build . \
-           --cache-from macbre/phantomas:latest \
-           --build-arg COMMIT_SHA=$(git rev-parse --short HEAD) \
-           --tag ${{ github.repository }}
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        tags: ${{ github.repository }}
+        build-args: |
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+        cache-from: |
+          macbre/phantomas:latest
 
     - name: Inspect built image
       run: |
