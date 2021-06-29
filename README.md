@@ -3,6 +3,7 @@ phantomas
 [![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Coverage Status](https://coveralls.io/repos/github/macbre/phantomas/badge.svg?branch=devel&1)](https://coveralls.io/github/macbre/phantomas?branch=devel)
+[![CodeFactor](https://www.codefactor.io/repository/github/macbre/phantomas/badge)](https://www.codefactor.io/repository/github/macbre/phantomas)
 =========
 
 [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
