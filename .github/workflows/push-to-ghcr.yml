@@ -42,7 +42,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$( echo $COMMIT_TAG | sed 's/v//g' ), ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${COMMIT_TAG//v/}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         build-args: |
           GITHUB_SHA=${GITHUB_SHA}
         cache-from: |
