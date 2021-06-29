@@ -30,8 +30,8 @@ jobs:
 
     - name: Set commit tag that will be used to tag a specific version
       run: |
-        # echo "COMMIT_TAG=${GITHUB_REF:10}" >> $GITHUB_ENV
-        echo "COMMIT_TAG=v2.3.0" >> $GITHUB_ENV # debug
+        # export COMMIT_TAG=${GITHUB_REF:10}
+        export COMMIT_TAG=v2.3.0 # debug
         echo "COMMIT_TAG=${COMMIT_TAG//v/}" >> $GITHUB_ENV # remove "v" suffix
 
     - name: Show env variables
