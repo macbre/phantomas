@@ -42,8 +42,8 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm ci
 
-ARG COMMIT_SHA="dev"
-ENV COMMIT_SHA ${COMMIT_SHA}
+ARG GITHUB_SHA="dev"
+ENV COMMIT_SHA ${GITHUB_SHA}
 
 # label the image with branch name and commit hash
 LABEL maintainer="maciej.brencz@gmail.com"
