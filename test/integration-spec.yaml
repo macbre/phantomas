@@ -843,8 +843,7 @@
     oldTlsProtocol: 0
 
 # http/3
-# - url: "https://127.0.0.1:9001" # TODO
-- url: "https://gf.dev/http3-test"
+- url: "https://127.0.0.1:9001"
   label: "h3"
   options:
     ignore-ssl-errors: true
