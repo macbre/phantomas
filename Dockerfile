@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/node
-FROM node:lts-alpine3.13
+FROM node:lts-alpine3.14
 
 # Installs latest Chromium package.
 # https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
