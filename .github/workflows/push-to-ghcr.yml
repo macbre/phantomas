@@ -4,10 +4,10 @@ on:
   release:
     types: [ published ]
 
-  # publish on pushes to the main branch (tagged as "master")
+  # publish on pushes to the main branch (tagged as "latest")
   push:
     branches:
-      - master
+      - devel
 
 #   pull_request: # debug
 
