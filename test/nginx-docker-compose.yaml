@@ -2,8 +2,8 @@ version: "3.2"
 
 services:
   nginx:
-    # https://github.com/macbre/docker-nginx-brotli#quic--http3-support
-    image: macbre/nginx-brotli:1.19.6-http3
+    # https://github.com/macbre/docker-nginx-http3#quic--http3-support
+    image: ghcr.io/macbre/nginx-http3:1.21.1
     ports:
       - "8888:80"
       - "8889:443" # for old HTTP/1.1 with old TLS
