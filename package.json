@@ -51,7 +51,7 @@
     "prettier": "2.3.2"
   },
   "scripts": {
-    "test": "jest test/ --coverage --detectOpenHandles",
+    "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles",
     "unit-test": "jest test/results.test.js test/modules/ --coverage --detectOpenHandles",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
