@@ -23,7 +23,7 @@ jobs:
         context: .
         tags: ${{ env.DOCKER_TAG }}
         build-args: |
-          GITHUB_SHA=$(git rev-parse --short HEAD)
+          GITHUB_SHA=${{ github.sha	}}
         cache-from: |
           ${{ env.DOCKER_TAG }}
 
