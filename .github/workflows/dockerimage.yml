@@ -9,7 +9,7 @@ jobs:
 
   build_docker_image:
     runs-on: ubuntu-latest
-    
+
     env:
       DOCKER_TAG: ghcr.io/macbre/phantomas:latest
 
