@@ -9,7 +9,7 @@ on:
     branches:
       - devel
 
-#   pull_request: # debug
+  pull_request: # debug
 
 jobs:
   docker_publish:
@@ -23,3 +23,4 @@ jobs:
         with:
           image_name: ${{ github.repository }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          docker_io_token: ${{ secrets.DOCKER_IO_ACCESS_TOKEN }}
