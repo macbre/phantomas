@@ -48,6 +48,8 @@ jobs:
 
     - name: Run tests
       run: |
+        set -o pipefail
+
         ./test/server-start.sh
 
         npm test 2>&1 | tee /tmp/npm-test.log
@@ -66,7 +68,10 @@ jobs:
         github-token: ${{ github.token }}
 
     - name: Check that bin/phantomas.js works
-      run: ./bin/phantomas.js http://127.0.0.1:8888/ --pretty | grep "generator" -A4
+      run: |
+        set -x
+        ./bin/phantomas.js http://127.0.0.1:8888/ --pretty | grep "generator" -A4
+        ./bin/phantomas.js https://127.0.0.1:8889/ --ignore-ssl-errors --pretty | grep "generator" -A4
 
     - name: Check that bin/phantomas.js handles errors correctly
       run: ./bin/phantomas.js http://127.0.0.1:1234/ 2>&1 | grep "net::ERR_CONNECTION_REFUSED at http://127.0.0.1:1234"
