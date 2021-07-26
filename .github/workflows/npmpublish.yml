@@ -4,7 +4,6 @@
 name: Publish to npm and GitHub Packages
 
 on:
-  pull_request:
   release:
     types: [created]
 
