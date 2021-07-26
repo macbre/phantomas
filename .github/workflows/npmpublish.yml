@@ -1,0 +1,48 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: Publish to npm and GitHub Packages
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  npm-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      #
+      # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#publish-to-npmjs-and-gpr-with-npm
+      #
+      - uses: actions/setup-node@master
+        with:
+         node-version: '14.x'
+         registry-url: 'https://npm.pkg.github.com'
+
+      # GitHub Packages only supports scoped npm packages.
+      # Scoped packages have names with the format of @owner/name
+      #
+      # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#publishing-a-package
+      - name: Publish to GitHub Packages
+        run: |
+          sed -i 's/"phantomas"/"@macbre\/phantomas"/g' package.json; git diff
+
+          npm publish --access public
+
+          git checkout -- .
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish to npm
+        run: |
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
