@@ -145,14 +145,14 @@ module.exports = function (phantomas) {
 
       // and add offenders
       if (typeof offenders[metric] !== "undefined") {
-        offenders[metric].forEach(offender => {
+        offenders[metric].forEach((offender) => {
           phantomas.addOffender(metricPrefixed, {
             url: offenderSrc,
             value: {
               message: offender.message,
               position: {
                 ...offender.position,
-                source: offender.source || 'undefined'
+                source: offender.source || "undefined",
               }, // cast to object
             },
           });
