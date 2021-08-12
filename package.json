@@ -24,10 +24,10 @@
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=12.0"
+    "node": ">=14.0"
   },
   "dependencies": {
-    "analyze-css": "^1.0.0",
+    "analyze-css": "^2.0.0",
     "ansicolors": "~0.3.2",
     "ansistyles": "~0.1.0",
     "ascii-table": "0.0.9",
