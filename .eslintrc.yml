@@ -2,6 +2,8 @@ env:
   es2017: true
   node: true
   browser: true
+parserOptions:
+  ecmaVersion: 2020
 extends:
   - 'eslint:recommended'
   - 'plugin:node/recommended'
@@ -15,3 +17,4 @@ rules:
   - allowEmptyCatch: true
   no-prototype-builtins: 'off'
   "node/no-extraneous-require": 'off'
+  "node/no-unsupported-features/es-syntax": 'error'
