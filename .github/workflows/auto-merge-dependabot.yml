@@ -1,35 +1,28 @@
-# @see https://stefanzweifel.io/posts/2021/04/28/auto-merge-dependabot-pull-requests/
-name: Automerge dependabot pull requests
+# Based on https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/automating-dependabot-with-github-actions#enable-auto-merge-on-a-pull-request
+name: Dependabot auto-merge
+on: pull_request_target
 
-on:
-  workflow_run:
-    types:
-      - completed
-    workflows:
-      # "name" atrribute of workflows status to check
-      - 'Node.js CI'
-      - 'Check if a Docker image can be built'
-      - 'Linters'
+permissions:
+    pull-requests: write
+    contents: write
 
 jobs:
-  merge-me:
-    name: Merge dependabot pull request
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Merging PR
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: ridedott/merge-me-action@v2
-        with:
-          # Depending on branch prodtection rules, a  manually populated
-          # `GITHUB_TOKEN_WORKAROUND` secret with permissions to push to
-          # a protected branch must be used.
-          #
-          # When using a custom token, it is recommended to leave the following
-          # comment for other developers to be aware of the reasoning behind it:
-          #
-          # This must be used as GitHub Actions token does not support pushing
-          # to protected branches.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PRESET: DEPENDABOT_MINOR
+    dependabot:
+        runs-on: ubuntu-latest
+        if: ${{ github.actor == 'dependabot[bot]' }}
+        steps:
+            - name: Dependabot metadata
+              id: metadata
+              uses: dependabot/fetch-metadata@v1.1.1
+              with:
+                  github-token: "${{ secrets.GITHUB_TOKEN }}"
+            - name: Enable auto-merge for Dependabot PRs
+              # Automatically merge semver-patch and semver-minor PRs
+              if: "${{ steps.metadata.outputs.update-type ==
+                  'version-update:semver-minor' ||
+                  steps.metadata.outputs.update-type ==
+                  'version-update:semver-patch' }}"
+              run: gh pr merge --auto --squash "$PR_URL"
+              env:
+                  PR_URL: ${{github.event.pull_request.html_url}}
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

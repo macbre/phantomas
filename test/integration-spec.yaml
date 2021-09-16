@@ -164,8 +164,8 @@
     cssDuplicatedSelectors: 1
     cssParsingErrors: 1
     cssInlineStyles: 3
-    cssLength: 200
-    cssRules: 4
+    cssLength: 208
+    cssRules: 6
     cssImportants: 1
     DOMqueries: 0
   offenders:
@@ -174,9 +174,9 @@
           url: "[inline CSS]",
           value:
             {
-              message: "missing '{'",
+              message: "Unmatched selector: = red; } bar",
               position:
-                { end: { column: 2, line: 3 }, start: { column: 2, line: 3 } },
+                {"end": {"column": 43, "line": 2}, "source": "undefined", "start": {"column": 14, "line": 2} },
             },
         }
     cssInlineStyles:
@@ -189,9 +189,20 @@
   options:
     "analyze-css": true
   metrics:
-    cssParsingErrors: 3
-    cssLength: 39
-    cssRules: 1
+    cssParsingErrors: 1
+    cssLength: 91
+    cssRules: 3
+  offenders:
+    cssParsingErrors:
+      - {
+          url: "http://127.0.0.1:8888/static/broken.css",
+          value:
+            {
+              message: "Unmatched selector: = red; } bar",
+              position:
+                {"end": {"column": 41, "line": 1}, "source": "undefined", "start": {"column": 12, "line": 1} },
+            },
+        }
 
 - url: "/dom-operations.html"
   options:
