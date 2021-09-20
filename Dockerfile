@@ -19,9 +19,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
     nss \
     ttf-freefont
 
-RUN which chromium-browser
-RUN ldd $(which chromium-browser)
-RUN chromium-browser --no-sandbox --version
+RUN echo "Chromium binary is in: $(which chromium-browser), its dependencies:"; \
+  ldd $(which chromium-browser); \
+  chromium-browser --no-sandbox --version
 
 # Set up a working directory
 ENV HOME /opt/phantomas
