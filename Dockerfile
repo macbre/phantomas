@@ -1,14 +1,11 @@
 # https://hub.docker.com/_/node
-FROM node:lts-alpine3.13
+FROM node:lts-alpine3.14
 
 # Installs latest Chromium package.
 # https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
-ENV CHROMIUM_VERSION 92.0.4515.107-r0
+ENV CHROMIUM_VERSION 91.0.4472.164-r0
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/v3.13/main" >> /etc/apk/repositories \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
   && apk upgrade -U -a \
   && apk add \
     chromium \
@@ -19,8 +16,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
     nss \
     ttf-freefont
 
-RUN which chromium-browser
-RUN chromium-browser --no-sandbox --version
+RUN echo "Chromium binary is in: $(which chromium-browser), its dependencies:"; \
+  ldd $(which chromium-browser); \
+  chromium-browser --no-sandbox --version
 
 # Set up a working directory
 ENV HOME /opt/phantomas
