@@ -20,6 +20,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
     ttf-freefont
 
 RUN which chromium-browser
+RUN ldd $(which chromium-browser)
 RUN chromium-browser --no-sandbox --version
 
 # Set up a working directory
