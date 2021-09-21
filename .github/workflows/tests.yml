@@ -7,7 +7,6 @@ on:
   push:
     branches: [ devel ]
   pull_request:
-    branches: [ devel ]
 
 jobs:
   test:
@@ -52,6 +51,7 @@ jobs:
     - name: Upload coverage report to Coveralls
       if: matrix.node-version == '16.x'
       uses: coverallsapp/github-action@1.1.3
+      continue-on-error: true
       with:
         github-token: ${{ github.token }}
 
