@@ -42,7 +42,7 @@
     "puppeteer": "^10.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.21.0",
+    "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
     "glob": "^7.1.6",
