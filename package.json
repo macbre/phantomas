@@ -39,7 +39,7 @@
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
     "node-statsd": "0.1.1",
-    "puppeteer": "^10.0.0"
+    "puppeteer": "^11.0.0"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
