@@ -48,7 +48,7 @@
     "glob": "^7.1.6",
     "jest": "^27.0.1",
     "mockery": "^2.0.0",
-    "prettier": "2.4.1"
+    "prettier": "2.5.0"
   },
   "scripts": {
     "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles",
