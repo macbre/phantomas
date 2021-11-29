@@ -27,3 +27,6 @@ jobs:
       
     - name: Run eslint
       run: npm run lint
+
+    - name: Run depcheck
+      run: npx depcheck
