@@ -578,6 +578,19 @@
     localStorageEntries: 2
   offenders:
     localStorageEntries: ["foo", "test"]
+
+# local/session storage injection
+- url: "/local-storage-injection.html"
+  options:
+    "local-storage": "bar=foo"
+  metrics:
+    local-storage: '{"bar":"foo"}'
+- url: "/session-storage-injection.html"
+  options:
+    "session-storage": "bar=foo"
+  metrics:
+    session-storage: '{"bar":"foo"}'
+    
 # JS errors
 - url: "/js-errors.html"
   metrics:
