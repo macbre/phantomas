@@ -28,27 +28,21 @@
   },
   "dependencies": {
     "analyze-css": "^2.0.0",
-    "ansicolors": "~0.3.2",
-    "ansistyles": "~0.1.0",
-    "ascii-table": "0.0.9",
-    "async": "^3.2.0",
     "commander": "^8.0.0",
-    "csv-string": "^4.0.1",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "node-statsd": "0.1.1",
-    "puppeteer": "^10.0.0"
+    "puppeteer": "^11.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^27.4.0",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
     "glob": "^7.1.6",
     "jest": "^27.0.1",
-    "mockery": "^2.0.0",
-    "prettier": "2.4.1"
+    "prettier": "2.5.1"
   },
   "scripts": {
     "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles",
