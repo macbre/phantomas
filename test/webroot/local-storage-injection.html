@@ -1,0 +1,9 @@
+<body>
+	<script>
+		console.log('Got local-storage: ' + JSON.stringify(window.localStorage));
+		// for unit tests
+		(function(phantomas) {
+			phantomas.setMetric('local-storage', JSON.stringify(window.localStorage));
+		})(window.__phantomas);
+	</script>
+</body>
