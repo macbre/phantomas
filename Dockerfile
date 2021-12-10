@@ -5,7 +5,7 @@ FROM node:lts-alpine3.14
 # https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
 ENV CHROMIUM_VERSION 96.0.4664.45-r0
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
   && apk upgrade -U -a \
   && apk add \
     chromium \
