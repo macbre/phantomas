@@ -1,24 +1,30 @@
 # https://hub.docker.com/_/node
-FROM node:lts-alpine3.14
+FROM node:lts-bullseye-slim
 
-# Installs latest Chromium package.
-# https://pkgs.alpinelinux.org/package/edge/community/x86_64/chromium
-ENV CHROMIUM_VERSION 96.0.4664.45-r0
-
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.14/main" >> /etc/apk/repositories \
-  && apk upgrade -U -a \
-  && apk add \
-    chromium \
-    ca-certificates \
-    freetype \
-    freetype-dev \
-    harfbuzz \
-    nss \
-    ttf-freefont
-
-RUN echo "Chromium binary is in: $(which chromium-browser), its dependencies:"; \
-  ldd $(which chromium-browser); \
-  chromium-browser --no-sandbox --version
+# install dependencies of Chrome binary that will be fetched by npm ci
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+      fonts-liberation \
+      libasound2 \
+      libatk-bridge2.0-0  \
+      libatk1.0-0 \
+      libatspi2.0-0 \
+      libc6 \
+      libcairo2 \
+      libcups2 \
+      libdbus-1-3 \
+      libfreetype6 \
+      libgbm1 \
+      libharfbuzz0b  \
+      libnss3 \
+      libpango-1.0-0 \
+      libx11-6 \
+      libxext6 \
+      libxkbcommon0 \
+      x11-utils \
+      xdg-utils \
+      zlib1g \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set up a working directory
 ENV HOME /opt/phantomas
@@ -28,17 +34,16 @@ RUN chown -R nobody:nogroup .
 # Run everything after as non-privileged user.
 USER nobody
 
-# Tell Puppeteer to skip installing Chrome. We'll be using the installed binary
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-
-# Tell phantomas where Chromium binary is and that we're in docker
-ENV PHANTOMAS_CHROMIUM_EXECUTABLE /usr/bin/chromium-browser
 ENV DOCKERIZED yes
 
 # Install dependencies
 COPY package.json .
 COPY package-lock.json .
 RUN npm ci
+
+# TODO: find the chrome binary and symlink it to the PATH
+RUN ldd $(find . -wholename '*chrome-linux/chrome') && \
+  $(find . -wholename '*chrome-linux/chrome') --version
 
 ARG GITHUB_SHA="dev"
 ENV COMMIT_SHA ${GITHUB_SHA}
