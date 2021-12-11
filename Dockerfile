@@ -6,13 +6,21 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
       fonts-liberation \
       libasound2 \
+      libatk-bridge2.0-0  \
+      libatk1.0-0 \
+      libatspi2.0-0 \
       libc6 \
+      libcairo2 \
+      libcups2 \
+      libdbus-1-3 \
       libfreetype6 \
       libgbm1 \
       libharfbuzz0b  \
       libnss3 \
+      libpango-1.0-0 \
       libx11-6 \
       libxext6 \
+      libxkbcommon0 \
       x11-utils \
       xdg-utils \
       zlib1g \
