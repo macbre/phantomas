@@ -3,7 +3,7 @@ FROM node:lts-bullseye-slim
 
 # install dependencies of Chrome binary that will be fetched by npm ci
 RUN apt-get update \
-  && apt-get install -y \
+  && apt-get install -y --no-install-recommends \
       fonts-liberation \
       libasound2 \
       libc6 \
@@ -34,8 +34,8 @@ COPY package-lock.json .
 RUN npm ci
 
 # TODO: find the chrome binary and symlink it to the PATH
-RUN ldd `find . -wholename '*chrome-linux/chrome'` && \
-  `find . -wholename '*chrome-linux/chrome'` --version
+RUN ldd $(find . -wholename '*chrome-linux/chrome') && \
+  $(find . -wholename '*chrome-linux/chrome') --version
 
 ARG GITHUB_SHA="dev"
 ENV COMMIT_SHA ${GITHUB_SHA}
