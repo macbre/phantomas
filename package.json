@@ -33,7 +33,7 @@
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "puppeteer": "^11.0.0"
+    "puppeteer": "^13.0.1"
   },
   "devDependencies": {
     "@jest/globals": "^27.4.0",
