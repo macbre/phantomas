@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
@@ -28,12 +28,12 @@
   },
   "dependencies": {
     "analyze-css": "^2.0.0",
-    "commander": "^8.0.0",
+    "commander": "^9.0.0",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "puppeteer": "^13.0.0"
+    "puppeteer": "^13.0.1"
   },
   "devDependencies": {
     "@jest/globals": "^27.4.0",
