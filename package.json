@@ -42,7 +42,7 @@
     "eslint-plugin-node": "^11.1.0",
     "glob": "^7.1.6",
     "jest": "^27.0.1",
-    "prettier": "2.6.0"
+    "prettier": "2.6.1"
   },
   "scripts": {
     "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles --forceExit",
