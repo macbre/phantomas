@@ -174,7 +174,7 @@
           url: "[inline CSS]",
           value:
             {
-              message: "Unmatched selector: = red; } bar",
+              message: "Empty sub-selector",
               position:
                 {"end": {"column": 43, "line": 2}, "source": "undefined", "start": {"column": 14, "line": 2} },
             },
@@ -198,7 +198,7 @@
           url: "http://127.0.0.1:8888/static/broken.css",
           value:
             {
-              message: "Unmatched selector: = red; } bar",
+              message: "Empty sub-selector",
               position:
                 {"end": {"column": 41, "line": 1}, "source": "undefined", "start": {"column": 12, "line": 1} },
             },
