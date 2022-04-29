@@ -69,6 +69,14 @@ function getProgram() {
       "specifies the file name to store the persistent Cookies"
     )
     .option(
+      "--local-storage <values>",
+      'ability to set a local storage, key-value pairs (e.g. "bar=foo;domain=url")'
+    )
+    .option(
+      "--session-storage <values>",
+      'ability to set a session storage, key-value pairs (e.g. "bar=foo;domain=url")'
+    )
+    .option(
       "--ignore-ssl-errors",
       "ignores SSL errors, such as expired or self-signed certificate errors"
     )

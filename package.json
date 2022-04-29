@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
@@ -28,31 +28,25 @@
   },
   "dependencies": {
     "analyze-css": "^2.0.0",
-    "ansicolors": "~0.3.2",
-    "ansistyles": "~0.1.0",
-    "ascii-table": "0.0.9",
-    "async": "^3.2.0",
-    "commander": "^8.0.0",
-    "csv-string": "^4.0.1",
+    "commander": "^9.0.0",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "node-statsd": "0.1.1",
-    "puppeteer": "^10.0.0"
+    "puppeteer": "^11.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.21.0",
+    "@jest/globals": "^28.0.0",
+    "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
-    "glob": "^7.1.6",
-    "jest": "^27.0.1",
-    "mockery": "^2.0.0",
-    "prettier": "2.4.0"
+    "glob": "^8.0.1",
+    "jest": "^28.0.0",
+    "prettier": "2.6.2"
   },
   "scripts": {
-    "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles",
-    "unit-test": "jest test/results.test.js test/modules/ --coverage --detectOpenHandles",
+    "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles --forceExit",
+    "unit-test": "jest test/results.test.js test/modules/ --coverage --detectOpenHandles --forceExit",
     "lint": "eslint --cache .",
     "metadata": "DEBUG=generate node lib/metadata/generate.js",
     "make-docs": "DEBUG=docs node lib/metadata/make_docs.js",

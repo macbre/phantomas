@@ -1,0 +1,9 @@
+<body>
+	<script>
+		console.log('Got session-storage: ' + JSON.stringify(sessionStorage));
+		// for unit tests
+		(function(phantomas) {
+			phantomas.setMetric('session-storage', JSON.stringify(sessionStorage));
+		})(window.__phantomas);
+	</script>
+</body>
