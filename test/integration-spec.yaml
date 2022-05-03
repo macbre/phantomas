@@ -636,13 +636,6 @@
     smallestResponse: 342 # headers + body size
     biggestResponse: 856
   offenders:
-    requests:
-      - { url: "http://127.0.0.1:8888/headers.html", type: "html", size: 856 }
-      - {
-          url: "http://127.0.0.1:8888/static/blank.gif",
-          type: "image",
-          size: 342,
-        }
     smallestResponse:
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
     biggestResponse:
