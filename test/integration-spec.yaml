@@ -873,7 +873,7 @@
   options:
     ignore-ssl-errors: true
   metrics:
-    mainDomainHttpProtocol: "h3-29"
+    mainDomainHttpProtocol: "h3"
     mainDomainTlsProtocol: "QUIC"
 
 # don't count requests cached by browser
