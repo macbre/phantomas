@@ -153,15 +153,16 @@ number of CSS files (or embeded CSS) that failed to be parse by analyze-css (num
 {
   "url": "[inline CSS]",
   "value": {
-    "message": "missing '{'",
+    "message": "Empty sub-selector",
     "position": {
       "end": {
-        "column": 2,
-        "line": 3
+        "column": 43,
+        "line": 2
       },
+      "source": "undefined",
       "start": {
-        "column": 2,
-        "line": 3
+        "column": 14,
+        "line": 2
       }
     }
   }
@@ -336,6 +337,13 @@ size of other responses (with compression) (bytes)
 
 number of video responses (number, with offenders)
 
+```json
+{
+  "url": "http://127.0.0.1:8888/static/stickman.webm",
+  "size": 3750
+}
+```
+
 ##### `videoSize`
 
 size of video responses (with compression) (bytes)
@@ -430,7 +438,7 @@ number of responses with old, HTTP 1.0 caching headers (Expires and Pragma) (num
 {
   "url": "http://0.0.0.0:8888/_make_docs.html",
   "headerName": "expires",
-  "value": "Fri, 04 Sep 2020 19:05:48 GMT"
+  "value": "Thu, 05 May 2022 22:02:04 GMT"
 }
 ```
 
@@ -483,7 +491,7 @@ total number of full or partial page layout (number)
 
 ##### `layoutDuration`
 
-combined durations in seconds of all page layouts (ms)
+combined durations of all page layouts (ms)
 
 ##### `recalcStyleCount`
 
@@ -491,15 +499,15 @@ total number of page style recalculations (number)
 
 ##### `recalcStyleDuration`
 
-combined duration in seconds of all page style recalculations (ms)
+combined duration of style recalculations (ms)
 
 ##### `scriptDuration`
 
-combined duration in seconds of JavaScript execution (ms)
+combined duration of JavaScript execution (ms)
 
 ##### `taskDuration`
 
-combined duration in seconds of all tasks performed by the browser (ms)
+combined duration of all tasks performed by the browser (ms)
 
 
 ## [documentHeight](https://github.com/macbre/phantomas/tree/devel/modules/documentHeight/documentHeight.js)
@@ -734,7 +742,7 @@ number of DOM queries that returned nothing (number, with offenders)
 
 ```json
 {
-  "query": "#script1599159948406",
+  "query": "#script1651701724900",
   "node": "#document",
   "function": "getElementById"
 }
@@ -956,7 +964,6 @@ number of functions bound to windowOnLoad event (number, with offenders)
 ## [javaScriptBottlenecks](https://github.com/macbre/phantomas/tree/devel/modules/javaScriptBottlenecks/javaScriptBottlenecks.js)
 
 > Reports the use of functions known to be serious performance bottlenecks in JS
-
 Run phantomas with --spy-eval to count eval() calls (see issue #467)
 
 ##### `documentWriteCalls`
@@ -1070,7 +1077,7 @@ number of domains using HTTP/1.0 or 1.1 (number, with offenders)
 
 ```json
 {
-  "domain": "https://127.0.0.1:8889",
+  "domain": "https://127.0.0.1",
   "httpVersion": "http/1.1",
   "requests": 1
 }
@@ -1078,12 +1085,12 @@ number of domains using HTTP/1.0 or 1.1 (number, with offenders)
 
 ##### `oldTlsProtocol`
 
-number of domains using TLS 1.1 or 1.2 (number, with offenders)
+number of domains using TLS 1.2 (number, with offenders)
 
 ```json
 {
-  "domain": "https://127.0.0.1:8889",
-  "tlsVersion": "TLS 1.1",
+  "domain": "https://127.0.0.1",
+  "tlsVersion": "TLS 1.2",
   "beforeDomReady": true
 }
 ```
@@ -1160,9 +1167,9 @@ total number of HTTP requests made (number, with offenders)
 
 ```json
 {
-  "url": "http://127.0.0.1:8888/headers.html",
+  "url": "http://127.0.0.1:8888/not-found.html",
   "type": "html",
-  "size": 856
+  "size": 380
 }
 ```
 
@@ -1177,8 +1184,8 @@ the time to the first byte of the slowest response (ms, with offenders)
 
 ```json
 {
-  "url": "http://code.jquery.com/jquery-1.4.4.js",
-  "timeToFirstByte": 56.247
+  "url": "http://0.0.0.0:8888/static/mdn-short-cache.png",
+  "timeToFirstByte": 106.421
 }
 ```
 
@@ -1199,8 +1206,8 @@ the time to the last byte of the fastest response (ms, with offenders)
 
 ```json
 {
-  "url": "http://0.0.0.0:8888/static/mdn.png",
-  "timeToLastByte": 0.0169750000059139
+  "url": "http://0.0.0.0:8888/foo.json",
+  "timeToLastByte": 0.009596999996574596
 }
 ```
 
@@ -1219,7 +1226,7 @@ the time to the last byte of the slowest response (ms, with offenders)
 ```json
 {
   "url": "http://code.jquery.com/jquery-1.4.4.js",
-  "timeToLastByte": 0.141459999998915
+  "timeToLastByte": 0.19129599997540936
 }
 ```
 
@@ -1230,7 +1237,7 @@ the time to the first byte of the fastest response (ms, with offenders)
 ```json
 {
   "url": "http://0.0.0.0:8888/foo.json",
-  "timeToFirstByte": 0.24500000000000055
+  "timeToFirstByte": 7.045
 }
 ```
 
@@ -1371,7 +1378,7 @@ time it took to receive the last byte of the first image (ms, with offenders)
 time it took to receive the last byte of the first JS (ms, with offenders)
 
 ```json
-"http://0.0.0.0:8888/static/jquery-1.4.4.min.js received in NaN ms"
+"http://0.0.0.0:8888/static/jquery-2.1.1.min.js received in NaN ms"
 ```
 
 
