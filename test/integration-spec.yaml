@@ -636,13 +636,6 @@
     smallestResponse: 342 # headers + body size
     biggestResponse: 856
   offenders:
-    requests:
-      - { url: "http://127.0.0.1:8888/headers.html", type: "html", size: 856 }
-      - {
-          url: "http://127.0.0.1:8888/static/blank.gif",
-          type: "image",
-          size: 342,
-        }
     smallestResponse:
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
     biggestResponse:
@@ -833,13 +826,13 @@
 # protocols
 # http/1.1 (legacy one)
 - url: "https://127.0.0.1:8889"
-  label: "localhost but https version"
+  label: "localhost with http/1.1 and TLS 1.2"
   options:
     ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "http/1.1"
     oldHttpProtocol: 1
-    mainDomainTlsProtocol: "TLS 1.1"
+    mainDomainTlsProtocol: "TLS 1.2"
     oldTlsProtocol: 1
   offenders:
     oldHttpProtocol:
@@ -851,7 +844,7 @@
     oldTlsProtocol:
       - {
           domain: "https://127.0.0.1",
-          tlsVersion: "TLS 1.1",
+          tlsVersion: "TLS 1.2",
           beforeDomReady: true,
         }
 
@@ -873,7 +866,7 @@
   options:
     ignore-ssl-errors: true
   metrics:
-    mainDomainHttpProtocol: "h3-29"
+    mainDomainHttpProtocol: "h3"
     mainDomainTlsProtocol: "QUIC"
 
 # don't count requests cached by browser

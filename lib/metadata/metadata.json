@@ -63,7 +63,7 @@
     "init": {
       "file": "/lib/index.js",
       "desc": "Browser's scope and modules are set up, the page is about to be loaded",
-      "arguments": "page, browser"
+      "arguments": "page, browser.getPuppeteerBrowser("
     },
     "beforeClose": {
       "file": "/lib/index.js",
@@ -102,6 +102,11 @@
       "desc": "Saves the source of page being loaded to a file\nPlease note that saving each file takes a few ms.\nConsider increasing default timeout.\nRun phantomas with --page-source option to use this module.",
       "options": []
     },
+    "pageStorage": {
+      "file": "/extensions/pageStorage/pageStorage.js",
+      "desc": "",
+      "options": []
+    },
     "postLoadDelay": {
       "file": "/extensions/postLoadDelay/postLoadDelay.js",
       "desc": "Delays report generation for a given time",
@@ -115,6 +120,11 @@
     "scroll": {
       "file": "/extensions/scroll/scroll.js",
       "desc": "Allow page to be scrolled after it is loaded\nPass --scroll as an option in CLI mode",
+      "options": []
+    },
+    "userAgent": {
+      "file": "/extensions/userAgent/userAgent.js",
+      "desc": "Sets a user agent according to --user-agent or --phone or --tablet options",
       "options": []
     },
     "viewport": {
@@ -1050,13 +1060,13 @@
       "offenders": true,
       "unit": "number",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "videoSize": {
       "desc": "size of video responses (with compression)",
       "unit": "bytes",
       "module": "assetsTypes",
-      "testsCovered": false
+      "testsCovered": true
     },
     "base64Count": {
       "desc": "number of base64 encoded \"responses\" (no HTTP request was actually made)",
@@ -1206,7 +1216,7 @@
       "testsCovered": false
     },
     "recalcStyleDuration": {
-      "desc": "combined duration of all page style recalculations",
+      "desc": "combined duration of style recalculations",
       "unit": "ms",
       "module": "cpuTasks",
       "testsCovered": false
@@ -1620,7 +1630,7 @@
       "testsCovered": true
     },
     "oldTlsProtocol": {
-      "desc": "number of domains using TLS 1.1 or 1.2",
+      "desc": "number of domains using TLS 1.2",
       "offenders": true,
       "unit": "number",
       "module": "protocols",
@@ -1868,6 +1878,6 @@
   },
   "metricsCount": 187,
   "modulesCount": 36,
-  "extensionsCount": 12,
-  "version": "2.0.0"
+  "extensionsCount": 14,
+  "version": "2.4.0"
 }
