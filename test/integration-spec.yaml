@@ -655,6 +655,7 @@
 
 # not found
 - url: "/not-found.html"
+  flaky: Throws "Navigation failed because browser has disconnected!" randomly
   metrics:
     requests: 2
     notFound: 1
