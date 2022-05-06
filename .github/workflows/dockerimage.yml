@@ -20,7 +20,7 @@ jobs:
 
     # https://github.com/marketplace/actions/build-and-push-docker-images
     - name: Build the Docker image with ${{ env.DOCKER_TAG }} tag
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v3
       with:
         context: .
         tags: ${{ env.DOCKER_TAG }}
