@@ -291,6 +291,7 @@
 
 # multiple jQuery "instances" (issue #435)
 - url: "/jquery-multiple.html"
+  flaky: Messes the order of jQueryVersionsLoaded entries
   metrics:
     requests: 3
     jsCount: 2
@@ -861,9 +862,10 @@
     oldTlsProtocol: 0
 
 # http/3
-# - url: "https://127.0.0.1:9001" # TODO
+# - url: "https://127.0.0.1:9001" # TODO - https://github.com/macbre/phantomas/pull/970
 - url: "https://gf.dev/http3-test"
   label: "h3"
+  flaky: Reaches the timeout of 5000 ms
   options:
     ignore-ssl-errors: true
   metrics:
