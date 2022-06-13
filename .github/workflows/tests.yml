@@ -29,6 +29,19 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install mkcert
+      run: |
+        sudo apt update -y && sudo apt install -y libnss3-tools
+        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+        chmod +x mkcert-v*-linux-amd64
+        sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+
+        mkcert -version
+        mkcert -install
+
+    - name: Set up trusted development certificates to be used when testing locally
+      run: ./test/ssl-certificate/generate.sh
+
     - name: Run example script
       env:
         DEBUG: "phantomas:browser"
