@@ -829,8 +829,6 @@
 # http/1.1 (legacy one)
 - url: "https://127.0.0.1:8889"
   label: "localhost with http/1.1 and TLS 1.2"
-  options:
-    ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "http/1.1"
     oldHttpProtocol: 1
@@ -853,8 +851,6 @@
 # http/2
 - url: "https://127.0.0.1:9000"
   label: "localhost h2 version"
-  options:
-    ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "h2"
     oldHttpProtocol: 0
@@ -866,8 +862,6 @@
 - url: "https://gf.dev/http3-test"
   label: "h3"
   flaky: Reaches the timeout of 5000 ms
-  options:
-    ignore-ssl-errors: true
   metrics:
     mainDomainHttpProtocol: "h3"
     mainDomainTlsProtocol: "QUIC"
