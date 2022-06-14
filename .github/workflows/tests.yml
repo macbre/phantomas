@@ -29,6 +29,25 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Install mkcert and generate trusted development certificates
+      run: |
+        sudo apt update -y && sudo apt install -y libnss3-tools
+        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+        chmod +x mkcert-v*-linux-amd64
+        sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+
+        mkcert -version
+
+        # https://github.com/FiloSottile/mkcert/issues/219
+        mkdir -p $HOME/.pki/nssdb
+        certutil -d sql:$HOME/.pki/nssdb -N --empty-password
+        mkcert -install
+
+        ./test/ssl-certificate/generate.sh
+
+    - name: Start the test server
+      run: ./test/server-start.sh
+
     - name: Run example script
       env:
         DEBUG: "phantomas:browser"
@@ -37,9 +56,6 @@ jobs:
     - name: Run tests
       run: |
         set -o pipefail
-
-        ./test/server-start.sh
-
         npm test 2>&1 | tee /tmp/npm-test.log
 
     - name: Code coverage to be improved
