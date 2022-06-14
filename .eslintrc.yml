@@ -17,4 +17,4 @@ rules:
   - allowEmptyCatch: true
   no-prototype-builtins: 'off'
   "node/no-extraneous-require": 'off'
-  "node/no-unsupported-features/es-syntax": 'error'
+  "node/no-unsupported-features/es-syntax": ['error', {'ignores': ['dynamicImport']}]
