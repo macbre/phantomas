@@ -54,6 +54,7 @@
   },
   "jest": {
     "verbose": true,
+    "reporters": ["default", "github-actions"],
     "coverageThreshold": {
       "global": {
         "statements": 89,
