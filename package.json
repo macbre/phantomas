@@ -33,7 +33,7 @@
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "puppeteer": "^14.4.0"
+    "puppeteer": "^14.4.1"
   },
   "devDependencies": {
     "@jest/globals": "^28.0.0",
@@ -54,7 +54,10 @@
   },
   "jest": {
     "verbose": true,
-    "reporters": ["default", "github-actions"],
+    "reporters": [
+      "default",
+      "github-actions"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 89,
