@@ -78,7 +78,8 @@ jobs:
               --assignee macbre \
               --label dependencies \
               --base ${{ env.GIT_BRANCH }} \
-              --title "bump puppeteer to v${VERSION}"
+              --title "bump puppeteer to v${VERSION}" \
+              --body "[Release notes](https://github.com/puppeteer/puppeteer/releases/tag/v${VERSION})"
 
           # e.g. https://github.com/macbre/analyze-css/pull/443
           export PR_URL=$(gh pr view ${PR_BRANCH} --json url | jq -r .url)
