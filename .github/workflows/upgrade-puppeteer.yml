@@ -76,7 +76,7 @@ jobs:
             && git push origin ${PR_BRANCH} --force \
             && gh pr create \
               --assignee macbre \
-              --label dependencies \
+              --label 'external dependency' \
               --base ${{ env.GIT_BRANCH }} \
               --title "bump puppeteer to v${VERSION}" \
               --body "[Release notes](https://github.com/puppeteer/puppeteer/releases/tag/v${VERSION})"
