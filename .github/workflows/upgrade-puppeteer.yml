@@ -57,9 +57,7 @@ jobs:
           git config user.email ${GIT_USER_EMAIL}
 
       - name: Show a diff
-        run: |
-          git checkout -- package*
-          git diff
+        run: git diff
 
       - name: Commit if needed to a new branch (and create a PR)
         continue-on-error: true
