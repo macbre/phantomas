@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GIT_BRANCH: "master"
+      GIT_BRANCH: "devel"
       GIT_USER_NAME: "macbre"
       GIT_USER_EMAIL: "<macbre@users.noreply.github.com>"
 
