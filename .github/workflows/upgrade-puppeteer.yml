@@ -63,7 +63,7 @@ jobs:
         continue-on-error: true
         env:
           # use Personal Access Token so that the PR is opened by the real user and CI jobs are run
-          # https://github.com/settings/tokens - with "repo" scope
+          # https://github.com/settings/tokens - with "repo" scope and "read:org"
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           set -x
