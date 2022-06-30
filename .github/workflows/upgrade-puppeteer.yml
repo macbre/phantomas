@@ -62,7 +62,9 @@ jobs:
       - name: Commit if needed to a new branch (and create a PR)
         continue-on-error: true
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # use Personal Access Token so that the PR is opened by the real user and CI jobs are run
+          # https://github.com/settings/tokens - with "repo" scope
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           set -x
           gh auth status
