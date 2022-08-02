@@ -47,8 +47,9 @@ jobs:
 
       - name: Install dependencies and try to bump puppeteer
         run: |
+          set -x
           npm ci
-          npm i --save puppeteer@latest
+          npm i --save --verbose puppeteer@latest
 
       # https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
       - name: Set up git
