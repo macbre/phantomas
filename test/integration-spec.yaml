@@ -859,7 +859,6 @@
 
 # http/3
 - url: "https://127.0.0.1:9001"
-  label: "h3"
   label: "localhost h3 version"
   metrics:
     mainDomainHttpProtocol: "h3"
