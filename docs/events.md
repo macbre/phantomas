@@ -41,7 +41,7 @@ Events
 
 **Description**: Browser's scope and modules are set up, the page is about to be loaded
 
-**Arguments**: page, browser
+**Arguments**: page, browser.getPuppeteerBrowser(
 
 [View source](https://github.com/macbre/phantomas/tree/devel/lib/index.js)
 
@@ -140,13 +140,14 @@ Arguments passed to the event:
     "method": "GET",
     "headers": {
       "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "phantomas/2.0.0-alpha2 (HeadlessChrome/85.0.4182.0)"
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4950.0 Safari/537.36 Phantomas/2.4.0"
     },
     "mixedContentType": "none",
     "initialPriority": "VeryHigh",
-    "referrerPolicy": "no-referrer-when-downgrade",
-    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
-    "_timestamp": 37626.385811,
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "isSameSite": true,
+    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
+    "_timestamp": 233671.373283,
     "_type": "Document",
     "_initiator": {
       "type": "other"
@@ -166,13 +167,14 @@ Arguments passed to the event:
     "method": "GET",
     "headers": {
       "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "phantomas/2.0.0-alpha2 (HeadlessChrome/85.0.4182.0)"
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4950.0 Safari/537.36 Phantomas/2.4.0"
     },
     "mixedContentType": "none",
     "initialPriority": "VeryHigh",
-    "referrerPolicy": "no-referrer-when-downgrade",
-    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
-    "_timestamp": 37626.385811,
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "isSameSite": true,
+    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
+    "_timestamp": 233671.373283,
     "_type": "Document",
     "_initiator": {
       "type": "other"
@@ -192,33 +194,20 @@ Arguments passed to the event:
     "status": 200,
     "statusText": "OK",
     "headers": {
-      "Server": "nginx",
-      "Date": "Thu, 03 Sep 2020 19:05:48 GMT",
-      "Content-Type": "text/html",
-      "Last-Modified": "Thu, 03 Sep 2020 19:03:57 GMT",
-      "Transfer-Encoding": "chunked",
-      "Connection": "keep-alive",
-      "ETag": "W/\"5f513e1d-30f\"",
-      "Expires": "Fri, 04 Sep 2020 19:05:48 GMT",
       "Cache-Control": "max-age=86400",
-      "Content-Encoding": "gzip"
-    },
-    "headersText": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Thu, 03 Sep 2020 19:05:48 GMT\r\nContent-Type: text/html\r\nLast-Modified: Thu, 03 Sep 2020 19:03:57 GMT\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nETag: W/\"5f513e1d-30f\"\r\nExpires: Fri, 04 Sep 2020 19:05:48 GMT\r\nCache-Control: max-age=86400\r\nContent-Encoding: gzip\r\n\r\n",
-    "mimeType": "text/html",
-    "requestHeaders": {
-      "Host": "0.0.0.0:8888",
       "Connection": "keep-alive",
-      "Pragma": "no-cache",
-      "Cache-Control": "no-cache",
-      "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "phantomas/2.0.0-alpha2 (HeadlessChrome/85.0.4182.0)",
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-      "Accept-Encoding": "gzip, deflate",
-      "Accept-Language": "pl"
+      "Content-Encoding": "gzip",
+      "Content-Type": "text/html",
+      "Date": "Wed, 04 May 2022 22:02:04 GMT",
+      "ETag": "W/\"60ae63c4-30f\"",
+      "Expires": "Thu, 05 May 2022 22:02:04 GMT",
+      "Last-Modified": "Wed, 26 May 2021 15:05:40 GMT",
+      "Server": "nginx",
+      "Transfer-Encoding": "chunked"
     },
-    "requestHeadersText": "GET /_make_docs.html HTTP/1.1\r\nHost: 0.0.0.0:8888\r\nConnection: keep-alive\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent: phantomas/2.0.0-alpha2 (HeadlessChrome/85.0.4182.0)\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\nAccept-Encoding: gzip, deflate\r\nAccept-Language: pl\r\n",
+    "mimeType": "text/html",
     "connectionReused": false,
-    "connectionId": 12,
+    "connectionId": 11,
     "remoteIPAddress": "0.0.0.0",
     "remotePort": 8888,
     "fromDiskCache": false,
@@ -226,32 +215,32 @@ Arguments passed to the event:
     "fromPrefetchCache": false,
     "encodedDataLength": 720,
     "timing": {
-      "requestTime": 37626.406329,
+      "requestTime": 233671.37754,
       "proxyStart": -1,
       "proxyEnd": -1,
-      "dnsStart": 0.626,
-      "dnsEnd": 0.632,
-      "connectStart": 0.632,
-      "connectEnd": 0.755,
+      "dnsStart": 13.281,
+      "dnsEnd": 13.289,
+      "connectStart": 13.289,
+      "connectEnd": 13.453,
       "sslStart": -1,
       "sslEnd": -1,
       "workerStart": -1,
       "workerReady": -1,
       "workerFetchStart": -1,
       "workerRespondWithSettled": -1,
-      "sendStart": 0.806,
-      "sendEnd": 0.849,
+      "sendStart": 14.703,
+      "sendEnd": 15.226,
       "pushStart": 0,
       "pushEnd": 0,
-      "receiveHeadersEnd": 1.232
+      "receiveHeadersEnd": 24.219
     },
-    "responseTime": 1599159948205.253,
+    "responseTime": 1651701724644.302,
     "protocol": "http/1.1",
     "securityState": "insecure",
-    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
+    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
     "dataLength": 783,
     "chunks": 1,
-    "_timestamp": 37626.40802
+    "_timestamp": 233671.403456
   }
 ]
 ```
@@ -263,20 +252,20 @@ Arguments passed to the event:
 ```json
 [
   {
-    "id": "0B271D0BC8685F24DCFC465B8A138FED",
+    "id": "7EB9712AA9EB3011BC4F4F792F24758D",
     "url": "http://0.0.0.0:8888/_make_docs.html",
     "method": "GET",
     "headers": {
-      "server": "nginx",
-      "date": "Thu, 03 Sep 2020 19:05:48 GMT",
-      "content-type": "text/html",
-      "last-modified": "Thu, 03 Sep 2020 19:03:57 GMT",
-      "transfer-encoding": "chunked",
-      "connection": "keep-alive",
-      "etag": "W/\"5f513e1d-30f\"",
-      "expires": "Fri, 04 Sep 2020 19:05:48 GMT",
       "cache-control": "max-age=86400",
-      "content-encoding": "gzip"
+      "connection": "keep-alive",
+      "content-encoding": "gzip",
+      "content-type": "text/html",
+      "date": "Wed, 04 May 2022 22:02:04 GMT",
+      "etag": "W/\"60ae63c4-30f\"",
+      "expires": "Thu, 05 May 2022 22:02:04 GMT",
+      "last-modified": "Wed, 26 May 2021 15:05:40 GMT",
+      "server": "nginx",
+      "transfer-encoding": "chunked"
     },
     "bodySize": 783,
     "transferedSize": 720,
@@ -284,49 +273,37 @@ Arguments passed to the event:
     "type": "html",
     "protocol": "http",
     "domain": "0.0.0.0",
-    "query": null,
-    "stalled": 0.806,
-    "timeToFirstByte": 0.383,
-    "timeToLastByte": 0.022209000002476387,
+    "query": "",
+    "stalled": 14.703,
+    "timeToFirstByte": 8.993,
+    "timeToLastByte": 0.03017300000647083,
     "headersSize": 293,
+    "gzip": true,
     "contentType": "text/html",
     "isHTML": true,
-    "gzip": true,
     "status": 200,
-    "statusText": "OK"
+    "statusText": "OK",
+    "httpVersion": "http/1.1"
   },
   {
     "url": "http://0.0.0.0:8888/_make_docs.html",
     "status": 200,
     "statusText": "OK",
     "headers": {
-      "Server": "nginx",
-      "Date": "Thu, 03 Sep 2020 19:05:48 GMT",
-      "Content-Type": "text/html",
-      "Last-Modified": "Thu, 03 Sep 2020 19:03:57 GMT",
-      "Transfer-Encoding": "chunked",
-      "Connection": "keep-alive",
-      "ETag": "W/\"5f513e1d-30f\"",
-      "Expires": "Fri, 04 Sep 2020 19:05:48 GMT",
       "Cache-Control": "max-age=86400",
-      "Content-Encoding": "gzip"
-    },
-    "headersText": "HTTP/1.1 200 OK\r\nServer: nginx\r\nDate: Thu, 03 Sep 2020 19:05:48 GMT\r\nContent-Type: text/html\r\nLast-Modified: Thu, 03 Sep 2020 19:03:57 GMT\r\nTransfer-Encoding: chunked\r\nConnection: keep-alive\r\nETag: W/\"5f513e1d-30f\"\r\nExpires: Fri, 04 Sep 2020 19:05:48 GMT\r\nCache-Control: max-age=86400\r\nContent-Encoding: gzip\r\n\r\n",
-    "mimeType": "text/html",
-    "requestHeaders": {
-      "Host": "0.0.0.0:8888",
       "Connection": "keep-alive",
-      "Pragma": "no-cache",
-      "Cache-Control": "no-cache",
-      "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "phantomas/2.0.0-alpha2 (HeadlessChrome/85.0.4182.0)",
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-      "Accept-Encoding": "gzip, deflate",
-      "Accept-Language": "pl"
+      "Content-Encoding": "gzip",
+      "Content-Type": "text/html",
+      "Date": "Wed, 04 May 2022 22:02:04 GMT",
+      "ETag": "W/\"60ae63c4-30f\"",
+      "Expires": "Thu, 05 May 2022 22:02:04 GMT",
+      "Last-Modified": "Wed, 26 May 2021 15:05:40 GMT",
+      "Server": "nginx",
+      "Transfer-Encoding": "chunked"
     },
-    "requestHeadersText": "GET /_make_docs.html HTTP/1.1\r\nHost: 0.0.0.0:8888\r\nConnection: keep-alive\r\nPragma: no-cache\r\nCache-Control: no-cache\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent: phantomas/2.0.0-alpha2 (HeadlessChrome/85.0.4182.0)\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\nAccept-Encoding: gzip, deflate\r\nAccept-Language: pl\r\n",
+    "mimeType": "text/html",
     "connectionReused": false,
-    "connectionId": 12,
+    "connectionId": 11,
     "remoteIPAddress": "0.0.0.0",
     "remotePort": 8888,
     "fromDiskCache": false,
@@ -334,32 +311,32 @@ Arguments passed to the event:
     "fromPrefetchCache": false,
     "encodedDataLength": 720,
     "timing": {
-      "requestTime": 37626.406329,
+      "requestTime": 233671.37754,
       "proxyStart": -1,
       "proxyEnd": -1,
-      "dnsStart": 0.626,
-      "dnsEnd": 0.632,
-      "connectStart": 0.632,
-      "connectEnd": 0.755,
+      "dnsStart": 13.281,
+      "dnsEnd": 13.289,
+      "connectStart": 13.289,
+      "connectEnd": 13.453,
       "sslStart": -1,
       "sslEnd": -1,
       "workerStart": -1,
       "workerReady": -1,
       "workerFetchStart": -1,
       "workerRespondWithSettled": -1,
-      "sendStart": 0.806,
-      "sendEnd": 0.849,
+      "sendStart": 14.703,
+      "sendEnd": 15.226,
       "pushStart": 0,
       "pushEnd": 0,
-      "receiveHeadersEnd": 1.232
+      "receiveHeadersEnd": 24.219
     },
-    "responseTime": 1599159948205.253,
+    "responseTime": 1651701724644.302,
     "protocol": "http/1.1",
     "securityState": "insecure",
-    "_requestId": "0B271D0BC8685F24DCFC465B8A138FED",
+    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
     "dataLength": 783,
     "chunks": 1,
-    "_timestamp": 37626.40802
+    "_timestamp": 233671.403456
   }
 ]
 ```
@@ -374,9 +351,11 @@ Arguments passed to the event:
     "_type": "error",
     "_text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
     "_args": [],
-    "_location": {
-      "url": "http://0.0.0.0:8888/static/foo.min.js"
-    }
+    "_stackTraceLocations": [
+      {
+        "url": "http://0.0.0.0:8888/static/foo.min.js"
+      }
+    ]
   }
 ]
 ```
@@ -411,19 +390,19 @@ Arguments passed to the event:
 ```json
 [
   {
-    "Timestamp": 37626.694852,
+    "Timestamp": 233671.751763,
     "Documents": 3,
     "Frames": 1,
     "JSEventListeners": 22,
     "Nodes": 210,
     "LayoutCount": 13,
-    "RecalcStyleCount": 14,
-    "LayoutDuration": 0.00499,
-    "RecalcStyleDuration": 0.000911,
-    "ScriptDuration": 0.067885,
-    "TaskDuration": 0.141758,
-    "JSHeapUsedSize": 3166096,
-    "JSHeapTotalSize": 5652480
+    "RecalcStyleCount": 15,
+    "LayoutDuration": 0.017863,
+    "RecalcStyleDuration": 0.004322,
+    "ScriptDuration": 0.074783,
+    "TaskDuration": 0.190317,
+    "JSHeapUsedSize": 4006772,
+    "JSHeapTotalSize": 5857280
   }
 ]
 ```

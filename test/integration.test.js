@@ -79,6 +79,14 @@ describe("Integration tests", () => {
       return;
     }
 
+    // do not run flaky tests
+    if (test.flaky) {
+      describe.skip(testCaseName, () => {
+        it(test.flaky, () => {});
+      });
+      return;
+    }
+
     describe(testCaseName, () => {
       let promise, results;
 
