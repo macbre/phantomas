@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
@@ -33,7 +33,7 @@
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "puppeteer": "^14.2.1"
+    "puppeteer": "^19.2.2"
   },
   "devDependencies": {
     "@jest/globals": "^28.0.0",
@@ -42,7 +42,7 @@
     "eslint-plugin-node": "^11.1.0",
     "glob": "^8.0.1",
     "jest": "^28.0.0",
-    "prettier": "2.6.2"
+    "prettier": "2.7.1"
   },
   "scripts": {
     "test": "node --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles --forceExit",
@@ -54,12 +54,16 @@
   },
   "jest": {
     "verbose": true,
+    "reporters": [
+      "default",
+      "github-actions"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 89,
         "branches": 85,
-        "functions": 90,
-        "lines": 90
+        "functions": 89,
+        "lines": 89
       }
     }
   }

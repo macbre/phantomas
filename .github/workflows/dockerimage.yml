@@ -34,11 +34,11 @@ jobs:
         docker images
         docker inspect --format='{{json .Config.Labels}}' ${{ env.DOCKER_TAG }} | jq
 
-    - name: Run tests inside the Docker container
+    - name: Run phantomas CLI script inside the container
       run: |
         ./test/server-start.sh
 
         docker run \
           --network=host \
           --security-opt seccomp=$(pwd)/chrome-seccomp.json \
-          ${{ env.DOCKER_TAG }} npm t
+          ${{ env.DOCKER_TAG }} ./bin/phantomas.js http://127.0.0.1:8888/ --pretty
