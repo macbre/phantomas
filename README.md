@@ -1,11 +1,16 @@
-phantomas [![npm](https://img.shields.io/npm/dt/phantomas.svg)]() [![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+phantomas
+[![npm](https://img.shields.io/npm/dt/phantomas.svg)]()
+[![Inline docs](http://inch-ci.org/github/macbre/phantomas.svg?branch=phantomas-v2)](http://inch-ci.org/github/macbre/phantomas)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Coverage Status](https://coveralls.io/repos/github/macbre/phantomas/badge.svg?branch=devel&1)](https://coveralls.io/github/macbre/phantomas?branch=devel)
+[![CodeFactor](https://www.codefactor.io/repository/github/macbre/phantomas/badge)](https://www.codefactor.io/repository/github/macbre/phantomas)
 =========
 
 [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)-based modular web performance metrics collector. And why phantomas? Well, [because](http://en.wikipedia.org/wiki/Fantômas) :)
 
 ## Requirements
 
-* [NodeJS](http://nodejs.org) 12+
+* [NodeJS](http://nodejs.org) 14+
 
 ## Installation
 
@@ -25,6 +30,12 @@ You can use [phantomas Docker image](https://hub.docker.com/r/macbre/phantomas):
 
 ```
 docker pull macbre/phantomas:latest
+```
+
+Or you can fetch from [GitHub's Containers registry](https://github.com/macbre/phantomas/pkgs/container/phantomas)
+
+```
+docker pull ghcr.io/macbre/phantomas:latest
 ```
 
 ## Support

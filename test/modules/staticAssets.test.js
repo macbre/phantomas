@@ -155,6 +155,46 @@ describe("staticAssets", () => {
       }
     );
   });
+
+  describe("tracking pixel should be skipped", () => {
+    mock.getContext(
+      "staticAssets",
+      function (phantomas) {
+        return phantomas
+          .recv({
+            url: "https://google-analytics.com/__utm.gif",
+            status: 200,
+            isImage: true,
+            type: "image",
+            responseSize: 20,
+          })
+          .report();
+      },
+      {
+        smallImages: 0,
+      }
+    );
+  });
+
+  describe("non content assets (HTTP status code != 200) should not be checked against being gzipped", () => {
+    mock.getContext(
+      "staticAssets",
+      function (phantomas) {
+        return phantomas
+          .recv({
+            url: "https://foo.bar/not-found",
+            status: 404,
+            isHTML: true,
+            type: "html",
+            responseSize: 20,
+          })
+          .report();
+      },
+      {
+        assetsNotGzipped: 0,
+      }
+    );
+  });
 });
 
 // cases for "assetsNotGzipped" metric (issue #515)

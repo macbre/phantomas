@@ -8,3 +8,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    allow:
+    - dependency-name: "puppeteer"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+        interval: daily

@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const Stats = require("../../lib/fast-stats").Stats;
+const Stats = require("fast-stats").Stats;
 
 module.exports = function (phantomas) {
   var Collection = require("../../lib/collection"),

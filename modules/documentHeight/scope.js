@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function documentHeightScope(phantomas) {
   document.addEventListener("DOMContentLoaded", () => {
     // @see https://github.com/HTTPArchive/httparchive/blob/master/custom_metrics/document_height.js
     var doc = document,

@@ -1,6 +1,8 @@
 /**
  * Defines phantomas global API mock
  */
+/* istanbul ignore file */
+
 const assert = require("assert"),
   debug = require("debug"),
   noop = () => {},
@@ -169,12 +171,6 @@ function assertMetric(name, value) {
   };
 }
 
-function assertOffender(name, value) {
-  return function (phantomas) {
-    assert.deepStrictEqual(phantomas.getOffenders(name), value);
-  };
-}
-
 module.exports = {
   initModule: function (name) {
     return initModule(name);
@@ -194,13 +190,16 @@ module.exports = {
 
     Object.keys(metricsCheck || {}).forEach(function (name) {
       test(`sets "${name}" metric correctly`, () => {
-        assertMetric(name, metricsCheck[name]);
+        assert.strictEqual(phantomas.getMetric(name), metricsCheck[name]);
       });
     });
 
     Object.keys(offendersCheck || {}).forEach(function (name) {
       test(`sets "${name}" offender(s) correctly`, () => {
-        assertOffender(name, offendersCheck[name]);
+        assert.deepStrictEqual(
+          phantomas.getOffenders(name),
+          offendersCheck[name]
+        );
       });
     });
   },

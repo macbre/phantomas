@@ -5,6 +5,9 @@ docker-compose -f nginx-docker-compose.yaml up -d
 
 # wait for it...
 sleep 5
+
+set -x
 docker ps
 
-curl -svo /dev/null 0.0.0.0:8888 --compressed
+curl -svo /dev/null --compressed 0.0.0.0:8888 
+curl -svo /dev/null --compressed 0.0.0.0:8888/static/style.css

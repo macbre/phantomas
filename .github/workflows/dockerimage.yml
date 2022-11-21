@@ -10,31 +10,35 @@ jobs:
   build_docker_image:
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v1
+    timeout-minutes: 15
 
-    - name: Build the Docker image
-      env:
-        # @see https://testdriven.io/blog/faster-ci-builds-with-docker-cache/
-        # @see https://docs.docker.com/develop/develop-images/build_enhancements/
-        COMPOSE_DOCKER_CLI_BUILD: "1"
-        DOCKER_BUILDKIT: "1"
-      run: |
-        docker build . \
-           --cache-from macbre/phantomas:latest \
-           --build-arg COMMIT_SHA=$(git rev-parse --short HEAD) \
-           --tag ${{ github.repository }}
+    env:
+      DOCKER_TAG: ghcr.io/macbre/phantomas:latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # https://github.com/marketplace/actions/build-and-push-docker-images
+    - name: Build the Docker image with ${{ env.DOCKER_TAG }} tag
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        tags: ${{ env.DOCKER_TAG }}
+        build-args: |
+          GITHUB_SHA=${{ github.sha	}}
+        cache-from: |
+          ${{ env.DOCKER_TAG }}
 
     - name: Inspect built image
       run: |
         docker images
-        docker inspect --format='{{json .Config.Labels}}' ${{ github.repository }} | jq
+        docker inspect --format='{{json .Config.Labels}}' ${{ env.DOCKER_TAG }} | jq
 
-    - name: Run tests inside the Docker container
+    - name: Run phantomas CLI script inside the container
       run: |
         ./test/server-start.sh
 
         docker run \
           --network=host \
           --security-opt seccomp=$(pwd)/chrome-seccomp.json \
-          ${{ github.repository }} npm t
+          ${{ env.DOCKER_TAG }} ./bin/phantomas.js http://127.0.0.1:8888/ --pretty

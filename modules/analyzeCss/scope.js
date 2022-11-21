@@ -1,4 +1,4 @@
-(function (phantomas) {
+(function analyzeCssScope(phantomas) {
   document.addEventListener("DOMContentLoaded", function () {
     // both DOM and CSSOM are constructed, no stylesheets are blocking JavaScript execution
     phantomas.spyEnabled(false, "Checking inline scripts");
