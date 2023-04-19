@@ -814,16 +814,13 @@
     smallCssFiles:
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
 
-- url: "https://httpbin.org/basic-auth/foo/bar"
+- url: "http://127.0.0.1:5555/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
   options:
     auth-user: "foo"
     auth-pass: "bar"
   metrics:
     requests: 1
-  offenders:
-    httpsRequests:
-      - "https://httpbin.org/basic-auth/foo/bar"
 
 # protocols
 # http/1.1 (legacy one)
