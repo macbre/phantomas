@@ -16,7 +16,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [14.x, 16.x, 17.x, 18.x]
+        # https://github.com/nodejs/release#release-schedule
+        node-version:
+        - '16.x'
+        - '18.x'
+        - '20.x'
 
     services:
       # https://github.com/postmanlabs/httpbin
