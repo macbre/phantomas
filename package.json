@@ -24,7 +24,7 @@
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=14.0"
+    "node": ">=16.0"
   },
   "dependencies": {
     "analyze-css": "^2.0.0",
