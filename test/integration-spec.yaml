@@ -633,7 +633,7 @@
   metrics:
     requests: 3
     bodySize: 1065 # uncompressed content of all responses (without headers)
-    contentLength: 1198 # transfered bytes
+    contentLength: 1301 # transfered bytes
     smallestResponse: 342 # headers + body size
     biggestResponse: 856
   offenders:
@@ -645,7 +645,7 @@
 # iframes
 - url: "/iframe.html"
   metrics:
-    requests: 5 # include requests for iframe and its content
+    requests: 6 # include requests for iframe and its content
     iframesCount: 1
   offenders:
     iframesCount:
@@ -820,7 +820,7 @@
     auth-user: "foo"
     auth-pass: "bar"
   metrics:
-    requests: 1
+    requests: 2
 
 # protocols
 # http/1.1 (legacy one)
