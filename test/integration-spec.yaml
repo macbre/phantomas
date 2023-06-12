@@ -318,7 +318,7 @@
   options:
     "no-externals": true
   metrics:
-    requests: 2
+    requests: 3
     jsCount: 1
     blockedRequests: 1
     domains: 1
@@ -334,7 +334,7 @@
     "no-externals": true
     "allow-domain": "code.jquery.com"
   metrics:
-    requests: 3
+    requests: 4
     jsCount: 2
     blockedRequests: 0
     jQueryVersion: "1.11.1"
@@ -470,7 +470,7 @@
   metrics:
     imageCount: 1
     imageSize: 342
-    requests: 2
+    requests: 3
   offenders:
     imageCount:
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
@@ -609,11 +609,11 @@
 # headers
 - url: "/headers.html"
   metrics:
-    requests: 2
-    headersCount: 24
-    headersSentCount: 4
-    headersRecvCount: 20
-    headersRecvSize: 571
+    requests: 3
+    headersCount: 29
+    headersSentCount: 6
+    headersRecvCount: 23
+    headersRecvSize: 647
 #    headersBiggerThanContent: 1
 #  offenders:
 #    headersBiggerThanContent:
@@ -622,7 +622,7 @@
 # caching
 - url: "/caching.html"
   metrics:
-    requests: 2
+    requests: 3
     cachingTooShort: 1
   offenders:
     cachingTooShort:
@@ -631,7 +631,7 @@
 # requestsStats
 - url: "/headers.html"
   metrics:
-    requests: 2
+    requests: 3
     bodySize: 1065 # uncompressed content of all responses (without headers)
     contentLength: 1198 # transfered bytes
     smallestResponse: 342 # headers + body size
@@ -706,7 +706,7 @@
 # scroll
 - url: "/lazy-load-scroll.html"
   metrics:
-    requests: 1
+    requests: 2
     imageCount: 0
 
 - url: "/lazy-load-scroll.html"
