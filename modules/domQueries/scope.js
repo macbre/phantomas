@@ -58,7 +58,7 @@
     var context = phantomas.getDOMPath(this);
 
     // querying by BODY and body is the same (issue #419)
-    tagName = tagName.toLowerCase();
+    if (tagName) tagName = tagName.toLowerCase();
 
     phantomas.incrMetric("DOMqueriesByTagName");
     phantomas.addOffender("DOMqueriesByTagName", {

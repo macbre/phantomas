@@ -9,4 +9,11 @@
         // and this one too, but the execution will never reach this linen
         window.Foo('test');
 	</script>
+	<script>
+        // thoses ones should not fail (as in a real browser)
+        document.getElementsByTagName(undefined);
+        document.getElementById(undefined);
+        document.getElementsByClassName(undefined);
+        document.querySelector(undefined);
+	</script>
 </body>
