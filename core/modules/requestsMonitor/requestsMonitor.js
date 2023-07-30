@@ -97,6 +97,7 @@ function addContentType(headerValue, entry) {
     case "image/gif":
     case "image/svg+xml":
     case "image/webp":
+    case "image/avif":
       entry.type = "image";
       entry.isImage = true;
 
