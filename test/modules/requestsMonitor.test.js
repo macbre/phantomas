@@ -141,6 +141,7 @@ describe("Content types", () => {
     ["image/jpeg", "isImage"],
     ["image/gif", "isImage"],
     ["image/webp", "isImage"],
+    ["image/avif", "isImage"],
     ["image/svg+xml", "isImage"],
     ["image/svg+xml", "isSVG"],
     ["image/x-icon", "isFavicon"],

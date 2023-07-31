@@ -10,7 +10,7 @@ phantomas
 
 ## Requirements
 
-* [NodeJS](http://nodejs.org) 14+
+* [NodeJS](http://nodejs.org) 16+
 
 ## Installation
 
