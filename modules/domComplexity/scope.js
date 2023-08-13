@@ -75,54 +75,6 @@
               return false;
             }
 
-            // images
-            if (node.nodeName === "IMG") {
-              var imgWidth = node.hasAttribute("width")
-                  ? parseInt(node.getAttribute("width"), 10)
-                  : false,
-                imgHeight = node.hasAttribute("height")
-                  ? parseInt(node.getAttribute("height"), 10)
-                  : false;
-
-              // get dimensions from inline CSS (issue #399)
-              if (imgWidth === false || imgHeight === false) {
-                imgWidth = parseInt(node.style.width, 10) || false;
-                imgHeight = parseInt(node.style.height, 10) || false;
-              }
-
-              if (imgWidth === false || imgHeight === false) {
-                phantomas.incrMetric("imagesWithoutDimensions");
-                phantomas.addOffender(
-                  "imagesWithoutDimensions",
-                  "%s <%s>",
-                  path,
-                  node.src
-                );
-              }
-
-              if (
-                node.naturalHeight &&
-                node.naturalWidth &&
-                imgHeight &&
-                imgWidth
-              ) {
-                if (
-                  node.naturalHeight > imgHeight ||
-                  node.naturalWidth > imgWidth
-                ) {
-                  phantomas.emit("imagesScaledDown", {
-                    url: node.src,
-                    naturalWidth: node.naturalWidth,
-                    naturalHeight: node.naturalHeight,
-                    imgWidth,
-                    imgHeight,
-                  });
-                }
-              }
-            }
-
-            break;
-
           case Node.TEXT_NODE:
             if (whitespacesRegExp.test(node.textContent)) {
               phantomas.incrMetric("whiteSpacesSize", node.textContent.length);

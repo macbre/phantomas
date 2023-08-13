@@ -89,7 +89,7 @@ describe("URLs are properly parsed when sent", () => {
     });
   });
 
-  test.skip("base64-encoded data is property detected", () => {
+  test.skip("base64-encoded data is properly detected", () => {
     const entry = recvBase64("data:image/png;base64,iVBORw0KGgoAAAA");
 
     // https://jestjs.io/docs/expect#tomatchobjectobject
