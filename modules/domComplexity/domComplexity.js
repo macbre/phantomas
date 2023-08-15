@@ -21,7 +21,6 @@ module.exports = function (phantomas) {
 
   phantomas.setMetric("iframesCount"); // @desc number of iframe nodes @offenders
 
-
   // duplicated ID (issue #392)
   phantomas.setMetric("DOMidDuplicated"); // @desc number of duplicated IDs found in DOM
 

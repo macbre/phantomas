@@ -29,8 +29,12 @@ module.exports = function (phantomas) {
     phantomas.log("Response from analyze-image: %j", results);
 
     for (const offenderName in results.offenders) {
-      phantomas.log("Offender %s found: %j", offenderName, results.offenders[offenderName]);
-      
+      phantomas.log(
+        "Offender %s found: %j",
+        offenderName,
+        results.offenders[offenderName]
+      );
+
       const newOffenderName = offenderName.replace("image", "images");
       phantomas.incrMetric(newOffenderName);
       phantomas.addOffender(newOffenderName, {
@@ -48,17 +52,16 @@ module.exports = function (phantomas) {
       images.push({
         contentPromise: res.getContent, // defer getting the response content
         url: entry.url,
-        htmlTags: []
+        htmlTags: [],
       });
     }
   });
 
   phantomas.on("base64recv", async (entry) => {
     if (entry.isImage) {
-
       images.push({
         inline: entry.url,
-        htmlTags: []
+        htmlTags: [],
       });
     }
   });
@@ -67,9 +70,15 @@ module.exports = function (phantomas) {
     phantomas.log("Image tag found: %j", context);
 
     // If we previously found a network/inline request that matches the currentSrc, attach tag to it.
-    const correspondingResp = images.find((resp) => resp.url === context.currentSrc || resp.inline === context.currentSrc);
+    const correspondingResp = images.find(
+      (resp) =>
+        resp.url === context.currentSrc || resp.inline === context.currentSrc
+    );
     if (correspondingResp) {
-      phantomas.log("Attached to previously found network image %s", correspondingResp.url || '[inline]');
+      phantomas.log(
+        "Attached to previously found network image %s",
+        correspondingResp.url || "[inline]"
+      );
       correspondingResp.htmlTags.push(context);
     } else {
       phantomas.log("Can't attach to previously found network image");
@@ -89,7 +98,7 @@ module.exports = function (phantomas) {
           if (entry.inline) {
             imageBody = extractImageFromDataUri(entry.inline);
           }
-          
+
           if (entry.contentPromise) {
             imageBody = await entry.contentPromise();
           }
@@ -100,7 +109,11 @@ module.exports = function (phantomas) {
             let largestTag;
 
             entry.htmlTags.forEach((tag) => {
-              if (!largestTag || tag.displayWidth * tag.displayHeight > largestTag.displayWidth * largestTag.displayHeight) {
+              if (
+                !largestTag ||
+                tag.displayWidth * tag.displayHeight >
+                  largestTag.displayWidth * largestTag.displayHeight
+              ) {
                 largestTag = tag;
               }
             });
@@ -108,7 +121,7 @@ module.exports = function (phantomas) {
             await analyzeImage(imageBody, {
               url: entry.url,
               inline: entry.inline,
-              ...largestTag
+              ...largestTag,
             });
           }
 

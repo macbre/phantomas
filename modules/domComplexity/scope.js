@@ -75,6 +75,8 @@
               return false;
             }
 
+            break;
+
           case Node.TEXT_NODE:
             if (whitespacesRegExp.test(node.textContent)) {
               phantomas.incrMetric("whiteSpacesSize", node.textContent.length);

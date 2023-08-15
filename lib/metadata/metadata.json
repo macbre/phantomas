@@ -243,6 +243,19 @@
         "cssInlineStyles"
       ]
     },
+    "analyzeImages": {
+      "file": "/modules/analyzeImages/analyzeImages.js",
+      "desc": "Adds Responsive Images metrics using analyze-images npm module.\nRun phantomas with --analyze-images option to use this module",
+      "events": [],
+      "metrics": [
+        "imagesWithoutDimensions",
+        "imagesNotOptimized",
+        "imagesScaledDown",
+        "imagesOldFormat",
+        "imagesExcessiveDensity",
+        "imagesWithIncorrectSizesParam"
+      ]
+    },
     "assetsTypes": {
       "file": "/modules/assetsTypes/assetsTypes.js",
       "desc": "Analyzes number of requests and sizes of different types of assets",
@@ -361,8 +374,6 @@
         "DOMelementMaxDepth",
         "nodesWithInlineCSS",
         "iframesCount",
-        "imagesScaledDown",
-        "imagesWithoutDimensions",
         "DOMidDuplicated"
       ]
     },
@@ -977,6 +988,48 @@
       "module": "analyzeCss",
       "testsCovered": true
     },
+    "imagesWithoutDimensions": {
+      "desc": "number of <img> nodes without both width and height attribute",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeImages",
+      "testsCovered": true
+    },
+    "imagesNotOptimized": {
+      "desc": "number of loaded images that could be lighter it optimized",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeImages",
+      "testsCovered": true
+    },
+    "imagesScaledDown": {
+      "desc": "number of loaded images scaled down when displayed",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeImages",
+      "testsCovered": true
+    },
+    "imagesOldFormat": {
+      "desc": "number of loaded images that could benefit from new generation formats (WebP or AVIF)",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeImages",
+      "testsCovered": true
+    },
+    "imagesExcessiveDensity": {
+      "desc": "number of images that could be served smaller as the human eye can hardly see the difference",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeImages",
+      "testsCovered": false
+    },
+    "imagesWithIncorrectSizesParam": {
+      "desc": "number of responsive images with an improperly set sizes parameter",
+      "offenders": true,
+      "unit": "number",
+      "module": "analyzeImages",
+      "testsCovered": true
+    },
     "htmlCount": {
       "desc": "number of HTML responses",
       "offenders": true,
@@ -1299,20 +1352,6 @@
     },
     "iframesCount": {
       "desc": "number of iframe nodes",
-      "offenders": true,
-      "unit": "number",
-      "module": "domComplexity",
-      "testsCovered": true
-    },
-    "imagesScaledDown": {
-      "desc": "number of <img> nodes that have images scaled down in HTML",
-      "offenders": true,
-      "unit": "number",
-      "module": "domComplexity",
-      "testsCovered": true
-    },
-    "imagesWithoutDimensions": {
-      "desc": "number of <img> nodes without both width and height attribute",
       "offenders": true,
       "unit": "number",
       "module": "domComplexity",
@@ -1876,8 +1915,8 @@
       "testsCovered": false
     }
   },
-  "metricsCount": 187,
-  "modulesCount": 36,
+  "metricsCount": 191,
+  "modulesCount": 37,
   "extensionsCount": 14,
-  "version": "2.4.0"
+  "version": "2.9.0"
 }

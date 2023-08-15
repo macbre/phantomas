@@ -5,7 +5,6 @@
     phantomas.spyEnabled(true);
 
     images.forEach((node) => {
-      
       var imgWidth = node.hasAttribute("width")
           ? parseInt(node.getAttribute("width"), 10)
           : false,
@@ -23,18 +22,23 @@
         phantomas.incrMetric("imagesWithoutDimensions");
         phantomas.addOffender("imagesWithoutDimensions", {
           path: phantomas.getDOMPath(node, true /* dontGoUpTheDom */),
-          src: node.currentSrc
+          src: node.currentSrc,
         });
       }
 
-      const html = (node.parentNode.tagName === "PICTURE") ? node.parentNode.outerHTML : node.outerHTML
-      
+      const html =
+        node.parentNode.tagName === "PICTURE"
+          ? node.parentNode.outerHTML
+          : node.outerHTML;
+
       // Check if the image or one of its parents is in display:none
       // If it is the case, node.width and node.height values are not reliable.
       // https://stackoverflow.com/a/53068496/4716391
       const isVisible = !!node.offsetParent;
-      phantomas.log("analyzeImg: ignoring displayWidth and displayHeight because image is not visible");
-      
+      phantomas.log(
+        "analyzeImg: ignoring displayWidth and displayHeight because image is not visible"
+      );
+
       if (node.currentSrc) {
         phantomas.emit("imgtag", {
           html: html,
@@ -46,7 +50,10 @@
           dpr: window.devicePixelRatio,
         });
       } else {
-        phantomas.log("analyzeImg: image tag found without currentSrc: %s", html);
+        phantomas.log(
+          "analyzeImg: image tag found without currentSrc: %s",
+          html
+        );
       }
     });
   });
