@@ -31,7 +31,7 @@ jobs:
           - "5555:80"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -79,7 +79,7 @@ jobs:
     # upload coverage report for just one of Node.js version matrix runs
     - name: Upload coverage report to Coveralls
       if: matrix.node-version == '16.x'
-      uses: coverallsapp/github-action@v2.2.1
+      uses: coverallsapp/github-action@v2.2.2
       continue-on-error: true
       with:
         github-token: ${{ github.token }}
