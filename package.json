@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "analyze-css": "^2.0.0",
+    "analyze-image": "^1.0.0",
     "commander": "^9.0.0",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",

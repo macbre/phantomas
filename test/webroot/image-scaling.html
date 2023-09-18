@@ -8,11 +8,20 @@
 </head>
 <body>
 	<img src="/static/mdn.png" /><!-- missing dimensions / ignore -->
-	<img src="/static/mdn.png" height="265" width="300" /><!-- scaled down -->
+	<img src="/static/mdn.png?nocache=1" height="265" width="300" /><!-- scaled down -->
+	<img src="/static/mdn.png" height="265" width="300" /><!-- scaled down but ignored because reused in full size on the page -->
 	<img src="/static/mdn.png" height="529" width="600" />
 	<img src="/static/blank.gif" /><!-- missing dimensions / ignore -->
 	<img src="/static/blank.gif" alt="foo" height=10 width=10 /><!-- scaled up / ignore -->
 	<img src="/static/mdn.png" style="height: 50px; width: 50px" /><!-- CSS inlined + scaled down -->
 	<img src="/static/blank.gif" class="img" /><!-- missing inline dimensions, but get them via CSS class (will still be reported as having no dimensions defined) -->
 	<img src="/static/example.svg" height="50" width="50" /><!-- SVG  (ignore - ticket #479)-->
+	<picture><!-- scaled down + source ignored -->
+		<source media="(min-width: 9999px)" srcset="/static/mdn.png?nocache=2 200w, /static/mdn.png?nocache=3 300w" sizes="calc(99vw - 3px - 1em)" />
+		<img src="/static/mdn.png?nocache=4" height="265" width="300" />
+	</picture>
+	<picture><!-- scaled down + incorrect sizes attr -->
+		<source media="(min-width: 300px)" srcset="/static/mdn.png?nocache=5 200w, /static/mdn.png?nocache=6 300w" sizes="calc(99vw - 3px - 1em)" />
+		<img src="/static/mdn.png?nocache=7" height="265" width="300" />
+	</picture>
 </body>
