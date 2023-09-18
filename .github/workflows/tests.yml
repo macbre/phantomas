@@ -17,10 +17,10 @@ jobs:
       fail-fast: false
       matrix:
         # https://github.com/nodejs/release#release-schedule
+        # https://github.com/actions/setup-node#supported-version-syntax
         node-version:
-        - '16.x'
-        - '18.x'
-        - '20.x'
+        - "lts/*"
+        - "latest"
 
     services:
       # https://github.com/postmanlabs/httpbin
@@ -31,12 +31,15 @@ jobs:
           - "5555:80"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         cache: npm
         node-version: ${{ matrix.node-version }}
+
+    - name: Log the Node.js version used
+      run: echo "::notice::Using Node.js $( node -v)"
 
     - name: Install dependencies
       run: npm ci
@@ -79,7 +82,7 @@ jobs:
     # upload coverage report for just one of Node.js version matrix runs
     - name: Upload coverage report to Coveralls
       if: matrix.node-version == '16.x'
-      uses: coverallsapp/github-action@v2.2.1
+      uses: coverallsapp/github-action@v2.2.3
       continue-on-error: true
       with:
         github-token: ${{ github.token }}

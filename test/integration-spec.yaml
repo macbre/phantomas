@@ -946,6 +946,7 @@
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
 - url: "http://127.0.0.1:5555/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
+  flaky: "http-bin sometimes gives us a single response"
   options:
     auth-user: "foo"
     auth-pass: "bar"

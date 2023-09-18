@@ -11,14 +11,14 @@ jobs:
   npm-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       #
       # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#publish-to-npmjs-and-gpr-with-npm
       #
       - uses: actions/setup-node@v3
         with:
-         node-version: '14.x'
+         node-version: 'latest'
          registry-url: 'https://npm.pkg.github.com'
 
       # GitHub Packages only supports scoped npm packages.
@@ -38,7 +38,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
+          node-version: 'latest'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Publish to npm

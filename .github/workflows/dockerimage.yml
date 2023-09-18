@@ -16,11 +16,11 @@ jobs:
       DOCKER_TAG: ghcr.io/macbre/phantomas:latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # https://github.com/marketplace/actions/build-and-push-docker-images
     - name: Build the Docker image with ${{ env.DOCKER_TAG }} tag
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@v5
       with:
         context: .
         tags: ${{ env.DOCKER_TAG }}
