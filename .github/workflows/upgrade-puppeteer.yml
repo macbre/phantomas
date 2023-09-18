@@ -36,14 +36,14 @@ jobs:
     steps:
       # https://github.com/actions/checkout
       - name: Cloning ${{ env.GIT_BRANCH }} branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ env.GIT_BRANCH }}
 
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: latest
 
       - name: Install dependencies and try to bump puppeteer
         run: |
@@ -82,7 +82,7 @@ jobs:
               --label 'external dependency' \
               --base ${{ env.GIT_BRANCH }} \
               --title "bump puppeteer to v${VERSION}" \
-              --body "[Release notes](https://github.com/puppeteer/puppeteer/releases/tag/v${VERSION})"
+              --body "[Release notes](https://github.com/puppeteer/puppeteer/releases/tag/puppeteer-v${VERSION})"
 
           # e.g. https://github.com/macbre/analyze-css/pull/443
           export PR_URL=$(gh pr view ${PR_BRANCH} --json url | jq -r .url)

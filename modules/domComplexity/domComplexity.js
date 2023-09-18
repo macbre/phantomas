@@ -21,35 +21,6 @@ module.exports = function (phantomas) {
 
   phantomas.setMetric("iframesCount"); // @desc number of iframe nodes @offenders
 
-  // images
-  // TODO: move to a separate module
-  phantomas.setMetric("imagesScaledDown"); // @desc number of <img> nodes that have images scaled down in HTML @offenders
-  phantomas.setMetric("imagesWithoutDimensions"); // @desc number of <img> nodes without both width and height attribute @offenders
-
-  // keep the track of SVG graphics (#479)
-  var svgResources = [];
-  phantomas.on("recv", (entry) => {
-    if (entry.isSVG) {
-      svgResources.push(entry.url);
-      phantomas.log(
-        "imagesScaledDown: will ignore <%s> [%s]",
-        entry.url,
-        entry.contentType
-      );
-    }
-  });
-
-  phantomas.on("imagesScaledDown", (image) => {
-    if (svgResources.indexOf(image.url) === -1) {
-      phantomas.log("Scaled down image: %j", image);
-
-      phantomas.incrMetric("imagesScaledDown");
-      phantomas.addOffender("imagesScaledDown", image);
-    } else {
-      phantomas.log("imagesScaledDown: ignored <%s> (is SVG)", image.url);
-    }
-  });
-
   // duplicated ID (issue #392)
   phantomas.setMetric("DOMidDuplicated"); // @desc number of duplicated IDs found in DOM
 

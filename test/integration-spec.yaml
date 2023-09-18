@@ -129,27 +129,158 @@
 - url: "/document-height.html"
   metrics:
     documentHeight: 50000
+
 # image scaling (issue #390)
 - url: "/image-scaling.html"
+  options:
+    "analyze-images": true
   metrics:
-    imagesScaledDown: 2
+    imagesScaledDown: 3
     imagesWithoutDimensions: 3
+    imagesNotOptimized: 1
+    imagesWithIncorrectSizesParam: 1
+    imagesOldFormat: 4
   offenders:
-    imagesScaledDown:
+    imagesScaledDown: #same url images are not reported twice anymore, picks the largest
       - {
-          url: "http://127.0.0.1:8888/static/mdn.png",
+          url: "http://127.0.0.1:8888/static/mdn.png?nocache=1",
+          fileSize: 18462,
           naturalWidth: 600,
           naturalHeight: 529,
-          imgWidth: 300,
-          imgHeight: 265,
+          newFileSize: 6793,
+          newWidth: 300,
+          newHeight: 265,
+          dpr: 1,
         }
       - {
-          url: "http://127.0.0.1:8888/static/mdn.png",
+          url: "http://127.0.0.1:8888/static/mdn.png?nocache=4",
+          fileSize: 18462,
           naturalWidth: 600,
           naturalHeight: 529,
-          imgWidth: 50,
-          imgHeight: 50,
+          newFileSize: 6793,
+          newWidth: 300,
+          newHeight: 265,
+          dpr: 1,
         }
+      - {
+          url: "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+          fileSize: 18462,
+          naturalWidth: 600,
+          naturalHeight: 529,
+          newFileSize: 6793,
+          newWidth: 300,
+          newHeight: 265,
+          dpr: 1,
+        }
+    imagesNotOptimized:
+      - {
+        url: "http://127.0.0.1:8888/static/example.svg",
+        fileSize: 464,
+        newFileSize: 290,
+        }
+    imagesOldFormat:
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=1",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=4",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+    imagesWithIncorrectSizesParam:
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+        sizesAttribute: "calc(99vw - 3px - 1em)",
+        convertedInPx: 773,
+        displayWidth: 300,
+        }
+
+# DOM complexity
+- url: "/dom-complexity.html"
+  metrics:
+    base64Count: 1
+    base64Size: 43
+    bodyHTMLSize: 709
+    commentsSize: 85
+    DOMelementsCount: 11
+    DOMelementMaxDepth: 2
+    DOMidDuplicated: 0
+    hiddenContentSize: 373
+    imagesScaledDown: 0
+    imagesWithoutDimensions: 3
+    hiddenImages: 3
+    nodesWithInlineCSS: 1
+    whiteSpacesSize: 33
+  offenders:
+    hiddenImages:
+      - "http://127.0.0.1:8888/static/mdn.png"
+      - "http://127.0.0.1:8888/static/blank.gif"
+      - "http://127.0.0.1:8888/static/example.svg"
+    nodesWithInlineCSS:
+      - { css: "color: blue", node: "p#foo" }
+
+# base64 encoded images
+- url: "/base64.html"
+  options:
+    "analyze-images": true
+  metrics:
+    base64Count: 2
+    base64Size: 9084
+    imagesScaledDown: 1
+    imagesNotOptimized: 2
+    imagesOldFormat: 1
+  offenders:
+    imagesScaledDown: #same url images are not reported twice anymore, picks the largest
+      - {
+          url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwA [...] BIyAIECVmAICELECRkAYL+H4izvolcsJyXAAAAAElFTkSuQmCC",
+          fileSize: 3980,
+          naturalWidth: 460,
+          naturalHeight: 420,
+          newFileSize: 189,
+          newWidth: 10,
+          newHeight: 10,
+          dpr: 1,
+        }
+    imagesNotOptimized:
+      - {
+        url: "data:image/svg+xml,%3Csvg width='48' height='48' v [...] 1.8254 27.9375 24Z' fill='%23c6c6c6'/%3E%3C/svg%3E",
+        fileSize: 3480,
+        newFileSize: 1832,
+        }
+      - {
+        url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwA [...] BIyAIECVmAICELECRkAYL+H4izvolcsJyXAAAAAElFTkSuQmCC",
+        fileSize: 5604,
+        newFileSize: 3980,
+        }
+    imagesOldFormat:
+      - {
+        url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwA [...] BIyAIECVmAICELECRkAYL+H4izvolcsJyXAAAAAElFTkSuQmCC",
+        fileSize: 5604,
+        newFileSize: 1541,
+        webpSize: 2308,
+        avifSize: 1541,
+        }
+
 # duplicated ID (issue #392)
 - url: "/dom-id.html"
   metrics:
@@ -645,7 +776,7 @@
 # iframes
 - url: "/iframe.html"
   metrics:
-    requests: 6 # include requests for iframe and its content
+    requests: 9 # include requests for iframe and its content
     iframesCount: 1
   offenders:
     iframesCount:
@@ -813,9 +944,9 @@
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
     smallCssFiles:
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
-
 - url: "http://127.0.0.1:5555/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
+  flaky: "http-bin sometimes gives us a single response"
   options:
     auth-user: "foo"
     auth-pass: "bar"
