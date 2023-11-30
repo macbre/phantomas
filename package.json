@@ -27,7 +27,7 @@
     "node": ">=16.0"
   },
   "dependencies": {
-    "analyze-css": "^2.0.0",
+    "analyze-css": "^2.1.89",
     "analyze-image": "^1.0.0",
     "commander": "^9.0.0",
     "debug": "^4.1.1",
