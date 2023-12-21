@@ -16,7 +16,7 @@ jobs:
       #
       # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#publish-to-npmjs-and-gpr-with-npm
       #
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
          node-version: 'latest'
          registry-url: 'https://npm.pkg.github.com'
@@ -36,7 +36,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 'latest'
           registry-url: 'https://registry.npmjs.org'
