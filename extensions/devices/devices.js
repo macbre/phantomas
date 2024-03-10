@@ -5,8 +5,8 @@
 
 module.exports = function (phantomas) {
   const puppeteer = require("puppeteer"),
-    devices = puppeteer.devices,
-    // @see https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
+    devices = puppeteer.KnownDevices,
+    // @see https://github.com/puppeteer/puppeteer/blob/main/packages/puppeteer-core/src/common/Device.ts
     availableDevices = {
       phone: "Galaxy S5", // 360x640
       "phone-landscape": "Galaxy S5 landscape", // 640x360
@@ -14,7 +14,7 @@ module.exports = function (phantomas) {
       "tablet-landscape": "Kindle Fire HDX landscape", // 1280x800
     };
 
-  var device;
+  let device;
 
   // check if --phone or --tablet option was passed
   Object.keys(availableDevices).forEach(function (item) {
