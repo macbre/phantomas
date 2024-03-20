@@ -49,11 +49,6 @@ module.exports = function (phantomas) {
     return;
   }
 
-  // load analyze-css module
-  // https://www.npmjs.com/package/analyze-css
-  const analyzer = require("analyze-css");
-  phantomas.log("Using version %s", analyzer.version);
-
   phantomas.setMetric("cssParsingErrors"); // @desc number of CSS files (or embeded CSS) that failed to be parse by analyze-css @optional
   phantomas.setMetric("cssInlineStyles"); // @desc number of inline styles @optional
 
@@ -91,6 +86,11 @@ module.exports = function (phantomas) {
 			options.push('--proxy', proxy);
 		}
 		**/
+
+    // load analyze-css module
+    // https://www.npmjs.com/package/analyze-css
+    const analyzer = (await import("analyze-css")).default;
+    phantomas.log("Using version %s", analyzer.version);
 
     // https://www.npmjs.com/package/analyze-css#commonjs-module
     var options = {};
