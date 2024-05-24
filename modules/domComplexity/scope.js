@@ -92,13 +92,17 @@
     })();
 
     // count <iframe> tags
-    document.querySelectorAll("iframe").forEach(function (iframe) {
-      phantomas.incrMetric("iframesCount"); // @desc number of iframe nodes
+    const iframes = document.querySelectorAll("iframe");
+    phantomas.setMetric("iframesCount", iframes.length); // @desc number of iframe nodes
+
+    for (const iframe of iframes) {
+      phantomas.log(`iframe: ${iframe.src}`);
+
       phantomas.addOffender("iframesCount", {
         element: phantomas.getDOMPath(iframe),
         url: iframe.src,
       });
-    });
+    }
 
     phantomas.spyEnabled(true);
   });
