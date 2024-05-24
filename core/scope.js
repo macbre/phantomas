@@ -1,7 +1,7 @@
 /**
  * phantomas browser "scope" with helper code
  *
- * Code below is executed in page's "scope" (injected by lib/browser.js)
+ * Code below is executed in page's "scope" (injected by the scope.injectJs() helper)
  */
 /* istanbul ignore next */
 (function coreScope(scope) {
