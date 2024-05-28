@@ -12,8 +12,7 @@ var phantomas = require(".."),
 
 if (typeof url !== "string") {
   console.log("Usage:\n\t./screenshot.js <URL>");
-  process.exitCode = 1;
-  return;
+  process.exit(1);
 }
 
 run = phantomas(url, {
