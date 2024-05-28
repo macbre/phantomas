@@ -3,6 +3,7 @@
  */
 const mock = require("./mock"),
   { describe } = require("@jest/globals"),
+  // eslint-disable-next-line no-redeclare
   URL = "http://127.0.0.1:8888/static/mdn.png";
 
 describe("caching", () => {
