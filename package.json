@@ -40,7 +40,6 @@
     "@jest/globals": "^28.0.0",
     "eslint": "^9.3.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-node": "^11.1.0",
     "glob": "^8.0.1",
     "jest": "^28.0.0",
     "prettier": "2.7.1"
