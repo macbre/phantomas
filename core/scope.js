@@ -114,7 +114,7 @@
           console,
           "log:" + stringify(Array.prototype.slice.call(arguments))
         );
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch (e) {}
     };
 

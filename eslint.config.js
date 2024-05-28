@@ -19,7 +19,7 @@ module.exports = [
     rules: {
       "prefer-const": "off",
       "no-console": "off",
-      "no-async-promise-executor": 'off',
+      "no-async-promise-executor": "off",
       // https://eslint.org/docs/latest/rules/no-unused-vars
       "no-unused-vars": [
         "error",
@@ -34,6 +34,6 @@ module.exports = [
     },
   },
   {
-    ignores: ["coverage/**", 'test/webroot/**'],
+    ignores: ["coverage/**", "test/webroot/**"],
   },
 ];
