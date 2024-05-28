@@ -8,6 +8,7 @@ var assert = require("assert"),
 
 const { describe, it } = require("@jest/globals");
 
+// eslint-disable-next-line no-redeclare
 const URL = "http://127.0.0.1:8888/";
 
 describe("CommonJS module's promise", () => {

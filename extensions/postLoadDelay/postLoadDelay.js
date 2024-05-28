@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const { setTimeout } = require("timers/promises");
+const { setTimeout: setTimeoutAsync } = require("timers/promises");
 
 module.exports = function (phantomas) {
   // e.g. --post-load-delay 5
@@ -19,6 +19,6 @@ module.exports = function (phantomas) {
   phantomas.on("beforeClose", async () => {
     phantomas.log("Sleeping for %d seconds", delay);
 
-    return setTimeout(delay * 1000);
+    return setTimeoutAsync(delay * 1000);
   });
 };

@@ -40,7 +40,7 @@ function parseEntryUrl(entry) {
     entry.protocol = false;
     entry.isBlob = true;
   } else {
-    parsed = new URL(entry.url) || {};
+    parsed = new URL(entry.url);
 
     entry.protocol = parsed.protocol.replace(":", ""); // e.g. "http:"
     entry.domain = parsed.hostname;
