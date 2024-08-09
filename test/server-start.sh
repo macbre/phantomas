@@ -1,7 +1,7 @@
 DIR=`dirname $0`
 
 cd $DIR
-docker-compose -f nginx-docker-compose.yaml up -d
+docker compose -f nginx-docker-compose.yaml up -d
 
 # wait for it...
 sleep 5
