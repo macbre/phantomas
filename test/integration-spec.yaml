@@ -19,14 +19,14 @@
   options:
     cookie: "bar=foo;domain=url"
   metrics:
-    requests: 3
+    requests: 4
     gzipRequests: 2
     htmlCount: 1
     htmlSize: 946
     cssCount: 1
     cssSize: 320
     jsCount: 1
-    jsSize: 29734 # compressed
+    jsSize: 29756 # compressed
     domains: 1
     DOMqueries: 20
     DOMqueriesById: 6
@@ -129,27 +129,158 @@
 - url: "/document-height.html"
   metrics:
     documentHeight: 50000
+
 # image scaling (issue #390)
 - url: "/image-scaling.html"
+  options:
+    "analyze-images": true
   metrics:
-    imagesScaledDown: 2
+    imagesScaledDown: 3
     imagesWithoutDimensions: 3
+    imagesNotOptimized: 1
+    imagesWithIncorrectSizesParam: 1
+    imagesOldFormat: 4
   offenders:
-    imagesScaledDown:
+    imagesScaledDown: #same url images are not reported twice anymore, picks the largest
       - {
-          url: "http://127.0.0.1:8888/static/mdn.png",
+          url: "http://127.0.0.1:8888/static/mdn.png?nocache=1",
+          fileSize: 18462,
           naturalWidth: 600,
           naturalHeight: 529,
-          imgWidth: 300,
-          imgHeight: 265,
+          newFileSize: 6793,
+          newWidth: 300,
+          newHeight: 265,
+          dpr: 1,
         }
       - {
-          url: "http://127.0.0.1:8888/static/mdn.png",
+          url: "http://127.0.0.1:8888/static/mdn.png?nocache=4",
+          fileSize: 18462,
           naturalWidth: 600,
           naturalHeight: 529,
-          imgWidth: 50,
-          imgHeight: 50,
+          newFileSize: 6793,
+          newWidth: 300,
+          newHeight: 265,
+          dpr: 1,
         }
+      - {
+          url: "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+          fileSize: 18462,
+          naturalWidth: 600,
+          naturalHeight: 529,
+          newFileSize: 6793,
+          newWidth: 300,
+          newHeight: 265,
+          dpr: 1,
+        }
+    imagesNotOptimized:
+      - {
+        url: "http://127.0.0.1:8888/static/example.svg",
+        fileSize: 464,
+        newFileSize: 290,
+        }
+    imagesOldFormat:
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=1",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=4",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+        fileSize: 20386,
+        newFileSize: 7011,
+        webpSize: 10876,
+        avifSize: 7011,
+        }
+    imagesWithIncorrectSizesParam:
+      - {
+        url: "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+        sizesAttribute: "calc(99vw - 3px - 1em)",
+        convertedInPx: 773,
+        displayWidth: 300,
+        }
+
+# DOM complexity
+- url: "/dom-complexity.html"
+  metrics:
+    base64Count: 1
+    base64Size: 43
+    bodyHTMLSize: 709
+    commentsSize: 85
+    DOMelementsCount: 11
+    DOMelementMaxDepth: 2
+    DOMidDuplicated: 0
+    hiddenContentSize: 373
+    imagesScaledDown: 0
+    imagesWithoutDimensions: 3
+    hiddenImages: 3
+    nodesWithInlineCSS: 1
+    whiteSpacesSize: 33
+  offenders:
+    hiddenImages:
+      - "http://127.0.0.1:8888/static/mdn.png"
+      - "http://127.0.0.1:8888/static/blank.gif"
+      - "http://127.0.0.1:8888/static/example.svg"
+    nodesWithInlineCSS:
+      - { css: "color: blue", node: "p#foo" }
+
+# base64 encoded images
+- url: "/base64.html"
+  options:
+    "analyze-images": true
+  metrics:
+    base64Count: 2
+    base64Size: 9084
+    imagesScaledDown: 1
+    imagesNotOptimized: 2
+    imagesOldFormat: 1
+  offenders:
+    imagesScaledDown: #same url images are not reported twice anymore, picks the largest
+      - {
+          url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwA [...] BIyAIECVmAICELECRkAYL+H4izvolcsJyXAAAAAElFTkSuQmCC",
+          fileSize: 3980,
+          naturalWidth: 460,
+          naturalHeight: 420,
+          newFileSize: 189,
+          newWidth: 10,
+          newHeight: 10,
+          dpr: 1,
+        }
+    imagesNotOptimized:
+      - {
+        url: "data:image/svg+xml,%3Csvg width='48' height='48' v [...] 1.8254 27.9375 24Z' fill='%23c6c6c6'/%3E%3C/svg%3E",
+        fileSize: 3480,
+        newFileSize: 1832,
+        }
+      - {
+        url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwA [...] BIyAIECVmAICELECRkAYL+H4izvolcsJyXAAAAAElFTkSuQmCC",
+        fileSize: 5604,
+        newFileSize: 3980,
+        }
+    imagesOldFormat:
+      - {
+        url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwA [...] BIyAIECVmAICELECRkAYL+H4izvolcsJyXAAAAAElFTkSuQmCC",
+        fileSize: 5604,
+        newFileSize: 1541,
+        webpSize: 2308,
+        avifSize: 1541,
+        }
+
 # duplicated ID (issue #392)
 - url: "/dom-id.html"
   metrics:
@@ -160,7 +291,7 @@
   options:
     "analyze-css": true
   metrics:
-    requests: 2
+    requests: 3
     cssDuplicatedSelectors: 1
     cssParsingErrors: 1
     cssInlineStyles: 3
@@ -293,7 +424,7 @@
 - url: "/jquery-multiple.html"
   flaky: Messes the order of jQueryVersionsLoaded entries
   metrics:
-    requests: 3
+    requests: 4
     jsCount: 2
     domains: 2
     maxRequestsPerDomain: 2
@@ -318,7 +449,7 @@
   options:
     "no-externals": true
   metrics:
-    requests: 2
+    requests: 3
     jsCount: 1
     blockedRequests: 1
     domains: 1
@@ -334,7 +465,7 @@
     "no-externals": true
     "allow-domain": "code.jquery.com"
   metrics:
-    requests: 3
+    requests: 4
     jsCount: 2
     blockedRequests: 0
     jQueryVersion: "1.11.1"
@@ -409,7 +540,7 @@
 # requests to (#438 / #486)
 - url: "/timing.html"
   metrics:
-    requests: 4
+    requests: 5
     requestsToDomContentLoaded: 3
     domainsToDomContentLoaded: 2
     requestsToDomComplete: 3
@@ -470,7 +601,7 @@
   metrics:
     imageCount: 1
     imageSize: 342
-    requests: 2
+    requests: 3
   offenders:
     imageCount:
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
@@ -482,7 +613,7 @@
   metrics:
     imageCount: 2
     imageSize: 21032
-    requests: 3
+    requests: 4
   offenders:
     imageCount:
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
@@ -528,7 +659,7 @@
 # JS redirects (#550 + #846)
 - url: "/js-redirect.html"
   metrics:
-    requests: 3
+    requests: 5
     htmlCount: 2
     jsErrors: 0
   options:
@@ -595,7 +726,7 @@
 # JS errors
 - url: "/js-errors.html"
   metrics:
-    requests: 2
+    requests: 3
     jsErrors: 1
 # console.log() calls
 - url: "/console-log.html"
@@ -609,11 +740,11 @@
 # headers
 - url: "/headers.html"
   metrics:
-    requests: 2
-    headersCount: 24
-    headersSentCount: 4
-    headersRecvCount: 20
-    headersRecvSize: 571
+    requests: 3
+    headersCount: 32
+    headersSentCount: 9
+    headersRecvCount: 23
+    headersRecvSize: 647
 #    headersBiggerThanContent: 1
 #  offenders:
 #    headersBiggerThanContent:
@@ -622,7 +753,7 @@
 # caching
 - url: "/caching.html"
   metrics:
-    requests: 2
+    requests: 3
     cachingTooShort: 1
   offenders:
     cachingTooShort:
@@ -631,9 +762,9 @@
 # requestsStats
 - url: "/headers.html"
   metrics:
-    requests: 2
+    requests: 3
     bodySize: 1065 # uncompressed content of all responses (without headers)
-    contentLength: 1198 # transfered bytes
+    contentLength: 1301 # transfered bytes
     smallestResponse: 342 # headers + body size
     biggestResponse: 856
   offenders:
@@ -645,7 +776,7 @@
 # iframes
 - url: "/iframe.html"
   metrics:
-    requests: 5 # include requests for iframe and its content
+    requests: 9 # include requests for iframe and its content
     iframesCount: 1
   offenders:
     iframesCount:
@@ -706,7 +837,7 @@
 # scroll
 - url: "/lazy-load-scroll.html"
   metrics:
-    requests: 1
+    requests: 2
     imageCount: 0
 
 - url: "/lazy-load-scroll.html"
@@ -714,7 +845,7 @@
   options:
     scroll: true
   metrics:
-    requests: 2
+    requests: 3
     imageCount: 1
   offenders:
     imageCount:
@@ -792,12 +923,12 @@
   options:
     "wait-for-network-idle": true # wait for webfont file
   metrics:
-    requests: 3
+    requests: 4
     httpsRequests: 2
     webfontCount: 1
   offenders:
     domains:
-      - { domain: "127.0.0.1", requests: 1 }
+      - { domain: "127.0.0.1", requests: 2 }
       - { domain: "fonts.googleapis.com", requests: 1 }
       - { domain: "fonts.gstatic.com", requests: 1 }
 
@@ -813,17 +944,14 @@
       - { url: "http://127.0.0.1:8888/static/blank.gif", size: 342 }
     smallCssFiles:
       - { url: "http://127.0.0.1:8888/static/style.css", size: 320 }
-
-- url: "https://httpbin.org/basic-auth/foo/bar"
+- url: "http://127.0.0.1:5555/basic-auth/foo/bar"
   label: "httpbin's /basic-auth (with --auth-user and --auth-pass)"
+  flaky: "http-bin sometimes gives us a single response"
   options:
     auth-user: "foo"
     auth-pass: "bar"
   metrics:
-    requests: 1
-  offenders:
-    httpsRequests:
-      - "https://httpbin.org/basic-auth/foo/bar"
+    requests: 2
 
 # protocols
 # http/1.1 (legacy one)
@@ -839,7 +967,7 @@
       - {
           domain: "https://127.0.0.1",
           httpVersion: "http/1.1",
-          requests: 1,
+          requests: 2,
         }
     oldTlsProtocol:
       - {
@@ -867,13 +995,14 @@
 # don't count requests cached by browser
 - url: "/browser-caching.html"
   metrics:
-    requests: 2
+    requests: 3
     bodySize: 84835
-    contentLength: 30251
+    contentLength: 30376
   offenders:
     requests:
       - { url: "http://127.0.0.1:8888/browser-caching.html", type: "html", size: 517 }
       - { url: "http://127.0.0.1:8888/static/jquery-2.1.1.min.js", type: "js", size: 29734 }
+      - { url: "http://127.0.0.1:8888/favicon.ico", type: "other", size: 103 }
 
 # don't call MutationObserver on <object> tags
 - url: "/svg-as-object.html"
@@ -891,7 +1020,6 @@
   metrics:
     videoCount: 2
     videoSize: 10535
-    requests: 3
   offenders:
     videoCount:
       - { url: "http://127.0.0.1:8888/static/stickman.webm", size: 3750 }

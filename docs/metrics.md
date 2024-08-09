@@ -1,7 +1,7 @@
 Modules and metrics
 ===================
 
-This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (36 of them) and 187 metrics that they emit.
+This file describes all [`phantomas` modules](https://github.com/macbre/phantomas/tree/devel/modules) (37 of them) and 191 metrics that they emit.
 
 When applicable, [offender](https://github.com/macbre/phantomas/issues/140) example is provided.
 
@@ -238,6 +238,83 @@ total specificity for element (number)
 number of redundant child nodes selectors (number, with offenders)
 
 
+## [analyzeImages](https://github.com/macbre/phantomas/tree/devel/modules/analyzeImages/analyzeImages.js)
+
+> Adds Responsive Images metrics using analyze-images npm module.
+Run phantomas with --analyze-images option to use this module
+
+##### `imagesExcessiveDensity`
+
+number of images that could be served smaller as the human eye can hardly see the difference (number, with offenders)
+
+##### `imagesNotOptimized`
+
+number of loaded images that could be lighter it optimized (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/example.svg",
+  "fileSize": 464,
+  "newFileSize": 290
+}
+```
+
+##### `imagesOldFormat`
+
+number of loaded images that could benefit from new generation formats (WebP or AVIF) (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/mdn.png",
+  "fileSize": 20386,
+  "newFileSize": 7011,
+  "webpSize": 10876,
+  "avifSize": 7011
+}
+```
+
+##### `imagesScaledDown`
+
+number of loaded images scaled down when displayed (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/mdn.png?nocache=1",
+  "fileSize": 18462,
+  "naturalWidth": 600,
+  "naturalHeight": 529,
+  "newFileSize": 6793,
+  "newWidth": 300,
+  "newHeight": 265,
+  "dpr": 1
+}
+```
+
+##### `imagesWithIncorrectSizesParam`
+
+number of responsive images with an improperly set sizes parameter (number, with offenders)
+
+```json
+{
+  "url": "http://127.0.0.1:8888/static/mdn.png?nocache=6",
+  "sizesAttribute": "calc(99vw - 3px - 1em)",
+  "convertedInPx": 773,
+  "displayWidth": 300
+}
+```
+
+##### `imagesWithoutDimensions`
+
+number of <img> nodes without both width and height attribute (number, with offenders)
+
+```json
+{
+  "path": "img#img",
+  "src": "http://0.0.0.0:8888/static/mdn.png"
+}
+```
+
+
 ## [assetsTypes](https://github.com/macbre/phantomas/tree/devel/modules/assetsTypes/assetsTypes.js)
 
 > Analyzes number of requests and sizes of different types of assets
@@ -328,6 +405,13 @@ size of JSON responses (with compression) (bytes)
 ##### `otherCount`
 
 number of other responses (number, with offenders)
+
+```json
+{
+  "url": "http://0.0.0.0:8888/favicon.ico",
+  "size": 103
+}
+```
 
 ##### `otherSize`
 
@@ -438,7 +522,7 @@ number of responses with old, HTTP 1.0 caching headers (Expires and Pragma) (num
 {
   "url": "http://0.0.0.0:8888/_make_docs.html",
   "headerName": "expires",
-  "value": "Thu, 05 May 2022 22:02:04 GMT"
+  "value": "Wed, 16 Aug 2023 12:28:56 GMT"
 }
 ```
 
@@ -563,28 +647,6 @@ number of iframe nodes (number, with offenders)
   "element": "body > iframe[1]",
   "url": "http://127.0.0.1:8888/image-scaling.html"
 }
-```
-
-##### `imagesScaledDown`
-
-number of <img> nodes that have images scaled down in HTML (number, with offenders)
-
-```json
-{
-  "url": "http://127.0.0.1:8888/static/mdn.png",
-  "naturalWidth": 600,
-  "naturalHeight": 529,
-  "imgWidth": 300,
-  "imgHeight": 265
-}
-```
-
-##### `imagesWithoutDimensions`
-
-number of <img> nodes without both width and height attribute (number, with offenders)
-
-```json
-"%s <%s>"
 ```
 
 ##### `nodesWithInlineCSS`
@@ -742,7 +804,7 @@ number of DOM queries that returned nothing (number, with offenders)
 
 ```json
 {
-  "query": "#script1651701724900",
+  "query": "#script1692102537022",
   "node": "#document",
   "function": "getElementById"
 }
@@ -998,7 +1060,7 @@ number of calls to eval (either direct or via setTimeout / setInterval) (number,
 number of JavaScript errors (number, with offenders)
 
 ```json
-"ReferenceError: unknown_function_called is not defined -     at http://0.0.0.0:8888/_make_docs.html:31:3"
+"unknown_function_called is not defined - "
 ```
 
 
@@ -1079,7 +1141,7 @@ number of domains using HTTP/1.0 or 1.1 (number, with offenders)
 {
   "domain": "https://127.0.0.1",
   "httpVersion": "http/1.1",
-  "requests": 1
+  "requests": 2
 }
 ```
 
@@ -1141,10 +1203,6 @@ time it took to receive the last byte of the last HTTP response (ms)
 
 number of HTTPS requests (number, with offenders)
 
-```json
-"https://httpbin.org/basic-auth/foo/bar"
-```
-
 ##### `notFound`
 
 number of HTTP 404 responses (number, with offenders)
@@ -1185,7 +1243,7 @@ the time to the first byte of the slowest response (ms, with offenders)
 ```json
 {
   "url": "http://0.0.0.0:8888/static/mdn-short-cache.png",
-  "timeToFirstByte": 106.421
+  "timeToFirstByte": 31.697000000000003
 }
 ```
 
@@ -1207,7 +1265,7 @@ the time to the last byte of the fastest response (ms, with offenders)
 ```json
 {
   "url": "http://0.0.0.0:8888/foo.json",
-  "timeToLastByte": 0.009596999996574596
+  "timeToLastByte": 0.004929000046104193
 }
 ```
 
@@ -1226,7 +1284,7 @@ the time to the last byte of the slowest response (ms, with offenders)
 ```json
 {
   "url": "http://code.jquery.com/jquery-1.4.4.js",
-  "timeToLastByte": 0.19129599997540936
+  "timeToLastByte": 0.08683400019071996
 }
 ```
 
@@ -1237,7 +1295,7 @@ the time to the first byte of the fastest response (ms, with offenders)
 ```json
 {
   "url": "http://0.0.0.0:8888/foo.json",
-  "timeToFirstByte": 7.045
+  "timeToFirstByte": 3.077
 }
 ```
 
@@ -1378,7 +1436,7 @@ time it took to receive the last byte of the first image (ms, with offenders)
 time it took to receive the last byte of the first JS (ms, with offenders)
 
 ```json
-"http://0.0.0.0:8888/static/jquery-2.1.1.min.js received in NaN ms"
+"http://0.0.0.0:8888/static/jquery-1.4.4.min.js received in NaN ms"
 ```
 
 

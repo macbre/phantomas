@@ -25,6 +25,7 @@
 	<article>
 		<h1>Issue #494</h1>
 		<img src="/static/mdn.png" width=250>
+		<img src="/static/mdn.png?nocache=1" width=25 loading="lazy">
 		Foo bar
 	</article>
 
@@ -44,5 +45,7 @@
 
 		<!-- pick the right source if a srcset is specified -->		
 		<img src="/static/75x50.jpg" srcset="/static/75x50.jpg 75w, /static/150x100.jpg 150w" sizes="150px" width="150" height="100"/>
+
+		<img src="/static/mdn.png?nocache=2" width=25 loading="lazy"><!-- native lazyloading - ignore -->
 	</footer>
 </body>

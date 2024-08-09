@@ -140,14 +140,14 @@ Arguments passed to the event:
     "method": "GET",
     "headers": {
       "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4950.0 Safari/537.36 Phantomas/2.4.0"
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.5790.98 Safari/537.36 Phantomas/2.9.0"
     },
     "mixedContentType": "none",
     "initialPriority": "VeryHigh",
     "referrerPolicy": "strict-origin-when-cross-origin",
     "isSameSite": true,
-    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
-    "_timestamp": 233671.373283,
+    "_requestId": "AB54BDDE82405E50795287A956C56D85",
+    "_timestamp": 1054644.425833,
     "_type": "Document",
     "_initiator": {
       "type": "other"
@@ -167,14 +167,14 @@ Arguments passed to the event:
     "method": "GET",
     "headers": {
       "Upgrade-Insecure-Requests": "1",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4950.0 Safari/537.36 Phantomas/2.4.0"
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.5790.98 Safari/537.36 Phantomas/2.9.0"
     },
     "mixedContentType": "none",
     "initialPriority": "VeryHigh",
     "referrerPolicy": "strict-origin-when-cross-origin",
     "isSameSite": true,
-    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
-    "_timestamp": 233671.373283,
+    "_requestId": "AB54BDDE82405E50795287A956C56D85",
+    "_timestamp": 1054644.425833,
     "_type": "Document",
     "_initiator": {
       "type": "other"
@@ -198,16 +198,16 @@ Arguments passed to the event:
       "Connection": "keep-alive",
       "Content-Encoding": "gzip",
       "Content-Type": "text/html",
-      "Date": "Wed, 04 May 2022 22:02:04 GMT",
-      "ETag": "W/\"60ae63c4-30f\"",
-      "Expires": "Thu, 05 May 2022 22:02:04 GMT",
-      "Last-Modified": "Wed, 26 May 2021 15:05:40 GMT",
+      "Date": "Tue, 15 Aug 2023 12:28:56 GMT",
+      "ETag": "W/\"64ac142c-30f\"",
+      "Expires": "Wed, 16 Aug 2023 12:28:56 GMT",
+      "Last-Modified": "Mon, 10 Jul 2023 14:22:36 GMT",
       "Server": "nginx",
       "Transfer-Encoding": "chunked"
     },
     "mimeType": "text/html",
-    "connectionReused": false,
-    "connectionId": 11,
+    "connectionReused": true,
+    "connectionId": 37,
     "remoteIPAddress": "0.0.0.0",
     "remotePort": 8888,
     "fromDiskCache": false,
@@ -215,32 +215,33 @@ Arguments passed to the event:
     "fromPrefetchCache": false,
     "encodedDataLength": 720,
     "timing": {
-      "requestTime": 233671.37754,
+      "requestTime": 1054644.429149,
       "proxyStart": -1,
       "proxyEnd": -1,
-      "dnsStart": 13.281,
-      "dnsEnd": 13.289,
-      "connectStart": 13.289,
-      "connectEnd": 13.453,
+      "dnsStart": -1,
+      "dnsEnd": -1,
+      "connectStart": -1,
+      "connectEnd": -1,
       "sslStart": -1,
       "sslEnd": -1,
       "workerStart": -1,
       "workerReady": -1,
       "workerFetchStart": -1,
       "workerRespondWithSettled": -1,
-      "sendStart": 14.703,
-      "sendEnd": 15.226,
+      "sendStart": 1.851,
+      "sendEnd": 1.881,
       "pushStart": 0,
       "pushEnd": 0,
-      "receiveHeadersEnd": 24.219
+      "receiveHeadersEnd": 19.973
     },
-    "responseTime": 1651701724644.302,
+    "responseTime": 1692102536904.425,
     "protocol": "http/1.1",
+    "alternateProtocolUsage": "unspecifiedReason",
     "securityState": "insecure",
-    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
+    "_requestId": "AB54BDDE82405E50795287A956C56D85",
     "dataLength": 783,
     "chunks": 1,
-    "_timestamp": 233671.403456
+    "_timestamp": 1054644.449299
   }
 ]
 ```
@@ -252,7 +253,7 @@ Arguments passed to the event:
 ```json
 [
   {
-    "id": "7EB9712AA9EB3011BC4F4F792F24758D",
+    "id": "AB54BDDE82405E50795287A956C56D85",
     "url": "http://0.0.0.0:8888/_make_docs.html",
     "method": "GET",
     "headers": {
@@ -260,10 +261,10 @@ Arguments passed to the event:
       "connection": "keep-alive",
       "content-encoding": "gzip",
       "content-type": "text/html",
-      "date": "Wed, 04 May 2022 22:02:04 GMT",
-      "etag": "W/\"60ae63c4-30f\"",
-      "expires": "Thu, 05 May 2022 22:02:04 GMT",
-      "last-modified": "Wed, 26 May 2021 15:05:40 GMT",
+      "date": "Tue, 15 Aug 2023 12:28:56 GMT",
+      "etag": "W/\"64ac142c-30f\"",
+      "expires": "Wed, 16 Aug 2023 12:28:56 GMT",
+      "last-modified": "Mon, 10 Jul 2023 14:22:36 GMT",
       "server": "nginx",
       "transfer-encoding": "chunked"
     },
@@ -274,9 +275,9 @@ Arguments passed to the event:
     "protocol": "http",
     "domain": "0.0.0.0",
     "query": "",
-    "stalled": 14.703,
-    "timeToFirstByte": 8.993,
-    "timeToLastByte": 0.03017300000647083,
+    "stalled": 1.851,
+    "timeToFirstByte": 18.092,
+    "timeToLastByte": 0.023465999867767096,
     "headersSize": 293,
     "gzip": true,
     "contentType": "text/html",
@@ -294,16 +295,16 @@ Arguments passed to the event:
       "Connection": "keep-alive",
       "Content-Encoding": "gzip",
       "Content-Type": "text/html",
-      "Date": "Wed, 04 May 2022 22:02:04 GMT",
-      "ETag": "W/\"60ae63c4-30f\"",
-      "Expires": "Thu, 05 May 2022 22:02:04 GMT",
-      "Last-Modified": "Wed, 26 May 2021 15:05:40 GMT",
+      "Date": "Tue, 15 Aug 2023 12:28:56 GMT",
+      "ETag": "W/\"64ac142c-30f\"",
+      "Expires": "Wed, 16 Aug 2023 12:28:56 GMT",
+      "Last-Modified": "Mon, 10 Jul 2023 14:22:36 GMT",
       "Server": "nginx",
       "Transfer-Encoding": "chunked"
     },
     "mimeType": "text/html",
-    "connectionReused": false,
-    "connectionId": 11,
+    "connectionReused": true,
+    "connectionId": 37,
     "remoteIPAddress": "0.0.0.0",
     "remotePort": 8888,
     "fromDiskCache": false,
@@ -311,32 +312,33 @@ Arguments passed to the event:
     "fromPrefetchCache": false,
     "encodedDataLength": 720,
     "timing": {
-      "requestTime": 233671.37754,
+      "requestTime": 1054644.429149,
       "proxyStart": -1,
       "proxyEnd": -1,
-      "dnsStart": 13.281,
-      "dnsEnd": 13.289,
-      "connectStart": 13.289,
-      "connectEnd": 13.453,
+      "dnsStart": -1,
+      "dnsEnd": -1,
+      "connectStart": -1,
+      "connectEnd": -1,
       "sslStart": -1,
       "sslEnd": -1,
       "workerStart": -1,
       "workerReady": -1,
       "workerFetchStart": -1,
       "workerRespondWithSettled": -1,
-      "sendStart": 14.703,
-      "sendEnd": 15.226,
+      "sendStart": 1.851,
+      "sendEnd": 1.881,
       "pushStart": 0,
       "pushEnd": 0,
-      "receiveHeadersEnd": 24.219
+      "receiveHeadersEnd": 19.973
     },
-    "responseTime": 1651701724644.302,
+    "responseTime": 1692102536904.425,
     "protocol": "http/1.1",
+    "alternateProtocolUsage": "unspecifiedReason",
     "securityState": "insecure",
-    "_requestId": "7EB9712AA9EB3011BC4F4F792F24758D",
+    "_requestId": "AB54BDDE82405E50795287A956C56D85",
     "dataLength": 783,
     "chunks": 1,
-    "_timestamp": 233671.403456
+    "_timestamp": 1054644.449299
   }
 ]
 ```
@@ -347,16 +349,7 @@ Arguments passed to the event:
 
 ```json
 [
-  {
-    "_type": "error",
-    "_text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-    "_args": [],
-    "_stackTraceLocations": [
-      {
-        "url": "http://0.0.0.0:8888/static/foo.min.js"
-      }
-    ]
-  }
+  {}
 ]
 ```
 
@@ -366,10 +359,8 @@ Arguments passed to the event:
 
 ```json
 [
-  "ReferenceError: unknown_function_called is not defined",
-  [
-    "    at http://0.0.0.0:8888/_make_docs.html:31:3"
-  ]
+  "unknown_function_called is not defined",
+  []
 ]
 ```
 
@@ -390,19 +381,19 @@ Arguments passed to the event:
 ```json
 [
   {
-    "Timestamp": 233671.751763,
+    "Timestamp": 1054644.632499,
     "Documents": 3,
     "Frames": 1,
-    "JSEventListeners": 22,
-    "Nodes": 210,
-    "LayoutCount": 13,
+    "JSEventListeners": 23,
+    "Nodes": 207,
+    "LayoutCount": 14,
     "RecalcStyleCount": 15,
-    "LayoutDuration": 0.017863,
-    "RecalcStyleDuration": 0.004322,
-    "ScriptDuration": 0.074783,
-    "TaskDuration": 0.190317,
-    "JSHeapUsedSize": 4006772,
-    "JSHeapTotalSize": 5857280
+    "LayoutDuration": 0.009906,
+    "RecalcStyleDuration": 0.001265,
+    "ScriptDuration": 0.041899,
+    "TaskDuration": 0.095868,
+    "JSHeapUsedSize": 4212528,
+    "JSHeapTotalSize": 6176768
   }
 ]
 ```

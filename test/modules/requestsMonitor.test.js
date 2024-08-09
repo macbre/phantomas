@@ -89,7 +89,7 @@ describe("URLs are properly parsed when sent", () => {
     });
   });
 
-  test.skip("base64-encoded data is property detected", () => {
+  test.skip("base64-encoded data is properly detected", () => {
     const entry = recvBase64("data:image/png;base64,iVBORw0KGgoAAAA");
 
     // https://jestjs.io/docs/expect#tomatchobjectobject
@@ -141,6 +141,7 @@ describe("Content types", () => {
     ["image/jpeg", "isImage"],
     ["image/gif", "isImage"],
     ["image/webp", "isImage"],
+    ["image/avif", "isImage"],
     ["image/svg+xml", "isImage"],
     ["image/svg+xml", "isSVG"],
     ["image/x-icon", "isFavicon"],

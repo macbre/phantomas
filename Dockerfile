@@ -41,9 +41,15 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm ci
 
-# TODO: find the chrome binary and symlink it to the PATH
-RUN ldd $(find . -wholename '*chrome-linux/chrome') && \
-  $(find . -wholename '*chrome-linux/chrome') --version
+# find the chrome binary and symlink it to the PATH
+# e.g. ./.cache/puppeteer/chrome/linux-112.0.5615.121/chrome-linux64/chrome
+RUN echo "Chrome found in: " $(find . -wholename '*chrome-linux64/chrome') && \
+	ln -s $(find . -wholename '*chrome-linux64/chrome') .
+
+ENV PATH ${PATH}":/opt/phantomas"
+
+RUN ldd chrome && \
+  chrome --version
 
 ARG GITHUB_SHA="dev"
 ENV COMMIT_SHA ${GITHUB_SHA}

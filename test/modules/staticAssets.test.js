@@ -4,6 +4,7 @@
 const mock = require("./mock"),
   { describe } = require("@jest/globals");
 
+// eslint-disable-next-line no-redeclare
 var URL = "http://example.com/";
 
 describe("staticAssets", () => {

@@ -22,8 +22,7 @@ let options = parseArgv(process.argv);
 if (typeof options.url !== "string" && typeof options.config === "undefined") {
   debug("URL not provided - show help and leave");
   getProgram().outputHelp();
-  process.exitCode = 1;
-  return;
+  process.exit(1);
 }
 
 url = options.url;

@@ -12,6 +12,7 @@
       len = images.length,
       offset,
       path,
+      native,
       processedImages = {},
       src,
       viewportHeight = window.innerHeight;
@@ -30,6 +31,9 @@
       // @see https://stackoverflow.com/questions/35586728/detect-used-srcset-or-picture-tag-source-with-javascript
       src = images[i].currentSrc;
 
+      // Chrome headless loads images with native lazyloading, therefore we need to filter by ourself.
+      native = images[i].loading === "lazy";
+
       // ignore base64-encoded images
       if (src === null || src === "" || /^data:/.test(src)) {
         continue;
@@ -42,6 +46,7 @@
         processedImages[src] = {
           offset: offset,
           path: path,
+          native: native,
         };
       }
 
@@ -50,6 +55,7 @@
         processedImages[src] = {
           offset: offset,
           path: path,
+          native: native,
         };
       }
     }
@@ -62,7 +68,7 @@
     Object.keys(processedImages).forEach((src) => {
       var img = processedImages[src];
 
-      if (img.offset > viewportHeight) {
+      if (img.offset > viewportHeight && !img.native) {
         phantomas.log(
           "lazyLoadableImages: <%s> image (%s) is below the fold (at %dpx)",
           src,

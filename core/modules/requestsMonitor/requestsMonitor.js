@@ -40,7 +40,7 @@ function parseEntryUrl(entry) {
     entry.protocol = false;
     entry.isBlob = true;
   } else {
-    parsed = new URL(entry.url) || {};
+    parsed = new URL(entry.url);
 
     entry.protocol = parsed.protocol.replace(":", ""); // e.g. "http:"
     entry.domain = parsed.hostname;
@@ -97,6 +97,7 @@ function addContentType(headerValue, entry) {
     case "image/gif":
     case "image/svg+xml":
     case "image/webp":
+    case "image/avif":
       entry.type = "image";
       entry.isImage = true;
 

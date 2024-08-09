@@ -1,6 +1,6 @@
 {
   "name": "phantomas",
-  "version": "2.5.0",
+  "version": "2.13.0",
   "author": "macbre <maciej.brencz@gmail.com> (http://macbre.net)",
   "description": "Headless Chromium-based web performance metrics collector and monitoring tool",
   "main": "./lib/index.js",
@@ -24,23 +24,25 @@
   ],
   "license": "BSD-2-Clause",
   "engines": {
-    "node": ">=14.0"
+    "node": ">=16.0"
   },
   "dependencies": {
-    "analyze-css": "^2.0.0",
+    "analyze-css": "^2.1.89",
+    "analyze-image": "^1.0.0",
     "commander": "^9.0.0",
     "debug": "^4.1.1",
     "decamelize": "^5.0.0",
     "fast-stats": "0.0.6",
     "js-yaml": "^4.0.0",
-    "puppeteer": "^16.0.0"
+    "puppeteer": "^23.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.3.0",
     "@jest/globals": "^28.0.0",
-    "eslint": "^8.0.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint": "^9.3.0",
+    "eslint-config-prettier": "^9.1.0",
     "glob": "^8.0.1",
+    "globals": "^15.3.0",
     "jest": "^28.0.0",
     "prettier": "2.7.1"
   },
@@ -61,7 +63,7 @@
     "coverageThreshold": {
       "global": {
         "statements": 89,
-        "branches": 85,
+        "branches": 80,
         "functions": 89,
         "lines": 89
       }

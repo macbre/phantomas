@@ -29,7 +29,7 @@ module.exports = function (phantomas) {
   };
 
   phantomas.on("init", async (page) => {
-    // @see https://github.com/puppeteer/puppeteer/blob/v1.11.0/docs/api.md#pagesetviewportviewport
+    // @see https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.setviewport.md
     await page.setViewport(options);
     phantomas.log("page.setViewport() called with options %j", options);
   });

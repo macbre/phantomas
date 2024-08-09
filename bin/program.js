@@ -131,6 +131,7 @@ function getProgram() {
 
     // Output and reporting
     .option("--analyze-css", "emit in-depth CSS metrics")
+    .option("--analyze-images", "emit in-depth image metrics")
     .option("--colors", "forces ANSI colors even when output is piped")
     .option(
       "--film-strip",
