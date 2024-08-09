@@ -741,8 +741,8 @@
 - url: "/headers.html"
   metrics:
     requests: 3
-    headersCount: 29
-    headersSentCount: 6
+    headersCount: 32
+    headersSentCount: 9
     headersRecvCount: 23
     headersRecvSize: 647
 #    headersBiggerThanContent: 1
