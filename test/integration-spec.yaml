@@ -26,7 +26,7 @@
     cssCount: 1
     cssSize: 320
     jsCount: 1
-    jsSize: 29734 # compressed
+    jsSize: 29756 # compressed
     domains: 1
     DOMqueries: 20
     DOMqueriesById: 6
@@ -999,7 +999,7 @@
   metrics:
     requests: 3
     bodySize: 84835
-    contentLength: 30354
+    contentLength: 30376
   offenders:
     requests:
       - { url: "http://127.0.0.1:8888/browser-caching.html", type: "html", size: 517 }

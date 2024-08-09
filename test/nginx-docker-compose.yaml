@@ -3,7 +3,7 @@ version: "3.2"
 services:
   nginx:
     # https://github.com/macbre/docker-nginx-http3#quic--http3-support
-    image: ghcr.io/macbre/nginx-http3:1.23.1
+    image: ghcr.io/macbre/nginx-http3:1.27.0
     ports:
       - "8888:80"
       - "8889:443" # for old HTTP/1.1 with old TLS
