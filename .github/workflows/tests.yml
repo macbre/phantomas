@@ -10,7 +10,11 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    #
+    # Use Ubuntu 22.04 to simplify running Chrome in a sandbox
+    # https://chromium.googlesource.com/chromium/src/+/main/docs/linux/suid_sandbox_development.md
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
 
     strategy:
