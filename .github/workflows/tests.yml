@@ -70,7 +70,7 @@ jobs:
     - name: Run example script
       env:
         DEBUG: "phantomas:browser"
-      run: node examples/index.js https://gf.dev/http3-test
+      run: node examples/index.js https://mozilla.org/
 
     - name: Run tests
       run: |
