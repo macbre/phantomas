@@ -1,5 +1,5 @@
 {
-    "defaultAction": "SCMP_ACT_LOG",
+    "defaultAction": "SCMP_ACT_ERRNO",
     "syscalls": [
         {
             "name": "accept",
@@ -1343,6 +1343,11 @@
         },
         {
             "name": "statfs64",
+            "action": "SCMP_ACT_ALLOW",
+            "args": null
+        },
+        {
+            "name": "statx",
             "action": "SCMP_ACT_ALLOW",
             "args": null
         },
