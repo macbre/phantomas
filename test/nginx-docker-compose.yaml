@@ -1,5 +1,3 @@
-version: "3.2"
-
 services:
   nginx:
     # https://github.com/macbre/docker-nginx-http3#quic--http3-support
