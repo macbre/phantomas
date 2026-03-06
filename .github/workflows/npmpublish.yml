@@ -33,8 +33,7 @@ jobs:
         run: |
           sed -i 's/"phantomas"/"@macbre\/phantomas"/g' package.json; git diff
 
-          npm publish --access public
-
+          npm publish --access public || true
           git checkout -- .
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
