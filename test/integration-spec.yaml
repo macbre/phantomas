@@ -296,7 +296,7 @@
     cssParsingErrors: 1
     cssInlineStyles: 3
     cssLength: 208
-    cssRules: 6
+    cssRules: 7
     cssImportants: 1
     DOMqueries: 0
   offenders:
@@ -322,7 +322,7 @@
   metrics:
     cssParsingErrors: 1
     cssLength: 91
-    cssRules: 3
+    cssRules: 4
   offenders:
     cssParsingErrors:
       - {
