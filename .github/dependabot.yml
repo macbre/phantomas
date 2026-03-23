@@ -15,3 +15,10 @@ updates:
     directory: "/"
     schedule:
         interval: daily
+
+  - package-ecosystem: "docker-compose"
+    directory: "/test"
+    # https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference#example
+    patterns: ["*-compose.*"]
+    schedule:
+        interval: daily
