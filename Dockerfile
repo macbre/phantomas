@@ -21,6 +21,7 @@ RUN apt-get update \
       libx11-6 \
       libxext6 \
       libxkbcommon0 \
+	  unzip \
       x11-utils \
       xdg-utils \
       zlib1g \
