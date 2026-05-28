@@ -30,9 +30,9 @@
     "analyze-css": "^2.1.89",
     "analyze-image": "^1.0.0",
     "commander": "^9.0.0",
-    "debug": "^4.1.1",
-    "decamelize": "^5.0.0",
-    "fast-stats": "0.0.6",
+    "debug": "^4.4.3",
+    "decamelize": "^6.0.1",
+    "fast-stats": "^0.0.7",
     "js-yaml": "^4.1.1",
     "puppeteer": "^25.1.0"
   },
