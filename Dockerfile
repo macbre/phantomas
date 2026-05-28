@@ -21,20 +21,21 @@ RUN apt-get update \
       libx11-6 \
       libxext6 \
       libxkbcommon0 \
+	  unzip \
       x11-utils \
       xdg-utils \
       zlib1g \
   && rm -rf /var/lib/apt/lists/*
 
 # Set up a working directory
-ENV HOME /opt/phantomas
+ENV HOME=/opt/phantomas
 WORKDIR $HOME
 RUN chown -R nobody:nogroup .
 
 # Run everything after as non-privileged user.
 USER nobody
 
-ENV DOCKERIZED yes
+ENV DOCKERIZED=yes
 
 # Install dependencies
 COPY package.json .
@@ -46,13 +47,13 @@ RUN npm ci
 RUN echo "Chrome found in: " $(find . -wholename '*chrome-linux64/chrome') && \
 	ln -s $(find . -wholename '*chrome-linux64/chrome') .
 
-ENV PATH ${PATH}":/opt/phantomas"
+ENV PATH=${PATH}":/opt/phantomas"
 
 RUN ldd chrome && \
   chrome --version
 
 ARG GITHUB_SHA="dev"
-ENV COMMIT_SHA ${GITHUB_SHA}
+ENV COMMIT_SHA=${GITHUB_SHA}
 
 # label the image with branch name and commit hash
 LABEL maintainer="maciej.brencz@gmail.com"

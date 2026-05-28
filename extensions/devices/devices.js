@@ -4,15 +4,13 @@
 "use strict";
 
 module.exports = function (phantomas) {
-  const puppeteer = require("puppeteer"),
-    devices = puppeteer.KnownDevices,
-    // @see https://github.com/puppeteer/puppeteer/blob/main/packages/puppeteer-core/src/common/Device.ts
-    availableDevices = {
-      phone: "Galaxy S5", // 360x640
-      "phone-landscape": "Galaxy S5 landscape", // 640x360
-      tablet: "Kindle Fire HDX", // 800x1200
-      "tablet-landscape": "Kindle Fire HDX landscape", // 1280x800
-    };
+  // @see https://github.com/puppeteer/puppeteer/blob/main/packages/puppeteer-core/src/common/Device.ts
+  const availableDevices = {
+    phone: "Galaxy S5", // 360x640
+    "phone-landscape": "Galaxy S5 landscape", // 640x360
+    tablet: "Kindle Fire HDX", // 800x1200
+    "tablet-landscape": "Kindle Fire HDX landscape", // 1280x800
+  };
 
   let device;
 
@@ -36,16 +34,19 @@ module.exports = function (phantomas) {
   // apply the profile
   const profileName = availableDevices[device];
 
-  phantomas.log(
-    'Devices: %s provided - using "%s" profile: %j',
-    device,
-    profileName,
-    devices[profileName]
-  );
-
   phantomas.on("init", async (page) => {
+    const { KnownDevices } = await import("puppeteer");
+    const deviceProfile = KnownDevices[profileName];
+
+    phantomas.log(
+      'Devices: %s provided - using "%s" profile: %j',
+      device,
+      profileName,
+      deviceProfile
+    );
+
     // @see https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageemulateoptions
-    await page.emulate(devices[profileName]);
+    await page.emulate(deviceProfile);
     phantomas.log("page.emulate() called");
   });
 };
