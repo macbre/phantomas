@@ -41,8 +41,8 @@
     "@jest/globals": "^30.4.1",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
-    "glob": "^8.0.1",
-    "globals": "^15.3.0",
+    "glob": "^13.0.6",
+    "globals": "^17.6.0",
     "jest": "^30.4.2",
     "prettier": "^3.8.3"
   },
