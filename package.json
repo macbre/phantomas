@@ -46,6 +46,9 @@
     "jest": "^29.0.0",
     "prettier": "2.7.1"
   },
+  "overrides": {
+    "uuid": "11.x"
+  },
   "scripts": {
     "test": "node --experimental-vm-modules --trace-warnings node_modules/.bin/jest test/ --coverage --detectOpenHandles --forceExit",
     "unit-test": "node --experimental-vm-modules node_modules/.bin/jest test/results.test.js test/modules/ --coverage --detectOpenHandles --forceExit",
