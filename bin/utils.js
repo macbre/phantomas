@@ -1,4 +1,5 @@
-const decamelize = require("decamelize");
+// @ts-check
+const decamelize = require("decamelize").default;
 
 function decamelizeOptions(options) {
   // decamelize option names as returned by commander (see issue #863)
