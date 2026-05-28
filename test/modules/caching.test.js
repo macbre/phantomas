@@ -26,7 +26,7 @@ describe("caching", () => {
       },
       {
         cachingNotSpecified: [URL],
-      }
+      },
     );
   });
   describe("old caching header used (Expires)", () => {
@@ -50,7 +50,7 @@ describe("caching", () => {
       },
       {
         cachingDisabled: [URL],
-      }
+      },
     );
   });
   describe("old caching header used (Pragma)", () => {
@@ -80,7 +80,7 @@ describe("caching", () => {
           },
         ],
         cachingNotSpecified: [URL],
-      }
+      },
     );
   });
   describe("caching too short", () => {
@@ -103,7 +103,7 @@ describe("caching", () => {
       },
       {
         cachingTooShort: [{ url: URL, ttl: 600 }],
-      }
+      },
     );
   });
   describe("caching not too short (but without immutable)", () => {
@@ -126,7 +126,7 @@ describe("caching", () => {
       },
       {
         cachingUseImmutable: [{ url: URL, ttl: 2592000 }],
-      }
+      },
     );
   });
   describe("caching not too short (and use immutable)", () => {
@@ -146,7 +146,7 @@ describe("caching", () => {
       {
         cachingTooShort: 0,
         cachingUseImmutable: 0,
-      }
+      },
     );
   });
 });

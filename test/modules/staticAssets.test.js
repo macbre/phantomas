@@ -22,7 +22,7 @@ describe("staticAssets", () => {
         smallCssFiles: 0,
         smallJsFiles: 0,
         multipleRequests: 0,
-      }
+      },
     );
   });
   describe("with query string", () => {
@@ -40,7 +40,7 @@ describe("staticAssets", () => {
       },
       {
         assetsWithQueryString: 1,
-      }
+      },
     );
   });
   describe("with cookies", () => {
@@ -59,7 +59,7 @@ describe("staticAssets", () => {
       },
       {
         assetsWithCookies: 1,
-      }
+      },
     );
   });
   describe("multiple requests", () => {
@@ -77,7 +77,7 @@ describe("staticAssets", () => {
       },
       {
         multipleRequests: 1, // one assets loaded multiple times
-      }
+      },
     );
   });
   describe("normal images", () => {
@@ -96,7 +96,7 @@ describe("staticAssets", () => {
       },
       {
         smallImages: 0,
-      }
+      },
     );
   });
   describe("small images", () => {
@@ -115,7 +115,7 @@ describe("staticAssets", () => {
       },
       {
         smallImages: 1,
-      }
+      },
     );
   });
   describe("small CSS", () => {
@@ -134,7 +134,7 @@ describe("staticAssets", () => {
       },
       {
         smallCssFiles: 1,
-      }
+      },
     );
   });
   describe("small JS", () => {
@@ -153,7 +153,7 @@ describe("staticAssets", () => {
       },
       {
         smallJsFiles: 1,
-      }
+      },
     );
   });
 
@@ -173,7 +173,7 @@ describe("staticAssets", () => {
       },
       {
         smallImages: 0,
-      }
+      },
     );
   });
 
@@ -193,7 +193,7 @@ describe("staticAssets", () => {
       },
       {
         assetsNotGzipped: 0,
-      }
+      },
     );
   });
 });
@@ -225,7 +225,7 @@ describe("assetsNotGzipped", () => {
         },
         {
           assetsNotGzipped: 1,
-        }
+        },
       );
     });
   });

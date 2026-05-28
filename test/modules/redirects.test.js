@@ -20,7 +20,7 @@ describe("redirects", () => {
       {
         redirects: 1,
         redirectsTime: 20,
-      }
+      },
     );
   });
   describe("HTTP 200", () => {
@@ -32,7 +32,7 @@ describe("redirects", () => {
       {
         redirects: 0,
         redirectsTime: 0,
-      }
+      },
     );
   });
 });

@@ -23,7 +23,7 @@ module.exports = function (phantomas) {
     if (sessionStorage) {
       phantomas.log(
         "Injecting sessionStorage: %j",
-        JSON.stringify(sessionStorage)
+        JSON.stringify(sessionStorage),
       );
       await injectStorage(page, sessionStorage, SESSION_STORAGE);
     }
@@ -76,7 +76,7 @@ module.exports = function (phantomas) {
       storage,
       storageType,
       SESSION_STORAGE,
-      LOCAL_STORAGE
+      LOCAL_STORAGE,
     );
   }
 };

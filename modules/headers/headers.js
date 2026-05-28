@@ -47,7 +47,7 @@ module.exports = function (phantomas) {
       "%s: %d / %d",
       entry.url,
       entry.headersSize,
-      entry.transferedSize
+      entry.transferedSize,
     );
 
     // phantomas.log('Headers: <%s> %d bytes', entry.url, headers.size);

@@ -24,7 +24,7 @@ module.exports = function (phantomas) {
           (res.redirectURL || entry.headers.Location) +
           " (took " +
           entry.timeToLastByte +
-          " ms)"
+          " ms)",
       );
     }
   });

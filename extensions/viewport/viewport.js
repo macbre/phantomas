@@ -14,7 +14,7 @@ module.exports = function (phantomas) {
 
   if (viewport === undefined) {
     phantomas.log(
-      "No viewport option specified, will use the device default viewport"
+      "No viewport option specified, will use the device default viewport",
     );
     return;
   }

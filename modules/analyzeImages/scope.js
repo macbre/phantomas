@@ -36,7 +36,7 @@
       // https://stackoverflow.com/a/53068496/4716391
       const isVisible = !!node.offsetParent;
       phantomas.log(
-        "analyzeImg: ignoring displayWidth and displayHeight because image is not visible"
+        "analyzeImg: ignoring displayWidth and displayHeight because image is not visible",
       );
 
       if (node.currentSrc) {
@@ -52,7 +52,7 @@
       } else {
         phantomas.log(
           "analyzeImg: image tag found without currentSrc: %s",
-          html
+          html,
         );
       }
     });

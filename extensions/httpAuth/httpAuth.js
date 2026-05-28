@@ -18,7 +18,7 @@ module.exports = function (phantomas) {
     phantomas.log(
       "Set HTTP authentication: %s (pass: %s)",
       username,
-      new Array(password.length + 1).join("*")
+      new Array(password.length + 1).join("*"),
     );
   });
 };

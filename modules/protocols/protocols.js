@@ -36,7 +36,7 @@ module.exports = function (phantomas) {
           "New domain %s uses HTTP version %s and TLS version %s",
           domain,
           entry.httpVersion,
-          entry.tlsVersion
+          entry.tlsVersion,
         );
 
         // add the new domain to the Map

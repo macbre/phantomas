@@ -19,7 +19,7 @@ describe("cacheHits", () => {
         cacheHits: 0,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -39,7 +39,7 @@ describe("cacheHits", () => {
         cacheHits: 1,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -60,7 +60,7 @@ describe("cacheHits", () => {
         cacheHits: 1,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -80,7 +80,7 @@ describe("cacheHits", () => {
         cacheHits: 0,
         cacheMisses: 1,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -100,7 +100,7 @@ describe("cacheHits", () => {
         cacheHits: 1,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -120,7 +120,7 @@ describe("cacheHits", () => {
         cacheHits: 0,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -140,7 +140,7 @@ describe("cacheHits", () => {
         cacheHits: 1,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -160,7 +160,7 @@ describe("cacheHits", () => {
         cacheHits: 1,
         cacheMisses: 0,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -180,7 +180,7 @@ describe("cacheHits", () => {
         cacheHits: 0,
         cacheMisses: 1,
         cachePasses: 0,
-      }
+      },
     );
   });
 
@@ -200,7 +200,7 @@ describe("cacheHits", () => {
         cacheHits: 0,
         cacheMisses: 0,
         cachePasses: 1,
-      }
+      },
     );
   });
 });

@@ -7,7 +7,7 @@
 
     phantomas.setMetric(
       "bodyHTMLSize",
-      (document.body && document.body.innerHTML.length) || 0
+      (document.body && document.body.innerHTML.length) || 0,
     );
 
     // duplicated ID (issue #392)
@@ -42,7 +42,7 @@
         size = 0;
 
       runner.walk(document.body, function (node, depth) {
-        var path = "";
+        let path;
 
         switch (node.nodeType) {
           case Node.COMMENT_NODE:

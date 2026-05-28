@@ -14,6 +14,6 @@
         phantomas.log("synchronous XMLHttpRequest call to <%s>", url);
       }
     },
-    true
+    true,
   );
 })(window.__phantomas);

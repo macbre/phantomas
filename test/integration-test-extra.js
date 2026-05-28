@@ -8,7 +8,7 @@ function pageSource(phantomas) {
     assert.strictEqual(
       typeof path,
       "string",
-      "pageSource event should get a path"
+      "pageSource event should get a path",
     );
 
     // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
@@ -38,7 +38,7 @@ function screenshot(phantomas) {
     assert.strictEqual(
       typeof path,
       "string",
-      "screenshot event should get a path"
+      "screenshot event should get a path",
     );
     assert.ok(fs.existsSync(path), "The file should exist");
     assert.ok(path.match(/.png$/), "The file should be a PNG");

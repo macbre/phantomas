@@ -123,7 +123,7 @@ describe("Asserts", () => {
     results.setMetric("test", 200);
     assert.ok(
       results.hasAssertion("test") === false,
-      "no assert for test metric"
+      "no assert for test metric",
     );
     assert.ok(results.assert("test"), "no assert for test metric");
   });
@@ -157,7 +157,7 @@ describe("Asserts", () => {
     assert.deepStrictEqual(
       results.getFailedAsserts(),
       [],
-      "all asserts are meet"
+      "all asserts are meet",
     );
 
     results.setMetric("foo", 124);
@@ -165,7 +165,7 @@ describe("Asserts", () => {
     assert.deepStrictEqual(
       results.getFailedAsserts(),
       ["foo"],
-      "one assert is not meet"
+      "one assert is not meet",
     );
 
     results.setMetric("foo", 124);
@@ -173,7 +173,7 @@ describe("Asserts", () => {
     assert.deepStrictEqual(
       results.getFailedAsserts(),
       ["foo", "bar"],
-      "two asserts are not meet"
+      "two asserts are not meet",
     );
   });
 });

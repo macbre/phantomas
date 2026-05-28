@@ -11,7 +11,7 @@ module.exports = function (phantomas) {
 
   if (typeof param === "undefined") {
     phantomas.log(
-      "Screenshot: to enable screenshot of the page run phantomas with --screenshot option"
+      "Screenshot: to enable screenshot of the page run phantomas with --screenshot option",
     );
     return;
   }
@@ -19,7 +19,7 @@ module.exports = function (phantomas) {
   if (fullPage === true) {
     // the full page option is now disabled by default (bug #853)
     phantomas.log(
-      "Screenshot: --full-page-screenshot option enabled. Please note that the option can cause layout bugs and lazyloadableImagesUnderTheFold miscount"
+      "Screenshot: --full-page-screenshot option enabled. Please note that the option can cause layout bugs and lazyloadableImagesUnderTheFold miscount",
     );
   }
 

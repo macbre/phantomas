@@ -44,7 +44,7 @@
 module.exports = function (phantomas) {
   if (phantomas.getParam("analyze-css") !== true) {
     phantomas.log(
-      "To enable CSS in-depth metrics please run phantomas with --analyze-css option"
+      "To enable CSS in-depth metrics please run phantomas with --analyze-css option",
     );
     return;
   }
@@ -211,7 +211,7 @@ module.exports = function (phantomas) {
           }
 
           resolve();
-        })
+        }),
       );
     });
 

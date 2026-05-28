@@ -39,7 +39,7 @@ describe("domains", () => {
         domains: 3,
         maxRequestsPerDomain: 6,
         medianRequestsPerDomain: 3,
-      }
+      },
     );
   });
 
@@ -58,7 +58,7 @@ describe("domains", () => {
         domains: 0,
         maxRequestsPerDomain: 0,
         medianRequestsPerDomain: 0,
-      }
+      },
     );
   });
 });

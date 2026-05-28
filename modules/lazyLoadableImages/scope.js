@@ -1,7 +1,7 @@
 (function lazyLoadableImages(phantomas) {
   phantomas.spyEnabled(
     false,
-    "setting up which images can be lazy-loaded analysis"
+    "setting up which images can be lazy-loaded analysis",
   );
 
   window.addEventListener("load", () => {
@@ -20,7 +20,7 @@
     phantomas.log(
       "lazyLoadableImages: %d image(s) found, assuming %dpx offset to be the fold",
       len,
-      viewportHeight
+      viewportHeight,
     );
 
     for (i = 0; i < len; i++) {
@@ -62,7 +62,7 @@
 
     phantomas.log(
       "lazyLoadableImages: checking %d unique image(s)",
-      Object.keys(processedImages).length
+      Object.keys(processedImages).length,
     );
 
     Object.keys(processedImages).forEach((src) => {
@@ -73,7 +73,7 @@
           "lazyLoadableImages: <%s> image (%s) is below the fold (at %dpx)",
           src,
           img.path,
-          img.offset
+          img.offset,
         );
 
         phantomas.incrMetric("lazyLoadableImagesBelowTheFold");

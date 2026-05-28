@@ -60,7 +60,7 @@ module.exports = function (phantomas) {
   if (noExternalsMode) {
     phantomas.log(
       'Block domains: working in --no-externals mode ("%s" is our domain)',
-      ourDomain
+      ourDomain,
     );
   }
 

@@ -93,18 +93,18 @@
       phantomas.incrMetric("jQueryOnDOMReadyFunctions");
       phantomas.addOffender(
         "jQueryOnDOMReadyFunctions",
-        phantomas.getCaller(3)
+        phantomas.getCaller(3),
       );
     }) ||
       phantomas.spy(jQuery, "ready", function () {
         phantomas.incrMetric("jQueryOnDOMReadyFunctions");
         phantomas.addOffender(
           "jQueryOnDOMReadyFunctions",
-          phantomas.getCaller(0)
+          phantomas.getCaller(0),
         );
       }) ||
       phantomas.log(
-        "jQuery: can not measure jQueryOnDOMReadyFunctions (jQuery used on the page is too old)!"
+        "jQuery: can not measure jQueryOnDOMReadyFunctions (jQuery used on the page is too old)!",
       );
 
     // Sizzle calls - jQuery.find
@@ -117,7 +117,7 @@
       });
     }) ||
       phantomas.log(
-        "jQuery: can not measure jQuerySizzleCalls (jQuery used on the page is too old)!"
+        "jQuery: can not measure jQuerySizzleCalls (jQuery used on the page is too old)!",
       );
 
     // jQuery events triggers (issue #440)
@@ -131,7 +131,7 @@
       phantomas.addOffender("jQueryEventTriggers", { type, element: path });
     }) ||
       phantomas.log(
-        "jQuery: can not measure jQueryEventTriggers (jQuery used on the page is too old)!"
+        "jQuery: can not measure jQueryEventTriggers (jQuery used on the page is too old)!",
       );
 
     // jQuery events bound to window' onLoad event (#451)
@@ -140,12 +140,12 @@
         phantomas.incrMetric("jQueryWindowOnLoadFunctions");
         phantomas.addOffender(
           "jQueryWindowOnLoadFunctions",
-          phantomas.getCaller(2) || phantomas.getCaller(0)
+          phantomas.getCaller(2) || phantomas.getCaller(0),
         );
       }
     }) ||
       phantomas.log(
-        "jQuery: can not measure jQueryWindowOnLoadFunctions (jQuery used on the page is too old)!"
+        "jQuery: can not measure jQueryWindowOnLoadFunctions (jQuery used on the page is too old)!",
       );
 
     spyReadsAndWrites(jQuery);
