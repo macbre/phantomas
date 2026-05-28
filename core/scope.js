@@ -69,7 +69,7 @@
     }
 
     function getBacktrace() {
-      var stack = [];
+      let stack;
 
       try {
         throw new Error("backtrace");
@@ -81,7 +81,7 @@
     }
 
     function getCaller(stepBack) {
-      var caller = false;
+      let caller;
 
       stepBack = stepBack || 0;
 
@@ -266,8 +266,8 @@
    * Example: body.logged_out.vis-public.env-production > div > div
    */
   function getDOMPath(node, dontGoUpTheDom /* = false */) {
-    var path = [],
-      entry = "";
+    let path = [],
+      entry;
 
     if (node === window) {
       return "window";

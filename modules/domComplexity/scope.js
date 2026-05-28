@@ -42,7 +42,7 @@
         size = 0;
 
       runner.walk(document.body, function (node, depth) {
-        var path = "";
+        let path;
 
         switch (node.nodeType) {
           case Node.COMMENT_NODE:

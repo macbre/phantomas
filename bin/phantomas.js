@@ -13,8 +13,6 @@ const { getProgram, parseArgv } = require("./program"),
   phantomas = require(".."),
   debug = require("debug")("phantomas:cli");
 
-var url = "";
-
 // parse command line arguments
 let options = parseArgv(process.argv);
 
@@ -25,7 +23,7 @@ if (typeof options.url !== "string" && typeof options.config === "undefined") {
   process.exit(1);
 }
 
-url = options.url;
+const url = options.url;
 debug("url: %s", url);
 
 delete options.url;
