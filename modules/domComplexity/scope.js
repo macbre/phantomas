@@ -7,7 +7,7 @@
 
     phantomas.setMetric(
       "bodyHTMLSize",
-      (document.body && document.body.innerHTML.length) || 0
+      (document.body && document.body.innerHTML.length) || 0,
     );
 
     // duplicated ID (issue #392)

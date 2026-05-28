@@ -17,8 +17,8 @@ function sendReq(url, extra) {
       {
         url: url,
       },
-      extra || {}
-    )
+      extra || {},
+    ),
   );
   return ret;
 }
@@ -162,7 +162,7 @@ describe("Content types", () => {
   test('"application/octet-stream" sets "isTTF" flag (via URL)', () => {
     const entry = sendContentType(
       "application/octet-stream",
-      "http://foo.bar/font.otf"
+      "http://foo.bar/font.otf",
     );
     expect(entry.isWebFont).toBeTruthy();
     expect(entry.isTTF).toBeUndefined();

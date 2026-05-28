@@ -4,7 +4,7 @@
 
   if (!spyEval) {
     phantomas.log(
-      'javaScriptBottlenecks: to spy calls to eval() run phantomas with "spy-eval" option set to true'
+      'javaScriptBottlenecks: to spy calls to eval() run phantomas with "spy-eval" option set to true',
     );
   } else {
     phantomas.log("javaScriptBottlenecks: eval() calls will be checked");
@@ -25,10 +25,10 @@
         "eval() called directly",
         phantomas.getCaller(),
         phantomas.getBacktrace(),
-        "evalCalls"
+        "evalCalls",
       );
       phantomas.log(
-        "eval'ed code: " + (code || "").substring(0, 150) + "(...)"
+        "eval'ed code: " + (code || "").substring(0, 150) + "(...)",
       );
     });
   }
@@ -41,7 +41,7 @@
       'eval() called via setTimeout("' + fn + '")',
       phantomas.getCaller(),
       phantomas.getBacktrace(),
-      "evalCalls"
+      "evalCalls",
     );
   });
 
@@ -52,7 +52,7 @@
       'eval() called via setInterval("' + fn + '")',
       phantomas.getCaller(),
       phantomas.getBacktrace(),
-      "evalCalls"
+      "evalCalls",
     );
   });
 
@@ -62,7 +62,7 @@
       "document.write() used",
       phantomas.getCaller(),
       phantomas.getBacktrace(),
-      "documentWriteCalls"
+      "documentWriteCalls",
     );
   });
 
@@ -71,7 +71,7 @@
       "document.writeln() used",
       phantomas.getCaller(),
       phantomas.getBacktrace(),
-      "documentWriteCalls"
+      "documentWriteCalls",
     );
   });
 })(window.__phantomas);

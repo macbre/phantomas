@@ -33,7 +33,7 @@ module.exports = function (phantomas) {
   if (typeof param !== "undefined") {
     phantomas.log(
       "userAgent: --user-agent option detected with value %s",
-      param
+      param,
     );
     userAgent = param;
   }

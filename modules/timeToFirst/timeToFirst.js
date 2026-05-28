@@ -44,7 +44,7 @@ module.exports = function (phantomas) {
     phantomas.setMetric(metricName, time);
     phantomas.addOffender(
       metricName,
-      entry.url + " received in " + time + " ms"
+      entry.url + " received in " + time + " ms",
     );
 
     // set the flag

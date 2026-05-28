@@ -29,7 +29,7 @@ module.exports = function (phantomas) {
       "Time to first byte: set to %d ms for request to <%s> (HTTP %d)",
       entry.timeToFirstByte,
       entry.url,
-      entry.status
+      entry.status,
     );
     phantomas.log("Time to last byte: set to %d ms", entry.timeToLastByte);
 

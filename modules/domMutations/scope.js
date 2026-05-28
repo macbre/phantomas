@@ -13,7 +13,7 @@
           // @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver#MutationRecord
           var targetPath = phantomas.getDOMPath(
             mutation.target,
-            true /* dontGoUpTheDom */
+            true /* dontGoUpTheDom */,
           );
 
           switch (mutation.type) {
@@ -22,7 +22,7 @@
                 'DOM mutation: "%s" attr (was "%s") set on %s',
                 mutation.attributeName,
                 mutation.oldValue || "",
-                targetPath
+                targetPath,
               );
 
               phantomas.incrMetric("DOMmutationsAttributes");
@@ -40,14 +40,14 @@
               for (var n = 0, nodesLen = nodes.length; n < nodesLen; n++) {
                 nodePath = phantomas.getDOMPath(
                   nodes[n],
-                  true /* dontGoUpTheDom */
+                  true /* dontGoUpTheDom */,
                 );
 
                 phantomas.log(
                   'DOM mutation: node "%s" %s "%s"',
                   nodePath,
                   wereAdded ? "added to" : "removed from",
-                  targetPath
+                  targetPath,
                 );
 
                 if (wereAdded) {

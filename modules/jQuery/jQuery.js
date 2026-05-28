@@ -53,7 +53,7 @@ module.exports = function (phantomas) {
       functionName,
       args,
       contextPath,
-      caller
+      caller,
     );
 
     if (type === "read") {

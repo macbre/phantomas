@@ -44,7 +44,7 @@ describe("requestsStats", () => {
         biggestLatency: 3,
         medianResponse: 5,
         medianLatency: 2,
-      }
+      },
     );
   });
 
@@ -72,7 +72,7 @@ describe("requestsStats", () => {
       {
         smallestResponse: 50,
         biggestResponse: 50,
-      }
+      },
     );
   });
 
@@ -86,7 +86,7 @@ describe("requestsStats", () => {
       {
         smallestResponse: undefined,
         biggestResponse: undefined,
-      }
+      },
     );
   });
 });

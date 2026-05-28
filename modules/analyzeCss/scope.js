@@ -19,7 +19,7 @@
       } else {
         phantomas.log(
           'analyzeCss: inline <style> tag found with type="%s", ignoring...',
-          type
+          type,
         );
       }
     });

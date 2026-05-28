@@ -24,7 +24,7 @@ test("should handle dashed-names", () => {
       timeout: 15,
       "no-externals": false,
       "user-agent": "Foo/Bar (test)",
-    }
+    },
   );
 });
 
@@ -37,7 +37,7 @@ test("should handle --dashed-flags", () => {
       "no-externals": false,
       "ignore-ssl-errors": true,
       phone: true,
-    }
+    },
   );
 });
 
@@ -50,7 +50,7 @@ test("should handle --url option", () => {
       "no-externals": false,
       url: "http://example.foo/bar",
       phone: true,
-    }
+    },
   );
 });
 
@@ -63,7 +63,7 @@ test("should detect URL without --url option", () => {
       "no-externals": false,
       url: "http://example.foo/bar",
       tablet: true,
-    }
+    },
   );
 });
 

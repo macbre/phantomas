@@ -11,7 +11,7 @@
 module.exports = (phantomas) => {
   if (!phantomas.getParam("page-source")) {
     phantomas.log(
-      "To enable page-source of page being loaded run phantomas with --page-source option"
+      "To enable page-source of page being loaded run phantomas with --page-source option",
     );
     return;
   }

@@ -26,7 +26,7 @@ module.exports = function (phantomas) {
   if (typeof device === "undefined") {
     phantomas.log(
       "No profile selected (available: %s)",
-      Object.keys(availableDevices).join(", ")
+      Object.keys(availableDevices).join(", "),
     );
     return;
   }
@@ -42,7 +42,7 @@ module.exports = function (phantomas) {
       'Devices: %s provided - using "%s" profile: %j',
       device,
       profileName,
-      deviceProfile
+      deviceProfile,
     );
 
     // @see https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#pageemulateoptions

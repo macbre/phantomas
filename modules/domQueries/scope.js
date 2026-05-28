@@ -19,7 +19,7 @@
       });
       querySpy("id", "#" + id, "getElementById", "#document", results === null);
     },
-    true
+    true,
   );
 
   // selectors by class name
@@ -36,7 +36,7 @@
       "." + className,
       "getElementsByClassName",
       context,
-      results.length === 0
+      results.length === 0,
     );
   }
 
@@ -44,13 +44,13 @@
     Document.prototype,
     "getElementsByClassName",
     selectorClassNameSpy,
-    true
+    true,
   );
   phantomas.spy(
     Element.prototype,
     "getElementsByClassName",
     selectorClassNameSpy,
-    true
+    true,
   );
 
   // selectors by tag name
@@ -70,7 +70,7 @@
       tagName,
       "getElementsByTagName",
       context,
-      results.length === 0
+      results.length === 0,
     );
   }
 
@@ -78,13 +78,13 @@
     Document.prototype,
     "getElementsByTagName",
     selectorTagNameSpy,
-    true
+    true,
   );
   phantomas.spy(
     Element.prototype,
     "getElementsByTagName",
     selectorTagNameSpy,
-    true
+    true,
   );
 
   // selector queries
@@ -101,7 +101,7 @@
       selector,
       "querySelectorAll",
       context,
-      results === null || results.length === 0
+      results === null || results.length === 0,
     );
   }
 
@@ -140,7 +140,7 @@
     phantomas.log(
       'DOM insert: node "%s" appended to "%s"',
       appendedNodePath,
-      destNodePath
+      destNodePath,
     );
   }
 

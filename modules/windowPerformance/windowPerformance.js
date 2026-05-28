@@ -44,30 +44,30 @@ module.exports = function (phantomas) {
     phantomas.setMetric("domInteractive", timing.domInteractive - base);
     phantomas.setMetric(
       "domContentLoaded",
-      timing.domContentLoadedEventStart - base
+      timing.domContentLoadedEventStart - base,
     );
     phantomas.setMetric(
       "domContentLoadedEnd",
-      timing.domContentLoadedEventEnd - base
+      timing.domContentLoadedEventEnd - base,
     );
     phantomas.setMetric("domComplete", timing.domComplete - base);
 
     // see #477
     phantomas.setMetric(
       "performanceTimingConnect",
-      timing.connectEnd - timing.connectStart
+      timing.connectEnd - timing.connectStart,
     );
     phantomas.setMetric(
       "performanceTimingDNS",
-      timing.domainLookupEnd - timing.domainLookupStart
+      timing.domainLookupEnd - timing.domainLookupStart,
     );
     phantomas.setMetric(
       "performanceTimingPageLoad",
-      timing.loadEventStart - timing.navigationStart
+      timing.loadEventStart - timing.navigationStart,
     );
     phantomas.setMetric(
       "performanceTimingTTFB",
-      timing.responseStart - timing.navigationStart
+      timing.responseStart - timing.navigationStart,
     );
 
     /**

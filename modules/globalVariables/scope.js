@@ -43,7 +43,7 @@
         phantomas.log(
           "globalVariables: error when checking %s - %s!",
           varName,
-          ex.message
+          ex.message,
         );
       }
     }

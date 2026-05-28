@@ -26,7 +26,7 @@ describe("keepAlive", () => {
       },
       {
         closedConnections: 0,
-      }
+      },
     );
   });
 
@@ -49,7 +49,7 @@ describe("keepAlive", () => {
       },
       {
         closedConnections: 0,
-      }
+      },
     );
   });
 
@@ -78,7 +78,7 @@ describe("keepAlive", () => {
         },
         {
           closedConnections: ["http://foo.net/path"],
-        }
+        },
       );
     });
   });

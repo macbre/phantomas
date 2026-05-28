@@ -112,7 +112,7 @@
       try {
         origConsoleLog.call(
           console,
-          "log:" + stringify(Array.prototype.slice.call(arguments))
+          "log:" + stringify(Array.prototype.slice.call(arguments)),
         );
         // eslint-disable-next-line no-empty
       } catch (e) {}
@@ -192,7 +192,7 @@
       phantomas.log(
         "Spying " +
           (enabled ? "enabled" : "disabled") +
-          (reason ? " - " + reason : "")
+          (reason ? " - " + reason : ""),
       );
     }
 
@@ -208,7 +208,7 @@
       phantomas.log(
         'spy: attaching to "%s" function%s',
         fn,
-        reportResults ? " with results reporting" : ""
+        reportResults ? " with results reporting" : "",
       );
 
       obj[fn] = function () {
@@ -218,7 +218,7 @@
         if (enabled && typeof callback === "function") {
           callback.apply(
             this,
-            reportResults === true ? [results].concat(args) : args
+            reportResults === true ? [results].concat(args) : args,
           );
         }
 
@@ -303,8 +303,8 @@
             0,
             Array.prototype.indexOf.call(
               node.parentNode.children || node.parentNode.childNodes,
-              node
-            )
+              node,
+            ),
           ) +
           "]";
       }
@@ -329,6 +329,6 @@
   phantomas.log(
     "phantomas page scope initialized for <%s> (is an iframe: %s)",
     window.location.toString(),
-    window.parent !== window
+    window.parent !== window,
   );
 })(window);

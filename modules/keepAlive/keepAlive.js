@@ -31,7 +31,7 @@ module.exports = function (phantomas) {
       phantomas.log(
         "keepAlive: connection for <%s> was closed, but the page requested <%s>",
         host,
-        entry.url
+        entry.url,
       );
 
       closedConnectionHosts[host] = undefined;

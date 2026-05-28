@@ -153,7 +153,7 @@ function addContentType(headerValue, entry) {
 
     default:
       debug(
-        "Unknown content type found: " + value + " for <" + entry.url + ">"
+        "Unknown content type found: " + value + " for <" + entry.url + ">",
       );
   }
 
@@ -185,7 +185,7 @@ module.exports = function (phantomas) {
       // request data
       // https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/api.md#class-request
       phantomas.emit("send", request); // @desc request has been sent
-    }
+    },
   );
 
   phantomas.on(
@@ -213,7 +213,7 @@ module.exports = function (phantomas) {
       if (entry.transferedSize == 0) {
         entry.transferedSize = parseInt(
           entry.headers["content-length"] || "0",
-          10
+          10,
         );
       }
 
@@ -240,7 +240,7 @@ module.exports = function (phantomas) {
         // resp.timing is empty when handling data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D
         assert(
           typeof resp.timing !== "undefined",
-          "resp.timing is empty when handling " + resp.url
+          "resp.timing is empty when handling " + resp.url,
         );
 
         // how long a given request stalled waiting for DNS, proxy, connection, SSL negotation, etc.
@@ -290,7 +290,7 @@ module.exports = function (phantomas) {
                 headerValue,
                 entry.bodySize / 1024,
                 entry.transferedSize / 1024,
-                entry.bodySize / entry.transferedSize
+                entry.bodySize / entry.transferedSize,
               );
             }
 
@@ -366,13 +366,13 @@ module.exports = function (phantomas) {
           "recv: HTTP %d <%s> [%s]",
           entry.status,
           entry.url,
-          entry.contentType
+          entry.contentType,
         );
         phantomas.emit("recv", entry, resp); // @desc response has been received
       }
 
       phantomas.log("Response metadata: %j", entry);
-    }
+    },
   );
 
   // completion of the last HTTP request
@@ -382,7 +382,7 @@ module.exports = function (phantomas) {
   phantomas.on("recv", (entry) =>
     phantomas.setMetric(
       "httpTrafficCompleted",
-      entry.recvEndTime - loadStartedTime
-    )
+      entry.recvEndTime - loadStartedTime,
+    ),
   );
 };

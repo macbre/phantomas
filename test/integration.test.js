@@ -71,7 +71,7 @@ describe("Integration tests", () => {
             if (err instanceof String) {
               assert.ok(
                 err.message.indexOf(test.error) === 0,
-                test.error + " should be raised, got: " + err.message
+                test.error + " should be raised, got: " + err.message,
               );
             }
           }
@@ -106,11 +106,11 @@ describe("Integration tests", () => {
       it("should get results from a promise", async () => {
         assert.ok(
           !(results instanceof Error),
-          "No error should be thrown: got " + results
+          "No error should be thrown: got " + results,
         );
         assert.ok(
           results.getMetric instanceof Function,
-          "Results wrapper should be passed"
+          "Results wrapper should be passed",
         );
       });
 
@@ -126,7 +126,7 @@ describe("Integration tests", () => {
         it(`should have offenders for "${name}" metric set properly`, () => {
           assert.notStrictEqual(
             results.getOffenders(name),
-            test.offenders[name]
+            test.offenders[name],
           );
         });
       });

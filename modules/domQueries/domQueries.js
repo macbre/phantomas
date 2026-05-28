@@ -35,7 +35,7 @@ module.exports = (phantomas) => {
           function: fnName,
         });
       }
-    }
+    },
   );
 
   // count DOM queries by either ID, tag name, class name and selector query
@@ -49,7 +49,7 @@ module.exports = (phantomas) => {
       type,
       query,
       fnName,
-      context
+      context,
     );
     phantomas.incrMetric("DOMqueries");
 

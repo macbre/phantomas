@@ -90,7 +90,7 @@ module.exports = function (phantomas) {
             } else {
               phantomas.log(
                 "caching: Cache-Control: immutable used for <%s>",
-                entry.url
+                entry.url,
               );
             }
           }

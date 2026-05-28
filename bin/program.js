@@ -11,7 +11,7 @@ function getProgram() {
   program
     .name("phantomas")
     .description(
-      "Headless Chromium-based web performance metrics collector and monitoring tool"
+      "Headless Chromium-based web performance metrics collector and monitoring tool",
     )
     .version(phantomas.version)
     .usage("--url <url> [options]")
@@ -27,15 +27,15 @@ function getProgram() {
     .option("-d, --debug", "run phantomas in debug mode")
     .option(
       "--modules <modules>",
-      "run selected modules only [moduleOne],[moduleTwo],..."
+      "run selected modules only [moduleOne],[moduleTwo],...",
     )
     .option(
       "--include-dirs <dirs>",
-      "load modules from specified directories [dirOne],[dirTwo],..."
+      "load modules from specified directories [dirOne],[dirTwo],...",
     )
     .option(
       "--skip-modules <modules>",
-      "skip selected modules [moduleOne],[moduleTwo],..."
+      "skip selected modules [moduleOne],[moduleTwo],...",
     )
 
     // .option(
@@ -54,66 +54,66 @@ function getProgram() {
     // HTTP options
     .option(
       "--auth-user <user>",
-      "sets the user name used for HTTP authentication"
+      "sets the user name used for HTTP authentication",
     )
     .option(
       "--auth-pass <password>",
-      "sets the password used for HTTP authentication"
+      "sets the password used for HTTP authentication",
     )
     .option(
       "--cookie <cookies>",
-      'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")'
+      'document.cookie formatted string for setting a single cookie (e.g. "bar=foo;domain=url")',
     )
     .option(
       "--cookies-file <file>",
-      "specifies the file name to store the persistent Cookies"
+      "specifies the file name to store the persistent Cookies",
     )
     .option(
       "--local-storage <values>",
-      'ability to set a local storage, key-value pairs (e.g. "bar=foo;domain=url")'
+      'ability to set a local storage, key-value pairs (e.g. "bar=foo;domain=url")',
     )
     .option(
       "--session-storage <values>",
-      'ability to set a session storage, key-value pairs (e.g. "bar=foo;domain=url")'
+      'ability to set a session storage, key-value pairs (e.g. "bar=foo;domain=url")',
     )
     .option(
       "--ignore-ssl-errors",
-      "ignores SSL errors, such as expired or self-signed certificate errors"
+      "ignores SSL errors, such as expired or self-signed certificate errors",
     )
     .option(
       "--proxy <host:port>",
-      "specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)"
+      "specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080)",
     )
     .option(
       "--proxy-auth <username:password>",
-      "specifies the authentication information for the proxy"
+      "specifies the authentication information for the proxy",
     )
     .option(
       "--proxy-type <type>",
-      "specifies the type of the proxy server [http|socks5|none]"
+      "specifies the type of the proxy server [http|socks5|none]",
     )
     .option(
       "--ssl-protocol <protocol>",
-      "sets the SSL protocol for secure connections [sslv3|sslv2|tlsv1|any]"
+      "sets the SSL protocol for secure connections [sslv3|sslv2|tlsv1|any]",
     )
 
     // Runtime options
     .option(
       "--allow-domain <domain>",
-      "allow requests to given domain(s) - aka whitelist [domain],[domain],..."
+      "allow requests to given domain(s) - aka whitelist [domain],[domain],...",
     )
     .option(
       "--block-domain <domain>",
-      "disallow requests to given domain(s) - aka blacklist [domain],[domain],..."
+      "disallow requests to given domain(s) - aka blacklist [domain],[domain],...",
     )
     .option(
       "--disable-js",
-      "disable JavaScript on the page that will be loaded"
+      "disable JavaScript on the page that will be loaded",
     )
     .option("--no-externals", "block requests to 3rd party domains")
     .option(
       "--post-load-delay <N>",
-      "wait X seconds before generating a report"
+      "wait X seconds before generating a report",
     )
     .option("--scroll", "scroll down the page when it's loaded")
     .option("--spy-eval", "report calls to eval()")
@@ -121,11 +121,11 @@ function getProgram() {
     .option("--timeout <seconds>", "timeout for phantomas run", 15)
     .option(
       "--wait-for-event <event>",
-      "wait for a given phantomas event before generating a report"
+      "wait for a given phantomas event before generating a report",
     )
     .option(
       "--wait-for-selector <selector>",
-      "wait for an element matching given CSS selector before generating a report"
+      "wait for an element matching given CSS selector before generating a report",
     )
     .option("--scroll", "scroll down the page when it's loaded")
 
@@ -135,23 +135,23 @@ function getProgram() {
     .option("--colors", "forces ANSI colors even when output is piped")
     .option(
       "--film-strip",
-      "register film strip when page is loading (a comma separated list of milliseconds can be passed)"
+      "register film strip when page is loading (a comma separated list of milliseconds can be passed)",
     )
     .option(
       "--film-strip-dir <dir>",
-      "folder path to output film strip (default is ./filmstrip directory)"
+      "folder path to output film strip (default is ./filmstrip directory)",
     )
     .option("--har <file>", "save HAR to a given file")
     .option("--log <file>", "log to a given file")
     .option("--page-source", "save page source to file")
     .option(
       "--page-source-dir <dir>",
-      "folder path to output page source (default is ./html directory)"
+      "folder path to output page source (default is ./html directory)",
     )
     .option("--pretty", "render formatted JSON")
     .option(
       "--screenshot <file>",
-      "render the viewport to a given file once fully loaded"
+      "render the viewport to a given file once fully loaded",
     )
     .option("--full-page-screenshot", "enlarge the screenshot to full page")
     .option("-s, --silent", "don't write anything to the console");

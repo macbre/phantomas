@@ -15,7 +15,7 @@ module.exports = function (phantomas) {
 
   if (phantomas.getParam("analyze-images") !== true) {
     phantomas.log(
-      "To enable images in-depth metrics please run phantomas with --analyze-images option"
+      "To enable images in-depth metrics please run phantomas with --analyze-images option",
     );
     return;
   }
@@ -32,7 +32,7 @@ module.exports = function (phantomas) {
       phantomas.log(
         "Offender %s found: %j",
         offenderName,
-        results.offenders[offenderName]
+        results.offenders[offenderName],
       );
 
       const newOffenderName = offenderName.replace("image", "images");
@@ -72,12 +72,12 @@ module.exports = function (phantomas) {
     // If we previously found a network/inline request that matches the currentSrc, attach tag to it.
     const correspondingResp = images.find(
       (resp) =>
-        resp.url === context.currentSrc || resp.inline === context.currentSrc
+        resp.url === context.currentSrc || resp.inline === context.currentSrc,
     );
     if (correspondingResp) {
       phantomas.log(
         "Attached to previously found network image %s",
-        correspondingResp.url || "[inline]"
+        correspondingResp.url || "[inline]",
       );
       correspondingResp.htmlTags.push(context);
     } else {
@@ -126,7 +126,7 @@ module.exports = function (phantomas) {
           }
 
           resolve();
-        })
+        }),
       );
     });
 

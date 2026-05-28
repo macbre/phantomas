@@ -10,7 +10,7 @@ module.exports = function (phantomas) {
 
   if (!scroll) {
     phantomas.log(
-      "Scroll: pass --scroll option to scroll down the page when it's loaded"
+      "Scroll: pass --scroll option to scroll down the page when it's loaded",
     );
     return;
   }

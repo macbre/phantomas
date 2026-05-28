@@ -149,13 +149,15 @@ function initModule(name, isCore) {
 
   try {
     instance = new phantomas(name);
-    def = require("../../" +
-      (isCore ? "core/modules" : "modules") +
-      "/" +
-      name +
-      "/" +
-      name +
-      ".js");
+    def = require(
+      "../../" +
+        (isCore ? "core/modules" : "modules") +
+        "/" +
+        name +
+        "/" +
+        name +
+        ".js",
+    );
 
     new def(instance);
   } catch (ex) {
@@ -198,7 +200,7 @@ module.exports = {
       test(`sets "${name}" offender(s) correctly`, () => {
         assert.deepStrictEqual(
           phantomas.getOffenders(name),
-          offendersCheck[name]
+          offendersCheck[name],
         );
       });
     });

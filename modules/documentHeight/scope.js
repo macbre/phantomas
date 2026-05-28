@@ -10,7 +10,7 @@
       body.offsetHeight,
       docelem.clientHeight,
       docelem.scrollHeight,
-      docelem.offsetHeight
+      docelem.offsetHeight,
     );
 
     phantomas.setMetric("documentHeight", documentHeight);

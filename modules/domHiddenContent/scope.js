@@ -22,7 +22,7 @@
               if (size > 1024) {
                 phantomas.addOffender(
                   "hiddenContentSize",
-                  phantomas.getDOMPath(node) + " (" + size + " characters)"
+                  phantomas.getDOMPath(node) + " (" + size + " characters)",
                 );
               }
             }
@@ -66,7 +66,7 @@
       phantomas.log(
         "hiddenImages: <%s> image (%s) is hidden and can be lazy-loaded",
         img,
-        entry.path
+        entry.path,
       );
     });
 
