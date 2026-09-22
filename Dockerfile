@@ -21,6 +21,7 @@ RUN apt-get update \
       libx11-6 \
       libxext6 \
 	  libxdamage1 \
+	  libxfixes3 \
       libxkbcommon0 \
 	  unzip \
       x11-utils \
