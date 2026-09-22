@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/node
-FROM node:lts-bookworm-slim
+FROM node:lts-trixie-slim
 
 # install dependencies of Chrome binary that will be fetched by npm ci
 RUN apt-get update \
