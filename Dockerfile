@@ -20,6 +20,7 @@ RUN apt-get update \
       libpango-1.0-0 \
       libx11-6 \
       libxext6 \
+	  libxdamage \
       libxkbcommon0 \
 	  unzip \
       x11-utils \
