@@ -4,7 +4,8 @@
         console.log(window.outerWidth, window.outerHeight);
 
         // e.g. Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36
-        const match = navigator.userAgent.match(/Mozilla\/5\.0 \((.*)\) AppleWebKit\/(.*) \(KHTML, like Gecko\) Chrome\/(.*) Safari\/(.*)/);
+        // e.g. Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true
+        const match = navigator.userAgent.match(/Mozilla\/5\.0 \(([^)]+)\)/);
 
         (phantomas => {
             phantomas.log('User agent: ', navigator.userAgent);
