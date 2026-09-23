@@ -864,7 +864,7 @@
   options:
     phone: true
   metrics:
-    device: "Linux; Android 10; SM-G981B"
+    device: "Linux; Android 5.0; SM-G900P Build/LRX21T"
     viewport: "360x640"
 
 - url: "/devices.html"
@@ -872,7 +872,7 @@
   options:
     "phone-landscape": true
   metrics:
-    device: "Linux; Android 10; SM-G981B"
+    device: "Linux; Android 5.0; SM-G900P Build/LRX21T"
     viewport: "640x360"
 
 - url: "/devices.html"
@@ -880,7 +880,7 @@
   options:
     tablet: true
   metrics:
-    device: "Linux; Android 10; SM-T870"
+    device: "Linux; U; en-us; KFAPWI Build/JDQ39"
     viewport: "800x1280"
 
 - url: "/devices.html"
@@ -888,7 +888,7 @@
   options:
     "tablet-landscape": true
   metrics:
-    device: "Linux; Android 10; SM-T870"
+    device: "Linux; U; en-us; KFAPWI Build/JDQ39"
     viewport: "1280x800"
 
 # viewport
@@ -1039,7 +1039,7 @@
   options:
     phone: true
   metrics:
-    device: 'Linux; Android 10; SM-G981B'
+    device: 'Linux; Android 5.0; SM-G900P Build/LRX21T'
 
 #user-agent
 - url: "/user-agent.html"
@@ -1047,7 +1047,7 @@
   options:
     tablet: true
   metrics:
-    device: 'Linux; Android 10; SM-T870'
+    device: 'Linux; U; en-us; KFAPWI Build/JDQ39'
 
 # user-agent
 - url: "/user-agent.html"
