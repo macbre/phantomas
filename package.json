@@ -72,5 +72,8 @@
         "lines": 89
       }
     }
+  },
+  "allowScripts": {
+    "puppeteer@25.2.1": true
   }
 }
