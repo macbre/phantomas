@@ -3,10 +3,13 @@
         console.log(navigator.userAgent);
         console.log(window.outerWidth, window.outerHeight);
 
-        const match = navigator.userAgent.match(/Mozilla\/5\.0 \((.*)\) AppleWebKit\/(.*) \(KHTML, like Gecko\) Chrome\/(.*) Safari\/(.*) Phantomas\/(.*)/);
+        // e.g. Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36
+        // e.g. Mozilla/5.0 (Linux; U; en-us; KFAPWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.13 Safari/535.19 Silk-Accelerated=true
+        const match = navigator.userAgent.match(/Mozilla\/5\.0 \(([^)]+)\)/);
 
         (phantomas => {
-            phantomas.setMetric('device', match[1]);
+            phantomas.log('User agent: ', navigator.userAgent);
+            phantomas.setMetric('device', match && match[1] || 'n/a');
             phantomas.setMetric('viewport', window.outerWidth + 'x' + window.outerHeight);
         })(window.__phantomas);
     </script>

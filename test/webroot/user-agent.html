@@ -1,6 +1,6 @@
 <body>
     <script>
-        const match = navigator.userAgent.match(/Mozilla\/5\.0 \((.*)\) AppleWebKit\/(.*) \(KHTML, like Gecko\) Chrome\/(.*) Safari\/(.*) Phantomas\/(.*)/);
+        const match = navigator.userAgent.match(/Mozilla\/5\.0 \(([^)]+)\)/);
 
         (phantomas => {
             if (match !== null) {
