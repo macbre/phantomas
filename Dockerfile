@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/node
-FROM node:lts-bullseye-slim
+FROM node:lts-trixie-slim
 
 # install dependencies of Chrome binary that will be fetched by npm ci
 RUN apt-get update \
@@ -20,6 +20,8 @@ RUN apt-get update \
       libpango-1.0-0 \
       libx11-6 \
       libxext6 \
+	  libxdamage1 \
+	  libxfixes3 \
       libxkbcommon0 \
 	  unzip \
       x11-utils \

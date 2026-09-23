@@ -22,3 +22,8 @@ updates:
     patterns: ["*-compose.*"]
     schedule:
         interval: daily
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+        interval: daily
