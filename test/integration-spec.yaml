@@ -986,10 +986,8 @@
     oldTlsProtocol: 0
 
 # http/3
-# - url: "https://127.0.0.1:9001" # TODO - https://github.com/macbre/phantomas/pull/970
-- url: "https://gf.dev/http3-test"
-  label: "h3"
-  flaky: Reaches the timeout of 5000 ms
+- url: "https://127.0.0.1:9001"
+  label: "localhost h3 version"
   metrics:
     mainDomainHttpProtocol: "h3"
     mainDomainTlsProtocol: "QUIC"
