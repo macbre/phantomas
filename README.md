@@ -180,4 +180,4 @@ Use [grunt](http://gruntjs.com/) to automate daily dev tasks, including your's a
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/macbre/phantomas.svg)](https://starchart.cc/macbre/phantomas)
+[![Star History Chart](https://api.star-history.com/chart?repos=macbre/phantomas&type=date&legend=top-left)](https://www.star-history.com/?repos=macbre%2Fphantomas&type=date&legend=top-left)
