@@ -74,6 +74,9 @@
     }
   },
   "allowScripts": {
-    "puppeteer@25.2.1": true
+    "puppeteer@25.18.0": true,
+    "sharp@0.32.4": true,
+    "gifsicle@5.3.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }
