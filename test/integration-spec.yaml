@@ -741,8 +741,8 @@
 - url: "/headers.html"
   metrics:
     requests: 3
-    headersCount: 32
-    headersSentCount: 9
+    headersCount: 29
+    headersSentCount: 6 # Chrome 157+ no longer reports Accept-Language in Network.requestWillBeSent
     headersRecvCount: 23
     headersRecvSize: 647
 #    headersBiggerThanContent: 1
