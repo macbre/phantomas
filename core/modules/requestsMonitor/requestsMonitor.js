@@ -282,7 +282,7 @@ module.exports = function (phantomas) {
           // content compression
           // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding#Directives
           case "content-encoding":
-            if (headerValue === "gzip" || headerValue === "br") {
+            if (["gzip", "br", "zstd"].includes(headerValue)) {
               entry.gzip = true;
 
               phantomas.log(
