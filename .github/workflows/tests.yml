@@ -22,9 +22,10 @@ jobs:
       matrix:
         # https://github.com/nodejs/release#release-schedule
         # https://github.com/actions/setup-node#supported-version-syntax
+        # https://nodejs.org/en/about/previous-releases
         node-version:
-        - "lts/*"
-        - "latest"
+        - "lts/*"   # Active LTS (e.g. 24.x)
+        - "current" # Current (e.g. 26.x)
 
     services:
       # https://github.com/postmanlabs/httpbin
@@ -37,7 +38,8 @@ jobs:
     steps:
     - uses: actions/checkout@v7
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v7
+      # TODO: back to @v7 once a release includes actions/setup-node#1668 (skips prereleases for "current")
+      uses: actions/setup-node@66f83c8206e0997178c8fd7bf1da9efccf5dd388
       with:
         cache: npm
         node-version: ${{ matrix.node-version }}
